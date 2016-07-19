@@ -4,10 +4,10 @@ use App\Category;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use Session;
+use Request;
 use Hash;
 use Crypt;
 use Mail;
@@ -23,6 +23,12 @@ class UserController extends Controller
 	public function index(){ 
              $user = DB::table('users')->get();  
              return view('admin/user')->with('users_data',$user)->with('title','Users')->with('subtitle','List');
+		
+	}
+	
+	public function all(){ 
+             $category = DB::table('users')->get();  
+             return  $category;
 		
 	}
        public function add(){ 
@@ -70,21 +76,24 @@ class UserController extends Controller
 	
 	 $data= DB::table('users')->where('id', '=',$id)->first();  
          $user = DB::table('users')->get();  
-	 return view('admin/edit_user')->with('user_data',$user)->with('data',$data)->with('title','User')->with('subtitle','Edit');
-	     
+		 $return['user']=$data;
+         $return['all_user']=$user;
+	 //return view('admin/edit_user')->with('user_data',$user)->with('data',$data)->with('title','User')->with('subtitle','Edit');
+	    return $return; 
 	}
-         public function update(Request $request){
+         public function update(){
 	
-	  $validator = Validator::make($request->all(), [
+	  $validator = Validator::make(Request::all(), [
             'name' => 'required',
 			'email'=>'required|email',            
             
         ]);
          
         if ($validator->fails()) {
-            return redirect('/admin/user/edit/'.$request->get('user_id'))
-                        ->withErrors($validator)
-                        ->withInput();
+            $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+				  return $list;
         }
 		 
           if(Input::file('image')!=''){	 
@@ -93,18 +102,21 @@ class UserController extends Controller
          $fileName = rand(11111,99999).'.'.$extension; // renameing image
          Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
          }
-         $cat = User::find($request->get('user_id'));
-         $cat->name = $request->get('name');
+         $cat = User::find(Request::input('id'));
+         $cat->name = Request::input('name');
          if((isset($fileName)) && ($fileName!='')){
 			$cat->image = $fileName;
          }
-		 $cat->address =$request->get('address');
-		 $cat->email=$request->get('email');
-		 $cat->gender=$request->get('gender');
-         $cat->status=$request->get('status');
+		 $cat->address =Request::input('address');
+		 $cat->email=Request::input('email');
+		 $cat->gender=Request::input('gender');
+         $cat->status=Request::input('status');
          $cat->save(); 
 		  
-         return redirect('/admin/user')->withFlash_message('Record updated Successfully.');
+		$list[]='success';
+		$msgs[]='Record updated successfully.';
+		$list[]=$msgs;
+		return $list;
 	     
 	}
         

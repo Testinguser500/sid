@@ -87,7 +87,7 @@ class CategoryController extends Controller
                               $list[]='error';
                               $msg=$validator->errors()->all();
 			      $list[]=$msg;
-			     // return $list;
+			      return $list;
         }
 	 if(Input::file('image')!=''){	 
          $destinationPath = 'uploads'; // upload path

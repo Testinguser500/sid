@@ -10,7 +10,7 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'category',controller: 'CategoryController'
    }).
    
-<<<<<<< HEAD
+
    
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
@@ -21,13 +21,7 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/user/add', {
       templateUrl: 'user/add', controller: 'UserController'
    }).
-   when('/user/edit/:id', {
-      templateUrl: 'user/edit', controller: 'UserController'
-=======
-   when('/dashboard', {
-      templateUrl: 'dashboard', controller: 'DashboardController'
->>>>>>> 097fc643c0e974bebce6bd5a920b03a2df06ac98
-   }).
+   
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -127,11 +121,7 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('DashboardController', function($scope, $http) {
 });
  app.controller('CategoryController', function($scope, $http) {
-<<<<<<< HEAD
-});
-app.controller('UserController', function($scope, $http) {
-=======
-     $scope.errors=false;
+$scope.errors=false;
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
@@ -196,6 +186,106 @@ app.controller('UserController', function($scope, $http) {
  
          });
       };
+	  
+	  $scope.store = function(category) { 
+           $scope.errors=false;
+           $scope.success_flash=false;
+           $http.post('category/store', {
+   category_name: category.category_name,
+   description: category.description,
+                        id: category.id,
+                        status: category.status,
+                        parent_id: category.parent_id,                       
+                        meta_title: category.meta_title,
+                        meta_description: category.meta_description,
+                        meta_keyword: category.meta_keyword,
+  }).success(function(data, status, headers, config) {
+                    
+                    if(data[0]=='error'){
+    $scope.errors=data[1];
+   }else{
+    
+    $scope.errors=false;
+                                $scope.success_flash=data[1];
+    $scope.categories.push(category);
+                                $scope.init();
+   }
+   $scope.loading = false;
+ 
+         });
+      };
+	  
          $scope.init();
->>>>>>> 097fc643c0e974bebce6bd5a920b03a2df06ac98
+});
+app.controller('UserController', function($scope, $http) {
+
+    $scope.errors=false;
+     $scope.loading = true;
+     $scope.categories=false;
+     $scope.page='index';
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.get('user/all').
+		success(function(data, status, headers, config) {
+			$scope.users = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $http.get('user/all').
+		success(function(data, status, headers, config) {
+			$scope.all_user = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.edituser = function(category) {
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('user/edit/' + category.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.user = data['user'];
+                        $scope.all_user = data['all_user'];
+		        $scope.loading = false;
+ 
+		});;
+	};
+        $scope.update = function(user_data) { console.log($scope.user);
+            $scope.errors=false;
+            $scope.success_flash=false;
+           $http.post('user/update', {
+			name: user_data.name,
+			email: user_data.email,
+			gender:user_data.gender,
+			address:user_data.address,
+                        id: user_data.id,
+                        status: user_data.status,
+                        image: user_data.file
+                   
+		}).success(function(data, status, headers, config) {
+                    console.log(data);
+            if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+			$scope.errors=false;
+			$scope.success_flash= data[1];
+			alert(data[1]);
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+         $scope.init(); 
+
 });
