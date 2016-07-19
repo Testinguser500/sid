@@ -59,6 +59,7 @@
 <script src="{{URL::asset('admin/js/bootstrap.min.js')}}"></script>
 <!-- Angular JS 3.3.6 -->
 <script src="{{URL::asset('admin/js/angular.min.js')}}"></script>
+<script src="{{URL::asset('admin/js/angular-route.min.js')}}"></script>
 <script src="{{URL::asset('admin/js/angular_app.js')}}"></script>
 
 </body>

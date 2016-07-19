@@ -10,11 +10,18 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'category',controller: 'CategoryController'
    }).
    
-   when('/viewStudents', {
-      templateUrl: 'viewStudents.htm', controller: 'ViewStudentsController'
-   }).
+   
    when('/dashboard', {
-      templateUrl: 'dashboard', controller: 'ViewStudentsController'
+      templateUrl: 'dashboard', controller: 'DashboardController'
+   }).
+   when('/user', {
+      templateUrl: 'user', controller: 'UserController'
+   }).
+   when('/user/add', {
+      templateUrl: 'user/add', controller: 'UserController'
+   }).
+   when('/user/edit/:id', {
+      templateUrl: 'user/edit', controller: 'UserController'
    }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
@@ -115,4 +122,6 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('DashboardController', function($scope, $http) {
 });
  app.controller('CategoryController', function($scope, $http) {
+});
+app.controller('UserController', function($scope, $http) {
 });
