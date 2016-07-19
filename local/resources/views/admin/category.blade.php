@@ -1,8 +1,4 @@
-@extends('admin/layout')
-@section('content')
-
-    <!-- Main content -->
-    <section class="content">
+  <section class="content" >
        <div class="col-md-12">
 	@if(Session::has('flash_message'))
         <div class="alert alert-success">
@@ -99,4 +95,3 @@
    
   });
  </script>
-@endsection	

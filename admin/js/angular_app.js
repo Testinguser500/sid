@@ -1,14 +1,31 @@
-var app = angular.module('admins', [], function($interpolateProvider) {
+var app = angular.module('admins', ['ngRoute'], function($interpolateProvider) {
 	$interpolateProvider.startSymbol('<%');
 	$interpolateProvider.endSymbol('%>');
 });
  
+app.config(['$routeProvider', function($routeProvider) {
+   $routeProvider.
+   
+   when('/category', {
+      templateUrl: 'category',controller: 'CategoryController'
+   }).
+   
+   when('/viewStudents', {
+      templateUrl: 'viewStudents.htm', controller: 'ViewStudentsController'
+   }).
+   
+   otherwise({
+      redirectTo: 'dashboard', controller: 'DashboardController'
+   });
+	
+}]);
 app.controller('HomeController', function($scope, $http) {
-// alert('hello');
+
 	$scope.errors=false;
 	$scope.loading = true;
- 
+        $scope.includes_function=false;
 	$scope.init = function() {
+		
 //		$scope.loading = true;
 //		$http.get('/log_user').
 //		success(function(data, status, headers, config) {
@@ -21,7 +38,7 @@ app.controller('HomeController', function($scope, $http) {
        $scope.sign_in = function() {
 		
          
-		$http.post('admins/log_user', {
+		$http.post('log_user', {
 			email: $scope.email,
 			password: $scope.password,
                    
@@ -37,15 +54,17 @@ app.controller('HomeController', function($scope, $http) {
  
 		})
 	};
-	$scope.init = function() {
-		$scope.loading = true;
-		$http.get('admins/category').
+	
+	//$scope.category = function() {
+		//$scope.loading = true;alert('hello');
+		//$scope.includes_function='/admins/category';
+	/* 	$http.get('/admins/category').
 		success(function(data, status, headers, config) {
 			$scope.categorys = data;
 	        $scope.loading = false;
  
-	});
-	}
+	}); */
+	//}
  
 //	$scope.addTodo = function() {
 //				$scope.loading = true;
@@ -91,4 +110,7 @@ app.controller('HomeController', function($scope, $http) {
 	$scope.init();
  
 });
- 
+ app.controller('DashboardController', function($scope, $http) {
+});
+ app.controller('CategoryController', function($scope, $http) {
+});
