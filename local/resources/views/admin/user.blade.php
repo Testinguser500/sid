@@ -7,7 +7,7 @@
             <% success_flash %>
             </p>
         </div>
-        <div class="alert alert-danger"  ng-if="errors">>
+        <div class="alert alert-danger"  ng-if="errors">
             <ul>
                 <li ng-repeat ="er in errors"><% er %></li>
          
@@ -55,11 +55,11 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <form action = "{{url('/admin/user/delete')}}" method="post">
+                            
                                   {{ csrf_field() }}
                                <input type="hidden" name="del_id" value="<% val.id %>" />
-                               <button type="submit" class="btn btn-primary" >Delete</button>
-                            </form>
+                               <button ng-click="deleteUser($index)" class="btn btn-primary" >Delete</button>
+                            
                           </div>
                         </div>
                       </div>
@@ -154,7 +154,7 @@
 		  
 		  <div class="box box-primary" ng-if="page=='add'">
             <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-plus"></i> Create Category</h3>
+                <h3 class="box-title"><i class="fa fa-plus"></i> Add User</h3>
                 <div class="pull-right"><a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
             </div>
 		  <!------ Add User ---------------->
@@ -162,7 +162,7 @@
 			 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Name</label>
-                  <input type="text" class="form-control" id="" name="name" placeholder="Name" ng-model="user.name">
+                  <input type="text" class="form-control" id="" name="name" placeholder="Name" ng-model="user.name" ng-init="user.name">
 		  <div class="help-block"></div>
                 </div> 
                 <div class="form-group">
@@ -197,7 +197,11 @@
                   <input type="radio"  id="" name="status" value="Active" ng-model="user.status">Active <input type="radio" id="" name="status" value="Inactive" ng-model="user.status" checked>Inactive 
 		  <div class="help-block"></div>
                 </div> 
-             </div>
+				 </div>
+				<div class="box-footer">
+                <button ng-click="store(user);" class="btn btn-primary">Submit</button>
+              </div>
+            
 			 </div>
 		  
     </section>

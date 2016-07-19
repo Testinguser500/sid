@@ -187,46 +187,21 @@ $scope.errors=false;
  
          });
       };
-<<<<<<< HEAD
-	  
-	  $scope.store = function(category) { 
-           $scope.errors=false;
-           $scope.success_flash=false;
-           $http.post('category/store', {
-   category_name: category.category_name,
-   description: category.description,
-=======
+
       $scope.store = function(category) { 
            $scope.errors=false;
            $scope.success_flash=false;
            $http.post('category/store', {
 			category_name: category.category_name,
 			description: category.description,
->>>>>>> bd746ec006e3b1e983584d7bab5b1e366ce1cf41
+
                         id: category.id,
                         status: category.status,
                         parent_id: category.parent_id,                       
                         meta_title: category.meta_title,
                         meta_description: category.meta_description,
                         meta_keyword: category.meta_keyword,
-<<<<<<< HEAD
-  }).success(function(data, status, headers, config) {
-                    
-                    if(data[0]=='error'){
-    $scope.errors=data[1];
-   }else{
-    
-    $scope.errors=false;
-                                $scope.success_flash=data[1];
-    $scope.categories.push(category);
-                                $scope.init();
-   }
-   $scope.loading = false;
- 
-         });
-      };
-	  
-=======
+
 		}).success(function(data, status, headers, config) {
                     
                     if(data[0]=='error'){
@@ -256,14 +231,15 @@ $scope.errors=false;
                                         $scope.init();
                                 });
                 };
->>>>>>> bd746ec006e3b1e983584d7bab5b1e366ce1cf41
+
          $scope.init();
 });
 app.controller('UserController', function($scope, $http) {
 
     $scope.errors=false;
      $scope.loading = true;
-     $scope.categories=false;
+     $scope.users=false;
+	 $scope.user=false;
      $scope.page='index';
      $scope.success_flash=false;
      $scope.init = function() {	
@@ -328,6 +304,49 @@ app.controller('UserController', function($scope, $http) {
  
          });
       };
+	  
+	  $scope.store = function(userData) { 
+           $scope.errors=false;
+           $scope.success_flash=false;
+           $http.post('user/store', {
+			name: userData.name,
+			email: userData.email,
+			gender:userData.gender,
+			address:userData.address,
+                        id: userData.id,
+                        status: userData.status,
+                        image: userData.file
+
+		}).success(function(data, status, headers, config) {
+                    
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+                                $scope.success_flash=data[1];
+				$scope.users.push(user_data);
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      $scope.deleteUser = function(index) {
+		$scope.loading = true;
+
+		var user = $scope.users[index];
+              
+                $http.post('user/delete',{            
+                    del_id:user.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.users.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+				
          $scope.init(); 
 
 });

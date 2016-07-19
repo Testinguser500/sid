@@ -27,7 +27,7 @@ class UserController extends Controller
 	}
 	
 	public function all(){ 
-             $category = DB::table('users')->get();  
+             $category = DB::table('users')->where('is_delete','=','0')->get();  
              return  $category;
 		
 	}
@@ -40,7 +40,7 @@ class UserController extends Controller
         public function store(Request $request){
 	
   
-	   $validator = Validator::make($request->all(), [
+	   $validator = Validator::make(Request::all(), [
             'name' => 'required',
 			'email'=>'required|email|unique:users',
 			
@@ -50,9 +50,10 @@ class UserController extends Controller
         ]);
          
         if ($validator->fails()) {
-            return redirect('/admin/user/add')
-                        ->withErrors($validator)
-                        ->withInput();
+            $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			      return $list;
         }
 		 
         $destinationPath = 'uploads/user/'; // upload path
@@ -61,14 +62,20 @@ class UserController extends Controller
         Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
         User::create(['image' =>$fileName,'name' =>$request->get('name'),'email' =>$request->get('email'),'password'=>bcrypt(str_random(6)),'gender'=>$request->get('gender'),'address'=>$request->get('address'),'status' =>$request->get('status'),'role'=>2]);  
 		  
-         return redirect('/admin/user')->withFlash_message('Record inserted Successfully.');
+         $list[]='success';
+            $list[]='Record is added successfully.';	 
+	    return $list;
 	   
 	}
         public function delete(Request $request){
 	
-	   $chk_id=$request->get('del_id');	  
-	   DB::table('users')->where('id', '=',$chk_id)->delete();		 
-           return  redirect('/admin/user')->withFlash_message('Record Deleted  Successfully.');	 
+	   $chk_id=Request::input('del_id');	
+           $cat = User::find($chk_id);
+           $cat->is_delete = '1';
+           $cat->save(); 	   		 
+           $list[]='success';
+           $list[]='Record is deleted successfully.';	 
+	   return $list;
 	    
 	}
         
