@@ -10,8 +10,23 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'category',controller: 'CategoryController'
    }).
    
+<<<<<<< HEAD
+   
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
+   }).
+   when('/user', {
+      templateUrl: 'user', controller: 'UserController'
+   }).
+   when('/user/add', {
+      templateUrl: 'user/add', controller: 'UserController'
+   }).
+   when('/user/edit/:id', {
+      templateUrl: 'user/edit', controller: 'UserController'
+=======
+   when('/dashboard', {
+      templateUrl: 'dashboard', controller: 'DashboardController'
+>>>>>>> 097fc643c0e974bebce6bd5a920b03a2df06ac98
    }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
@@ -112,6 +127,10 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('DashboardController', function($scope, $http) {
 });
  app.controller('CategoryController', function($scope, $http) {
+<<<<<<< HEAD
+});
+app.controller('UserController', function($scope, $http) {
+=======
      $scope.errors=false;
      $scope.loading = true;
      $scope.categories=false;
@@ -220,4 +239,5 @@ app.controller('HomeController', function($scope, $http) {
                                 });
                 };
          $scope.init();
+>>>>>>> 097fc643c0e974bebce6bd5a920b03a2df06ac98
 });

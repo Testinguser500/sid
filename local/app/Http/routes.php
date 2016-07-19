@@ -39,48 +39,48 @@ Route::post('admins/category/delete', 'Admin\CategoryController@delete');
 Route::get('admins/category/edit/{id}', 'Admin\CategoryController@edit');
 Route::post('admins/category/update', 'Admin\CategoryController@update');
 
-Route::get('admin/brand', 'Admin\BrandController@index');
-Route::get('admin/brand/add', 'Admin\BrandController@add');
-Route::post('admin/brand/store', 'Admin\BrandController@store');
-Route::post('admin/brand/delete', 'Admin\BrandController@delete');
-Route::get('admin/brand/edit/{id}', 'Admin\BrandController@edit');
-Route::post('admin/brand/update', 'Admin\BrandController@update');
+Route::get('admins/brand', 'Admin\BrandController@index');
+Route::get('admins/brand/add', 'Admin\BrandController@add');
+Route::post('admins/brand/store', 'Admin\BrandController@store');
+Route::post('admins/brand/delete', 'Admin\BrandController@delete');
+Route::get('admins/brand/edit/{id}', 'Admin\BrandController@edit');
+Route::post('admins/brand/update', 'Admin\BrandController@update');
 
-Route::get('admin/faq', 'Admin\FaqController@index');
-Route::get('admin/faq/add', 'Admin\FaqController@add');
-Route::post('admin/faq/store', 'Admin\FaqController@store');
-Route::post('admin/faq/delete', 'Admin\FaqController@delete');
-Route::get('admin/faq/edit/{id}', 'Admin\FaqController@edit');
-Route::post('admin/faq/update', 'Admin\FaqController@update');
+Route::get('admins/faq', 'Admin\FaqController@index');
+Route::get('admins/faq/add', 'Admin\FaqController@add');
+Route::post('admins/faq/store', 'Admin\FaqController@store');
+Route::post('admins/faq/delete', 'Admin\FaqController@delete');
+Route::get('admins/faq/edit/{id}', 'Admin\FaqController@edit');
+Route::post('admins/faq/update', 'Admin\FaqController@update');
 
-Route::get('admin/newsletter', 'Admin\NewsletterController@index');
-Route::post('admin/newsletter/delete', 'Admin\NewsletterController@delete');
-Route::post('admin/newsletter/update', 'Admin\NewsletterController@update');
+Route::get('admins/newsletter', 'Admin\NewsletterController@index');
+Route::post('admins/newsletter/delete', 'Admin\NewsletterController@delete');
+Route::post('admins/newsletter/update', 'Admin\NewsletterController@update');
 
-Route::get('admin/template', 'Admin\TemplateController@index');
-Route::get('admin/template/add', 'Admin\TemplateController@add');
-Route::post('admin/template/store', 'Admin\TemplateController@store');
-Route::post('admin/template/delete', 'Admin\TemplateController@delete');
-Route::get('admin/template/edit/{id}', 'Admin\TemplateController@edit');
-Route::post('admin/template/update', 'Admin\TemplateController@update');
-Route::get('admin/template/send/{id}', 'Admin\TemplateController@send');
-Route::post('admin/template/sent', 'Admin\TemplateController@sent');
+Route::get('admins/template', 'Admin\TemplateController@index');
+Route::get('admins/template/add', 'Admin\TemplateController@add');
+Route::post('admins/template/store', 'Admin\TemplateController@store');
+Route::post('admins/template/delete', 'Admin\TemplateController@delete');
+Route::get('admins/template/edit/{id}', 'Admin\TemplateController@edit');
+Route::post('admins/template/update', 'Admin\TemplateController@update');
+Route::get('admins/template/send/{id}', 'Admin\TemplateController@send');
+Route::post('admins/template/sent', 'Admin\TemplateController@sent');
 
-Route::get('admin/config', 'Admin\ConfigController@index');
-Route::get('admin/config/edit', 'Admin\ConfigController@edit');
-Route::post('admin/config/update', 'Admin\ConfigController@update');
+Route::get('admins/config', 'Admin\ConfigController@index');
+Route::get('admins/config/edit', 'Admin\ConfigController@edit');
+Route::post('admins/config/update', 'Admin\ConfigController@update');
 
-Route::get('admin/enquiry', 'Admin\EnquiryController@index');
-Route::get('admin/enquiry/edit/{id}', 'Admin\EnquiryController@edit');
-Route::post('admin/enquiry/update', 'Admin\EnquiryController@update');
-Route::post('admin/enquiry/delete', 'Admin\EnquiryController@delete');
+Route::get('admins/enquiry', 'Admin\EnquiryController@index');
+Route::get('admins/enquiry/edit/{id}', 'Admin\EnquiryController@edit');
+Route::post('admins/enquiry/update', 'Admin\EnquiryController@update');
+Route::post('admins/enquiry/delete', 'Admin\EnquiryController@delete');
 
-Route::get('admin/user', 'Admin\UserController@index');
-Route::get('admin/user/add', 'Admin\UserController@add');
-Route::post('admin/user/store', 'Admin\UserController@store');
-Route::get('admin/user/edit/{id}', 'Admin\UserController@edit');
-Route::post('admin/user/update', 'Admin\UserController@update');
-Route::post('admin/user/delete', 'Admin\UserController@delete');
+Route::get('admins/user', 'Admin\UserController@index');
+Route::get('admins/user/add', 'Admin\UserController@add');
+Route::post('admins/user/store', 'Admin\UserController@store');
+Route::get('admins/user/edit/{id}', 'Admin\UserController@edit');
+Route::post('admins/user/update', 'Admin\UserController@update');
+Route::post('admins/user/delete', 'Admin\UserController@delete');
 
 Route::get('admin/static-content', 'Admin\StaticContentController@index');
 Route::get('admin/static-content/edit/{id}', 'Admin\StaticContentController@edit');
