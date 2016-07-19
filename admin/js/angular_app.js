@@ -13,7 +13,9 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/viewStudents', {
       templateUrl: 'viewStudents.htm', controller: 'ViewStudentsController'
    }).
-   
+   when('/dashboard', {
+      templateUrl: 'dashboard', controller: 'ViewStudentsController'
+   }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });

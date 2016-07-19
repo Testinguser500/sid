@@ -23,7 +23,10 @@ class HomeController extends Controller
              return view('admin/dashboard')->with('title','Dashboard')->with('subtitle','Control Panel');
 		
 	}
-	
+	public function home(){           
+             return view('admin/home')->with('title','Dashboard')->with('subtitle','Control Panel');
+		
+	}
 	public function log_user(){
            // echo Request::input('done');
 			$validator = Validator::make(Request::all(), [          
