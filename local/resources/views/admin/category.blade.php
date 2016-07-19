@@ -6,7 +6,7 @@
             <% success_flash %>
             </p>
         </div>
-        <div class="alert alert-danger"  ng-if="errors">>
+        <div class="alert alert-danger"  ng-if="errors">
             <ul>
                 <li ng-repeat ="er in errors"><% er %></li>
          
@@ -18,12 +18,12 @@
           <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> Category List</h3>
-              <div class="pull-right"> <a href="javascript:void(0);" ng-click="add()" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a></div>
+              <div class="pull-right"> <a href="javascript:void(0);" ng-click="add()" ng-init="success_flash=false" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a></div>
             </div>
             <!-- /.box-header -->
             
             <div class="box-body">
-              <table  if="categories"id="example1" class="table table-bordered table-striped">
+              <table  if="categories" show-filter="true" id="example1"  ng-table="vm.tableParams" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>#</th>
@@ -42,7 +42,27 @@
                       <i class="fa fa-edit" title="Edit" ng-click="editcategory(val)" style="cursor:pointer" ></i> <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
                  
                   <!-- Modal -->
-
+               <div class="modal fade" id="del_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Delete</h4>
+                          </div>
+                          <div class="modal-body">
+                            Are you sure you want to delete this category ? 
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                            
+                                
+                               <input type="hidden" name="del_id" value="<% val.id %>" />
+                               <button ng-click="deleteCategory($index)" class="btn btn-primary" data-dismiss="modal" >Delete</button>
+                           
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </td>
                   
                 </tr>
@@ -127,6 +147,22 @@
                   <input type="text" class="form-control" id="" name="name" placeholder="Name" ng-model="cat.category_name">
 		  <div class="help-block"></div>
                 </div> 
+                  <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Title</label>
+                  <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="cat.meta_title">
+		  <div class="help-block"></div>
+                </div> 
+                 <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Description</label>
+                  <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="cat.meta_description">
+		  <div class="help-block"></div>
+                </div> 
+                  <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Keyword</label>
+                  <input type="text" class="form-control" id="" name="meta_keyword" placeholder="Meta Keyword" ng-model="cat.meta_keyword">
+		  <div class="help-block"></div>
+                </div>
+                
                 <div class="form-group">
                   <label for="exampleInputEmail1">Description</label>
                   <textarea name="description" class="textarea" placeholder="Description" ng-model="cat.description" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
@@ -141,23 +177,23 @@
                 </div> 
                   <div class="form-group">
                   <label for="exampleInputEmail1">Parent Category</label>
-                  <select class="form-control" name="parent_cat"  ng-model="cat.parent_id">
+                  <select class="form-control" name="parent_cat"  ng-model="cat.parent_id" ng-init="cat.parent_id=0">
                       <option value="0">Please select</option>
                                             
-                      <option ng-repeat="cast in all_cat" ng-if="cast.id !=  category.id" ng-selected="cat.parent_id"><% cast.category_name %></option>
+                      <option ng-repeat="cast in all_cat" ng-value="cast.id" ng-if="cast.id !=  category.id" ng-selected="cat.parent_id"><% cast.category_name %></option>
                   </select>
 		  <div class="help-block"></div>
                 </div> 
                   <div class="form-group">
                   <label for="exampleInputEmail1">Status </label>
-                   <input type="radio"  id="" name="status" ng-model="cat.status"  value="Active" checked   >Active <input type="radio" id="" name="status" value="Inactive" ng-model="cat.status"   >Inactive 
+                   <input type="radio"  id="" name="status" ng-model="cat.status"  value="Active" ng-init="cat.status='Active'"  >Active <input type="radio" id="" name="status" value="Inactive" ng-model="cat.status"   >Inactive 
 		  <div class="help-block"></div>
                 </div> 
              </div>
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button ng-click="store(cat);" class="btn btn-primary">Submit</button>
               </div>
           
           </div>
@@ -176,13 +212,13 @@
    
   <!-- /.content-wrapper -->
  
-    <script>
+<!--    <script>
                 $(function () {
                 $("#example1").DataTable();
 
 
               });
-             </script>
+             </script>-->
               <script>
             $(function () {
               // Replace the <textarea id="editor1"> with a CKEditor

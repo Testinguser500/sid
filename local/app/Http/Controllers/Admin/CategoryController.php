@@ -35,34 +35,42 @@ class CategoryController extends Controller
 	
   
 	   $validator = Validator::make(Request::all(), [
-            'name' => 'required',
-	        'image'=>'required',
+            'category_name' => 'required',	       
             'description'=>'required',            
-            
+            'meta_title'=>'required',
+            'meta_description'=>'required',
+            'meta_keyword'=>'required',
         ]);
          
         if ($validator->fails()) {
-            return redirect('/admin/category/add')
-                        ->withErrors($validator)
-                        ->withInput();
+                             $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			      return $list;
         }
-		 
-         $destinationPath = 'uploads'; // upload path
-         $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
-         $fileName = rand(11111,99999).'.'.$extension; // renameing image
-         Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
-	 Category::create(['image' =>$fileName,'category_name' =>$request->get('name'),'description' =>$request->get('description'),'status' =>$request->get('status'),'parent_id'=>$request->get('parent_cat'),'is_delete'=>'0','user_id'=>Auth::user()->id]);  
-		  
-         return redirect('/admin/category')->withFlash_message('Record inserted Successfully.');
+//		 
+//         $destinationPath = 'uploads'; // upload path
+//         $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+//         $fileName = rand(11111,99999).'.'.$extension; // renameing image
+        $fileName="image";
+        // Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
+      // print_r(Request::all());exit;	
+	$cat= Category::create(['image' =>$fileName,'meta_title' =>Request::input('meta_title'),'meta_description' =>Request::input('meta_description'),'meta_keyword' =>Request::input('meta_keyword'),'category_name' =>Request::input('category_name'),'description' =>Request::input('description'),'status' =>Request::input('status'),'parent_id'=>Request::input('parent_id'),'is_delete'=>'0','user_id'=>Auth::user()->id]);  
+	  
+            $list[]='success';
+            $list[]='Record is added successfully.';	 
+	    return $list;
 	   
 	}
         public function delete(Request $request){
 	
-	   $chk_id=$request->get('del_id');	
+	   $chk_id=Request::input('del_id');	
            $cat = Category::find($chk_id);
            $cat->is_delete = '1';
            $cat->save(); 	   		 
-           return  redirect('/admin/category')->withFlash_message('Record Deleted  Successfully.');	 
+           $list[]='success';
+           $list[]='Record is deleted successfully.';	 
+	   return $list;
 	    
 	}
         
@@ -87,7 +95,7 @@ class CategoryController extends Controller
                               $list[]='error';
                               $msg=$validator->errors()->all();
 			      $list[]=$msg;
-			     // return $list;
+			      return $list;
         }
 	 if(Input::file('image')!=''){	 
          $destinationPath = 'uploads'; // upload path
