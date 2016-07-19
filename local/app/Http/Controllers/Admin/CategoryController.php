@@ -4,7 +4,6 @@ use App\Category;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
-
 use App\Http\Controllers\Controller;
 use Validator;
 use Session;
@@ -18,8 +17,13 @@ class CategoryController extends Controller
 
         }
 	public function index(){ 
+              
+             return view('admin/category')->with('title','Category')->with('subtitle','List');
+		
+	}
+        public function all(){ 
              $category = DB::table('categorys')->where('is_delete', '=','0')->get();  
-             return view('admin/category')->with('categories',$category)->with('title','Category')->with('subtitle','List');
+             return  $category;
 		
 	}
        public function add(){ 
@@ -66,21 +70,24 @@ class CategoryController extends Controller
 	
 	 $cate= DB::table('categorys')->where('id', '=',$id)->first();  
          $category = DB::table('categorys')->where('is_delete', '=','0')->get();  
-	 return view('admin/edit_category')->with('categories',$category)->with('categ',$cate)->with('title','Category')->with('subtitle','Edit');
+         $return['category']=$cate;
+         $return['all_cat']=$category;
+	 return $return;
 	     
 	}
-         public function update(Request $request){
+         public function update(){
 	
-	  $validator = Validator::make($request->all(), [
+	  $validator = Validator::make(Request::all(), [
             'name' => 'required',	    
             'description'=>'required',        
             
         ]);
          
         if ($validator->fails()) {
-            return redirect('/admin/category/edit/'.$request->get('category_id'))
-                        ->withErrors($validator)
-                        ->withInput();
+                              $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			     // return $list;
         }
 	 if(Input::file('image')!=''){	 
          $destinationPath = 'uploads'; // upload path
@@ -88,17 +95,18 @@ class CategoryController extends Controller
          $fileName = rand(11111,99999).'.'.$extension; // renameing image
          Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
          }
-         $cat = Category::find($request->get('category_id'));
-         $cat->category_name = $request->get('name');
-         if((isset($fileName)) && ($fileName!='')){
-	 $cat->image = $fileName;
-         }
-	 $cat->description =$request->get('description');
-	 $cat->parent_id=$request->get('parent_cat');
-         $cat->status=$request->get('status');
-         $cat->save(); 
-		  
-         return redirect('/admin/category')->withFlash_message('Record updated Successfully.');
+         echo Input::file('image');echo'hello';
+//         $cat = Category::find($request->get('category_id'));
+//         $cat->category_name = $request->get('name');
+//         if((isset($fileName)) && ($fileName!='')){
+//	 $cat->image = $fileName;
+//         }
+//	 $cat->description =$request->get('description');
+//	 $cat->parent_id=$request->get('parent_cat');
+//         $cat->status=$request->get('status');
+//         $cat->save(); 
+//		  
+//         return redirect('/admin/category')->withFlash_message('Record updated Successfully.');
 	     
 	}
        

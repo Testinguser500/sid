@@ -30,7 +30,9 @@ Route::post('admins/log_user', 'Admin\HomeController@log_user');
 Route::get('admins/log_out', 'Admin\HomeController@log_out');
 Route::get('admins/dashboard', 'Admin\HomeController@dashboard');
 Route::get('admins/home', 'Admin\HomeController@home');
+
 Route::get('admins/category', 'Admin\CategoryController@index');
+Route::get('admins/category/all', 'Admin\CategoryController@all');
 Route::get('admins/category/add', 'Admin\CategoryController@add');
 Route::post('admins/category/store', 'Admin\CategoryController@store');
 Route::post('admins/category/delete', 'Admin\CategoryController@delete');
