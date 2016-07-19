@@ -125,11 +125,12 @@ $scope.errors=false;
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
+    
      $scope.success_flash=false;
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
-                $scope.success_flash=false;
+               
 		$scope.loading = true;
 		$http.get('category/all').
 		success(function(data, status, headers, config) {
@@ -186,6 +187,7 @@ $scope.errors=false;
  
          });
       };
+<<<<<<< HEAD
 	  
 	  $scope.store = function(category) { 
            $scope.errors=false;
@@ -193,12 +195,21 @@ $scope.errors=false;
            $http.post('category/store', {
    category_name: category.category_name,
    description: category.description,
+=======
+      $scope.store = function(category) { 
+           $scope.errors=false;
+           $scope.success_flash=false;
+           $http.post('category/store', {
+			category_name: category.category_name,
+			description: category.description,
+>>>>>>> bd746ec006e3b1e983584d7bab5b1e366ce1cf41
                         id: category.id,
                         status: category.status,
                         parent_id: category.parent_id,                       
                         meta_title: category.meta_title,
                         meta_description: category.meta_description,
                         meta_keyword: category.meta_keyword,
+<<<<<<< HEAD
   }).success(function(data, status, headers, config) {
                     
                     if(data[0]=='error'){
@@ -215,6 +226,37 @@ $scope.errors=false;
          });
       };
 	  
+=======
+		}).success(function(data, status, headers, config) {
+                    
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+                                $scope.success_flash=data[1];
+				$scope.categories.push(category);
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      $scope.deleteCategory = function(index) {
+		$scope.loading = true;
+
+		var category = $scope.categories[index];
+              
+                $http.post('category/delete',{            
+                    del_id:category.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.categories.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+>>>>>>> bd746ec006e3b1e983584d7bab5b1e366ce1cf41
          $scope.init();
 });
 app.controller('UserController', function($scope, $http) {
