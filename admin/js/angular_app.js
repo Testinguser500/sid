@@ -10,6 +10,7 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'category',controller: 'CategoryController'
    }).
    
+<<<<<<< HEAD
    
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
@@ -22,6 +23,10 @@ app.config(['$routeProvider', function($routeProvider) {
    }).
    when('/user/edit/:id', {
       templateUrl: 'user/edit', controller: 'UserController'
+=======
+   when('/dashboard', {
+      templateUrl: 'dashboard', controller: 'DashboardController'
+>>>>>>> 097fc643c0e974bebce6bd5a920b03a2df06ac98
    }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
@@ -122,6 +127,75 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('DashboardController', function($scope, $http) {
 });
  app.controller('CategoryController', function($scope, $http) {
+<<<<<<< HEAD
 });
 app.controller('UserController', function($scope, $http) {
+=======
+     $scope.errors=false;
+     $scope.loading = true;
+     $scope.categories=false;
+     $scope.page='index';
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.get('category/all').
+		success(function(data, status, headers, config) {
+			$scope.categories = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $http.get('category/all').
+		success(function(data, status, headers, config) {
+			$scope.all_cat = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.editcategory = function(category) {
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('category/edit/' + category.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.category = data['category'];
+                        $scope.all_cat = data['all_cat'];
+		        $scope.loading = false;
+ 
+		});;
+	};
+        $scope.update = function(category) { console.log($scope.category.file);
+            $scope.errors=false;
+            $scope.success_flash=false;
+           $http.post('category/update', {
+			name: category.category_name,
+			description: category.description,
+                        id: category.id,
+                        status: category.status,
+                        parent_cat: category.parent_cat,
+                        image: category.file
+                   
+		}).success(function(data, status, headers, config) {
+                    console.log(data);
+//            if(data[0]=='error'){
+//				$scope.errors=data[1];
+//			}else{
+//				
+//				$scope.errors=false;
+//				location.href=data[1];
+//			}
+			$scope.loading = false;
+ 
+         });
+      };
+         $scope.init();
+>>>>>>> 097fc643c0e974bebce6bd5a920b03a2df06ac98
 });
