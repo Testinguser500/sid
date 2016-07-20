@@ -95,11 +95,11 @@ class BrandController extends Controller
 			      $list[]=$msg;
 				  return $list;
         }
-	 if(Input::file('image')!=''){	 
-         $destinationPath = 'uploads'; // upload path
-         $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
-         $fileName = rand(11111,99999).'.'.$extension; // renameing image
-         Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
+	 if(Request::input('image')!=''){	 
+         //$destinationPath = 'uploads'; // upload path
+         //$extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+         $fileName = Request::input('image'); // renameing image
+         //Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
          }
          $brand = Brand::find(Request::input('id'));
          $brand->brand_name = Request::input('brand_name');

@@ -98,7 +98,7 @@
                 <div class="form-group" ng-if="content.image">
                   <label for="exampleInputEmail1">Image</label>
                   <img class='' src="{{URL::asset('uploads/static/')}}/<% content.image %>" width="100">
-                  <input type="file" ng-file-select  name="image" ng-model="content.image">
+                  <input type="file" ng-file-select  name="image" ng-model="content.image" onchange="angular.element(this).scope().uploadedFile(this)">
 		  <div class="help-block"></div>
                 </div> 
                  

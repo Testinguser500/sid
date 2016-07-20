@@ -13,6 +13,7 @@ use Validator;
 use App\Http\Controllers\cart\Cart;
 use Session;
 use Request;
+use Image;
 class HomeController extends Controller
 {
 	public function index(){   
@@ -81,11 +82,27 @@ class HomeController extends Controller
         }
        public function imageupload()
        {
-        
-            $destinationPath = 'uploads'; // upload path
+        if(Request::input('folder'))
+			$folder = '/'.Request::input('folder');
+		
+		if(Request::input('width')&&Request::input('height'))
+		{
+			$width = Request::input('width');
+			$height = Request::input('height');
+		}
+		else
+		{
+			$width = 200;
+			$height = 200;
+		}
+		
+            $destinationPath = 'uploads'.$folder; // upload path
             $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
             if(($extension=='jpg') || ($extension=='jpeg') || ($extension=='png') ){
-            $fileName = time().'.'.$extension; // renameing image      
+            $fileName = time().'.'.$extension; // renameing image 
+			$path = ($destinationPath.'/'.$fileName);
+			Image::make(Input::file('image')->getRealPath())->resize($width, $height)->save($path);	
+			
             Input::file('image')->move($destinationPath, $fileName); 
             return $fileName;
             }else{

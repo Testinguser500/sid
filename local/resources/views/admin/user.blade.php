@@ -134,7 +134,7 @@
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
                   <img class='' src="{{URL::asset('uploads/user/')}}/<% user.image %>" width="100">
-                  <input type="file"  name="image" ng-model="user.file">
+                  <input type="file"  name="image" ng-model="user.image"  onchange="angular.element(this).scope().uploadedFile(this)">
 		  <div class="help-block"></div>
                 </div> 
                   
@@ -188,7 +188,7 @@
 				
                 <div class="form-group">
                   <label for="exampleInputEmail1"> Image</label>
-                  <input type="file"  name="image" ng-model="user.image">
+                  <input type="file"  name="image" ng-model="user.image" onchange="angular.element(this).scope().uploadedFile(this)">
 		  <div class="help-block"></div>
                 </div> 
                   

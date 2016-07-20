@@ -131,11 +131,9 @@ app.controller('HomeController', function($scope, $http) {
 
 
      $scope.errors=false;
-<<<<<<< HEAD
-     $scope.files=false;
-=======
 
->>>>>>> d497c61ccb99ef327f13821b1fad0540bbd7e281
+     $scope.files=false;
+
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
@@ -275,12 +273,15 @@ app.controller('HomeController', function($scope, $http) {
 
          $scope.init();
 });
+//user management
 app.controller('UserController', function($scope, $http) {
 
     $scope.errors=false;
+	$scope.files=false;
      $scope.loading = true;
      $scope.users=false;
 	 $scope.user=false;
+	 $scope.user_data = false;
      $scope.page='index';
      $scope.success_flash=false;
      $scope.init = function() {	
@@ -319,6 +320,24 @@ app.controller('UserController', function($scope, $http) {
  
 		});;
 	};
+	
+	$scope.uploadedFile = function(element) {
+           $scope.$apply(function($scope) {
+            
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'user');
+			fd.append("width",'150');
+			fd.append("height",'150');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ $scope.files=data;});
+
+    });
+   }
         $scope.update = function(user_data) { console.log($scope.user);
             $scope.errors=false;
             $scope.success_flash=false;
@@ -329,17 +348,19 @@ app.controller('UserController', function($scope, $http) {
 			address:user_data.address,
                         id: user_data.id,
                         status: user_data.status,
-                        image: user_data.file
+                        image: $scope.files
                    
 		}).success(function(data, status, headers, config) {
-                    console.log(data);
+                    
             if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
-				
+				$scope.user.image = $scope.files;
+				//console.log($scope.user.image);
+				$scope.files=false;
 			$scope.errors=false;
 			$scope.success_flash= data[1];
-			alert(data[1]);
+			
 			}
 			$scope.loading = false;
  
@@ -356,17 +377,17 @@ app.controller('UserController', function($scope, $http) {
 			address:userData.address,
                         id: userData.id,
                         status: userData.status,
-                        image: userData.file
+                        image: $scope.files
 
-		}).success(function(data, status, headers, config) {
-                    
+		}).success(function(data, status, headers, config) {console.log($scope.files);
+                    $scope.files=false;
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
 				
 				$scope.errors=false;
                                 $scope.success_flash=data[1];
-				$scope.users.push(user_data);
+				$scope.users.push(userData);
                                 $scope.init();
 			}
 			$scope.loading = false;
@@ -397,6 +418,7 @@ app.controller('UserController', function($scope, $http) {
 app.controller('StaticContentController', function($scope, $http) {
 
     $scope.errors=false;
+	$scope.files=false;
      $scope.loading = true;
      $scope.contents=false;
 	 $scope.content=false;
@@ -439,6 +461,24 @@ app.controller('StaticContentController', function($scope, $http) {
  
 		});;
 	};
+	
+	$scope.uploadedFile = function(element) {
+           $scope.$apply(function($scope) {
+            
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'static');
+			fd.append("width",'150');
+			fd.append("height",'150');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ $scope.files=data;});
+
+    });
+   }
         $scope.update = function(contents) { console.log(contents);
             $scope.errors=false;
             $scope.success_flash=false;
@@ -446,14 +486,17 @@ app.controller('StaticContentController', function($scope, $http) {
 			title: contents.title,
 			short_description: contents.short_description,
 			description:contents.description,
-			image: contents.image,id: contents.id
+			image: $scope.files,id: contents.id
                    
 		}).success(function(data, status, headers, config) {
-                    console.log(data);
+			
+                    //console.log(contents);
             if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
-				
+			$scope.content.image = $scope.files;
+			//console.log($scope.content.image);
+			$scope.files=false;			
 			$scope.errors=false;
 			$scope.success_flash= data[1];
 			
@@ -473,10 +516,10 @@ app.controller('StaticContentController', function($scope, $http) {
 			address:userData.address,
                         id: userData.id,
                         status: userData.status,
-                        image: userData.file
+                        image: $scope.files
 
 		}).success(function(data, status, headers, config) {
-                    
+                    $scope.files=false;
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -515,6 +558,7 @@ app.controller('StaticContentController', function($scope, $http) {
 app.controller('BrandsController', function($scope, $http) {
 
     $scope.errors=false;
+	$scope.files = false;
      $scope.loading = true;
      $scope.brands=false;
 	 $scope.brand=false;
@@ -558,6 +602,23 @@ app.controller('BrandsController', function($scope, $http) {
  
 		});;
 	};
+	$scope.uploadedFile = function(element) {
+           $scope.$apply(function($scope) {
+            
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'brand');
+			fd.append("width",'150');
+			fd.append("height",'150');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ $scope.files=data;});
+
+    });
+	}
         $scope.update = function(brands) { console.log(brands);
             $scope.errors=false;
             $scope.success_flash=false;
@@ -565,15 +626,16 @@ app.controller('BrandsController', function($scope, $http) {
 			brand_name: brands.brand_name,
 			description: brands.description,
 			status:brands.status,
-			image: brands.image,id: brands.id
+			image: $scope.files,id: brands.id
                    
 		}).success(function(data, status, headers, config) {
                     console.log(data);
             if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
-				
+				$scope.brands.image = $scope.files;
 			$scope.errors=false;
+			$scope.files = false;
 			$scope.success_flash= data[1];
 			
 			}
@@ -590,15 +652,16 @@ app.controller('BrandsController', function($scope, $http) {
 			description: userData.description,
 			id: userData.id,
 			status: userData.status,
-			image: userData.file
+			image: $scope.files
 
 		}).success(function(data, status, headers, config) {
-                    
+                    $scope.files=false;
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
 				
 				$scope.errors=false;
+				
                                 $scope.success_flash=data[1];
 				$scope.brands.push(userData);
                                 $scope.init();
