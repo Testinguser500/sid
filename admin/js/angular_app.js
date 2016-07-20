@@ -1,4 +1,4 @@
-var app = angular.module('admins', ['ngRoute'], function($interpolateProvider) {
+var app = angular.module('admins', ['ngRoute','textAngular'], function($interpolateProvider) {
 	$interpolateProvider.startSymbol('<%');
 	$interpolateProvider.endSymbol('%>');
 });
@@ -9,11 +9,17 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/category', {
       templateUrl: 'category',controller: 'CategoryController'
 
+<<<<<<< HEAD
    }).
    
 
 
    
+=======
+   }).  
+
+  
+>>>>>>> 105c0049c38487d43152ade5f6f91f9f9981a70a
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
    }).
@@ -25,10 +31,15 @@ app.config(['$routeProvider', function($routeProvider) {
    }).
    when('/user/add', {
       templateUrl: 'user/add', controller: 'UserController'
+<<<<<<< HEAD
 
    }).
    
 
+=======
+   }). 
+ 
+>>>>>>> 105c0049c38487d43152ade5f6f91f9f9981a70a
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -128,9 +139,16 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('DashboardController', function($scope, $http) {
 });
  app.controller('CategoryController', function($scope, $http) {
+<<<<<<< HEAD
 
      $scope.errors=false;
 
+=======
+     
+       
+     $scope.errors=false;
+     
+>>>>>>> 105c0049c38487d43152ade5f6f91f9f9981a70a
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
@@ -138,8 +156,7 @@ app.controller('HomeController', function($scope, $http) {
      $scope.success_flash=false;
      $scope.init = function() {	
                 $scope.page='index';
-                $scope.errors=false;
-               
+                $scope.errors=false;               
 		$scope.loading = true;
 		$http.get('category/all').
 		success(function(data, status, headers, config) {
@@ -160,6 +177,7 @@ app.controller('HomeController', function($scope, $http) {
 		});
 	}
         $scope.editcategory = function(category) {
+              
 		$scope.loading = true;
                 $scope.errors=false;
                 $scope.success_flash=false;
@@ -249,6 +267,10 @@ app.controller('HomeController', function($scope, $http) {
 });
 app.controller('UserController', function($scope, $http) {
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 105c0049c38487d43152ade5f6f91f9f9981a70a
     $scope.errors=false;
      $scope.loading = true;
      $scope.users=false;
@@ -362,6 +384,7 @@ app.controller('UserController', function($scope, $http) {
 				
          $scope.init(); 
 
+<<<<<<< HEAD
 
 });
 //Static Content
@@ -478,5 +501,7 @@ app.controller('StaticContentController', function($scope, $http) {
 				
          $scope.init(); 
 
+=======
+>>>>>>> 105c0049c38487d43152ade5f6f91f9f9981a70a
 
 });
