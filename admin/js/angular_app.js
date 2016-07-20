@@ -127,7 +127,7 @@ app.controller('HomeController', function($scope, $http) {
      
        
      $scope.errors=false;
-     
+     $scope.files=false;
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
@@ -169,9 +169,25 @@ app.controller('HomeController', function($scope, $http) {
  
 		});;
 	};
+        $scope.uploadedFile = function(element) {
+           $scope.$apply(function($scope) {
+            
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ $scope.files=data;});
+
+    });
+   }
+
         $scope.update = function(category) { console.log($scope.category.file);
             $scope.errors=false;
             $scope.success_flash=false;
+         
            $http.post('category/update', {
 			category_name: category.category_name,
 			description: category.description,
@@ -201,10 +217,18 @@ app.controller('HomeController', function($scope, $http) {
       $scope.store = function(category) { 
            $scope.errors=false;
            $scope.success_flash=false;
+        
+
+//            $http.post('category/store', fd, {
+//                withCredentials: true,
+//                headers: {'Content-Type': undefined },
+//                transformRequest: angular.identity
+//            }).success( function(data, status, headers, config){console.log(data)});
+
            $http.post('category/store', {
 			category_name: category.category_name,
 			description: category.description,
-
+                        image: $scope.files,
                         id: category.id,
                         status: category.status,
                         parent_id: category.parent_id,                       
@@ -212,15 +236,14 @@ app.controller('HomeController', function($scope, $http) {
                         meta_description: category.meta_description,
                         meta_keyword: category.meta_keyword,
 
-		}).success(function(data, status, headers, config) {
-                    
+		} ).success(function(data, status, headers, config) {
+                   $scope.files=false;
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
 				
 				$scope.errors=false;
-                                $scope.success_flash=data[1];
-				$scope.categories.push(category);
+                                $scope.success_flash=data[1];				
                                 $scope.init();
 			}
 			$scope.loading = false;

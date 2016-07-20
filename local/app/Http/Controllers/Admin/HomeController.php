@@ -1,13 +1,14 @@
 <?php namespace App\Http\Controllers\Admin;
 use App\User; 
 use DB;
-use Input;
+
 use Crypt;
 use Auth;
 use Hash;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 use Validator;
 use App\Http\Controllers\cart\Cart;
 use Session;
@@ -78,7 +79,20 @@ class HomeController extends Controller
             Auth::logout();
              return redirect('admin/login')->withFlash_message('You have successfully logout.')->withInput();
         }
-       
+       public function imageupload()
+       {
+        
+            $destinationPath = 'uploads'; // upload path
+            $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+            if(($extension=='jpg') || ($extension=='jpeg') || ($extension=='png') ){
+            $fileName = time().'.'.$extension; // renameing image      
+            Input::file('image')->move($destinationPath, $fileName); 
+            return $fileName;
+            }else{
+                return false;
+            }
+        
+       }
  }
  
 ?>
