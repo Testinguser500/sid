@@ -1114,7 +1114,14 @@ figure {
   margin: 0;
 }
 img {
-  vertical-align: middle;
+vertical-align: middle;
+background-color: white;
+width: 52%;
+padding: 4px 3px;
+}
+.logo-lg img {
+    padding: 4px;
+    width: 58%;
 }
 .img-responsive,
 .thumbnail > img,

@@ -56,7 +56,7 @@ class HomeController extends Controller
                         }
                         else{
 							$list[]='success';
-							$msgs[]='admins/dashboard';
+							$msgs[]='home';
 							$list[]=$msgs;
 							return $list;
                           

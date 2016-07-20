@@ -55,11 +55,11 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="home" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">Shop in Discount</span>
+      <span class="logo-lg"><img src="{{URL::asset('admin/img/logo.png')}}"></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -320,7 +320,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="{{URL::asset('admin/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>{{ Auth::user()->name }}</p>
@@ -347,7 +347,32 @@
           </a>
           
         </li>
+<<<<<<< HEAD
        
+=======
+        <?php foreach(getMenu() as $val)
+        {
+            $subMenu = getMenu($val->menu_id);?>
+        <li class="treeview">
+          <a href="#<?php echo $val->filename;?>">
+            
+              <i class="fa <?php echo $val->icon; ?>"></i> <span><?php echo $val->name;?></span>
+              <?php if(!empty($subMenu)) {?>
+              <i class="fa fa-angle-left pull-right"></i>
+              
+          </a>
+          <ul class="treeview-menu">
+              <?php      foreach ((array)$subMenu as $sm)
+              {?>
+            <li><a href="#<?php echo $sm->filename;?>"><i class="fa fa-circle-o"></i><?php echo $sm->name;?></a></li>
+              <?php } ?>
+          </ul>
+            <?php } else {?>
+            </a>
+            <?php }?>
+        </li>
+        <?php }?>
+>>>>>>> ea0227e6f880d67b09b1da71a3429fa4b7f52d80
       </ul>
     </section>
     <!-- /.sidebar -->
