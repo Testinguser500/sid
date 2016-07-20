@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> {{ configs_value('Site Name') }} | {{$title }}</title>
+  <title></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -347,28 +347,7 @@
           </a>
           
         </li>
-        <?php foreach(getMenu() as $val)
-        {
-            $subMenu = getMenu($val->menu_id);?>
-        <li class="treeview">
-          <a href="#<?php echo $val->filename;?>">
-            
-              <i class="fa <?php echo $val->icon; ?>"></i> <span><?php echo $val->name;?></span>
-              <?php if(!empty($subMenu)) {?>
-              <i class="fa fa-angle-left pull-right"></i>
-              
-          </a>
-          <ul class="treeview-menu">
-              <?php      foreach ((array)$subMenu as $sm)
-              {?>
-            <li><a href="{{ url('/admin')}}/<?php echo $sm->filename;?>"><i class="fa fa-circle-o"></i><?php echo $sm->name;?></a></li>
-              <?php } ?>
-          </ul>
-            <?php } else {?>
-            </a>
-            <?php }?>
-        </li>
-        <?php }?>
+       
       </ul>
     </section>
     <!-- /.sidebar -->

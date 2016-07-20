@@ -8,9 +8,7 @@ app.config(['$routeProvider', function($routeProvider) {
    
    when('/category', {
       templateUrl: 'category',controller: 'CategoryController'
-   }).
-   
-<<<<<<< HEAD
+   }).  
    
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
@@ -20,14 +18,8 @@ app.config(['$routeProvider', function($routeProvider) {
    }).
    when('/user/add', {
       templateUrl: 'user/add', controller: 'UserController'
-   }).
-   when('/user/edit/:id', {
-      templateUrl: 'user/edit', controller: 'UserController'
-=======
-   when('/dashboard', {
-      templateUrl: 'dashboard', controller: 'DashboardController'
->>>>>>> 097fc643c0e974bebce6bd5a920b03a2df06ac98
-   }).
+   }). 
+  
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -127,10 +119,6 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('DashboardController', function($scope, $http) {
 });
  app.controller('CategoryController', function($scope, $http) {
-<<<<<<< HEAD
-});
-app.controller('UserController', function($scope, $http) {
-=======
      $scope.errors=false;
      $scope.loading = true;
      $scope.categories=false;
@@ -177,22 +165,26 @@ app.controller('UserController', function($scope, $http) {
             $scope.errors=false;
             $scope.success_flash=false;
            $http.post('category/update', {
-			name: category.category_name,
+			category_name: category.category_name,
 			description: category.description,
                         id: category.id,
                         status: category.status,
-                        parent_cat: category.parent_cat,
-                        image: category.file
+                        parent_id: category.parent_id,
+                        image: category.file,
+                        meta_title: category.meta_title,
+                        meta_description: category.meta_description,
+                        meta_keyword: category.meta_keyword,
                    
 		}).success(function(data, status, headers, config) {
                     console.log(data);
-//            if(data[0]=='error'){
-//				$scope.errors=data[1];
-//			}else{
-//				
-//				$scope.errors=false;
-//				location.href=data[1];
-//			}
+                if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
 			$scope.loading = false;
  
          });
@@ -238,6 +230,11 @@ app.controller('UserController', function($scope, $http) {
                                         $scope.init();
                                 });
                 };
+            
          $scope.init();
->>>>>>> 097fc643c0e974bebce6bd5a920b03a2df06ac98
+});
+app.controller('UserController', function($scope, $http) {
+
+
+
 });
