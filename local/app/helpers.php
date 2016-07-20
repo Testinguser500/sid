@@ -87,9 +87,6 @@ function getSelectedmenu($IN='',$NOTIN='')
     {
         
         $menu= DB::table('menu')->whereIn('menu_id',$IN)->get();
-         	
-//DB::enableQueryLog();
-//dd(DB::getQueryLog());
 
         return $menu;
     }
