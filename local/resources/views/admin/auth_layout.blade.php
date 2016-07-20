@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Admin Log in</title>
+  <title>{{ configs_value('Site Name') }} | Admin Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -26,7 +26,7 @@
 <body class="hold-transition login-page" ng-app="admins" ng-controller="HomeController">
 <div class="login-box">
   <div class="login-logo">
-    <a href=" "></a>
+   <a href="{{ configs_value('Website') }} ">{{ configs_value('Site Name') }} </a>
   </div>
     
     
@@ -60,6 +60,10 @@
 <!-- Angular JS 3.3.6 -->
 <script src="{{URL::asset('admin/js/angular.min.js')}}"></script>
 <script src="{{URL::asset('admin/js/angular-route.min.js')}}"></script>
+
+<script src="{{URL::asset('admin/dist/textAngular-rangy.min.js')}}" type="text/javascript"></script>
+<script src="{{URL::asset('admin/dist/textAngular-sanitize.min.js')}}" type="text/javascript"></script>
+<script src="{{URL::asset('admin/dist/textAngular.min.js')}}" type="text/javascript"></script>
 <script src="{{URL::asset('admin/js/angular_app.js')}}"></script>
 
 </body>

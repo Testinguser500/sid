@@ -1,17 +1,18 @@
 var app = angular.module('admins', ['ngRoute','textAngular'], function($interpolateProvider) {
 	$interpolateProvider.startSymbol('<%');
 	$interpolateProvider.endSymbol('%>');
+      
 });
  
 app.config(['$routeProvider', function($routeProvider) {
-   $routeProvider.
-   
+   $routeProvider.   
    when('/category', {
       templateUrl: 'category',controller: 'CategoryController'
-
-
    }).  
+<<<<<<< HEAD
+=======
 
+>>>>>>> 6210abeb25a4a4294bdce086a3b4a44810fcdd88
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
    }).
@@ -35,11 +36,13 @@ app.config(['$routeProvider', function($routeProvider) {
 	
 }]);
 app.controller('HomeController', function($scope, $http) {
-
+    
+//alert($location.path());
 	$scope.errors=false;
 	$scope.loading = true;
         $scope.includes_function=false;
 	$scope.init = function() {
+            
 		
 //		$scope.loading = true;
 //		$http.get('/log_user').
@@ -128,12 +131,17 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('DashboardController', function($scope, $http) {
 });
  app.controller('CategoryController', function($scope, $http) {
-
-
+   
+     $scope.title="Category";
+     $scope.subtitle="Management";
      $scope.errors=false;
+<<<<<<< HEAD
+     $scope.files=false;
+=======
 
      $scope.files=false;
 
+>>>>>>> 6210abeb25a4a4294bdce086a3b4a44810fcdd88
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
@@ -200,13 +208,13 @@ app.controller('HomeController', function($scope, $http) {
                         id: category.id,
                         status: category.status,
                         parent_id: category.parent_id,
-                        image: category.file,
+                        image: $scope.files,
                         meta_title: category.meta_title,
                         meta_description: category.meta_description,
                         meta_keyword: category.meta_keyword,
                    
 		}).success(function(data, status, headers, config) {
-                    console.log(data);
+                 $scope.files=false;
                 if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -222,14 +230,7 @@ app.controller('HomeController', function($scope, $http) {
 
       $scope.store = function(category) { 
            $scope.errors=false;
-           $scope.success_flash=false;
-        
-
-//            $http.post('category/store', fd, {
-//                withCredentials: true,
-//                headers: {'Content-Type': undefined },
-//                transformRequest: angular.identity
-//            }).success( function(data, status, headers, config){console.log(data)});
+           $scope.success_flash=false;   
 
            $http.post('category/store', {
 			category_name: category.category_name,

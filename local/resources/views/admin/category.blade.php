@@ -122,7 +122,7 @@
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
                   <img class='' src="{{URL::asset('uploads')}}/<% category.image %>" width="100">
-                  <input type="file"  name="image" ng-model="category.file">
+                  <input type="file"  name="image" ng-model="category.file" onchange="angular.element(this).scope().uploadedFile(this)">
 		  <div class="help-block"></div>
                 </div> 
                  <div class="form-group">

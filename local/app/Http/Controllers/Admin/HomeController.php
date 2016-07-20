@@ -1,7 +1,6 @@
 <?php namespace App\Http\Controllers\Admin;
 use App\User; 
 use DB;
-
 use Crypt;
 use Auth;
 use Hash;
@@ -17,16 +16,17 @@ use Image;
 class HomeController extends Controller
 {
 	public function index(){   
-            
+             $this->middleware('guest');
              return view('admin/login');
 		  
 	}
-        public function dashboard(){           
+        public function dashboard(){            
              return view('admin/dashboard')->with('title','Dashboard')->with('subtitle','Control Panel');
 		
 	}
-	public function home(){           
-             return view('admin/home')->with('title','Dashboard')->with('subtitle','Control Panel');
+	public function home(){ 
+           
+             return view('admin/home')->with('title','Admin')->with('subtitle','Control Panel');
 		
 	}
 	public function log_user(){
@@ -78,7 +78,7 @@ class HomeController extends Controller
         public function log_out()
         {
             Auth::logout();
-             return redirect('admin/login')->withFlash_message('You have successfully logout.')->withInput();
+             return redirect('admins/login')->withFlash_message('You have successfully logout.')->withInput();
         }
        public function imageupload()
        {

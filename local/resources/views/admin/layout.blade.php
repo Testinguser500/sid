@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title></title>
+  <title> {{ configs_value('Site Name') }} | Admin </title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -300,7 +300,7 @@
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="{{ URL('admin/log_out') }}" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="{{ URL('admins/log_out') }}" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -393,7 +393,7 @@
    <!-- /.content -->
   </div>
   <footer class="main-footer">
-    
+    {{ configs_value('Copyright') }}
    
        </footer>
 

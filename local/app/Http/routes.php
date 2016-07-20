@@ -24,6 +24,7 @@ Route::get('/', function () {
 //Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 //Route::resource('api/admins','HomeController');
+Route::get('admins/', 'Admin\HomeController@index');
 Route::get('admins', 'Admin\HomeController@index');
 Route::get('admins/login', 'Admin\HomeController@index');
 Route::post('admins/log_user', 'Admin\HomeController@log_user');

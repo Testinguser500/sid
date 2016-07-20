@@ -103,8 +103,8 @@ class CategoryController extends Controller
 //         echo Input::file('image');echo'hello';
          $cat = Category::find(Request::input('id'));
          $cat->category_name = Request::input('category_name');
-         if((isset($fileName)) && ($fileName!='')){
-	 $cat->image = $fileName;
+         if((Request::input('image')) && (Request::input('image')!=false)){
+	 $cat->image = Request::input('image');
          }
 	 $cat->description =Request::input('description');
 	 $cat->parent_id=Request::input('parent_id');
