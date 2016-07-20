@@ -18,6 +18,9 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/user', {
       templateUrl: 'user', controller: 'UserController'
    }).
+   when('/static-content', {
+      templateUrl: 'user', controller: 'UserController'
+   }).
    when('/user/add', {
       templateUrl: 'user/add', controller: 'UserController'
    }). 
