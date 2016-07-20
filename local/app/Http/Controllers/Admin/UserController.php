@@ -121,7 +121,7 @@ class UserController extends Controller
          $cat->save(); 
 		  
 		$list[]='success';
-		$msgs[]='Record updated successfully.';
+		$msgs='Record updated successfully.';
 		$list[]=$msgs;
 		return $list;
 	     

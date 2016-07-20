@@ -84,12 +84,13 @@ Route::get('admins/user/edit/{id}', 'Admin\UserController@edit');
 Route::post('admins/user/update', 'Admin\UserController@update');
 Route::post('admins/user/delete', 'Admin\UserController@delete');
 
-Route::get('admin/static-content', 'Admin\StaticContentController@index');
-Route::get('admin/static-content/edit/{id}', 'Admin\StaticContentController@edit');
-Route::post('admin/static-content/update', 'Admin\StaticContentController@update');
+Route::get('admins/static-content', 'Admin\StaticContentController@index');
+Route::get('admins/static-content/all', 'Admin\StaticContentController@all');
+Route::get('admins/static-content/edit/{id}', 'Admin\StaticContentController@edit');
+Route::post('admins/static-content/update', 'Admin\StaticContentController@update');
 
-Route::get('admin/banner', 'Admin\BannerController@index');
-Route::get('admin/banner/add', 'Admin\BannerController@add');
-Route::post('admin/banner/store', 'Admin\BannerController@store');
-Route::get('admin/banner/edit/{id}', 'Admin\BannerController@edit');
-Route::post('admin/banner/update', 'Admin\BannerController@update');
+Route::get('admins/banner', 'Admin\BannerController@index');
+Route::get('admins/banner/add', 'Admin\BannerController@add');
+Route::post('admins/banner/store', 'Admin\BannerController@store');
+Route::get('admins/banner/edit/{id}', 'Admin\BannerController@edit');
+Route::post('admins/banner/update', 'Admin\BannerController@update');

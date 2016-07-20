@@ -9,9 +9,11 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/category', {
       templateUrl: 'category',controller: 'CategoryController'
 
+
    }).  
 
   
+
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
    }).
@@ -19,12 +21,14 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'user', controller: 'UserController'
    }).
    when('/static-content', {
-      templateUrl: 'user', controller: 'UserController'
+      templateUrl: 'static-content', controller: 'StaticContentController'
    }).
    when('/user/add', {
       templateUrl: 'user/add', controller: 'UserController'
+
    }). 
  
+
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -124,10 +128,14 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('DashboardController', function($scope, $http) {
 });
  app.controller('CategoryController', function($scope, $http) {
-     
-       
+
+
      $scope.errors=false;
+<<<<<<< HEAD
      $scope.files=false;
+=======
+
+>>>>>>> d497c61ccb99ef327f13821b1fad0540bbd7e281
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
@@ -269,7 +277,6 @@ app.controller('HomeController', function($scope, $http) {
 });
 app.controller('UserController', function($scope, $http) {
 
-
     $scope.errors=false;
      $scope.loading = true;
      $scope.users=false;
@@ -382,6 +389,124 @@ app.controller('UserController', function($scope, $http) {
                 };
 				
          $scope.init(); 
+
+
+
+});
+//Static Content
+app.controller('StaticContentController', function($scope, $http) {
+
+    $scope.errors=false;
+     $scope.loading = true;
+     $scope.contents=false;
+	 $scope.content=false;
+	 $scope.user=false;
+     $scope.page='index';
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.get('static-content/all').
+		success(function(data, status, headers, config) {
+			$scope.contents = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $http.get('static-content/all').
+		success(function(data, status, headers, config) {
+			$scope.all_user = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.editcontent = function(category) {
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('static-content/edit/' + category.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.content = data['content'];
+                        $scope.all_content = data['all_content'];
+		        $scope.loading = false;
+ 
+		});;
+	};
+        $scope.update = function(contents) { console.log(contents);
+            $scope.errors=false;
+            $scope.success_flash=false;
+           $http.post('static-content/update', {
+			title: contents.title,
+			short_description: contents.short_description,
+			description:contents.description,
+			image: contents.image,id: contents.id
+                   
+		}).success(function(data, status, headers, config) {
+                    console.log(data);
+            if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+			$scope.errors=false;
+			$scope.success_flash= data[1];
+			
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+	  
+	  $scope.store = function(userData) { 
+           $scope.errors=false;
+           $scope.success_flash=false;
+           $http.post('static-content/store', {
+			name: userData.name,
+			email: userData.email,
+			gender:userData.gender,
+			address:userData.address,
+                        id: userData.id,
+                        status: userData.status,
+                        image: userData.file
+
+		}).success(function(data, status, headers, config) {
+                    
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+                                $scope.success_flash=data[1];
+				$scope.users.push(user_data);
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      $scope.deleteUser = function(index) {
+		$scope.loading = true;
+
+		var user = $scope.users[index];
+              
+                $http.post('user/delete',{            
+                    del_id:user.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.users.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+				
+         $scope.init(); 
+
 
 
 });
