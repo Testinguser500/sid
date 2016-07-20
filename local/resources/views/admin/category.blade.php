@@ -103,6 +103,21 @@
                   <textarea name="description" class="textarea" placeholder="Description" ng-model="category.description" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><% category.description %></textarea>  
 		  <div class="help-block"></div>
                 </div> 
+                     <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Title</label>
+                  <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="category.meta_title">
+		  <div class="help-block"></div>
+                </div> 
+                 <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Description</label>
+                  <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="category.meta_description">
+		  <div class="help-block"></div>
+                </div> 
+                  <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Keyword</label>
+                  <input type="text" class="form-control" id="" name="meta_keyword" placeholder="Meta Keyword" ng-model="category.meta_keyword">
+		  <div class="help-block"></div>
+                </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
                   <img class='' src="{{URL::asset('uploads')}}/<% category.image %>" width="100">
@@ -111,10 +126,10 @@
                 </div> 
                  <div class="form-group">
                   <label for="exampleInputEmail1">Parent Category</label>
-                  <select class="form-control" name="parent_cat"  ng-model="category.parent_cat">
+                  <select class="form-control" name="parent_cat"  ng-model="category.parent_id">
                       <option value="0">Please select</option>
                       
-                      <option ng-repeat="cat in all_cat" ng-if="cat.id !=  category.id" ng-selected="category.parent_id"><% cat.category_name %></option>
+                      <option ng-repeat="cat in all_cat" ng-if="cat.id !=  category.id" ng-selected="category.parent_id" ng-value="cat.id"><% cat.category_name %></option>
                        
                   </select>
 		  <div class="help-block"></div>

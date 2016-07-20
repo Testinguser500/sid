@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> {{ configs_value('Site Name') }} | {{$title }}</title>
+  <title></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -347,6 +347,9 @@
           </a>
           
         </li>
+<<<<<<< HEAD
+       
+=======
         <?php foreach(getMenu() as $val)
         {
             $subMenu = getMenu($val->menu_id);?>
@@ -369,6 +372,7 @@
             <?php }?>
         </li>
         <?php }?>
+>>>>>>> ea0227e6f880d67b09b1da71a3429fa4b7f52d80
       </ul>
     </section>
     <!-- /.sidebar -->

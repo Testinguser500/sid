@@ -22,7 +22,7 @@ class CategoryController extends Controller
 		
 	}
         public function all(){ 
-             $category = DB::table('categorys')->where('is_delete', '=','0')->get();  
+             $category = DB::table('categorys')->where('is_delete', '=','0')->get();               
              return  $category;
 		
 	}
@@ -86,9 +86,11 @@ class CategoryController extends Controller
          public function update(){
 	
 	  $validator = Validator::make(Request::all(), [
-            'name' => 'required',	    
+            'category_name' => 'required',	    
             'description'=>'required',        
-            
+            'meta_title'=>'required',
+            'meta_description'=>'required',
+            'meta_keyword'=>'required',
         ]);
          
         if ($validator->fails()) {
@@ -97,24 +99,29 @@ class CategoryController extends Controller
 			      $list[]=$msg;
 			      return $list;
         }
-	 if(Input::file('image')!=''){	 
-         $destinationPath = 'uploads'; // upload path
-         $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
-         $fileName = rand(11111,99999).'.'.$extension; // renameing image
-         Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
-         }
-         echo Input::file('image');echo'hello';
-//         $cat = Category::find($request->get('category_id'));
-//         $cat->category_name = $request->get('name');
-//         if((isset($fileName)) && ($fileName!='')){
-//	 $cat->image = $fileName;
+//	 if(Input::file('image')!=''){	 
+//         $destinationPath = 'uploads'; // upload path
+//         $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+//         $fileName = rand(11111,99999).'.'.$extension; // renameing image
+//         Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
 //         }
-//	 $cat->description =$request->get('description');
-//	 $cat->parent_id=$request->get('parent_cat');
-//         $cat->status=$request->get('status');
-//         $cat->save(); 
-//		  
-//         return redirect('/admin/category')->withFlash_message('Record updated Successfully.');
+//         echo Input::file('image');echo'hello';
+         $cat = Category::find(Request::input('id'));
+         $cat->category_name = Request::input('category_name');
+         if((isset($fileName)) && ($fileName!='')){
+	 $cat->image = $fileName;
+         }
+	 $cat->description =Request::input('description');
+	 $cat->parent_id=Request::input('parent_id');
+         $cat->status=Request::input('status');
+         $cat->meta_title=Request::input('meta_title');
+         $cat->meta_description=Request::input('meta_description');
+         $cat->meta_keyword=Request::input('meta_keyword');
+         $cat->save(); 
+		  
+        $list[]='success';
+        $list[]='Record is updated successfully.';	 
+	return $list;
 	     
 	}
        

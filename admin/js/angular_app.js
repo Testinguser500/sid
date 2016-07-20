@@ -8,9 +8,13 @@ app.config(['$routeProvider', function($routeProvider) {
    
    when('/category', {
       templateUrl: 'category',controller: 'CategoryController'
+<<<<<<< HEAD
+   }).  
+=======
    }).
    
 
+>>>>>>> ea0227e6f880d67b09b1da71a3429fa4b7f52d80
    
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
@@ -23,8 +27,13 @@ app.config(['$routeProvider', function($routeProvider) {
    }).
    when('/user/add', {
       templateUrl: 'user/add', controller: 'UserController'
+<<<<<<< HEAD
+   }). 
+  
+=======
    }).
    
+>>>>>>> ea0227e6f880d67b09b1da71a3429fa4b7f52d80
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -124,7 +133,11 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('DashboardController', function($scope, $http) {
 });
  app.controller('CategoryController', function($scope, $http) {
+<<<<<<< HEAD
+     $scope.errors=false;
+=======
 $scope.errors=false;
+>>>>>>> ea0227e6f880d67b09b1da71a3429fa4b7f52d80
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
@@ -170,22 +183,26 @@ $scope.errors=false;
             $scope.errors=false;
             $scope.success_flash=false;
            $http.post('category/update', {
-			name: category.category_name,
+			category_name: category.category_name,
 			description: category.description,
                         id: category.id,
                         status: category.status,
-                        parent_cat: category.parent_cat,
-                        image: category.file
+                        parent_id: category.parent_id,
+                        image: category.file,
+                        meta_title: category.meta_title,
+                        meta_description: category.meta_description,
+                        meta_keyword: category.meta_keyword,
                    
 		}).success(function(data, status, headers, config) {
                     console.log(data);
-//            if(data[0]=='error'){
-//				$scope.errors=data[1];
-//			}else{
-//				
-//				$scope.errors=false;
-//				location.href=data[1];
-//			}
+                if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
 			$scope.loading = false;
  
          });
@@ -234,11 +251,18 @@ $scope.errors=false;
                                         $scope.init();
                                 });
                 };
+<<<<<<< HEAD
+            
+=======
 
+>>>>>>> ea0227e6f880d67b09b1da71a3429fa4b7f52d80
          $scope.init();
 });
 app.controller('UserController', function($scope, $http) {
 
+<<<<<<< HEAD
+
+=======
     $scope.errors=false;
      $scope.loading = true;
      $scope.users=false;
@@ -351,5 +375,6 @@ app.controller('UserController', function($scope, $http) {
                 };
 				
          $scope.init(); 
+>>>>>>> ea0227e6f880d67b09b1da71a3429fa4b7f52d80
 
 });
