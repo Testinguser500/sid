@@ -21,9 +21,9 @@
               <div class="pull-right"> <a href="javascript:void(0);" ng-click="add()" ng-init="success_flash=false" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a></div>
             </div>
             <!-- /.box-header -->
-            
+
             <div class="box-body">
-              <table  if="categories" show-filter="true" id="example1"  ng-table="vm.tableParams" class="table table-bordered table-striped">
+              <table  if="categories"  id="example1"   class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>#</th>
@@ -98,9 +98,10 @@
                   <input type="text" class="form-control" id="" name="name" ng-model="category.category_name"  placeholder="Name" value="<% category.category_name %>">
 		  <div class="help-block"></div>
                 </div> 
+        
                 <div class="form-group">
                   <label for="exampleInputEmail1">Description</label>
-                  <textarea name="description" class="textarea" placeholder="Description" ng-model="category.description" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><% category.description %></textarea>  
+                  <div text-angular ng-model="category.description" name="demo-editor" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>  
 		  <div class="help-block"></div>
                 </div> 
                      <div class="form-group">
@@ -180,9 +181,8 @@
                 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Description</label>
-                  <textarea name="description" class="textarea" placeholder="Description" ng-model="cat.description" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
-                     
-                  </textarea>  
+                  <div text-angular ng-model="cat.description" name="demo-editor" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div> 
+                                    
 		  <div class="help-block"></div>
                 </div> 
                 <div class="form-group">
@@ -227,14 +227,8 @@
    
   <!-- /.content-wrapper -->
  
-<!--    <script>
-                $(function () {
-                $("#example1").DataTable();
-
-
-              });
-             </script>-->
-              <script>
+   
+<!--              <script>
             $(function () {
               // Replace the <textarea id="editor1"> with a CKEditor
               // instance, using default configuration.
@@ -242,4 +236,4 @@
 
               $(".textarea").wysihtml5();
             });
-          </script>
+          </script>-->

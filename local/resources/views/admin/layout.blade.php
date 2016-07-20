@@ -347,9 +347,7 @@
           </a>
           
         </li>
-<<<<<<< HEAD
-       
-=======
+
         <?php foreach(getMenu() as $val)
         {
             $subMenu = getMenu($val->menu_id);?>
@@ -372,7 +370,7 @@
             <?php }?>
         </li>
         <?php }?>
->>>>>>> ea0227e6f880d67b09b1da71a3429fa4b7f52d80
+
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -626,7 +624,17 @@
 <script src="{{URL::asset('admin/js/app.min.js')}}"></script>
 <!-- Angular JS 3.3.6 -->
 <script src="{{URL::asset('admin/js/angular.min.js')}}"></script>
+
 <script src="{{URL::asset('admin/js/angular-route.min.js')}}"></script>
+<link rel="author" href="https://www.linkedin.com/in/austinanderson1">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,300">
+<link rel="stylesheet" href="{{URL::asset('admin/dist/textAngular.css')}}">
+<link rel="stylesheet" href="{{URL::asset('admin/css/style.css')}}" type="text/css">
+<script src="{{URL::asset('admin/dist/textAngular-rangy.min.js')}}" type="text/javascript"></script>
+<script src="{{URL::asset('admin/dist/textAngular-sanitize.min.js')}}" type="text/javascript"></script>
+<script src="{{URL::asset('admin/dist/textAngular.min.js')}}" type="text/javascript"></script>
 
 <script src="{{URL::asset('admin/js/angular_app.js')}}"></script>
 
