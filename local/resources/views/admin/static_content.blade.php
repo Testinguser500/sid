@@ -84,13 +84,14 @@
                 </div>
                   <div class="form-group">
                   <label for="exampleInputEmail1">Short Description</label>
-                  <textarea name="short_description" class="textarea" ng-model="content.short_description" placeholder="Short Description" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><% content.short_description %></textarea>  
+                   
+				<div text-angular ng-model="content.short_description" name="short_description" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>				  
 		  <div class="help-block"></div>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Description</label>
-                  <textarea name="description" class="textarea" placeholder="Description" ng-model="content.description" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><% content.description %></textarea>  
-				  <div text-angular ng-model="content.description" name="demo-editor" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
+                    
+				  <div text-angular ng-model="content.description" name="description" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
 		  <div class="help-block"></div>
                 </div> 
 				
