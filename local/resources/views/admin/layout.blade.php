@@ -347,9 +347,7 @@
           </a>
           
         </li>
-<<<<<<< HEAD
-       
-=======
+
         <?php foreach(getMenu() as $val)
         {
             $subMenu = getMenu($val->menu_id);?>
@@ -372,7 +370,7 @@
             <?php }?>
         </li>
         <?php }?>
->>>>>>> ea0227e6f880d67b09b1da71a3429fa4b7f52d80
+
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -630,6 +628,16 @@
 
 <script src="{{URL::asset('admin/js/angular_app.js')}}"></script>
 
-
+<script>
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+   // CKEDITOR.replace('editor1');
+  function editor()
+  {
+    $(".textarea").wysihtml5();
+  }
+  });
+</script>
 </body>
 </html>
