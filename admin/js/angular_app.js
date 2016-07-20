@@ -670,7 +670,7 @@ app.controller('BrandsController', function($scope, $http) {
  
          });
       };
-      $scope.deleteUser = function(index) {
+      $scope.deleteBrand = function(index) {
 		$scope.loading = true;
 
 		var brand = $scope.brands[index];
@@ -678,7 +678,7 @@ app.controller('BrandsController', function($scope, $http) {
                 $http.post('brand/delete',{            
                     del_id:brand.id
                 }).success(function(data, status, headers, config) {
-                                        $scope.users.splice(index, 1);
+                                        $scope.brands.splice(index, 1);
                                         $scope.loading = false
                                         $scope.success_flash=data[1];
                                         $scope.init();
