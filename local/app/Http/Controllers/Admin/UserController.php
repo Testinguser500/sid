@@ -37,7 +37,7 @@ class UserController extends Controller
              return view('admin/add_user')->with('users_data',$user)->with('title','User')->with('subtitle','Add');
 		
 	}
-        public function store(Request $request){
+        public function store(){
 	
   
 	   $validator = Validator::make(Request::all(), [
@@ -60,7 +60,7 @@ class UserController extends Controller
         $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
         $fileName = rand(11111,99999).'.'.$extension; // renameing image
         Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
-        User::create(['image' =>$fileName,'name' =>$request->get('name'),'email' =>$request->get('email'),'password'=>bcrypt(str_random(6)),'gender'=>$request->get('gender'),'address'=>$request->get('address'),'status' =>$request->get('status'),'role'=>2]);  
+        User::create(['image' =>$fileName,'name' =>Request::input('name'),'email' =>Request::input('email'),'password'=>bcrypt(str_random(6)),'gender'=>Request::input('gender'),'address'=>Request::input('address'),'status' =>Request::input('status'),'role'=>2]);  
 		  
          $list[]='success';
             $list[]='Record is added successfully.';	 
