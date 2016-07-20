@@ -30,6 +30,7 @@ Route::post('admins/log_user', 'Admin\HomeController@log_user');
 Route::get('admins/log_out', 'Admin\HomeController@log_out');
 Route::get('admins/dashboard', 'Admin\HomeController@dashboard');
 Route::get('admins/home', 'Admin\HomeController@home');
+Route::post('admins/imageupload', 'Admin\HomeController@imageupload');
 
 Route::get('admins/category', 'Admin\CategoryController@index');
 Route::get('admins/category/all', 'Admin\CategoryController@all');
