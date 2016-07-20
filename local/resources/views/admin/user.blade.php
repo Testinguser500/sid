@@ -51,14 +51,14 @@
                             <h4 class="modal-title" id="myModalLabel">Delete</h4>
                           </div>
                           <div class="modal-body">
-                            Are you sure you want to delete this user ? 
+                            Are you sure you want to delete this brand ? 
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                             
                                   {{ csrf_field() }}
                                <input type="hidden" name="del_id" value="<% val.id %>" />
-                               <button ng-click="deleteUser($index)" class="btn btn-primary" >Delete</button>
+                               <button data-dismiss="modal" ng-click="deleteUser($index)" class="btn btn-primary" >Delete</button>
                             
                           </div>
                         </div>
@@ -134,7 +134,7 @@
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
                   <img class='' src="{{URL::asset('uploads/user/')}}/<% user.image %>" width="100">
-                  <input type="file"  name="image" ng-model="user.file">
+                  <input type="file"  name="image" ng-model="user.image"  onchange="angular.element(this).scope().uploadedFile(this)">
 		  <div class="help-block"></div>
                 </div> 
                   
@@ -188,7 +188,7 @@
 				
                 <div class="form-group">
                   <label for="exampleInputEmail1"> Image</label>
-                  <input type="file"  name="image" ng-model="user.image">
+                  <input type="file"  name="image" ng-model="user.image" onchange="angular.element(this).scope().uploadedFile(this)">
 		  <div class="help-block"></div>
                 </div> 
                   

@@ -42,6 +42,7 @@ Route::get('admins/category/edit/{id}', 'Admin\CategoryController@edit');
 Route::post('admins/category/update', 'Admin\CategoryController@update');
 
 Route::get('admins/brand', 'Admin\BrandController@index');
+Route::get('admins/brand/all', 'Admin\BrandController@all');
 Route::get('admins/brand/add', 'Admin\BrandController@add');
 Route::post('admins/brand/store', 'Admin\BrandController@store');
 Route::post('admins/brand/delete', 'Admin\BrandController@delete');
