@@ -59,6 +59,7 @@ function imageUpload($file,$folder,$thumb=array(),$mid=array(),$oldImage)
 		return $fileName;
 	}
 }
+
 function getMenu($pid='')
 {
     if(!$pid)

@@ -92,7 +92,10 @@ Route::get('admins/static-content/edit/{id}', 'Admin\StaticContentController@edi
 Route::post('admins/static-content/update', 'Admin\StaticContentController@update');
 
 Route::get('admins/banner', 'Admin\BannerController@index');
+Route::get('admins/banner/all', 'Admin\BannerController@all');
+Route::post('admins/bannerImageUpload', 'Admin\BannerController@bannerImageUpload');
 Route::get('admins/banner/add', 'Admin\BannerController@add');
 Route::post('admins/banner/store', 'Admin\BannerController@store');
 Route::get('admins/banner/edit/{id}', 'Admin\BannerController@edit');
 Route::post('admins/banner/update', 'Admin\BannerController@update');
+Route::post('admins/banner/delete', 'Admin\BannerController@delete');
