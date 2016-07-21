@@ -47,12 +47,12 @@ class BrandController extends Controller
 				$list[]=$msg;
 				return $list;
         }
-		 $fileName ='';
+		 
          $destinationPath = 'uploads'; // upload path
          //$extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
          //$fileName = rand(11111,99999).'.'.$extension; // renameing image
          //Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
-	 Brand::create(['image' =>$fileName,'brand_name' =>Request::input('brand_name'),'description' =>Request::input('description'),'is_delete'=>'0','status' =>Request::input('status'),'user_id'=>Auth::user()->id]);  
+	 Brand::create(['image' =>Request::input('image'),'brand_name' =>Request::input('brand_name'),'description' =>Request::input('description'),'is_delete'=>'0','status' =>Request::input('status'),'user_id'=>Auth::user()->id]);  
 		  
          $list[]='success';
             $list[]='Record is added successfully.';	 

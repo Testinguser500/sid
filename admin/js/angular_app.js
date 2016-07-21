@@ -19,9 +19,11 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/config', {
       templateUrl: 'config', controller: 'ConfigController'
    }).  
+
    when('/faq', {
       templateUrl: 'faq', controller: 'FaqController'
    }). 
+
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
    }).
@@ -38,7 +40,9 @@ app.config(['$routeProvider', function($routeProvider) {
 	when('/brand', {
       templateUrl: 'brand', controller: 'BrandsController'
    }).
-
+	when('/banner', {
+      templateUrl: 'banner', controller: 'BannerController'
+   }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -143,7 +147,9 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('CategoryController', function($scope, $http) {
     
      $scope.errors=false;
+
      $scope.files=false;
+
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
@@ -810,7 +816,8 @@ app.controller('BrandsController', function($scope, $http) {
  
 		});
 	}
-        $scope.add = function() {	
+        $scope.add = function() {
+$scope.user=false;			
                 $scope.page='add';		
 		$scope.errors=false;
                 $scope.success_flash=false;
@@ -893,7 +900,7 @@ app.controller('BrandsController', function($scope, $http) {
 			}else{
 				
 				$scope.errors=false;
-				
+				$scope.user=false;
                                 $scope.success_flash=data[1];
 				$scope.brands.push(userData);
                                 $scope.init();
@@ -902,7 +909,7 @@ app.controller('BrandsController', function($scope, $http) {
  
          });
       };
-      $scope.deleteUser = function(index) {
+      $scope.deleteBrand = function(index) {
 		$scope.loading = true;
 
 		var brand = $scope.brands[index];
@@ -910,7 +917,162 @@ app.controller('BrandsController', function($scope, $http) {
                 $http.post('brand/delete',{            
                     del_id:brand.id
                 }).success(function(data, status, headers, config) {
-                                        $scope.users.splice(index, 1);
+                                        $scope.brands.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+				
+         $scope.init(); 
+
+
+
+});
+
+//Banners
+app.controller('BannerController', function($scope, $http) {
+
+    $scope.errors=false;
+	$scope.files = false;
+     $scope.loading = true;
+     $scope.banners=false;
+	 $scope.banner=false;
+	 $scope.user=false;
+	 $scope.itemSelected = false;
+     $scope.page='index';
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.get('banner/all').
+		success(function(data, status, headers, config) {
+			$scope.banners = data['banner'];
+			
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.add = function() {
+$scope.banner=false;			
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $http.get('banner/all').
+		success(function(data, status, headers, config) {
+			$scope.all_banner = data['banner'];
+			$scope.bannerType = data['banner_type'];
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.editbanner = function(banner_data) {
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('banner/edit/' + banner_data.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.banner = data['banners'];
+			$scope.banner_Type = data['banners']['position_id'];
+			console.log($scope.banner_Type);
+                        $scope.bannerType = data['banner_type'];
+		        $scope.loading = false;
+ 
+		});;
+	};
+	
+
+    $scope.onCategoryChange = function (aa) {
+
+        $scope.banner_Type = aa;
+
+    };
+	
+	$scope.uploadedFile = function(element) {
+           $scope.$apply(function($scope) {
+            $scope.loading=true;
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'banner');
+			fd.append("banner_type",$scope.banner_Type);
+			fd.append("width",'150');
+			fd.append("height",'150');
+            $http.post('bannerImageUpload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading=false;});
+
+    });
+	}
+        $scope.update = function(userData) { console.log(userData);
+            $scope.errors=false;
+            $scope.success_flash=false;
+           $http.post('banner/update', {
+			title: userData.title,
+			banner_type: userData.position_id,
+			url:userData.url,
+			id:userData.id,
+			status: userData.status,
+			image: $scope.files
+                   
+		}).success(function(data, status, headers, config) {
+                    console.log(data);
+            if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				if($scope.files)
+				$scope.banner.image = $scope.files;
+			$scope.errors=false;
+			$scope.files = false;
+			$scope.success_flash= data[1];
+			
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+	  
+	  $scope.store = function(userData) { 
+           $scope.errors=false;
+           $scope.success_flash=false;
+           $http.post('banner/store', {
+			title: userData.title,
+			banner_type: userData.position_id,
+			url:userData.url,
+			
+			status: userData.status,
+			image: $scope.files
+
+		}).success(function(data, status, headers, config) {
+                    $scope.files=false;
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+				$scope.banner=false;
+				$scope.success_flash=data[1];
+
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      $scope.deleteBanner = function(index) {
+		$scope.loading = true;
+
+		var banner = $scope.banners[index];
+              
+                $http.post('banner/delete',{            
+                    del_id:banner.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.banners.splice(index, 1);
                                         $scope.loading = false
                                         $scope.success_flash=data[1];
                                         $scope.init();

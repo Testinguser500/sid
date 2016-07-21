@@ -1,7 +1,7 @@
 
     <!-- Main content -->
     <section class="content">
-       <div class="col-md-12">
+       
 	<div class="alert alert-success" ng-if="success_flash">
             <p >
             <% success_flash %>
@@ -76,8 +76,7 @@
           <!-- /.box -->
          <!-- Form Element sizes -->
    
-        </div>
-
+        
     </section>
    
   <!-- /.content-wrapper -->

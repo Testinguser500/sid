@@ -116,7 +116,7 @@
                  
                   <div class="form-group">
                   <label for="exampleInputEmail1">Status </label>
-                  <input type="radio"  id="" name="status" ng-model="brand.status" value="Active">Active <input type="radio" id="" name="status" value="Inactive" ng-model="brand.status" checked>Inactive 
+                  <input type="radio"  id="" name="status" ng-model="brand.status" value="Active">Active <input type="radio" id="" name="status" value="Inactive" ng-model="brand.status" ng-init="user.status='Inactive'">Inactive 
 		  <div class="help-block"></div>
                 </div> 
              </div>

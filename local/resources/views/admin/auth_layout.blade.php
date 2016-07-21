@@ -15,7 +15,9 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{URL::asset('admin/css/AdminLTE.min.css')}}">
   
-
+<style>input#textAngular-editableFix-010203040506070809 {
+    display: none;
+}</style>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
