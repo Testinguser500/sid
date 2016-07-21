@@ -4,10 +4,10 @@ use App\Faq;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use Session;
+use Request;
 class FaqController extends Controller
 {      
             public function __construct()
@@ -17,70 +17,79 @@ class FaqController extends Controller
 
         }
 	public function index(){ 
-             $faqs = DB::table('faqs')->get();  
-             return view('admin/faqs')->with('faqs',$faqs)->with('title','Faq')->with('subtitle','List');
+            
+             return view('admin/faqs')->with('title','Faq')->with('subtitle','List');
 		
 	}
-       public function add(){              
-             
-             return view('admin/add_faq')->with('title','Faq')->with('subtitle','Add Questions Answer');	
+        public function all(){ 
+             $faqs = DB::table('faqs')->get();  
+             return $faqs ;
+		
 	}
-        public function store(Request $request){
+       
+        public function store(){
 	
   
-	   $validator = Validator::make($request->all(), [
+	   $validator = Validator::make(Request::all(), [
             'question' => 'required',
 	    'answer'=>'required',                    
             
         ]);
          
         if ($validator->fails()) {
-            return redirect('/admin/faq/add')
-                        ->withErrors($validator)
-                        ->withInput();
+              $list[]='error';
+              $msg=$validator->errors()->all();
+	      $list[]=$msg;
+	      return $list;
         }
 	       
-	 Faq::create(['quest' =>$request->get('question'),'ans' =>$request->get('answer'),'status' =>$request->get('status')]);  
+	 Faq::create(['quest' =>Request::input('question'),'ans' =>Request::input('answer'),'status' =>Request::input('status')]);  
 		  
-         return redirect('/admin/faq')->withFlash_message('Record inserted Successfully.');
+         $list[]='success';
+         $list[]='Record is added successfully.';	 
+	 return $list;
 	   
 	}
-        public function delete(Request $request){
+        public function delete(){
 	
-	   $chk_id=$request->get('del_id');	
+	   $chk_id=Request::input('del_id');	
            DB::table('faqs')->where('id', '=',$chk_id)->delete();    		 
-           return  redirect('/admin/faq')->withFlash_message('Record Deleted Successfully.');	 
+           $list[]='success';
+           $list[]='Record is deleted successfully.';	 
+	   return $list;	 
 	    
 	}
         
 	 public function edit($id){
-	
-	 $faq= DB::table('faqs')->where('id', '=',$id)->first();  
-         
-	 return view('admin/edit_faq')->with('faq',$faq)->with('title','Faq')->with('subtitle','Edit Questions Answer');
+	 $faq= DB::table('faqs')->where('id', '=',$id)->first(); 
+         $return['data']=$faq;
+         return $return;
 	     
 	}
-         public function update(Request $request){
+         public function update(){
 	
-	  $validator = Validator::make($request->all(), [
+	  $validator = Validator::make(Request::all(), [
             'question' => 'required',
 	    'answer'=>'required',        
             
         ]);
          
         if ($validator->fails()) {
-            return redirect('/admin/faq/edit/'.$request->get('faq_id'))
-                        ->withErrors($validator)
-                        ->withInput();
+                    $list[]='error';
+                    $msg=$validator->errors()->all();
+                    $list[]=$msg;
+                    return $list;
         }
 	
-         $faq = Faq::find($request->get('faq_id'));
-         $faq->quest = $request->get('question');
-         $faq->ans =$request->get('answer');
-	 $faq->status=$request->get('status');
+         $faq = Faq::find(Request::input('faq_id'));
+         $faq->quest = Request::input('question');
+         $faq->ans =Request::input('answer');
+	 $faq->status=Request::input('status');
          $faq->save(); 
 		  
-         return redirect('/admin/faq')->withFlash_message('Record updated Successfully.');
+         $list[]='success';
+         $list[]='Record is updated successfully.';	 
+	 return $list;
 	     
 	}
        

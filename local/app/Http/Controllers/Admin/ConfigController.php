@@ -4,58 +4,66 @@ use App\Config;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use Session;
+use Request;
 class ConfigController extends Controller
 {      
-            public function __construct()
+         public function __construct()
         {
             $this->middleware('auth');
             
 
         }
 	public function index(){ 
-             $configs = DB::table('configs')->get();  
-             return view('admin/config')->with('configs',$configs)->with('title','Configuration')->with('subtitle','List');
+              
+             return view('admin/config')->with('title','Configuration')->with('subtitle','List');
 		
 	}      
-        
+        public function all(){ 
+             $configs = DB::table('configs')->get();  
+             return $configs;
+		
+	}  
 	public function edit(){
 	
 	 $configs= DB::table('configs')->get();           
-	 return view('admin/edit_config')->with('configs',$configs)->with('title','Configuration')->with('subtitle','Edit');
+	 return  $configs;
 	     
 	}
-         public function update(Request $request){
+         public function update(){
              
-	  $configs= DB::table('configs')->get(); 
+	  
           $arr=array();
-          foreach($configs as $val)
+          $all_data=Request::all();  
+          $error='';
+          foreach($all_data['all_data'] as $key=>$val)
           {
-            $arr['key_'.$val->id] = 'required' ;
+             if(($val['value']=='') || ($val['value']==false) )
+             {
+                 $error="Error";
+             }
+             
           }
-         
-	  $validator = Validator::make($request->all(),
-           $arr
-        );
-         
-        if ($validator->fails()) {
-            return redirect('/admin/config/edit/')
-                        ->withErrors($validator)
-                        ->withInput();
+        
+        if ($error=="Error") {
+                        $list[]='error';
+                        $msg="All fields shoud be filled";
+			$list[]=$msg;
+			return $list;
         }
 	
-         foreach($request->all() as $ke=>$va){
-                $up=explode('key_',$ke);
-                if(isset($up[1])){
-                    $conf = Config::find($up[1]);
-                    $conf->value = $va;            
-                    $conf->save(); 
-                }
+         foreach($all_data['all_data'] as $ke=>$va){
+              
+                   $conf = Config::find($va['id']);
+                   $conf->value = $va['value'];            
+                   $conf->save(); 
+              
          }	 
-         return redirect('/admin/config')->withFlash_message('Record updated Successfully.');
+                       $list[]='success';
+                       $list[]='Record is updated successfully.';	 
+                       return $list;
 	     
 	}
        
