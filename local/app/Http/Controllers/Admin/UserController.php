@@ -56,14 +56,28 @@ class UserController extends Controller
 			      return $list;
         }
 		 
-        //$destinationPath = 'uploads/user/'; // upload path
-        //$extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
-        //$fileName = rand(11111,99999).'.'.$extension; // renameing image
-        //Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
-        User::create(['image' =>Request::input('image'),'name' =>Request::input('name'),'email' =>Request::input('email'),'password'=>bcrypt(str_random(6)),'gender'=>Request::input('gender'),'address'=>Request::input('address'),'status' =>Request::input('status'),'role'=>2]);  
-		  
-         $list[]='success';
-            $list[]='Record is added successfully.';	 
+        $password = (str_random(6));
+        User::create(['image' =>Request::input('image'),'name' =>Request::input('name'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'address'=>Request::input('address'),'status' =>Request::input('status'),'role'=>2]);  
+		$emails['email'] = Request::input('email'); 
+        $copyright=configs_value('Copyright');        
+        $em_content=email_section('1');   
+        $msg=$em_content->email_body;
+        $msg=str_replace("{name}",Request::input('name'),$msg);
+        $msg=str_replace("{role}",'Seller',$msg);
+        $msg=str_replace("{site_name}",configs_value('Site Name'),$msg);
+        $msg=str_replace("{username}",Request::input('email'),$msg);
+        $msg=str_replace("{password}",$password,$msg);
+        $msg=str_replace("{copyright}",$copyright,$msg);
+        $emails['subject']= str_replace("{site_name}",$em_content->email_subject);
+        $emails['name']= configs_value('Site Name');
+        $emails['from']=configs_value('SMTP User');
+		Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
+			$message->from('test@infoseeksoftwaresystems.com', 'Laravel');
+
+			$message->to($emails['email'])->subject($emails['subject']);
+		});  
+		$list[]='success';
+		$list[]='Record is added successfully.';	 
 	    return $list;
 	   
 	}
