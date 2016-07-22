@@ -3,12 +3,26 @@ var app = angular.module('admins', ['ngRoute','textAngular'], function($interpol
 	$interpolateProvider.endSymbol('%>');
       
 });
- 
+ app.filter('capitalize', function() {
+    return function(input) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    }
+});
 app.config(['$routeProvider', function($routeProvider) {
    $routeProvider.   
    when('/category', {
       templateUrl: 'category',controller: 'CategoryController'
+   }). 
+   when('/newsletter', {
+      templateUrl: 'newsletter', controller: 'NewsletterController'
+   }).
+   when('/config', {
+      templateUrl: 'config', controller: 'ConfigController'
    }).  
+
+   when('/faq', {
+      templateUrl: 'faq', controller: 'FaqController'
+   }). 
 
    when('/dashboard', {
       templateUrl: 'dashboard', controller: 'DashboardController'
@@ -129,13 +143,12 @@ app.controller('HomeController', function($scope, $http) {
 });
  app.controller('DashboardController', function($scope, $http) {
 });
+// Category Management
  app.controller('CategoryController', function($scope, $http) {
-   
-     $scope.title="Category";
-     $scope.subtitle="Management";
+    
      $scope.errors=false;
-	$scope.files=false;
 
+     $scope.files=false;
 
      $scope.loading = true;
      $scope.categories=false;
@@ -266,6 +279,235 @@ app.controller('HomeController', function($scope, $http) {
                                         $scope.init();
                                 });
                 };
+
+         $scope.init();
+});
+// Faq Management
+ app.controller('FaqController', function($scope, $http) {
+    
+     $scope.errors=false;
+     $scope.files=false;
+     $scope.loading = true;
+     $scope.faqs=false;
+     $scope.page='index';
+     $scope.faq=false;
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('faq/all').
+		success(function(data, status, headers, config) {
+			$scope.faqs = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $scope.faq=false;
+	}
+        $scope.editfaq = function(faq) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('faq/edit/' + faq.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.faq = data['data'];                      
+		        $scope.loading = false;
+ 
+		});;
+	};
+        
+
+        $scope.update = function(faq) { 
+            $scope.errors=false;
+            $scope.success_flash=false;
+         
+           $http.post('faq/update', {
+			question: faq.quest,
+			answer: faq.ans,
+                        status: faq.status,
+                        faq_id:faq.id,
+		}).success(function(data, status, headers, config) {
+                 
+                if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+
+      $scope.store = function(faq) { 
+           $scope.errors=false;
+           $scope.success_flash=false;   
+
+           $http.post('faq/store', {
+			question: faq.quest,
+			answer: faq.ans,
+                        status: faq.status,
+			
+                     
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+                                $scope.success_flash=data[1];				
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      $scope.deletefaq = function(index) {
+		$scope.loading = true;
+
+		var faq = $scope.faqs[index];
+              
+                $http.post('faq/delete',{            
+                    del_id:faq.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.faqs.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+
+         $scope.init();
+});
+// Newsletter Management
+app.controller('NewsletterController', function($scope, $http) {
+   
+     $scope.errors=false;
+     $scope.files=false;
+     $scope.loading = true;
+     $scope.newsletters=false;
+     $scope.page='index';
+    
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('newsletter/all').
+		success(function(data, status, headers, config) {
+			$scope.newsletters = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+       
+
+        $scope.update = function(newsletter) { 
+            $scope.errors=false;
+            $scope.success_flash=false;
+         
+           $http.post('newsletter/update', {			
+                        edit_id: newsletter.id,
+                        subscribe: newsletter.subscribe                    
+                  
+		}).success(function(data, status, headers, config) {
+                   $scope.files=false;
+                       if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+
+      
+      $scope.delete = function(index) {
+		$scope.loading = true;
+
+		var newsletter = $scope.newsletters[index];
+              
+                $http.post('newsletter/delete',{            
+                    del_id:newsletter.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.newsletters.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+
+         $scope.init();
+});
+//Configuration 
+app.controller('ConfigController', function($scope, $http) {
+   
+     $scope.errors=false;
+     $scope.files=false;
+     $scope.loading = true;
+     $scope.configs=false;
+     $scope.page='index';    
+     $scope.success_flash=false;
+     
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('config/all').
+		success(function(data, status, headers, config) {
+			$scope.configs = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+       
+        $scope.edit= function() {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('config/edit').success(function(data, status, headers, config) {
+			$scope.configs = data;                      
+		        $scope.loading = false;
+ 
+		});;
+	};
+        $scope.update = function(config) { 
+           $scope.errors=false;
+           $scope.success_flash=false;
+           $http.post('config/update', {			
+                       all_data:   config 
+		}).success(function(data, status, headers, config) {
+                      
+                       if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+
+     
 
          $scope.init();
 });

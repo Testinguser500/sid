@@ -1,19 +1,21 @@
-@extends('admin/layout')
-@section('content')
+
 
     <!-- Main content -->
     <section class="content">
-       <div class="col-md-12">
-	@if(Session::has('flash_message'))
-        <div class="alert alert-success">
+        <div class="alert alert-success" ng-if="success_flash">
             <p >
-            {{ Session::get('flash_message') }}
+            <% success_flash %>
             </p>
         </div>
-       @endif   
+        <div class="alert alert-danger"  ng-if="errors">
+            <ul>
+                <li ng-repeat ="er in errors"><% er %></li>
+         
+            </ul>
+        </div>
           <!-- /.box -->
-            @if(count($newsletters)>0)
-          <div class="box">
+            
+          <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> Newsletter List</h3>
              
@@ -31,17 +33,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach($newsletters as $val){ ?>
-                <tr>
-                  <td>{{ $val->id }}</td>
-                  <td>{{ $val->name }}</td>
-                  <td>@if($val->subscribe=='1') Subscribe @else Unsubscribe @endif</td>
+                <tr ng-repeat="val in newsletters">
+                  <td><% val.id %></td>
+                  <td><% val.name %></td>
+                  <td ng-if="val.subscribe=='1'"> Subscribe   </td>
+                  <td ng-if="val.subscribe=='0'"> Unsubscribe </td>
                   <td>
-                  <i title="View" class="fa fa-eye" style="cursor:pointer" data-toggle="modal" data-target="#view_modal{{ $val->id }}"></i>
-                  <i title="Edit"  class="fa fa-edit" style="cursor:pointer" data-toggle="modal" data-target="#edit_modal{{ $val->id }}"></i>  
-                  <i title="Delete" class="fa fa-trash" style="cursor:pointer" data-toggle="modal" data-target="#del_modal{{ $val->id }}"></i>
+                  <i title="View" class="fa fa-eye" style="cursor:pointer" data-toggle="modal" data-target="#view_modal<% val.id %>"></i>
+                  <i title="Edit"  class="fa fa-edit" style="cursor:pointer" data-toggle="modal" data-target="#edit_modal<% val.id %>"></i>  
+                  <i title="Delete" class="fa fa-trash" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
                   <!-- Modal -->
-                    <div class="modal fade" id="view_modal{{  $val->id  }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal fade" id="view_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -52,31 +54,32 @@
                               <table  class="table table-bordered table-striped">
                                   <tr>
                                       <td> Name </td>
-                                      <td> {{  $val->name  }} </td>                                      
+                                      <td> <% val.name  %> </td>                                      
                                   </tr> 
                                   <tr>
                                       <td> Email </td>
-                                      <td> {{  $val->email  }} </td> 
+                                      <td> <% val.email  %> </td> 
                                   </tr>
                                   <tr>
                                       <td> Mobile No. </td>
-                                      <td> {{  $val->mob_no  }} </td>
+                                      <td> <% val.mob_no  %> </td>
                                   </tr>
                                   <tr>
                                       <td> Occupation </td>
-                                      <td> {{  $val->occupation  }} </td> 
+                                      <td> <% val.occupation  %> </td> 
                                   </tr>
                                   <tr>
                                       <td> City </td>
-                                      <td> {{  $val->city  }} </td>
+                                      <td> <% val.city  %> </td>
                                   </tr>
                                    <tr>
                                       <td> Gender </td>
-                                      <td> {{  ucfirst($val->gender)  }} </td>
+                                      <td> <% val.gender | capitalize %> </td>
                                   </tr>
                                    <tr>
                                       <td> Subscribe </td>
-                                      <td> @if($val->subscribe=='1') Subscribe @else Unsubscribe @endif</td>
+                                      <td ng-if="val.subscribe=='1'"> Subscribe   </td>
+                                      <td ng-if="val.subscribe=='0'"> Unsubscribe </td>
                                   </tr>
                               </table>
                           </div>
@@ -87,11 +90,11 @@
                         </div>
                       </div>
                     </div>
-                   <!-- Modal -->
-                    <div class="modal fade" id="edit_modal{{  $val->id  }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+               <!-- Modal -->
+                    <div class="modal fade" id="edit_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                         <form action = "{{url('/admin/newsletter/update')}}" method="post">
+                        
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Edit</h4>
@@ -99,9 +102,9 @@
                           <div class="modal-body">
                               <div class="form-group">
                                 <label for="subscribe">Subscribe : </label>
-                                <select class="form-control" name="subscribe">
-                                    <option value="1"  @if($val->subscribe=='1') selected @endif >Subscribe</option>
-                                    <option value="0"  @if($val->subscribe=='0') selected @endif >Unsubscribe</option>
+                                <select class="form-control" name="subscribe" ng-model="val.subscribe">
+                                    <option value="1"  ng-selected="val.subscribe==1" ng-value="1"  >Subscribe</option>
+                                    <option value="0"   ng-selected="val.subscribe==0" ng-value="0" >Unsubscribe</option>
                                 </select>
                                 
                                 <div class="help-block"></div>
@@ -110,16 +113,16 @@
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                            
-                                  {{ csrf_field() }}
-                               <input type="hidden" name="edit_id" value="{{  $val->id  }}" />
-                               <button type="submit" class="btn btn-primary" >Update</button>                            
+                                
+                               <input type="hidden" name="edit_id" value="<% val.id %>" />
+                               <button type="submit" class="btn btn-primary" ng-click="update(val)"  data-dismiss="modal" >Update</button>                            
                           </div>
-                          </form>
+                         
                         </div>
                       </div>
                     </div>
                   <!-- Modal -->
-                    <div class="modal fade" id="del_modal{{  $val->id  }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal fade" id="del_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -131,11 +134,10 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <form action = "{{url('/admin/newsletter/delete')}}" method="post">
-                                  {{ csrf_field() }}
-                               <input type="hidden" name="del_id" value="{{  $val->id  }}" />
-                               <button type="submit" class="btn btn-primary" >Delete</button>
-                            </form>
+                          
+                               <input type="hidden" name="del_id" value="<% val.id %>" />
+                               <button type="submit" class="btn btn-primary" ng-click="delete($index)" data-dismiss="modal">Delete</button>
+                            
                           </div>
                         </div>
                       </div>
@@ -143,7 +145,7 @@
                   </td>
                   
                 </tr>
-                <?php } ?>
+              
                 </tbody>
                 <tfoot>
                  <tr>
@@ -157,7 +159,7 @@
             </div>
             <!-- /.box-body -->
           </div>
-         @endif
+        
           <!-- /.box -->
         <!-- Button trigger modal -->
 
@@ -172,11 +174,3 @@
     </section>
    
   <!-- /.content-wrapper -->
-  <script>
-    $(function () {
-    $("#example1").DataTable();
-    
-   
-  });
- </script>
-@endsection	

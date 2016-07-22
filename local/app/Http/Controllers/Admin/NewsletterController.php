@@ -4,10 +4,10 @@ use App\Newsletter;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use Session;
+use Request;
 class NewsletterController extends Controller
 {      
             public function __construct()
@@ -16,27 +16,36 @@ class NewsletterController extends Controller
             
 
         }
-	public function index(){ 
-             $category = DB::table('newsletters')->get();  
-             return view('admin/newsletters')->with('newsletters',$category)->with('title','Newsletter')->with('subtitle','List');
+	          
+        public function index(){ 
+              
+             return view('admin/newsletters')->with('title','Newsletter')->with('subtitle','List');
 		
 	}
-              
-        public function delete(Request $request){
+        public function all(){ 
+             $newsletters = DB::table('newsletters')->get();               
+             return  $newsletters;
+		
+	}
+        public function delete(){
 	
-	   $chk_id=$request->get('del_id');	
+	   $chk_id=Request::input('del_id');	
            DB::table('newsletters')->where('id', '=',$chk_id)->delete();	   		 
-           return  redirect('/admin/newsletter')->withFlash_message('Record Deleted Successfully.');	 
+           $list[]='success';
+           $list[]='Record is deleted successfully.';	 
+	   return $list; 
 	    
 	}
         
 	 
-         public function update(Request $request){
+         public function update(){
 	
-            $newsletter = Newsletter::find($request->get('edit_id'));
-            $newsletter->subscribe = $request->get('subscribe');        
+            $newsletter = Newsletter::find(Request::input('edit_id'));
+            $newsletter->subscribe = Request::input('subscribe');        
             $newsletter->save(); 		  
-            return redirect('/admin/newsletter')->withFlash_message('Record updated Successfully.');
+            $list[]='success';
+            $list[]='Record is updated successfully.';	 
+            return $list;
 	     
 	}
        

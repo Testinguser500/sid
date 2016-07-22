@@ -50,13 +50,14 @@ Route::get('admins/brand/edit/{id}', 'Admin\BrandController@edit');
 Route::post('admins/brand/update', 'Admin\BrandController@update');
 
 Route::get('admins/faq', 'Admin\FaqController@index');
-Route::get('admins/faq/add', 'Admin\FaqController@add');
+Route::get('admins/faq/all', 'Admin\FaqController@all');
 Route::post('admins/faq/store', 'Admin\FaqController@store');
 Route::post('admins/faq/delete', 'Admin\FaqController@delete');
 Route::get('admins/faq/edit/{id}', 'Admin\FaqController@edit');
 Route::post('admins/faq/update', 'Admin\FaqController@update');
 
 Route::get('admins/newsletter', 'Admin\NewsletterController@index');
+Route::get('admins/newsletter/all', 'Admin\NewsletterController@all');
 Route::post('admins/newsletter/delete', 'Admin\NewsletterController@delete');
 Route::post('admins/newsletter/update', 'Admin\NewsletterController@update');
 
@@ -70,6 +71,7 @@ Route::get('admins/template/send/{id}', 'Admin\TemplateController@send');
 Route::post('admins/template/sent', 'Admin\TemplateController@sent');
 
 Route::get('admins/config', 'Admin\ConfigController@index');
+Route::get('admins/config/all', 'Admin\ConfigController@all');
 Route::get('admins/config/edit', 'Admin\ConfigController@edit');
 Route::post('admins/config/update', 'Admin\ConfigController@update');
 
