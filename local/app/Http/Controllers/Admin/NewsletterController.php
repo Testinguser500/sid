@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Validator;
 use Session;
 use Request;
+use Response;
 class NewsletterController extends Controller
 {      
             public function __construct()
@@ -16,7 +17,7 @@ class NewsletterController extends Controller
             
 
         }
-	          
+	         
         public function index(){ 
               
              return view('admin/newsletters')->with('title','Newsletter')->with('subtitle','List');
@@ -26,6 +27,53 @@ class NewsletterController extends Controller
              $newsletters = DB::table('newsletters')->get();               
              return  $newsletters;
 		
+	}
+        public function export(){
+                $table = DB::table('newsletters')->get();   
+                $filename = "newsletter.csv";
+                $handle = fopen($filename, 'w+');
+                fputcsv($handle, array('Name', 'E-mail', 'Mobile No.', 'Occupation', 'City', 'Gender', 'Subscribe', 'Created At', 'Updated at'), ';');
+
+                foreach($table as $row) {
+                    if($row->subscribe=='1'){
+                       $subs="Subscribe"; 
+                    }else{
+                       $subs="Unsubscribe";   
+                    }
+                    fputcsv($handle, array($row->name, $row->email, $row->mob_no, $row->occupation,$row->city, $row->gender, $subs, $row->created_at, $row->updated_at), ';');
+                }
+
+                fclose($handle);
+                $headers = array(
+                    'Content-Type' => 'text/csv',
+                );
+               return Response::download($filename, 'newsletter.csv', $headers); 
+           }
+        public function store(){
+	
+	   $validator = Validator::make(Request::all(), [
+            'name' => 'required',	       
+            'email'=>'required|unique:newsletters,email|email',            
+            'mobile_no'=>'required|numeric',
+            'occupation'=>'required',
+            'city'=>'required',
+            
+        ]);
+           
+       
+        if ($validator->fails()) {
+                              $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			      return $list;
+        }
+	
+	$news= Newsletter::create(['name' =>Request::input('name'),'email' =>Request::input('email'),'mob_no' =>Request::input('mobile_no'),'occupation' =>Request::input('occupation'),'city' =>Request::input('city'),'gender' =>Request::input('gender'),'subscribe' =>'1']);  
+	  
+            $list[]='success';
+            $list[]='Subscriber is added successfully.You can add more Subscriber.';	 
+	    return $list;
+	   
 	}
         public function delete(){
 	

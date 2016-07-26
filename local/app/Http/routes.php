@@ -58,6 +58,8 @@ Route::post('admins/faq/update', 'Admin\FaqController@update');
 
 Route::get('admins/newsletter', 'Admin\NewsletterController@index');
 Route::get('admins/newsletter/all', 'Admin\NewsletterController@all');
+Route::get('admins/newsletter/export', 'Admin\NewsletterController@export');
+Route::post('admins/newsletter/store', 'Admin\NewsletterController@store');
 Route::post('admins/newsletter/delete', 'Admin\NewsletterController@delete');
 Route::post('admins/newsletter/update', 'Admin\NewsletterController@update');
 

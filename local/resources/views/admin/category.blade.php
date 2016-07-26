@@ -89,7 +89,7 @@
             <!-- /.box-header -->
             <!-- form start -->
             
-                 {{ csrf_field() }}
+                
                   <input type="hidden" class="form-control" id="" name="category_id" ng-model="category.id" placeholder="Name" value="<% category.id %>">
               <div class="box-body">
 			 
