@@ -33,15 +33,19 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/static-content', {
       templateUrl: 'static-content', controller: 'StaticContentController'
    }).
-   when('/user/add', {
-      templateUrl: 'user/add', controller: 'UserController'
+   
+	when('/seller', {
+      templateUrl: 'seller', controller: 'SellerController'
 
-   }). 
+   }).   
 	when('/brand', {
       templateUrl: 'brand', controller: 'BrandsController'
    }).
 	when('/banner', {
       templateUrl: 'banner', controller: 'BannerController'
+   }).
+   when('/country', {
+      templateUrl: 'country', controller: 'CountryController'
    }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
@@ -516,6 +520,7 @@ app.controller('UserController', function($scope, $http) {
 
     $scope.errors=false;
 	$scope.files=false;
+	$scope.bannerfiles=false;
      $scope.loading = true;
      $scope.users=false;
 	 $scope.user=false;
@@ -561,7 +566,7 @@ app.controller('UserController', function($scope, $http) {
 	
 	$scope.uploadedFile = function(element) {
            $scope.$apply(function($scope) {
-            
+            $scope.loading = true;
            var fd = new FormData();
             //Take the first selected file
             fd.append("image",element.files[0]);
@@ -572,7 +577,24 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;});
+            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
+
+    });
+   }
+   $scope.uploadedBannerFile = function(element) {
+           $scope.$apply(function($scope) {
+            $scope.loading = true;
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'store_banner');
+			fd.append("width",'550');
+			fd.append("height",'250');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ $scope.bannerfiles=data;$scope.loading = false;});
 
     });
    }
@@ -593,6 +615,7 @@ app.controller('UserController', function($scope, $http) {
             if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
+				if($scope.files)
 				$scope.user.image = $scope.files;
 				//console.log($scope.user.image);
 				$scope.files=false;
@@ -609,14 +632,47 @@ app.controller('UserController', function($scope, $http) {
            $scope.errors=false;
            $scope.success_flash=false;
            $http.post('user/store', {
+			role:userData.role,
 			name: userData.name,
+			username: userData.username,
+			nickname: userData.nickname,
 			email: userData.email,
 			gender:userData.gender,
+			mobile: userData.mobile,
+			website: userData.website,
+			bio: userData.bio,
+			password: userData.password,
+			confirm_password:userData.repassword,
+			nationality: userData.nationality,
+			country: userData.country,
 			address:userData.address,
-                        id: userData.id,
-                        status: userData.status,
-                        image: $scope.files
-
+			id: userData.id,
+			status: userData.status,
+			profile_image: $scope.files,
+			store_name: userData.store_name,
+			store_link: userData.store_link,
+			store_address: userData.store_address,
+			ship_name: userData.ship_name,
+			ship_mobile: userData.ship_mobile,
+			ship_address: userData.ship_address,
+			ship_country: userData.ship_country,
+			ship_state: userData.ship_state,
+			ship_city: userData.ship_city,
+			banner:$scope.bannerfiles,
+			store_country:userData.store_country,
+			store_state:userData.store_state,
+			store_city:userData.store_city,
+			
+			store_phone:userData.store_phone,
+			facebook_link:userData.facebook_link,
+			google_plus_link:userData.google_plus_link,
+			twitter_link:userData.twitter_link,
+			linkedin_link:userData.linkedin_link,
+			youtube_link:userData.youtube_link,
+			instagram_link:userData.instagram_link,
+			flickr_link:userData.flickr_link,
+			
+			
 		}).success(function(data, status, headers, config) {console.log($scope.files);
                     $scope.files=false;
                     if(data[0]=='error'){
@@ -702,7 +758,7 @@ app.controller('StaticContentController', function($scope, $http) {
 	
 	$scope.uploadedFile = function(element) {
            $scope.$apply(function($scope) {
-            
+            $scope.loading = true;
            var fd = new FormData();
             //Take the first selected file
             fd.append("image",element.files[0]);
@@ -713,7 +769,7 @@ app.controller('StaticContentController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;});
+            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
 
     });
    }
@@ -732,6 +788,7 @@ app.controller('StaticContentController', function($scope, $http) {
             if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
+				if($scope.files)
 			$scope.content.image = $scope.files;
 			//console.log($scope.content.image);
 			$scope.files=false;			
@@ -843,7 +900,7 @@ $scope.user=false;
 	};
 	$scope.uploadedFile = function(element) {
            $scope.$apply(function($scope) {
-            
+            $scope.loading = true;
            var fd = new FormData();
             //Take the first selected file
             fd.append("image",element.files[0]);
@@ -854,7 +911,7 @@ $scope.user=false;
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;});
+            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
 
     });
 	}
@@ -872,6 +929,7 @@ $scope.user=false;
             if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
+				if($scope.files)
 				$scope.brands.image = $scope.files;
 			$scope.errors=false;
 			$scope.files = false;
@@ -1073,6 +1131,296 @@ $scope.banner=false;
                     del_id:banner.id
                 }).success(function(data, status, headers, config) {
                                         $scope.banners.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+				
+         $scope.init(); 
+
+
+
+});
+//Seller management
+app.controller('SellerController', function($scope, $http) {
+
+    $scope.errors=false;
+	$scope.files=false;
+     $scope.loading = true;
+     $scope.sellers=false;
+	 $scope.seller=false;
+	 $scope.user_data = false;
+     $scope.page='index';
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.get('seller/all').
+		success(function(data, status, headers, config) {
+			$scope.users = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $http.get('seller/all').
+		success(function(data, status, headers, config) {
+			$scope.all_seller = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.editseller = function(category) {
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('seller/edit/' + category.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.seller = data['user'];
+			
+                        $scope.all_seller = data['all_user'];
+		        $scope.loading = false;
+ 
+		});;
+	};
+	
+	$scope.uploadedFile = function(element) {
+           $scope.$apply(function($scope) {
+            $scope.loading = true;
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'seller');
+			fd.append("width",'150');
+			fd.append("height",'150');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
+
+    });
+   }
+        $scope.update = function(userData) { console.log($scope.user);
+            $scope.errors=false;
+            $scope.success_flash=false;
+           $http.post('seller/update', {
+			name: userData.name,
+			email: userData.email,
+			gender:userData.gender,
+			address:userData.address,
+			id: userData.id,
+			status: userData.status,
+			image: $scope.files,
+			mobile:userData.mobile,
+			company_name:userData.company_name,
+			company_pan_no:userData.company_pan_no,
+			company_address:userData.company_address,
+			company_tin_no:userData.company_tin_no,
+			store_link:userData.store_link,
+                   
+		}).success(function(data, status, headers, config) {
+                    
+            if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				if($scope.files)
+				$scope.seller.image = $scope.files;
+				//console.log($scope.user.image);
+				$scope.files=false;
+			$scope.errors=false;
+			$scope.success_flash= data[1];
+			
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+	  
+	  $scope.store = function(userData) { 
+           $scope.errors=false;
+           $scope.success_flash=false;
+           $http.post('seller/store', {
+			name: userData.name,
+			email: userData.email,
+			gender:userData.gender,
+			address:userData.address,
+			id: userData.id,
+			status: userData.status,
+			image: $scope.files,
+			mobile:userData.mobile,
+			company_name:userData.company_name,
+			company_pan_no:userData.company_pan_no,
+			company_address:userData.company_address,
+			company_tin_no:userData.company_tin_no,
+			store_link:userData.store_link,
+
+		}).success(function(data, status, headers, config) {console.log($scope.files);
+                    $scope.files=false;
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+                                $scope.success_flash=data[1];
+				$scope.sellers.push(userData);
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      $scope.deleteSeller = function(index) {
+		$scope.loading = true;
+
+		var seller = $scope.sellers[index];
+              
+                $http.post('seller/delete',{            
+                    del_id:seller.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.sellers.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+				
+         $scope.init(); 
+
+
+
+});
+//Country
+app.controller('CountryController', function($scope, $http) {
+
+    $scope.errors=false;
+	$scope.files=false;
+     $scope.loading = true;
+     $scope.contents=false;
+	 $scope.content=false;
+	 $scope.user=false;
+     $scope.page='index';
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.get('country/all').
+		success(function(data, status, headers, config) {
+			$scope.contents = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.add = function() {
+		$scope.country = false;				
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $http.get('country/all').
+		success(function(data, status, headers, config) {console.log(data);
+			$scope.all_country = data;
+			
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.editcontent = function(category) {
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('country/edit/' + category.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.country = data['content'];
+                        $scope.all_country = data['all_content'];
+		        $scope.loading = false;
+ 
+		});;
+	};
+	
+	
+        $scope.update = function(contents) { console.log(contents);
+            $scope.errors=false;
+            $scope.success_flash=false;
+           $http.post('country/update', {
+			name: contents.name,
+			country_id: contents.pid,
+			id: contents.id,
+                   
+		}).success(function(data, status, headers, config) {
+			
+                    //console.log(contents);
+            if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+			//console.log($scope.content.image);
+			$scope.files=false;			
+			$scope.errors=false;
+			$scope.success_flash= data[1];
+			
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+	  
+	  $scope.store = function(userData) { console.log(userData);
+           $scope.errors=false;
+           $scope.success_flash=false;
+           $http.post('country/store', {
+			name: userData.name,
+			country_id: userData.id,
+			
+
+		}).success(function(data, status, headers, config) {
+                    $scope.files=false;
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+                                $scope.success_flash=data[1];
+				
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      $scope.deleteCity = function(index) {
+		$scope.loading = true;
+
+		//var user = $scope.contents[index];
+              
+                $http.post('country/delete',{            
+                    del_id:index
+                }).success(function(data, status, headers, config) {
+                                        //$scope.contents.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+				
+			$scope.deleteCountry = function(index) {
+		$scope.loading = true;
+
+		var user = $scope.contents[index];
+              
+                $http.post('country/delete',{            
+                    del_id:user.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.contents.splice(index, 1);
                                         $scope.loading = false
                                         $scope.success_flash=data[1];
                                         $scope.init();

@@ -4,7 +4,7 @@ use App\Category;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
-use Illuminate\Http\Request;
+use Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use Session;
@@ -22,22 +22,27 @@ class SellerController extends Controller
 
         }
 	public function index(){ 
-             $user = DB::table('users')->where('role','=','3')->get();  
+             $user = DB::table('sellers')->where('role','=','3')->get();  
              return view('admin/seller')->with('users_data',$user)->with('title','Users')->with('subtitle','List');
 		
 	}
        public function add(){ 
              
-             $user = DB::table('users')->get();  
+             $user = DB::table('sellers')->get();  
              return view('admin/add_seller')->with('users_data',$user)->with('title','Seller')->with('subtitle','Add');
 		
 	}
-        public function store(Request $request){
+	public function all(){ 
+             $category = DB::table('sellers')->where('is_delete','=','0')->get();  
+             return  $category;
+		
+	}
+        public function store(){
 	
   
-	   $validator = Validator::make($request->all(), [
+	   $validator = Validator::make(Request::all(), [
             'name' => 'required',
-            'email'=>'required|email|unique:users',
+            'email'=>'required|email|unique:sellers',
             'image'=>'required',
             'mobile'=>'required|numeric|min:6',
             'company_name'=>'required',
@@ -45,75 +50,81 @@ class SellerController extends Controller
             'company_pan_no'=>'required',
             'company_tin_no'=>'required',
             'company_address'=>'required',
-            'menu_assign'=>'required'
+            
               
         ]);
          
         if ($validator->fails()) {
-            return redirect('/admin/seller/add')
-                        ->withErrors($validator)
-                        ->withInput();
+            $list[]='error';
+			$msg=$validator->errors()->all();
+			$list[]=$msg;
+			return $list;
         }
-	$password = (str_random(6));	 
-        $destinationPath = 'uploads/seller/'; // upload path
-        $image = Input::file('image');
-        $extension = $image->getClientOriginalExtension(); // getting image extension
-        $fileName = rand(11111,99999).'.'.$extension; // renameing image
-        $path = ($destinationPath.$fileName);
-        Image::make($image->getRealPath())->resize(200, 200)->save($path);
-        $image->move($destinationPath, $fileName); // uploading file to given path
-        Seller::create(['image' =>$fileName,'name' =>$request->get('name'),
-            'email' =>$request->get('email'),
+		$password = (str_random(6));	 
+        
+        Seller::create(['image' =>Request::input('image'),'name' =>Request::input('name'),
+            'email' =>Request::input('email'),
             'password'=>bcrypt($password),
-            'gender'=>$request->get('gender'),
-            'address'=>$request->get('address'),
-            'mobile'=>$request->get('mobile'),
-            'company_name'=>$request->get('company_name'),
-            'company_pan_no'=>$request->get('company_pan_no'),
-            'company_tin_no'=>$request->get('company_tin_no'),
-            'company_address'=>$request->get('company_address'),
-            'status' =>$request->get('status'),
-            'menu_assign'=>implode(',',$request->get('menu_assign')),
+            'gender'=>Request::input('gender'),
+            'address'=>Request::input('address'),
+            'mobile'=>Request::input('mobile'),
+            'company_name'=>Request::input('company_name'),
+            'company_pan_no'=>Request::input('company_pan_no'),
+            'company_tin_no'=>Request::input('company_tin_no'),
+            'company_address'=>Request::input('company_address'),
+			'store_link'=>Request::input('store_link'),
+            'status' =>Request::input('status'),
+            //'menu_assign'=>implode(',',Request::input('menu_assign')),
             'role'=>3]);  
-           $emails['email'] = $request->get('email'); 
+		$emails['email'] = Request::input('email'); 
         $copyright=configs_value('Copyright');        
         $em_content=email_section('1');   
         $msg=$em_content->email_body;
-        $msg=str_replace("{name}",$request->get('name'),$msg);
+        $msg=str_replace("{name}",Request::input('name'),$msg);
         $msg=str_replace("{role}",'Seller',$msg);
         $msg=str_replace("{site_name}",configs_value('Site Name'),$msg);
-        $msg=str_replace("{username}",$request->get('email'),$msg);
+        $msg=str_replace("{username}",Request::input('email'),$msg);
         $msg=str_replace("{password}",$password,$msg);
         $msg=str_replace("{copyright}",$copyright,$msg);
-        $emails['subject']= $em_content->email_subject;
+		$msg=str_replace("{link}",configs_value('Website'),$msg);
+        $emails['subject']= str_replace("{site_name}",configs_value('Site Name'),$em_content->email_subject);
         $emails['name']= configs_value('Site Name');
         $emails['from']=configs_value('SMTP User');
-            Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
-                $message->from('test@infoseeksoftwaresystems.com', 'Laravel');
+		$emails['site_name']=configs_value('Site Name');
+		Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
+			$message->from($emails['from'], $emails['site_name']);
 
-                $message->to($emails['email'])->subject($emails['subject']);
-            });	  
-         return redirect('/admin/seller')->withFlash_message('Record inserted Successfully.');
+			$message->to($emails['email'])->subject($emails['subject']);
+		});  	  
+		$list[]='success';
+		$list[]='Record is added successfully.';	 
+	    return $list;
 	   
 	}
         public function delete(Request $request){
 	
-	   $chk_id=$request->get('del_id');	  
-	   DB::table('users')->where('id', '=',$chk_id)->delete();		 
-           return  redirect('/admin/seller')->withFlash_message('Record Deleted  Successfully.');	 
+	   $chk_id=Request::input('del_id');	
+           $cat = User::find($chk_id);
+           $cat->is_delete = '1';
+           $cat->save(); 	   		 
+           $list[]='success';
+           $list[]='Record is deleted successfully.';	 
+	   return $list;	 
 	    
 	}
         
 	 public function edit($id){
 	
-	 $data= DB::table('users')->where('id', '=',$id)->first();  
-         $user = DB::table('users')->get();  
-	 return view('admin/edit_seller')->with('user_data',$user)->with('data',$data)->with('title','Seller')->with('subtitle','Edit');
+	 $data= DB::table('sellers')->where('id', '=',$id)->first();  
+         $user = DB::table('sellers')->get();  
+	 $return['user'] =$data;
+	$return['all_user'] = $user;
+	return $return;	 
 	     
 	}
-         public function update(Request $request){
+         public function update(){
 	
-	  $validator = Validator::make($request->all(), [
+	  $validator = Validator::make(Request::all(), [
            'name' => 'required',
             'email'=>'required|email',
             
@@ -123,43 +134,42 @@ class SellerController extends Controller
             'company_pan_no'=>'required',
             'company_tin_no'=>'required',
             'company_address'=>'required',
-            'menu_assign'=>'required'            
+                        
             
         ]);
          
         if ($validator->fails()) {
-            return redirect('/admin/seller/edit/'.$request->get('user_id'))
-                        ->withErrors($validator)
-                        ->withInput();
+            $list[]='error';
+			$msg=$validator->errors()->all();
+			$list[]=$msg;
+			return $list;
         }
 		 
-          if(Input::file('image')!=''){	 
-         $destinationPath = 'uploads/seller/'; // upload path
-        $image = Input::file('image');
-        $extension = $image->getClientOriginalExtension(); // getting image extension
-        $fileName = rand(11111,99999).'.'.$extension; // renameing image
-        $path = ($destinationPath.$fileName);
-        Image::make($image->getRealPath())->resize(200, 200)->save($path);
-        $image->move($destinationPath, $fileName); // uploading file to given path
+          if(Request::input('image')){	 
+        $fileName = Request::input('image');
          }
-         $cat = Seller::find($request->get('user_id'));
-         $cat->name = $request->get('name');
+         $cat = Seller::find(Request::input('id'));
+         $cat->name = Request::input('name');
          if((isset($fileName)) && ($fileName!='')){
 			$cat->image = $fileName;
          }
-                $cat->address =$request->get('address');
-                $cat->email=$request->get('email');
-                $cat->gender=$request->get('gender');
-                $cat->mobile = $request->get('mobile');
-                $cat->company_name=$request->get('company_name');
-                $cat->company_pan_no=$request->get('company_pan_no');
-                $cat->company_tin_no=$request->get('company_tin_no');
-                $cat->company_address=$request->get('company_address');
-                $cat->menu_assign=implode(',',$request->get('menu_assign'));
-                $cat->status=$request->get('status');
+                $cat->address =Request::input('address');
+                $cat->email=Request::input('email');
+                $cat->gender=Request::input('gender');
+                $cat->mobile = Request::input('mobile');
+                $cat->company_name=Request::input('company_name');
+                $cat->company_pan_no=Request::input('company_pan_no');
+                $cat->company_tin_no=Request::input('company_tin_no');
+                $cat->company_address=Request::input('company_address');
+				$cat->store_link=>Request::input('store_link'),
+                //$cat->menu_assign=implode(',',Request::input('menu_assign'));
+                $cat->status=Request::input('status');
                 $cat->save(); 
 		  
-         return redirect('/admin/seller')->withFlash_message('Record updated Successfully.');
+		$list[]='success';
+		$msgs='Record updated successfully.';
+		$list[]=$msgs;
+		return $list;
 	     
 	}
         

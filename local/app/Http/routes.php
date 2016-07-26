@@ -101,3 +101,18 @@ Route::post('admins/banner/store', 'Admin\BannerController@store');
 Route::get('admins/banner/edit/{id}', 'Admin\BannerController@edit');
 Route::post('admins/banner/update', 'Admin\BannerController@update');
 Route::post('admins/banner/delete', 'Admin\BannerController@delete');
+
+Route::get('admins/seller', 'Admin\SellerController@index');
+Route::get('admins/seller/all', 'Admin\SellerController@all');
+Route::get('admins/seller/add', 'Admin\SellerController@add');
+Route::post('admins/seller/store', 'Admin\SellerController@store');
+Route::get('admins/seller/edit/{id}', 'Admin\SellerController@edit');
+Route::post('admins/seller/update', 'Admin\SellerController@update');
+Route::post('admins/seller/delete', 'Admin\SellerController@delete');
+
+Route::get('admins/country', 'Admin\CountryController@index');
+Route::get('admins/country/all', 'Admin\CountryController@all');
+Route::post('admins/country/store', 'Admin\CountryController@store');
+Route::get('admins/country/edit/{id}', 'Admin\CountryController@edit');
+Route::post('admins/country/update', 'Admin\CountryController@update');
+Route::post('admins/country/delete', 'Admin\CountryController@delete');
