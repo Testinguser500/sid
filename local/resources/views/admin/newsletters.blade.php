@@ -1,9 +1,7 @@
-
-
     <!-- Main content -->
     <section class="content">
         <div class="alert alert-success" ng-if="success_flash">
-            <p >
+            <p>
             <% success_flash %>
             </p>
         </div>
@@ -17,11 +15,71 @@
             
           <div class="box" ng-if="page=='index'">
             <div class="box-header">
-              <h3 class="box-title"><i class="fa fa-list"></i> Newsletter List</h3>
-             
+              <h3 class="box-title"><i class="fa fa-list"></i> Newsletter Subscribers</h3>
+              <div class="pull-right"><a href="javascript:void(0);" data-toggle="modal" data-target="#add_modal" ng-click="newsl.gender='male'" class="btn btn-primary"><i class="fa fa-plus"></i> Add Subscribers</a></div>
+              <div class='pull-right'><a href="{{ URL('admins/newsletter/export') }}" class="btn btn-primary" style="margin-right:10px"><i class="fa fa-file-excel-o"></i> Export as CSV</a></div>
             </div>
             <!-- /.box-header -->
-            
+             <!-- Modal -->
+            <div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"  ng-click="newsl = {};success_flash_modal=false;errors_modal=false;"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Add</h4>
+                          </div>
+                          <div class="modal-body">
+                              <div class="alert alert-success" ng-if="success_flash_modal">
+                                  <p>
+                                  <% success_flash_modal %>
+                                  </p>
+                              </div>
+                              <div class="alert alert-danger"  ng-if="errors_modal">
+                                  <ul>
+                                      <li ng-repeat ="er in errors_modal"><% er %></li>
+
+                                  </ul>
+                              </div>
+                              <table  class="table table-bordered table-striped">
+                                  <tr>
+                                      <td> Name </td>
+                                      <td> <input type="text" ng-model="newsl.name" name="name"/></td>                                      
+                                  </tr> 
+                                  <tr>
+                                      <td> Email </td>
+                                      <td> <input type="text" ng-model="newsl.email" /> </td> 
+                                  </tr>
+                                  <tr>
+                                      <td> Mobile No. </td>
+                                      <td> <input type="text" ng-model="newsl.mob_no" /> </td>
+                                  </tr>
+                                  <tr>
+                                      <td> Occupation </td>
+                                      <td> <input type="text" ng-model="newsl.occupation" /></td> 
+                                  </tr>
+                                  <tr>
+                                      <td> City </td>
+                                      <td> <input type="text" ng-model="newsl.city"  /> </td>
+                                  </tr>
+                                   <tr>
+                                      <td> Gender </td>
+                                      <td > <input type="radio" ng-model="newsl.gender"  name="gender" value="male" ng-checked="newsl.gender=='male'" ng-value="'male'"/> Male <input type="radio" name="gender" ng-model="newsl.gender" value="female" ng-value="'female'"/> Female </td>
+                                 
+                                   </tr>
+                                
+                              </table>
+                          </div>
+                          <div class="modal-footer">
+                             
+                            <button type="submit" class="btn btn-primary pull-left" ng-click="store(newsl)">Submit</button>  
+                            <button type="button" class="btn btn-default " data-dismiss="modal" ng-click="newsl = {};success_flash_modal=false;errors_modal=false;">Close</button>                                 
+                                                        
+                          </div>
+                         
+                        </div>
+                      </div>
+            </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -121,6 +179,7 @@
                         </div>
                       </div>
                     </div>
+               
                   <!-- Modal -->
                     <div class="modal fade" id="del_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">

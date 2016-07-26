@@ -395,13 +395,14 @@ app.controller('HomeController', function($scope, $http) {
 });
 // Newsletter Management
 app.controller('NewsletterController', function($scope, $http) {
-   
+     $scope.errors_modal=false;
+     $scope.success_flash_modal=false;
      $scope.errors=false;
      $scope.files=false;
      $scope.loading = true;
      $scope.newsletters=false;
      $scope.page='index';
-    
+     $scope.newsl = {};  
      $scope.success_flash=false;
      $scope.init = function() {	
                 $scope.page='index';
@@ -414,8 +415,34 @@ app.controller('NewsletterController', function($scope, $http) {
  
 		});
 	}
-       
-
+       $scope.store = function(newsletter) { 
+           $scope.errors_modal=false;
+           $scope.success_flash_modal=false;   
+         
+           $http.post('newsletter/store', {			
+                        name: newsletter.name,
+                        email: newsletter.email,                    
+                        mobile_no: newsletter.mob_no,   
+                        occupation: newsletter.occupation, 
+                        city: newsletter.city, 
+                        gender: newsletter.gender, 
+		}).success(function(data, status, headers, config) {             
+                       if(data[0]=='error'){
+				$scope.errors_modal=data[1];
+			}else{
+				
+				$scope.errors_modal=false;
+			        $scope.success_flash_modal=data[1];
+                                $scope.newsl ={};
+                                $scope.newsl.gender='male';
+                                $scope.init();
+                               
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+   
         $scope.update = function(newsletter) { 
             $scope.errors=false;
             $scope.success_flash=false;
