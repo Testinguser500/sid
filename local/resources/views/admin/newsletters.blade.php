@@ -7,8 +7,7 @@
         </div>
         <div class="alert alert-danger"  ng-if="errors">
             <ul>
-                <li ng-repeat ="er in errors"><% er %></li>
-         
+                <li ng-repeat ="er in errors"><% er %></li>         
             </ul>
         </div>
           <!-- /.box -->
@@ -72,7 +71,7 @@
                           </div>
                           <div class="modal-footer">
                              
-                            <button type="submit" class="btn btn-primary pull-left" ng-click="store(newsl)">Submit</button>  
+                            <button type="button" class="btn btn-primary pull-left" ng-click="store(newsl)">Submit</button>  
                             <button type="button" class="btn btn-default " data-dismiss="modal" ng-click="newsl = {};success_flash_modal=false;errors_modal=false;">Close</button>                                 
                                                         
                           </div>
@@ -94,12 +93,44 @@
                 <tr ng-repeat="val in newsletters">
                   <td><% val.id %></td>
                   <td><% val.name %></td>
-                  <td ng-if="val.subscribe=='1'"> Subscribe   </td>
-                  <td ng-if="val.subscribe=='0'"> Unsubscribe </td>
+                  <td ng-if="val.subscribe=='1'"  ><a href="javascript:void(0);" data-toggle="modal" data-target="#subscribe_modal<% val.id %>" > Subscribe   <i class="fa fa-pencil"></i></a></td>
+                  <td ng-if="val.subscribe=='0'" ><a href="javascript:void(0);"   data-toggle="modal" data-target="#subscribe_modal<% val.id %>" > Unsubscribe   <i class="fa fa-pencil"></i></a></td>
                   <td>
                   <i title="View" class="fa fa-eye" style="cursor:pointer" data-toggle="modal" data-target="#view_modal<% val.id %>"></i>
                   <i title="Edit"  class="fa fa-edit" style="cursor:pointer" data-toggle="modal" data-target="#edit_modal<% val.id %>"></i>  
                   <i title="Delete" class="fa fa-trash" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
+                    <!-- Modal -->
+                    <div class="modal fade" id="subscribe_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Edit</h4>
+                          </div>
+                          <div class="modal-body">
+                                <div class="form-group">
+                                <label for="subscribe">Subscribe : </label>
+                                <select class="form-control" name="subscribe" ng-model="val.subscribe">
+                                    <option value="1"  ng-selected="val.subscribe==1" ng-value="1"  >Subscribe</option>
+                                    <option value="0"   ng-selected="val.subscribe==0" ng-value="0" >Unsubscribe</option>
+                                </select>
+                                
+                                <div class="help-block"></div>
+                              </div> 
+                                                       
+                          </div>
+                          <div class="modal-footer">
+                                               
+                            <button type="button" class="btn btn-primary pull-left" data-dismiss="modal"  ng-click="update_sub(val)">Update</button>  
+                            <button type="button" class="btn btn-default " data-dismiss="modal" >Close</button>    
+                               
+                                                        
+                          </div>
+                         
+                        </div>
+                      </div>
+                    </div>
                   <!-- Modal -->
                     <div class="modal fade" id="view_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
@@ -154,14 +185,32 @@
                         <div class="modal-content">
                         
                           <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="success_flash_modal=false;errors_modal=false;init();"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Edit</h4>
                           </div>
                           <div class="modal-body">
+<<<<<<< HEAD
+                               <div class="alert alert-success" ng-if="success_flash_modal">
+                                  <p>
+                                  <% success_flash_modal %>
+                                  </p>
+                              </div>
+                              <div class="alert alert-danger"  ng-if="errors_modal">
+                                  <ul>
+                                      <li ng-repeat ="er in errors_modal"><% er %></li>
+
+                                  </ul>
+                              </div>
+                              <table  class="table table-bordered table-striped">
+                                  <tr>
+                                      <td> Name </td>
+                                      <td> <input type="text" ng-model="val.name" /></td>                                      
+=======
                               <table  class="table table-bordered table-striped">
                                   <tr>
                                       <td> Name </td>
                                       <td> <input type="text" ng-model="val.name" name="name"/></td>                                      
+>>>>>>> 50b47ba9c8e73daab4791e353c9620cd846a0f75
                                   </tr> 
                                   <tr>
                                       <td> Email </td>
@@ -180,6 +229,13 @@
                                       <td> <input type="text" ng-model="val.city"  /> </td>
                                   </tr>
                                    <tr>
+<<<<<<< HEAD
+                                       <td > Gender </td>
+                                       <td><input type="radio"  ng-model="val.gender"  name="gender_<% val.id %>" value="male"/> Male <input type="radio" name="gender_<% val.id %>" ng-model="val.gender" value="female"   /> Female </td>
+                                   </tr>
+                                
+                              </table>                              
+=======
                                       <td> Gender </td>
                                       <td > <input type="radio" ng-model="val.gender"  name="gender" value="male" ng-checked="val.gender=='male'" ng-value="'male'"/> Male <input type="radio" name="gender" ng-model="val.gender" value="female"  ng-checked="val.gender=='female'"  ng-value="'female'"/> Female </td>
                                    </tr>
@@ -194,13 +250,14 @@
                                 
                                
                               </div> 
+>>>>>>> 50b47ba9c8e73daab4791e353c9620cd846a0f75
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                           
-                                
-                               <input type="hidden" name="edit_id" value="<% val.id %>" />
-                               <button type="submit" class="btn btn-primary" ng-click="update(val)"  data-dismiss="modal" >Update</button>                            
+                            <input type="hidden" name="edit_id" value="<% val.id %>" />                        
+                            <button type="button" class="btn btn-primary pull-left" ng-click="update(val)">Update</button>  
+                            <button type="button" class="btn btn-default " data-dismiss="modal" ng-click="success_flash_modal=false;errors_modal=false;init();">Close</button>    
+                               
+                                                        
                           </div>
                          
                         </div>
