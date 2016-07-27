@@ -440,29 +440,54 @@ app.controller('NewsletterController', function($scope, $http) {
       };
    
         $scope.update = function(newsletter) { 
-            $scope.errors=false;
-            $scope.success_flash=false;
-         
+            $scope.errors_modal=false;
+            $scope.success_flash_modal=false;         
            $http.post('newsletter/update', {			
-                        edit_id: newsletter.id,
-                        subscribe: newsletter.subscribe                    
+                        name: newsletter.name,
+                        email: newsletter.email,                    
+                        mobile_no: newsletter.mob_no,   
+                        occupation: newsletter.occupation, 
+                        city: newsletter.city, 
+                        gender: newsletter.gender,
+                        edit_id:newsletter.id
                   
 		}).success(function(data, status, headers, config) {
-                   $scope.files=false;
+                  
                        if(data[0]=='error'){
-				$scope.errors=data[1];
+				$scope.errors_modal=data[1];
 			}else{
 				
-				$scope.errors=false;
-			        $scope.success_flash=data[1];
-                                $scope.init();
+				$scope.errors_modal=false;
+			        $scope.success_flash_modal=data[1];                             
+                                
 			}
 			$scope.loading = false;
  
          });
       };
 
-      
+      $scope.update_sub = function(newsletter) { 
+            $scope.errors=false;
+            $scope.success_flash=false;         
+           $http.post('newsletter/update_subscribe', {			
+                        subscribe: newsletter.subscribe,                        
+                        edit_id:newsletter.id
+                  
+		}).success(function(data, status, headers, config) {
+                  
+                       if(data[0]=='error'){
+				$scope.errors_modal=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];    
+                                $scope.init();
+                                
+			}
+			$scope.loading = false;
+ 
+         });
+      };
       $scope.delete = function(index) {
 		$scope.loading = true;
 

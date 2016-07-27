@@ -87,9 +87,36 @@ class NewsletterController extends Controller
         
 	 
          public function update(){
-	
+	   $validator = Validator::make(Request::all(), [
+                'name' => 'required',	       
+                'email'=>'required|unique:newsletters,email,'.Request::input('edit_id').',id|email',            
+                'mobile_no'=>'required|numeric',
+                'occupation'=>'required',
+                'city'=>'required',
+            
+           ]);
+             if ($validator->fails()) {
+                              $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			      return $list;
+          }
             $newsletter = Newsletter::find(Request::input('edit_id'));
-            $newsletter->subscribe = Request::input('subscribe');        
+            $newsletter->name = Request::input('name');   
+            $newsletter->email = Request::input('email'); 
+            $newsletter->mob_no = Request::input('mobile_no');
+            $newsletter->occupation = Request::input('occupation');
+            $newsletter->city = Request::input('city');
+            $newsletter->save(); 		  
+            $list[]='success';
+            $list[]='Record is updated successfully.';	 
+            return $list;
+	     
+	}
+         public function update_subscribe(){
+	     
+            $newsletter = Newsletter::find(Request::input('edit_id'));
+            $newsletter->subscribe = Request::input('subscribe');               
             $newsletter->save(); 		  
             $list[]='success';
             $list[]='Record is updated successfully.';	 

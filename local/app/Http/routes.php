@@ -62,6 +62,7 @@ Route::get('admins/newsletter/export', 'Admin\NewsletterController@export');
 Route::post('admins/newsletter/store', 'Admin\NewsletterController@store');
 Route::post('admins/newsletter/delete', 'Admin\NewsletterController@delete');
 Route::post('admins/newsletter/update', 'Admin\NewsletterController@update');
+Route::post('admins/newsletter/update_subscribe', 'Admin\NewsletterController@update_subscribe');
 
 Route::get('admins/template', 'Admin\TemplateController@index');
 Route::get('admins/template/add', 'Admin\TemplateController@add');
