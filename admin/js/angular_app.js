@@ -152,7 +152,7 @@ app.controller('HomeController', function($scope, $http) {
     
      $scope.errors=false;
 
-     $scope.files=false;
+     $scope.files='';
 
      $scope.loading = true;
      $scope.categories=false;
@@ -226,7 +226,7 @@ app.controller('HomeController', function($scope, $http) {
                         meta_keyword: category.meta_keyword,
                    
 		}).success(function(data, status, headers, config) {
-                 $scope.files=false;
+                 $scope.files='';
                 if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -256,7 +256,7 @@ app.controller('HomeController', function($scope, $http) {
                         meta_keyword: category.meta_keyword,
 
 		} ).success(function(data, status, headers, config) {
-                   $scope.files=false;
+                   $scope.files='';
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -290,7 +290,7 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('FaqController', function($scope, $http) {
     
      $scope.errors=false;
-     $scope.files=false;
+     $scope.files='';
      $scope.loading = true;
      $scope.faqs=false;
      $scope.page='index';
@@ -398,7 +398,7 @@ app.controller('NewsletterController', function($scope, $http) {
      $scope.errors_modal=false;
      $scope.success_flash_modal=false;
      $scope.errors=false;
-     $scope.files=false;
+     $scope.files='';
      $scope.loading = true;
      $scope.newsletters=false;
      $scope.page='index';
@@ -452,7 +452,7 @@ app.controller('NewsletterController', function($scope, $http) {
                         subscribe: newsletter.subscribe                    
                   
 		}).success(function(data, status, headers, config) {
-                   $scope.files=false;
+                   $scope.files='';
                        if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -488,7 +488,7 @@ app.controller('NewsletterController', function($scope, $http) {
 app.controller('ConfigController', function($scope, $http) {
    
      $scope.errors=false;
-     $scope.files=false;
+     $scope.files='';
      $scope.loading = true;
      $scope.configs=false;
      $scope.page='index';    
@@ -546,8 +546,8 @@ app.controller('ConfigController', function($scope, $http) {
 app.controller('UserController', function($scope, $http) {
 
     $scope.errors=false;
-	$scope.files=false;
-	$scope.bannerfiles=false;
+	$scope.files='';
+	$scope.bannerfiles='';
      $scope.loading = true;
      $scope.users=false;
 	 $scope.user=false;
@@ -666,7 +666,7 @@ app.controller('UserController', function($scope, $http) {
 			mobile: user_data.mobile,
 			website: user_data.website,
 			bio: user_data.bio,
-			password: user_data.password,
+			password: user_data.pass,
 			confirm_password:user_data.repassword,
 			nationality: user_data.nationality,
 			country: user_data.country,
@@ -707,7 +707,7 @@ app.controller('UserController', function($scope, $http) {
 				if($scope.files)
 				$scope.user.image = $scope.files;
 				//console.log($scope.user.image);
-				$scope.files=false;
+				$scope.files='';
 			$scope.errors=false;
 			$scope.success_flash= data[1];
 			
@@ -717,7 +717,7 @@ app.controller('UserController', function($scope, $http) {
          });
       };
 	  
-	  $scope.store = function(userData) { 
+	  $scope.store = function(userData) {console.log($scope.files) ;
            $scope.errors=false;
            $scope.success_flash=false;
            $http.post('user/store', {
@@ -763,7 +763,7 @@ app.controller('UserController', function($scope, $http) {
 			
 			
 		}).success(function(data, status, headers, config) {console.log($scope.files);
-                    $scope.files=false;
+                    $scope.files='';
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -801,7 +801,7 @@ app.controller('UserController', function($scope, $http) {
 app.controller('StaticContentController', function($scope, $http) {
 
     $scope.errors=false;
-	$scope.files=false;
+	$scope.files='';
      $scope.loading = true;
      $scope.contents=false;
 	 $scope.content=false;
@@ -880,7 +880,7 @@ app.controller('StaticContentController', function($scope, $http) {
 				if($scope.files)
 			$scope.content.image = $scope.files;
 			//console.log($scope.content.image);
-			$scope.files=false;			
+			$scope.files='';			
 			$scope.errors=false;
 			$scope.success_flash= data[1];
 			
@@ -903,7 +903,7 @@ app.controller('StaticContentController', function($scope, $http) {
                         image: $scope.files
 
 		}).success(function(data, status, headers, config) {
-                    $scope.files=false;
+                    $scope.files='';
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -942,7 +942,7 @@ app.controller('StaticContentController', function($scope, $http) {
 app.controller('BrandsController', function($scope, $http) {
 
     $scope.errors=false;
-	$scope.files = false;
+	$scope.files = '';
      $scope.loading = true;
      $scope.brands=false;
 	 $scope.brand=false;
@@ -1021,7 +1021,7 @@ $scope.user=false;
 				if($scope.files)
 				$scope.brands.image = $scope.files;
 			$scope.errors=false;
-			$scope.files = false;
+			$scope.files='';
 			$scope.success_flash= data[1];
 			
 			}
@@ -1030,7 +1030,7 @@ $scope.user=false;
          });
       };
 	  
-	  $scope.store = function(userData) { 
+	  $scope.store = function(userData) {console.log($scope.files); 
            $scope.errors=false;
            $scope.success_flash=false;
            $http.post('brand/store', {
@@ -1041,7 +1041,7 @@ $scope.user=false;
 			image: $scope.files
 
 		}).success(function(data, status, headers, config) {
-                    $scope.files=false;
+                    $scope.files='';
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -1081,7 +1081,7 @@ $scope.user=false;
 app.controller('BannerController', function($scope, $http) {
 
     $scope.errors=false;
-	$scope.files = false;
+	$scope.files='';
      $scope.loading = true;
      $scope.banners=false;
 	 $scope.banner=false;
@@ -1175,7 +1175,7 @@ $scope.banner=false;
 				if($scope.files)
 				$scope.banner.image = $scope.files;
 			$scope.errors=false;
-			$scope.files = false;
+			$scope.files='';
 			$scope.success_flash= data[1];
 			
 			}
@@ -1196,7 +1196,7 @@ $scope.banner=false;
 			image: $scope.files
 
 		}).success(function(data, status, headers, config) {
-                    $scope.files=false;
+                    $scope.files='';
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -1235,7 +1235,7 @@ $scope.banner=false;
 app.controller('SellerController', function($scope, $http) {
 
     $scope.errors=false;
-	$scope.files=false;
+	$scope.files='';
      $scope.loading = true;
      $scope.sellers=false;
 	 $scope.seller=false;
@@ -1323,7 +1323,7 @@ app.controller('SellerController', function($scope, $http) {
 				if($scope.files)
 				$scope.seller.image = $scope.files;
 				//console.log($scope.user.image);
-				$scope.files=false;
+				$scope.files='';
 			$scope.errors=false;
 			$scope.success_flash= data[1];
 			
@@ -1352,7 +1352,7 @@ app.controller('SellerController', function($scope, $http) {
 			store_link:userData.store_link,
 
 		}).success(function(data, status, headers, config) {console.log($scope.files);
-                    $scope.files=false;
+                    $scope.files='';
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
@@ -1390,7 +1390,7 @@ app.controller('SellerController', function($scope, $http) {
 app.controller('CountryController', function($scope, $http) {
 
     $scope.errors=false;
-	$scope.files=false;
+	$scope.files='';
      $scope.loading = true;
      $scope.contents=false;
 	 $scope.content=false;
@@ -1455,7 +1455,7 @@ app.controller('CountryController', function($scope, $http) {
 			}else{
 				
 			//console.log($scope.content.image);
-			$scope.files=false;			
+			$scope.files='';			
 			$scope.errors=false;
 			$scope.success_flash= data[1];
 			
@@ -1474,7 +1474,7 @@ app.controller('CountryController', function($scope, $http) {
 			
 
 		}).success(function(data, status, headers, config) {
-                    $scope.files=false;
+                    $scope.files='';
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{

@@ -186,7 +186,7 @@
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Password</label>
-                  <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user_ddata.password">
+                  <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user_ddata.pass">
 				<div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">

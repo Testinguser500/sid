@@ -169,16 +169,16 @@ class UserController extends Controller
 	    return $return; 
 	}
          public function update(){
-	
+	//print_r(Request::all());
 	 $validation1=array();
 	$validation = array(
 			'role'=>'required',
 			'name' => 'required',
 			'username' => 'required|unique_with:users,role,'.Request::input('id'),
 			'email'=>'required|email|unique_with:users,role,'.Request::input('id'),
-			
+			'password'=>'min:6',
 			'confirm_password'=>'same:password',
-			'profile_image'=>'required',
+			
 	
 	);
 	if(Request::input('role')==3)
@@ -194,7 +194,7 @@ class UserController extends Controller
 	elseif(Request::input('role')==5)
 	{
 		$validation1 = array(
-		'banner'=>'required',
+		
 		'store_country'=>'required',
 		'store_state'=>'required',
 		'store_city'=>'required',

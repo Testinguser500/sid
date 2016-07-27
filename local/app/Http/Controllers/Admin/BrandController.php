@@ -36,7 +36,7 @@ class BrandController extends Controller
   
 	   $validator = Validator::make(Request::all(), [
             'brand_name' => 'required',
-	    //'image'=>'required',
+	    'image'=>'required',
             'description'=>'required',            
             
         ]);
