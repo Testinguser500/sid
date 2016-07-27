@@ -1,18 +1,18 @@
 <?php
 
 namespace App;
+use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
+class Store extends Model
 {
+	protected $table = 'store';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name','username','nickname', 'email', 'password','gender','website','address','role','image','mobile','nationality','bio','status'
+        'name','store_link','banner', 'phone','address','country','state','city','facebook_link','google_link','twitter_link','linkedin_link','youtube_link','instagram_link','flickr_link','status','user_id'
     ];
 
     /**

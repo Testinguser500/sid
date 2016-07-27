@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers\Admin;
 use App\User; 
 use App\Category; 
+use App\Shipping;
+use App\Store;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -38,41 +40,93 @@ class UserController extends Controller
 		
 	}
         public function store(){
-	
-  
-	   $validator = Validator::make(Request::all(), [
-            'name' => 'required',
-			'email'=>'required|email|unique:users',
 			
-	    'image'=>'required',
-                       
-            
-        ]);
+			$validation1=array();
+	$validation = array(
+			'role'=>'required',
+			'name' => 'required',
+			'username' => 'required|unique:users',
+			'email'=>'required|email|unique:users',
+			'password'=>'required|min:6',
+			'confirm_password'=>'required|same:password',
+			'profile_image'=>'required',
+	
+	);
+	if(Request::input('role')==3)
+	{
+		$validation1 = array('ship_name'=>'required',
+		'ship_mobile'=>'required',
+		'ship_address'=>'required',
+		'ship_country'=>'required',
+		'ship_state'=>'required',
+		'ship_city'=>'required',
+		);
+	}
+	elseif(Request::input('role')==5)
+	{
+		$validation1 = array(
+		'banner'=>'required',
+		'store_country'=>'required',
+		'store_state'=>'required',
+		'store_city'=>'required',
+		'store_address'=>'required',
+		'store_phone'=>'required'
+		);
+	}
+  $arrayData = array_merge($validation,$validation1);
+	   $validator = Validator::make(Request::all(), $arrayData);
+		
          
         if ($validator->fails()) {
-            $list[]='error';
-                              $msg=$validator->errors()->all();
-			      $list[]=$msg;
-			      return $list;
+				$list[]='error';
+				$msg=$validator->errors()->all();
+				$list[]=$msg;
+				return $list;
         }
 		 
-        $password = (str_random(6));
-        User::create(['image' =>Request::input('image'),'name' =>Request::input('name'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'address'=>Request::input('address'),'status' =>Request::input('status'),'role'=>2]);  
+        $password = Request::input('password');
+        $user = User::create(['image' =>Request::input('profile_image'),'name' =>Request::input('name'),'username' =>Request::input('username'),'nickname' =>Request::input('nickname'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
+		$insert_id = $user->id;
+		if(Request::input('role')==3)
+		{
+			Shipping::create(['user_id'=>$insert_id,'name'=>Request::input('ship_name'),'mobile'=>Request::input('ship_mobile'),'address'=>Request::input('ship_address'),'country'=>Request::input('ship_country'),'state'=>Request::input('ship_state'),'city'=>Request::input('ship_city')]);
+		}
+		elseif(Request::input('role')==5)
+		{
+			Store::create(['user_id'=>$insert_id,
+			'name'=>Request::input('store_name'),
+			'store_link'=>Request::input('store_link'),
+			'address'=>Request::input('store_address'),
+			'country'=>Request::input('store_country'),
+			'state'=>Request::input('store_state'),
+			'city'=>Request::input('store_city'),
+			'phone'=>Request::input('store_phone'),
+			'banner'=>Request::input('banner'),
+			'facebook_link'=>Request::input('facebook_link'),
+			'google_link'=>Request::input('google_plus_link'),
+			'twitter_link'=>Request::input('twitter_link'),
+			'linkedin_link'=>Request::input('linkedin_link'),
+			'youtube_link'=>Request::input('youtube_link'),
+			'instagram_link'=>Request::input('instagram_link'),
+			'flickr_link'=>Request::input('flickr_link'),'status'=>'Inactive']);
+		}
 		$emails['email'] = Request::input('email'); 
         $copyright=configs_value('Copyright');        
         $em_content=email_section('1');   
         $msg=$em_content->email_body;
         $msg=str_replace("{name}",Request::input('name'),$msg);
-        $msg=str_replace("{role}",'Seller',$msg);
+        $msg=str_replace("{role}",'User',$msg);
         $msg=str_replace("{site_name}",configs_value('Site Name'),$msg);
         $msg=str_replace("{username}",Request::input('email'),$msg);
         $msg=str_replace("{password}",$password,$msg);
         $msg=str_replace("{copyright}",$copyright,$msg);
-        $emails['subject']= str_replace("{site_name}",$em_content->email_subject);
+		$msg=str_replace("{link}",configs_value('Website'),$msg);
+        $emails['subject']= str_replace("{site_name}",configs_value('Site Name'),$em_content->email_subject);
         $emails['name']= configs_value('Site Name');
         $emails['from']=configs_value('SMTP User');
+		$emails['site_name']=configs_value('Site Name');
 		Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
-			$message->from('test@infoseeksoftwaresystems.com', 'Laravel');
+			$message->from($emails['from'], $emails['site_name']);
 
 			$message->to($emails['email'])->subject($emails['subject']);
 		});  

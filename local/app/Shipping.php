@@ -1,18 +1,18 @@
 <?php
 
 namespace App;
+use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
+class Shipping extends Model
 {
+	protected $table = 'shipp_address';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name','username','nickname', 'email', 'password','gender','website','address','role','image','mobile','nationality','bio','status'
+        'name', 'mobile','address','role','country','state','city','status','user_id'
     ];
 
     /**
