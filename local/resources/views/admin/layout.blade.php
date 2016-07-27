@@ -352,7 +352,7 @@
         {
             $subMenu = getMenu($val->menu_id);?>
         <li class="treeview">
-          <a href="#<?php echo $val->filename;?>">
+          <a href="<?php if(!$subMenu) echo '#'.$val->filename; else echo 'javascript:void(0)';?>">
             
               <i class="fa <?php echo $val->icon; ?>"></i> <span><?php echo $val->name;?></span>
               <?php if(!empty($subMenu)) {?>
