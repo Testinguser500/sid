@@ -118,3 +118,5 @@ Route::post('admins/country/store', 'Admin\CountryController@store');
 Route::get('admins/country/edit/{id}', 'Admin\CountryController@edit');
 Route::post('admins/country/update', 'Admin\CountryController@update');
 Route::post('admins/country/delete', 'Admin\CountryController@delete');
+Route::post('admins/country/getState', 'Admin\CountryController@getState');
+Route::post('admins/country/getCity', 'Admin\CountryController@getCity');

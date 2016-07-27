@@ -262,8 +262,8 @@
                   <label for="exampleInputEmail1">Country</label>
                   <select class="form-control" id="" name="country" placeholder="Country" ng-model="user.country">
 				  <option value="">Select Country</option>
-				  <option value="India">India</option>
-				  <option value="Nepal">Nepal</option>
+				  <option ng-repeat="con in country" ng-value="con.name"><%con.name%></option>
+				  
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -304,19 +304,21 @@
                   
 				</div>
 				<div class="row">
+				
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Country</label>
-                  <select class="form-control" id="" name="store_country" placeholder="Country" ng-model="user.store_country">
+                  <select class="form-control" id="" name="store_country" placeholder="Country" ng-model="user.store_country" ng-change="getState(user.store_country);">
 				  <option value="">Select Country</option>
-				  <option value="India">India</option>
-				  <option value="Nepal">Nepal</option>
+				  <option ng-repeat="con in country" ng-value="con.id"><%con.name%></option>
 				  </select>
 				
                 </div>
+				
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">State</label>
-                  <select class="form-control" id="" name="state" ng-model="user.store_state">
+                  <select class="form-control" id="" name="state" ng-model="user.store_state" ng-change="getCity(user.store_state);">
 				  <option value="">Select State</option>
+				  <option ng-repeat="st in store_state" ng-value="st.id"><%st.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -324,6 +326,7 @@
                   <label for="exampleInputEmail1">City</label>
                   <select class="form-control" id="" name="city" ng-model="user.store_city">
 				  <option value="">Select City</option>
+				  <option ng-repeat="ct in store_city" ng-value="ct.id"><%ct.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -409,19 +412,17 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Country</label>
-                  <select class="form-control" id="" name="ship_country" placeholder="Country" ng-model="user.ship_country">
+                  <select class="form-control" id="" name="ship_country" placeholder="Country" ng-model="user.ship_country" ng-change="getState(user.ship_country);">
 				  <option value="">Select Country</option>
-				  <option value="India">India</option>
-				  <option value="Nepal">Nepal</option>
+				  <option ng-repeat="con in country" ng-value="con.id"><%con.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">State</label>
-                  <select class="form-control" id="" name="ship_state" placeholder="Country" ng-model="user.ship_state">
+                  <select class="form-control" id="" name="ship_state" placeholder="Country" ng-model="user.ship_state" ng-change="getCity(user.ship_state);">
 				  <option value="">Select State</option>
-				  <option value="India">India</option>
-				  <option value="Nepal">Nepal</option>
+				  <option ng-repeat="st in store_state" ng-value="st.id"><%st.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -429,8 +430,7 @@
                   <label for="exampleInputEmail1">City</label>
                   <select class="form-control" id="" name="ship_city" placeholder="Country" ng-model="user.ship_city">
 				  <option value="">Select City</option>
-				  <option value="India">India</option>
-				  <option value="Nepal">Nepal</option>
+				  <option ng-repeat="ct in store_city" ng-value="ct.id"><%ct.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>

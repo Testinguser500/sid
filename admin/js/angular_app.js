@@ -561,7 +561,8 @@ app.controller('UserController', function($scope, $http) {
 		$scope.loading = true;
 		$http.get('user/all').
 		success(function(data, status, headers, config) {
-			$scope.users = data;
+			$scope.users = data['category'];
+			$scope.country = data['country'];
 		        $scope.loading = false;
  
 		});
@@ -572,7 +573,9 @@ app.controller('UserController', function($scope, $http) {
                 $scope.success_flash=false;
                 $http.get('user/all').
 		success(function(data, status, headers, config) {
-			$scope.all_user = data;
+			$scope.all_user = data['category'];
+			$scope.country = data['country'];
+			console.log($scope.all_user);
 		        $scope.loading = false;
  
 		});
@@ -590,7 +593,28 @@ app.controller('UserController', function($scope, $http) {
  
 		});;
 	};
-	
+	$scope.getState = function(pid){
+		console.log(pid);
+		$http.post('country/getState',{
+			store_country:pid
+		}).
+		success(function(data, status, headers, config) {console.log(data);
+		$scope.store_state = data;	
+ 
+		});
+		
+	}
+	$scope.getCity = function(pid){
+		console.log(pid);
+		$http.post('country/getCity',{
+			store_country:pid
+		}).
+		success(function(data, status, headers, config) {console.log(data);
+		$scope.store_city = data;	
+ 
+		});
+		
+	}
 	$scope.uploadedFile = function(element) {
            $scope.$apply(function($scope) {
             $scope.loading = true;
@@ -1347,6 +1371,8 @@ app.controller('CountryController', function($scope, $http) {
  
 		});
 	}
+	
+	
         $scope.add = function() {
 		$scope.country = false;				
                 $scope.page='add';		

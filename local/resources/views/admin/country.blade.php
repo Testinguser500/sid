@@ -238,8 +238,8 @@
 			 <div class="form-group">
                   <label for="exampleInputEmail1">Country List</label>
                   <select class="form-control" id="" name="country" ng-model="country.pid" >
-				  <option ng-value="">Select Country</option>
-				  <option ng-repeat="con in all_country" ng-value="con.id" ng-selected="country.pid==con.id"><%con.name%></option>
+				  <option value="">Select Country</option>
+				  <option ng-repeat="con in all_country" ng-value="con.id" ng-selected="<%country.pid==con.id%>"><%con.name%></option>
                   </select>
 		  <div class="help-block"></div>
                 </div>

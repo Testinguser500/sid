@@ -29,8 +29,11 @@ class UserController extends Controller
 	}
 	
 	public function all(){ 
-             $category = DB::table('users')->where('is_delete','=','0')->get();  
-             return  $category;
+             $category = DB::table('users')->where('is_delete','=','0')->get();
+			$country = DB::table('country')->where('is_delete','=','0')->where('pid','=','0')->get();			 
+             $return['category'] =  $category;
+			 $return['country'] =  $country;
+			 return $return;
 		
 	}
        public function add(){ 

@@ -40,6 +40,24 @@ class CountryController extends Controller
              return  $data;
 	}
 	
+	public function getState()
+	{
+		$pid = Request::input('store_country');
+		if($pid)
+		{
+		$state = DB::table('country')->where('is_delete','=',0)->where('pid','=',$pid)->get();
+		return $state;
+		}
+	}
+	public function getCity()
+	{
+		$pid = Request::input('store_country');
+		if($pid)
+		{
+		$city = DB::table('country')->where('is_delete','=',0)->where('pid','=',$pid)->get();
+		return $city;
+		}
+	}
 	public function edit($id){
 	
 	 $country= DB::table('country')->where('id', '=',$id)->first();  
