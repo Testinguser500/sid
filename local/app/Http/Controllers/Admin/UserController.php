@@ -67,6 +67,8 @@ class UserController extends Controller
 	}
         public function store(){
 			
+			print_r(Request::input('affiliatefees'));
+			
 			$validation1=array();
 	$validation = array(
 			'role'=>'required',
@@ -135,6 +137,12 @@ class UserController extends Controller
 			'youtube_link'=>Request::input('youtube_link'),
 			'instagram_link'=>Request::input('instagram_link'),
 			'flickr_link'=>Request::input('flickr_link'),'status'=>'Inactive']);
+			$store_id = $store->id;
+			$affiliatefees = Request::input('affiliatefees');
+			foreach((array)$affiliatefees as $aff)
+			{
+			Affiliate::create(['user_id'=>$insert_id,'store_id'=>$store_id,'category_id'=>$aff['affiliate'],'fees'=>$aff['value']]);
+			}
 		}
 		$emails['email'] = Request::input('email'); 
         $copyright=configs_value('Copyright');        

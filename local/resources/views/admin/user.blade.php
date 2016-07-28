@@ -607,7 +607,8 @@
                 <div class="form-group col-xs-12 list list-inset">
         <div class="row item-input" ng-repeat="input in inputs">
         <label class="item-input-wrapper col-xs-4">
-		<select class="form-control" ng-model="user.affiliate">
+		<% $index %>
+		<select class="form-control" ng-model="input.affiliate">
 		<option ng-repeat="cat in category" ng-value="cat.id"><%cat.category_name%></option></select></label>
 		<label class="item-input-wrapper col-xs-4">
             <input type="text" class="form-control" placeholder="Type something" ng-model="input.value" />
@@ -647,7 +648,7 @@
                 </div>
                  <div class="form-group col-xs-4">
                   <label for="exampleInputEmail1"> Store Logo</label>
-                  <input type="file"  name="store_logo" ng-model="user.store_logo" onchange="angular.element(this).scope().uploadedBannerFile(this)">
+                  <input type="file"  name="store_logo" ng-model="user.store_logo" onchange="angular.element(this).scope().uploadlogo(this)">
 		  <div class="help-block"></div>
                 </div>
                   

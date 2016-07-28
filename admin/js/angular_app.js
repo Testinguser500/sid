@@ -456,13 +456,8 @@ app.controller('NewsletterController', function($scope, $http) {
                         edit_id:newsletter.id
                   
 		}).success(function(data, status, headers, config) {
-<<<<<<< HEAD
+
 					$scope.files='';
-=======
-
-                   $scope.files='';
-
->>>>>>> eac7869ffd065a78889b37d33237c49aa0f97984
 
                        if(data[0]=='error'){
 				$scope.errors_modal=data[1];
@@ -621,9 +616,9 @@ app.controller('UserController', function($scope, $http) {
     }];
 
     $scope.addInput = function () {
-        console.log("new input");
+       
         $scope.inputs.push({
-            value: null
+            value: ''
         });
     }
 
@@ -727,6 +722,23 @@ app.controller('UserController', function($scope, $http) {
 
     });
    }
+   $scope.uploadlogo = function(element) {
+           $scope.$apply(function($scope) {
+            $scope.loading = true;
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'store_logo');
+			fd.append("width",'150');
+			fd.append("height",'150');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
+
+    });
+   }
    $scope.uploadedBannerFile = function(element) {
            $scope.$apply(function($scope) {
             $scope.loading = true;
@@ -811,14 +823,19 @@ app.controller('UserController', function($scope, $http) {
          });
       };
 	  
-	  $scope.store = function(userData) {//console.log($scope.files) ;
+	  $scope.store = function(userData) {console.log($scope.inputs) ;
            $scope.errors=false;
            $scope.success_flash=false;
+		   
+		  
+		  console.log($scope.albumNameArray);
            $http.post('user/store', {
 			role:userData.role,
-			name: userData.name,
+			fname: userData.fname,
+			lname: userData.lname,
 			username: userData.username,
 			nickname: userData.nickname,
+			display_name: userData.display_name,
 			email: userData.email,
 			gender:userData.gender,
 			mobile: userData.mobile,
@@ -854,6 +871,7 @@ app.controller('UserController', function($scope, $http) {
 			youtube_link:userData.youtube_link,
 			instagram_link:userData.instagram_link,
 			flickr_link:userData.flickr_link,
+			affiliatefees:$scope.inputs
 			
 			
 		}).success(function(data, status, headers, config) {//console.log($scope.files);
@@ -865,7 +883,7 @@ app.controller('UserController', function($scope, $http) {
 				$scope.errors=false;
                                 $scope.success_flash=data[1];
 				$scope.users.push(userData);
-                                $scope.init();
+                                //$scope.init();
 			}
 			$scope.loading = false;
  
