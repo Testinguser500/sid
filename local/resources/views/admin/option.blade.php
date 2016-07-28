@@ -82,7 +82,7 @@
         <!-- general form elements -->
           <div class="box box-primary" ng-if="page=='add'">
             <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-plus"></i> Create FAQ Questions</h3>
+                <h3 class="box-title"><i class="fa fa-plus"></i> Create Option Name</h3>
                 <div class="pull-right"> <a href="javascript:void(0);" ng-click="init();" class="btn btn-default">Back</a></div>
             </div>
             <!-- /.box-header -->
@@ -92,7 +92,7 @@
 			 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Option Name</label>
-                  <input type="text" class="form-control" id="" name="option_name" placeholder="Question" ng-model="option.option_name">
+                  <input type="text" class="form-control" id="" name="option_name" placeholder="Option Name" ng-model="option.option_name">
 		  <div class="help-block"></div>
                 </div> 
                 <div class="form-group">
@@ -127,15 +127,21 @@
                   <input type="text" class="form-control" id=""  ng-model="option.option_name" name="option_name" placeholder="Option Name" >
 		  <div class="help-block"></div>
                 </div> 
-                <div class="form-group">
+                <div class="form-group" ng-repeat="inp in inputs">
                   <label for="exampleInputEmail1">Option Name</label>
 		  <input type="text" class="form-control" id=""  ng-model="option.option_value" name="option_value" placeholder="Option Value" >
 		  <div class="help-block"></div>
-                </div>                
-                 
+		  <button class="btn btn-success button button-small button-balanced" ng-if="$index == inputs.length - 1" ng-click="addInput()">
+		    <i class="icon ion-plus"></i>
+		  </button>
+		    <button class="btn btn-danger button button-small button-assertive" ng-if="$index != inputs.length - 1" ng-click="removeInput($index)">
+		    <i class="icon ion-minus"></i>
+		    </button>
+                </div>
                   <div class="form-group">
-                  <label for="exampleInputEmail1">Status </label>
-                  <input type="radio"  id="" name="status" value="Active"  ng-model="option.status">Active <input type="radio" id="" name="status"  ng-model="option.status" value="Inactive">Inactive 
+                  <label for="exampleInputEmail1">Status</label>
+                  <input type="radio"  id="" name="status" value="Active"  ng-model="option.status">Active
+		  <input type="radio" id="" name="status"  ng-model="option.status" value="Inactive">Inactive 
 		  <div class="help-block"></div>
                 </div> 
              </div>

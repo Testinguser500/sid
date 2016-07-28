@@ -226,7 +226,7 @@ app.controller('HomeController', function($scope, $http) {
                         image: $scope.files,
                         meta_title: category.meta_title,
                         meta_description: category.meta_description,
-                        meta_keyword: category.meta_keyword,
+                        meta_keyword: category.meta_keyword
                    
 		}).success(function(data, status, headers, config) {
                  $scope.files='';
@@ -256,7 +256,7 @@ app.controller('HomeController', function($scope, $http) {
                         parent_id: category.parent_id,                       
                         meta_title: category.meta_title,
                         meta_description: category.meta_description,
-                        meta_keyword: category.meta_keyword,
+                        meta_keyword: category.meta_keyword
 
 		} ).success(function(data, status, headers, config) {
                    $scope.files='';
@@ -327,7 +327,7 @@ app.controller('HomeController', function($scope, $http) {
 			$scope.faq = data['data'];                      
 		        $scope.loading = false;
  
-		});;
+		});
 	};
         
 
@@ -1652,7 +1652,22 @@ app.controller('CountryController', function($scope, $http) {
                                         $scope.success_flash=data[1];
                                         $scope.init();
                                 });
-                };
+        };
+		
+	$scope.inputs = [{
+        value: null
+	 }];
+
+	$scope.addInput = function () {
+	   
+	    $scope.inputs.push({
+		value: null
+	    });
+	}
+    
+	$scope.removeInput = function (index) {
+	    $scope.inputs.splice(index, 1);
+	}
 
          $scope.init();
 });
