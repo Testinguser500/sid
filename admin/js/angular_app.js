@@ -47,6 +47,9 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/country', {
       templateUrl: 'country', controller: 'CountryController'
    }).
+   when('/option', {
+      templateUrl: 'option', controller: 'OptionController'
+   }). 
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -1498,9 +1501,7 @@ app.controller('CountryController', function($scope, $http) {
            $scope.success_flash=false;
            $http.post('country/store', {
 			name: userData.name,
-			country_id: userData.id,
-			
-
+			country_id: userData.id
 		}).success(function(data, status, headers, config) {
                     $scope.files='';
                     if(data[0]=='error'){
@@ -1550,4 +1551,108 @@ app.controller('CountryController', function($scope, $http) {
 
 
 
+});
+
+// Product Option Management
+ app.controller('OptionController', function($scope, $http) {
+    
+     $scope.errors=false;
+     $scope.files='';
+     $scope.loading = true;
+     $scope.options=false;
+     $scope.page='index';
+     $scope.option=false;
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('option/all').
+		success(function(data, status, headers, config) {
+			$scope.options = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $scope.option=false;
+	}
+        $scope.editoption = function(option) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('option/edit/' + option.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.option = data['data'];                      
+		        $scope.loading = false;
+ 
+		});;
+	};
+        
+
+        $scope.update = function(option) { 
+            $scope.errors=false;
+            $scope.success_flash=false;
+         
+           $http.post('option/update', {
+			option_name: option.option_name,
+			option_value: option.option_value,
+                        status: option.status,
+                        option_id:option.id
+		}).success(function(data, status, headers, config) {
+                 
+                if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+
+      $scope.store = function(option) { 
+           $scope.errors=false;
+           $scope.success_flash=false;   
+
+           $http.post('option/store', {
+			option_name: option.option_name,
+                        status: option.status 
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      $scope.deleteoption = function(index) {
+		$scope.loading = true;
+
+		var option = $scope.options[index];
+              
+                $http.post('option/delete',{            
+                    del_id:option.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.options.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+
+         $scope.init();
 });
