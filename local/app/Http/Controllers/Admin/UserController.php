@@ -29,10 +29,14 @@ class UserController extends Controller
 	}
 	
 	public function all(){ 
-             $category = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->get();
-			$country = DB::table('country')->where('is_delete','=','0')->where('pid','=','0')->get();			 
-             $return['category'] =  $category;
+             $user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->get();
+			$country = DB::table('country')->where('is_delete','=','0')->where('pid','=','0')->get();
+			$category = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
+			$role = DB::table('role')->get();			
+             $return['users'] =  $user;
 			 $return['country'] =  $country;
+			 $return['roles'] =  $role;
+			 $return['category'] = $category;
 			 return $return;
 		
 	}
@@ -41,6 +45,25 @@ class UserController extends Controller
              $user = DB::table('users')->get();  
              return view('admin/add_user')->with('users_data',$user)->with('title','User')->with('subtitle','Add');
 		
+	}
+	public function checkUser(){
+		$validation = array(
+			'role'=>'required',
+			'username' => 'required|unique_with:users,role',
+			'email'=>'required|email|unique_with:users,role',
+	
+	);
+	$validator = Validator::make(Request::all(), $validation);
+		
+         
+        if ($validator->fails()) {
+				$list[]='error';
+				$msg=$validator->errors()->all();
+				$list[]=$msg;
+				return $list;
+        }
+		$list[]='success';
+		return $list;
 	}
         public function store(){
 			
@@ -159,7 +182,7 @@ class UserController extends Controller
 		if($data->role=='5')
 		$user = DB::table('store')->select('*','id as store_id')->where('user_id', '=',$id)->first();
 		elseif($data->role=='3')
-		$user = DB::table('shipp_address')->select('*','name as shipp_name','id as shipp_id')->where('users_id', '=',$id)->where('status','=','Active')->first();
+		$user = DB::table('shipp_address')->select('*','name as shipp_name','id as shipp_id')->where('user_id', '=',$id)->where('status','=','Active')->first();
 		//print_r($user);
 		 $return['user']=(object) array_merge((array)$data,(array) $user);
 		 //print_r($return['user']);

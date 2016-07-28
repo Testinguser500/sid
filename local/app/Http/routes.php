@@ -32,6 +32,7 @@ Route::get('admins/log_out', 'Admin\HomeController@log_out');
 Route::get('admins/dashboard', 'Admin\HomeController@dashboard');
 Route::get('admins/home', 'Admin\HomeController@home');
 Route::post('admins/imageupload', 'Admin\HomeController@imageupload');
+Route::post('admins/Allimageupload', 'Admin\HomeController@Allimageupload');
 
 Route::get('admins/category', 'Admin\CategoryController@index');
 Route::get('admins/category/all', 'Admin\CategoryController@all');
@@ -90,6 +91,7 @@ Route::post('admins/user/store', 'Admin\UserController@store');
 Route::get('admins/user/edit/{id}', 'Admin\UserController@edit');
 Route::post('admins/user/update', 'Admin\UserController@update');
 Route::post('admins/user/delete', 'Admin\UserController@delete');
+Route::post('admins/user/checkUser', 'Admin\UserController@checkUser');
 
 Route::get('admins/static-content', 'Admin\StaticContentController@index');
 Route::get('admins/static-content/all', 'Admin\StaticContentController@all');

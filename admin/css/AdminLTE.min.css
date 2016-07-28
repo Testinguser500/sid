@@ -11,3 +11,32 @@
     padding: 4px;
     width: 58%;
 }
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+.form-group.col-xs-12.show-bn {
+    border: 5px dashed rgb(204, 204, 204);
+    height: 425px;
+    padding: 85px 0;
+    
+}
+.btn.btn-primary.btn-file {
+    display: table;
+    margin: 10% auto;
+}
