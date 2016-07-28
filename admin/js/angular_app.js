@@ -576,8 +576,11 @@ app.controller('UserController', function($scope, $http) {
 	$scope.bannerfiles='';
      $scope.loading = true;
      $scope.users=false;
-	 $scope.user=false;
+	 $scope.user={};
+	 $scope.userq={};
 	 $scope.user_data = false;
+	 $scope.user_ddata = false;
+	 $scope.banner=false;
      $scope.page='index';
      $scope.success_flash=false;
      $scope.init = function() {	
@@ -587,7 +590,7 @@ app.controller('UserController', function($scope, $http) {
 		$scope.loading = true;
 		$http.get('user/all').
 		success(function(data, status, headers, config) {
-			$scope.users = data['category'];
+			$scope.users = data['users'];
 			$scope.country = data['country'];
 		        $scope.loading = false;
  
@@ -599,13 +602,69 @@ app.controller('UserController', function($scope, $http) {
                 $scope.success_flash=false;
                 $http.get('user/all').
 		success(function(data, status, headers, config) {
-			$scope.all_user = data['category'];
+			$scope.all_user = data['users'];
 			$scope.country = data['country'];
-			console.log($scope.all_user);
+			$scope.category = data['category'];
+			//console.log($scope.all_user);
 		        $scope.loading = false;
  
 		});
 	}
+	$scope.inputs = [{
+        value: null
+    }];
+
+    $scope.addInput = function () {
+        console.log("new input");
+        $scope.inputs.push({
+            value: null
+        });
+    }
+
+    $scope.removeInput = function (index) {
+        $scope.inputs.splice(index, 1);
+    }
+	$scope.useradd = function() {	
+                $scope.page='useradd';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $http.get('user/all').
+		success(function(data, status, headers, config) {
+			$scope.all_user = data['category'];
+			$scope.country = data['country'];
+			$scope.roles = data['roles'];
+			//console.log($scope.all_user);
+		        $scope.loading = false;
+ 
+		});
+	}
+	$scope.checkUser = function(userData){
+	$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                
+		$http.post('user/checkUser', {
+				username:userData.username,
+				email:userData.email,
+				role:userData.role
+		}).success(function(data, status, headers, config) {//console.log(data['user']);
+		
+		if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+			//console.log($scope.user.image);
+			$scope.errors=false;
+			$scope.success_flash= data[1];
+			$scope.user.username = userData.username;
+			$scope.user.email = userData.email;
+			$scope.user.role = userData.role;
+			$scope.loading = false;	
+			$scope.add();
+			}
+			
+		});
+	};
         $scope.edituser = function(category) {
 		$scope.loading = true;
                 $scope.errors=false;
@@ -620,7 +679,7 @@ app.controller('UserController', function($scope, $http) {
  //console.log($scope.user_data);
  $scope.getState($scope.user_ddata.store_country);
  $scope.getCity($scope.user_ddata.store_state);
-		});;
+		});
 	};
 	
 	$scope.getState = function(pid){
@@ -669,17 +728,20 @@ app.controller('UserController', function($scope, $http) {
             //Take the first selected file
             fd.append("image",element.files[0]);
 			fd.append("folder",'store_banner');
-			fd.append("width",'550');
-			fd.append("height",'250');
-            $http.post('imageupload', fd, {
+			fd.append("width",'1300');
+			fd.append("height",'400');
+            $http.post('Allimageupload', fd, {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.bannerfiles=data;$scope.loading = false;});
+            }).success( function(data, status, headers, config){ $scope.bannerfiles=data;
+			$scope.user.banner=$scope.bannerfiles;
+			console.log($scope.user.banner);
+			$scope.loading = false;});
 
     });
    }
-        $scope.update = function(user_data) { console.log($scope.bannerfiles);
+        $scope.update = function(user_data) { //console.log($scope.bannerfiles);
             $scope.errors=false;
             $scope.success_flash=false;
            $http.post('user/update', {
@@ -743,7 +805,7 @@ app.controller('UserController', function($scope, $http) {
          });
       };
 	  
-	  $scope.store = function(userData) {console.log($scope.files) ;
+	  $scope.store = function(userData) {//console.log($scope.files) ;
            $scope.errors=false;
            $scope.success_flash=false;
            $http.post('user/store', {
@@ -788,7 +850,7 @@ app.controller('UserController', function($scope, $http) {
 			flickr_link:userData.flickr_link,
 			
 			
-		}).success(function(data, status, headers, config) {console.log($scope.files);
+		}).success(function(data, status, headers, config) {//console.log($scope.files);
                     $scope.files='';
                     if(data[0]=='error'){
 				$scope.errors=data[1];
