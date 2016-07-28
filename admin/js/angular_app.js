@@ -577,6 +577,7 @@ app.controller('UserController', function($scope, $http) {
     $scope.errors=false;
 	$scope.files='';
 	$scope.bannerfiles='';
+	$scope.logo='';
      $scope.loading = true;
      $scope.users=false;
 	 $scope.user={};
@@ -737,7 +738,7 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
+            }).success( function(data, status, headers, config){ $scope.logo=data;$scope.loading = false;});
 
     });
    }
@@ -873,7 +874,13 @@ app.controller('UserController', function($scope, $http) {
 			youtube_link:userData.youtube_link,
 			instagram_link:userData.instagram_link,
 			flickr_link:userData.flickr_link,
-			affiliatefees:$scope.inputs
+			affiliatefees:$scope.inputs,
+			logo:$scope.logo,
+			selling:userData.selling,
+			publishing:userData.publishing,
+			commission:userData.commission,
+			featured:userData.featured,
+			verified:userData.verified,
 			
 			
 		}).success(function(data, status, headers, config) {//console.log($scope.files);

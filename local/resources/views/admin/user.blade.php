@@ -744,13 +744,13 @@
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Publishing</label>
-                  <input type="checkbox" class="" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.publishing"> Publish product directly
+                  <input type="checkbox" class="" id="" name="publishing"  ng-model="user.publishing"> Publish product directly
 		  </br><em>Bypass pending products directly</em>
 		  <div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Seller Commission%</label>
-                  <input type="text" class="form-control" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.commission">Publish product directly
+                  <input type="text" class="form-control" id="" name="commission" placeholder="Seller Commission" ng-model="user.commission">
 		  <em>Bypass pending products directly</em>
 		  <div class="help-block"></div>
                 </div>
@@ -759,13 +759,13 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Featured Seller</label>
-                  <input type="checkbox" class="" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.selling"> Mark as featured seller
+                  <input type="checkbox" class="" id="" name="featured"  ng-model="user.featured"> Mark as featured seller
 		  </br><em>This seller will be marked as a featured seller.</em>
 		  <div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Verify By SID</label>
-                  <input type="checkbox" class="" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.publishing"> Marked as SID Verified Seller
+                  <input type="checkbox" class="" id="" name="verified" ng-model="user.verified"> Marked as SID Verified Seller
 		  </br><em>This seller will be marked as a verified by SID seller.</em>
 		  <div class="help-block"></div>
                 </div>
@@ -781,7 +781,7 @@
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Promotinoal Banner Link</label>
-                  <input type="text" class="form-control" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.commission">
+                  <input type="text" class="form-control" id="" name="promotinoal_link" placeholder="Promotinoal Link" ng-model="user.promotinoal_link">
 		  <em>Banner image link.</em>
 		  <div class="help-block"></div>
                 </div>
