@@ -123,3 +123,10 @@ Route::post('admins/country/update', 'Admin\CountryController@update');
 Route::post('admins/country/delete', 'Admin\CountryController@delete');
 Route::post('admins/country/getState', 'Admin\CountryController@getState');
 Route::post('admins/country/getCity', 'Admin\CountryController@getCity');
+
+Route::get('admins/option', 'Admin\OptionController@index');
+Route::get('admins/option/all', 'Admin\OptionController@all');
+Route::post('admins/option/store', 'Admin\OptionController@store');
+Route::post('admins/option/delete', 'Admin\OptionController@delete');
+Route::get('admins/option/edit/{id}', 'Admin\OptionController@edit');
+Route::post('admins/option/update', 'Admin\OptionController@update');
