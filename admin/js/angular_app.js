@@ -459,17 +459,9 @@ app.controller('NewsletterController', function($scope, $http) {
                         edit_id:newsletter.id
                   
 		}).success(function(data, status, headers, config) {
-<<<<<<< HEAD
 
 					$scope.files='';
-
-=======
-					$scope.files='';
-
-                   $scope.files='';
-
->>>>>>> edc30308323a3a3aeffadf8cb5e53771a45b9127
-                       if(data[0]=='error'){
+			if(data[0]=='error'){
 				$scope.errors_modal=data[1];
 			}else{
 				
