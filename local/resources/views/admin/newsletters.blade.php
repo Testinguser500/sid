@@ -189,7 +189,6 @@
                             <h4 class="modal-title" id="myModalLabel">Edit</h4>
                           </div>
                           <div class="modal-body">
-<<<<<<< HEAD
                                <div class="alert alert-success" ng-if="success_flash_modal">
                                   <p>
                                   <% success_flash_modal %>
@@ -205,12 +204,10 @@
                                   <tr>
                                       <td> Name </td>
                                       <td> <input type="text" ng-model="val.name" /></td>                                      
-=======
                               <table  class="table table-bordered table-striped">
                                   <tr>
                                       <td> Name </td>
                                       <td> <input type="text" ng-model="val.name" name="name"/></td>                                      
->>>>>>> 50b47ba9c8e73daab4791e353c9620cd846a0f75
                                   </tr> 
                                   <tr>
                                       <td> Email </td>
@@ -229,13 +226,11 @@
                                       <td> <input type="text" ng-model="val.city"  /> </td>
                                   </tr>
                                    <tr>
-<<<<<<< HEAD
                                        <td > Gender </td>
                                        <td><input type="radio"  ng-model="val.gender"  name="gender_<% val.id %>" value="male"/> Male <input type="radio" name="gender_<% val.id %>" ng-model="val.gender" value="female"   /> Female </td>
                                    </tr>
                                 
                               </table>                              
-=======
                                       <td> Gender </td>
                                       <td > <input type="radio" ng-model="val.gender"  name="gender" value="male" ng-checked="val.gender=='male'" ng-value="'male'"/> Male <input type="radio" name="gender" ng-model="val.gender" value="female"  ng-checked="val.gender=='female'"  ng-value="'female'"/> Female </td>
                                    </tr>
@@ -250,7 +245,6 @@
                                 
                                
                               </div> 
->>>>>>> 50b47ba9c8e73daab4791e353c9620cd846a0f75
                           </div>
                           <div class="modal-footer">
                             <input type="hidden" name="edit_id" value="<% val.id %>" />                        
