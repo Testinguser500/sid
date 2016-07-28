@@ -65,7 +65,7 @@ Route::post('admins/newsletter/update', 'Admin\NewsletterController@update');
 Route::post('admins/newsletter/update_subscribe', 'Admin\NewsletterController@update_subscribe');
 
 Route::get('admins/template', 'Admin\TemplateController@index');
-Route::get('admins/template/add', 'Admin\TemplateController@add');
+Route::get('admins/template/all', 'Admin\TemplateController@all');
 Route::post('admins/template/store', 'Admin\TemplateController@store');
 Route::post('admins/template/delete', 'Admin\TemplateController@delete');
 Route::get('admins/template/edit/{id}', 'Admin\TemplateController@edit');
@@ -79,6 +79,7 @@ Route::get('admins/config/edit', 'Admin\ConfigController@edit');
 Route::post('admins/config/update', 'Admin\ConfigController@update');
 
 Route::get('admins/enquiry', 'Admin\EnquiryController@index');
+Route::get('admins/enquiry/all', 'Admin\EnquiryController@all');
 Route::get('admins/enquiry/edit/{id}', 'Admin\EnquiryController@edit');
 Route::post('admins/enquiry/update', 'Admin\EnquiryController@update');
 Route::post('admins/enquiry/delete', 'Admin\EnquiryController@delete');
