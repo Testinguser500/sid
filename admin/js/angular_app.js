@@ -1617,13 +1617,16 @@ app.controller('CountryController', function($scope, $http) {
 
 // Product Option Management
  app.controller('OptionController', function($scope, $http) {
-    
+     $scope.values = [{
+        option_name: null
+     }];
      $scope.errors=false;
      $scope.files='';
      $scope.loading = true;
      $scope.options=false;
      $scope.page='index';
-     $scope.option=false;
+     $scope.option={};
+     $scope.values={};
      $scope.success_flash=false;
      $scope.init = function() {	
                 $scope.page='index';
@@ -1650,22 +1653,27 @@ app.controller('CountryController', function($scope, $http) {
                 $scope.page='edit';
 		$http.get('option/edit/' + option.id, {			
 		}).success(function(data, status, headers, config) {
-			$scope.option = data['data'];                      
+			$scope.option = data['option'];
+			$scope.values = data['values'];
+			if($scope.values.length=='0')
+			{
+				$scope.addInput(); 
+			}
 		        $scope.loading = false;
  
 		});;
 	};
         
 
-        $scope.update = function(option) { 
+        $scope.update = function(option,values) { 
             $scope.errors=false;
             $scope.success_flash=false;
          
            $http.post('option/update', {
-			option_name: option.option_name,
-			option_value: option.option_value,
+			option_name: option.option_name,			
                         status: option.status,
-                        option_id:option.id
+                        id:option.id,
+			option_value:values
 		}).success(function(data, status, headers, config) {
                  
                 if(data[0]=='error'){
@@ -1673,6 +1681,8 @@ app.controller('CountryController', function($scope, $http) {
 			}else{
 				
 				$scope.errors=false;
+				$scope.option={};
+                                $scope.values={};
 			        $scope.success_flash=data[1];
                                 $scope.init();
 			}
@@ -1716,19 +1726,17 @@ app.controller('CountryController', function($scope, $http) {
                                 });
         };
 		
-	$scope.inputs = [{
-        value: null
-	 }];
+	
 
 	$scope.addInput = function () {
 	   
-	    $scope.inputs.push({
-		value: null
+	    $scope.values.push({
+		option_name: null
 	    });
 	}
     
 	$scope.removeInput = function (index) {
-	    $scope.inputs.splice(index, 1);
+	    $scope.values.splice(index, 1);
 	}
 
          $scope.init();

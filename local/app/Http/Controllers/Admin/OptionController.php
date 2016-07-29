@@ -22,7 +22,7 @@ class OptionController extends Controller
 		
 	}
         public function all(){ 
-             $options = DB::table('pro_option')->where('is_delete', '=','0')->get();  
+             $options = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->get();  
              return $options ;
 	}
        
@@ -46,46 +46,72 @@ class OptionController extends Controller
 	   
 	}
         public function delete(){
-	   $chk_id=Request::input('del_id');	
-           $data = Option::find($chk_id);
+	   $chk_id=Request::input('del_id');
+	   $data = Option::find($chk_id);
            $data->is_delete = '1';
-           $data->save(); 	   		 
+           $data->save(); 
+	   $option_records= DB::table('pro_option')->where('parent_id', '=',$chk_id)->where('is_delete', '=','0')->get();
+	   if($option_records){
+	      foreach($option_records as $k => $v)
+	      {
+		$subdata = Option::find($v->id);
+		$subdata->is_delete = '1';
+		$subdata->save(); 
+	      }
+	   }	   		 
            $list[]='success';
            $list[]='Record is deleted successfully.';	 
 	   return $list;	 
 	}
         
 	 public function edit($id){
-	 $option= DB::table('pro_option')->where('id', '=',$id)->first(); 
-         $return['data']=$option;
+	 $option= DB::table('pro_option')->where('id', '=',$id)->first();
+	 $option_values= DB::table('pro_option')->where('parent_id', '=',$id)->where('is_delete', '=','0')->get(); 
+         $return['option']=$option;
+         $return['values']=$option_values;
          return $return;
 	     
 	}
          public function update(){
 	
 	  $validator = Validator::make(Request::all(), [
-            'option_name' => 'required',
-	    'option_value'=>'required',        
+            'option_name' => 'required',	        
             
-        ]);
-         
-        if ($validator->fails()) {
-                    $list[]='error';
-                    $msg=$validator->errors()->all();
-                    $list[]=$msg;
-                    return $list;
-        }
-	
-         $optionData = Option::find(Request::input('option_id'));
-         $optionData->option_name = Request::input('option_name');
-         $optionData->option_value =Request::input('option_value');
-	 $optionData->status=Request::input('status');
-         $optionData->save(); 
-		  
-         $list[]='success';
-         $list[]='Record is updated successfully.';	 
-	 return $list;
-	     
+          ]);
+	    if ($validator->fails()) {
+                   $list[]='error';
+                   $msg=$validator->errors()->all();
+                   $list[]=$msg;
+                   return $list;
+             }
+          $option_values= DB::table('pro_option')->where('parent_id', '=',Request::input('id'))->where('is_delete', '=','0')->get();
+	    foreach($option_values as $ky => $ve){
+	      $optionData = Option::find($ve->id);	    
+	      $optionData->is_delete='1';
+	      $optionData->save(); 
+	    }
+	 
+	  $variba=Request::input('option_value');
+	  foreach($variba as $key=>$value)
+	  {
+	       if($value['option_name']!=''){
+			if (array_key_exists('id',$value))
+			 {
+			     $optionData = Option::find($value['id']);
+			     $optionData->option_name=$value['option_name'];
+			     $optionData->is_delete='0';
+			     $optionData->save(); 
+			 }
+			else
+			{   
+			    Option::create(['option_name' =>$value['option_name'],'parent_id'=>Request::input('id'),'user_id'=>Auth::user()->id,'status' =>'Active']);  
+			}
+	       }
+	    
+	  }
+	    $list[]='success';
+	    $list[]='Record is updated successfully.';	 
+	    return $list;    
 	}
        
  }
