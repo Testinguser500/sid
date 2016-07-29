@@ -43,7 +43,7 @@ class CategoryController extends Controller
         ]);
          
         if ($validator->fails()) {
-                             $list[]='error';
+                              $list[]='error';
                               $msg=$validator->errors()->all();
 			      $list[]=$msg;
 			      return $list;

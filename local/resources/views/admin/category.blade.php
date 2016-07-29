@@ -23,7 +23,7 @@
             <!-- /.box-header -->
 
             <div class="box-body">
-              <table  if="categories"  id="example1"   class="table table-bordered table-striped">
+              <table    id="example1"   class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>#</th>
@@ -53,8 +53,7 @@
                             Are you sure you want to delete this category ? 
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>                           
                                 
                                <input type="hidden" name="del_id" value="<% val.id %>" />
                                <button ng-click="deleteCategory($index)" class="btn btn-primary" data-dismiss="modal" >Delete</button>
@@ -193,8 +192,7 @@
                   <div class="form-group">
                   <label for="exampleInputEmail1">Parent Category</label>
                   <select class="form-control" name="parent_cat"  ng-model="cat.parent_id" ng-init="cat.parent_id=0">
-                      <option value="0">Please select</option>
-                                            
+                      <option value="0">Please select</option>                                            
                       <option ng-repeat="cast in all_cat" ng-value="cast.id" ng-if="cast.id !=  category.id" ng-selected="cat.parent_id"><% cast.category_name %></option>
                   </select>
 		  <div class="help-block"></div>

@@ -126,29 +126,33 @@
                   <label for="exampleInputEmail1">Option Name</label>
                   <input type="text" class="form-control" id=""  ng-model="option.option_name" name="option_name" placeholder="Option Name" >
 		  <div class="help-block"></div>
-                </div> 
-                <div class="form-group" ng-repeat="inp in inputs">
-                  <label for="exampleInputEmail1">Option Name</label>
-		  <input type="text" class="form-control" id=""  ng-model="option.option_value" name="option_value" placeholder="Option Value" >
+                </div>
+		<div class="form-group">
+                  <label for="exampleInputEmail1">Status</label>
+                  <input type="radio"  id="" name="status"  ng-model="option.status" ng-checked="option.status=='Active'" value="Active" >Active
+		  <input type="radio" id="" name="status"  ng-model="option.status" ng-checked="option.status=='Inactive'"  value="Inactive">Inactive 
 		  <div class="help-block"></div>
-		  <button class="btn btn-success button button-small button-balanced" ng-if="$index == inputs.length - 1" ng-click="addInput()">
+                </div>
+	       <label for="exampleInputEmail1">Option Values</label>
+		
+		
+                <div class="form-group" ng-repeat="val in values">
+               
+		  <input type="text" class="form-control" id=""  ng-model="val.option_name" name="option_name" placeholder="Option Value" >
+		  <div class="help-block"></div>
+		  <button class="btn btn-success button button-small button-balanced" ng-if="$index == values.length - 1" ng-click="addInput()">
 		    <i class="icon ion-plus"></i>
 		  </button>
-		    <button class="btn btn-danger button button-small button-assertive" ng-if="$index != inputs.length - 1" ng-click="removeInput($index)">
+		    <button class="btn btn-danger button button-small button-assertive" ng-if="$index != values.length - 1" ng-click="removeInput($index)">
 		    <i class="icon ion-minus"></i>
 		    </button>
                 </div>
-                  <div class="form-group">
-                  <label for="exampleInputEmail1">Status</label>
-                  <input type="radio"  id="" name="status" value="Active"  ng-model="option.status">Active
-		  <input type="radio" id="" name="status"  ng-model="option.status" value="Inactive">Inactive 
-		  <div class="help-block"></div>
-                </div> 
+                  
              </div>
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button ng-click="update(option)" type="submit" class="btn btn-primary">Submit</button>
+                <button ng-click="update(option,values)" type="submit" class="btn btn-primary">Submit</button>
               </div>
            
           </div>
