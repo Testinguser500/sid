@@ -96,7 +96,7 @@ class HomeController extends Controller
 			$height = 200;
 		}
 		
-            $destinationPath = 'uploads'.$folder; // upload path
+            $destinationPath = 'uploads'.@$folder; // upload path
             $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
             if(($extension=='jpg') || ($extension=='jpeg') || ($extension=='png') ){
             $fileName = time().'.'.$extension; // renameing image 

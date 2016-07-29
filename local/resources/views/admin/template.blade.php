@@ -167,7 +167,31 @@
               </table>
             </div>
             <div class="box-body">
-              
+               <div class="form-group">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="user[]" ng-model="user_send.subscriber" value="subscriber">
+                       All Newsletter Subscribers
+                    </label>
+                  </div>
+
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="user[]" ng-model="user_send.seller" value="seller">
+                        All Sellers 
+                    </label>
+                  </div>
+
+                  <div class="checkbox">
+                    <label>
+                     <input type="checkbox" name="user[]" ng-model="user_send.customer" value="customer">
+                       All Customer 
+                    </label>
+                  </div>
+                </div>                        
+                <div class="form-group">
+                  <button ng-click="send_email(user_send,temp.id);" class="btn btn-primary">Send</button>
+                </div>
             </div>
             <!-- /.box-body -->
             <!-- form start -->

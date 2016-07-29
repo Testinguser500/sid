@@ -70,7 +70,6 @@ Route::post('admins/template/store', 'Admin\TemplateController@store');
 Route::post('admins/template/delete', 'Admin\TemplateController@delete');
 Route::get('admins/template/edit/{id}', 'Admin\TemplateController@edit');
 Route::post('admins/template/update', 'Admin\TemplateController@update');
-Route::get('admins/template/send/{id}', 'Admin\TemplateController@send');
 Route::post('admins/template/sent', 'Admin\TemplateController@sent');
 
 Route::get('admins/config', 'Admin\ConfigController@index');

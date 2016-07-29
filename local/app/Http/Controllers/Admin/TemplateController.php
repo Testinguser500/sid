@@ -93,27 +93,20 @@ class TemplateController extends Controller
 	    return $list;
 	     
 	}
-        public function send($id){
+       
+         public function sent(){
 	
-	 $template= DB::table('templates')->where('id', '=',$id)->first();  
-         $newsletters= DB::table('newsletters')->where('subscribe', '=','1')->get();  
-         return view('admin/send_template')->with('newsletters',$newsletters)->with('template',$template)->with('title','Template')->with('subtitle','Send');
-	     
-	}
-         public function sent(Request $request){
-	
-	    $validator = Validator::make($request->all(), [
-            'assign_newsletter' => 'required',
-	                    
+	    $validator = Validator::make(Request::all(), [
+            'user' => 'required',                   
             
-        ]);
-            
+           ]);            
         if ($validator->fails()) {
-            return redirect('/admin/template/send/'.$request->get('template_id'))
-                        ->withErrors($validator)
-                        ->withInput();
+            $list[]='error';
+            $msg=$validator->errors()->all();
+            $list[]=$msg;
+            return $list;
         }
-	$template=DB::table('templates')->where('id', '=',$request->get('template_id'))->first();  
+	$template=DB::table('templates')->where('id', '=',Request::input('template_id'))->first();  
         $copyright=configs_value('Copyright');        
         $em_content=email_section('5');   
         $msg=$em_content->email_body;
@@ -122,15 +115,55 @@ class TemplateController extends Controller
 	$emails['subject']= $template->subject;
         $emails['name']= configs_value('Site Name');
         $emails['from']=configs_value('SMTP User');
-        foreach($request->get('assign_newsletter') as $val){
-        $newsletter= DB::table('newsletters')->where('id', '=',$val)->first();  
-        $emails['to'] =$newsletter->email;
-        Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
-            $message->from($emails['from'], $emails['name']);
-            $message->to($emails['to'])->subject($emails['subject']);
-        });	
-       }
-         return redirect('/admin/template')->withFlash_message('Mail successfully send');
+        $users=Request::input('user');          
+        if (array_key_exists('subscriber', $users)) {
+             if($users['subscriber']=='1')
+             {
+                  $newsletter= DB::table('newsletters')->where('subscribe', '=','1')->get();  
+                  foreach($newsletter as $key=>$val){
+                    $emails['to'] =$val->email;
+                    Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
+                    $message->from($emails['from'], $emails['name']);
+                    $message->to($emails['to'])->subject($emails['subject']);
+                    });	
+                  }
+             }
+        }
+         if (array_key_exists('seller', $users)) {
+                if($users['seller']=='1')
+                {
+                    $seller= DB::table('users')->where('role', '=','5')->where('status', '=','Active')->get();  
+                    foreach($seller as $key=>$val){
+                    $emails['to'] =$val->email;
+                    Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
+                    $message->from($emails['from'], $emails['name']);
+                    $message->to($emails['to'])->subject($emails['subject']);
+                    });	
+                  }
+                }
+        }
+         if (array_key_exists('customer', $users)) {
+              if($users['customer']=='1')
+                {
+                    $customer= DB::table('users')->where('role', '=','3')->where('status', '=','Active')->get();  
+                    foreach($customer as $key=>$val){
+                    $emails['to'] =$val->email;
+                    Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
+                    $message->from($emails['from'], $emails['name']);
+                    $message->to($emails['to'])->subject($emails['subject']);
+                    });	
+                  }
+                }
+        }
+       
+//        $newsletter= DB::table('newsletters')->where('id', '=',$val)->first();  
+//        $emails['to'] =$newsletter->email;
+//        Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
+//            $message->from($emails['from'], $emails['name']);
+//            $message->to($emails['to'])->subject($emails['subject']);
+//        });	
+       
+        
 	     
 	}
        
