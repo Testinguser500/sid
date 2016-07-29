@@ -40,7 +40,7 @@
                 
                 <tr ng-repeat="val in users">
                   <td><% val.id %></td>
-                  <td><% val.name %></td>
+                  <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>
 				  <td><% val.status %></td>
@@ -611,7 +611,7 @@
 		<select class="form-control" ng-model="input.affiliate">
 		<option ng-repeat="cat in category" ng-value="cat.id"><%cat.category_name%></option></select></label>
 		<label class="item-input-wrapper col-xs-4">
-            <input type="text" class="form-control" placeholder="Type something" ng-model="input.value" />
+            <input type="text" class="form-control" placeholder="Percentage" ng-model="input.value" />
         </label>
         <button class="btn btn-success button button-small button-balanced" ng-if="$index == inputs.length - 1" ng-click="addInput()">
             <i class="icon ion-plus"></i>
@@ -738,7 +738,7 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Selling</label>
-                  <input type="checkbox" class="" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.selling"> Enable Selling
+                  <input type="checkbox" class="" id="" name="selling" placeholder="Flickr Link" ng-model="user.selling"> Enable Selling
 		  </br><em>Enable or disable product selling capability</em>
 		  <div class="help-block"></div>
                 </div>
@@ -774,8 +774,8 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Promotional Banner Left Bar</label>
-                  <span ng-hide="user.banner" class="btn btn-default btn-file">
-					Add Image <input type="file" ng-model="user.store_banner" onchange="angular.element(this).scope().uploadedBannerFile(this)">
+                  <span ng-hide="user.banner" class="btn btn-primary btn-file">
+					Add Image <input type="file" ng-model="user.promotional_banner" onchange="angular.element(this).scope().uploadedPromotionBannerFile(this)">
 				</span>
 		  <div class="help-block"></div>
                 </div>
@@ -794,12 +794,12 @@
 			  <div class="row">
 			  <div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">First Name</label>
-                  <input type="text" class="form-control" id="" name="ship_fname" placeholder="Name" ng-model="user.ship_name">
+                  <input type="text" class="form-control" id="" name="ship_fname" placeholder="Name" ng-model="user.ship_fname">
 				<div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Last Name</label>
-                  <input type="text" class="form-control" id="" name="ship_lname" placeholder="Name" ng-model="user.ship_name">
+                  <input type="text" class="form-control" id="" name="ship_lname" placeholder="Name" ng-model="user.ship_lname">
 				<div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
