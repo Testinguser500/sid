@@ -8,6 +8,27 @@ var app = angular.module('admins', ['ngRoute','textAngular'], function($interpol
       return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
     }
 });
+app.directive("passwordStrength", function(){
+    return {        
+        restrict: 'A',
+        link: function(scope, element, attrs){                    
+            scope.$watch(attrs.passwordStrength, function(value) {
+                console.log(value);
+				
+                if(angular.isDefined(value)){
+					
+                    if (value.length > 8) {
+                        scope.strength = 'strong';
+                    } else if (value.length > 3) {
+                        scope.strength = 'medium';
+                    } else {
+                        scope.strength = 'weak';
+                    }
+                }
+            });
+        }
+    };
+});
 app.config(['$routeProvider', function($routeProvider) {
    $routeProvider.   
    when('/category', {
@@ -630,6 +651,7 @@ app.controller('UserController', function($scope, $http) {
         $scope.inputs.splice(index, 1);
     }
 	$scope.useradd = function() {	
+	$scope.user={};
                 $scope.page='useradd';		
 		$scope.errors=false;
                 $scope.success_flash=false;
@@ -651,6 +673,8 @@ app.controller('UserController', function($scope, $http) {
 		$http.post('user/checkUser', {
 				username:userData.username,
 				email:userData.email,
+				password:userData.password,
+				confirm_password:userData.repassword,
 				role:userData.role
 		}).success(function(data, status, headers, config) {//console.log(data['user']);
 		
@@ -664,7 +688,8 @@ app.controller('UserController', function($scope, $http) {
 			$scope.user.username = userData.username;
 			$scope.user.email = userData.email;
 			$scope.user.role = userData.role;
-			$scope.loading = false;	
+			$scope.loading = false;
+			//console.log($scope.user.username);			
 			$scope.add();
 			}
 			
@@ -681,9 +706,11 @@ app.controller('UserController', function($scope, $http) {
 			$scope.all_user = data['all_user'];
 			$scope.roles = data['roles'];
 			$scope.loading = false;
- //console.log($scope.user_data);
+ console.log($scope.user_ddata);
  $scope.getState($scope.user_ddata.store_country);
  $scope.getCity($scope.user_ddata.store_state);
+ $scope.getState($scope.user_ddata.ship_country);
+ $scope.getCity($scope.user_ddata.ship_state);
 		});
 	};
 	
@@ -692,7 +719,7 @@ app.controller('UserController', function($scope, $http) {
 		$http.post('country/getState',{
 			store_country:pid
 		}).
-		success(function(data, status, headers, config) {//console.log(data);
+		success(function(data, status, headers, config) {console.log(data);
 		$scope.store_state = data;	
  
 		});
@@ -827,13 +854,15 @@ app.controller('UserController', function($scope, $http) {
 			flickr_link:user_data.flickr_link,
 			store_id:user_data.store_id,
 			shipp_id:user_data.shipp_id,
+			affiliatefees:$scope.inputs,
+			logo:$scope.logo,
+			selling:userData.selling,
+			publishing:userData.publishing,
+			commission:userData.commission,
+			featured:userData.featured,
+			verified:userData.verified,
+			promotinoal_link:userData.promotinoal_link,
 			promotion:$scope.promotion,
-			selling:user_data.selling,
-			publishing:user_data.publishing,
-			commission:user_data.commission,
-			featured:user_data.featured,
-			verified:user_data.verified,
-			promotinoal_link:user_data.promotinoal_link,
 			
                    
 		}).success(function(data, status, headers, config) {
@@ -924,7 +953,7 @@ app.controller('UserController', function($scope, $http) {
 				$scope.errors=false;
                                 $scope.success_flash=data[1];
 				$scope.users.push(userData);
-                                //$scope.init();
+                                $scope.init();
 			}
 			$scope.loading = false;
  

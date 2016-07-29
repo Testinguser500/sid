@@ -112,7 +112,7 @@
 			  <div class="form-group">
 			  <h3>Add New User</h3>
 			  </div>
-			  
+			  <form name="signupFrm">
 			  <div class="form-group">
                   <label for="exampleInputEmail1">Username</label>
                   <input type="text" class="form-control" id="" name="username" placeholder="Username" ng-model="user_ddata.username"  value="<%user_ddata.name%>">
@@ -122,6 +122,17 @@
                   <label for="exampleInputEmail1">Email(required)</label>
                   <input type="text" class="form-control" id="" name="email" placeholder="Email" ng-model="user_ddata.email">
 		  <div class="help-block"></div>
+                </div>
+				<div class="form-group">
+                  <label for="exampleInputEmail1">Password</label>
+                  <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user_ddata.password" password-strength="user_ddata.password">
+				  <span class="help-inline"  data-ng-class="strength">This password is <%strength%> </span>
+				<div class="help-block"></div>
+                </div>
+				<div class="form-group">
+                  <label for="exampleInputEmail1">Confirm Password</label>
+                  <input type="password" class="form-control" id="" name="repassword" placeholder="Confirem password" ng-model="user_ddata.repassword">
+				<div class="help-block"></div>
                 </div>
 			  <div class="form-group">
 			  
@@ -134,6 +145,7 @@
 				  </select>
 		  <div class="help-block"></div>
                 </div>
+				</form>
 				<div class="box-footer">
                 <button  ng-click="checkUser(user_ddata);" class="btn btn-primary">Submit</button>
 				
@@ -160,6 +172,11 @@
 			  </div>
 			  <div class="row">
 			  <div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1">Username</label>
+                  <input type="text" class="form-control" id="" name="username" placeholder="Username" ng-model="user_ddata.username"  value="<%user_ddata.name%>">
+		  <div class="help-block"></div>
+                </div>
+			  <div class="form-group col-xs-4">
 			  
                   <label for="exampleInputEmail1">Role</label>
                   <select class="form-control" id="" name="role" ng-model="user_ddata.role" >
@@ -172,22 +189,37 @@
                 </div>
 				
                 <div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1">Name</label>
-                  <input type="text" class="form-control" id="" name="name" placeholder="Name" ng-model="user_ddata.name"  value="<%user_ddata.name%>">
+                  <label for="exampleInputEmail1">First Name</label>
+                  <input type="text" class="form-control" id="" name="fname" placeholder="Name" ng-model="user_ddata.user_fname"  value="<%user_ddata.fname%>">
 		  <div class="help-block"></div>
                 </div>
-				<div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1">Username</label>
-                  <input type="text" class="form-control" id="" name="username" placeholder="Username" ng-model="user_ddata.username"  value="<%user_ddata.name%>">
-		  <div class="help-block"></div>
-                </div>
+				
 				</div>
 				<div class="row">
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1">Last Name</label>
+                  <input type="text" class="form-control" id="" name="lname" placeholder="Last Name" ng-model="user_ddata.user_lname">
+		  <div class="help-block"></div>
+                </div>
 			<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Nickname</label>
                   <input type="text" class="form-control" id="" name="nickname" placeholder="Nickname" ng-model="user_ddata.nickname" >
 		  <div class="help-block"></div>
                 </div>
+				
+				<div class="form-group col-xs-4 ">
+                  <label for="exampleInputEmail1">Display name publicly as</label>
+                  <select class="form-control" id="" name="display_name" ng-model="user_ddata.display_name">
+				  
+				  <option ng-selected="user_ddata.display_name==user_ddata.fname+ user_ddata.lname" value="<%user_ddata.fname%> <%user_ddata.lname%>" ><%user_ddata.fname%> <%user_ddata.lname%></option>
+				  <option ng-selected="user_ddata.display_name==user_ddata.lname+ user_ddata.fname" value="<%user_ddata.lname%> <%user_ddata.fname%>" ><%user_ddata.lname%> <% user_ddata.fname%></option>
+				  <option ng-selected="user_ddata.display_name==user_ddata.fname" value="<%user_ddata.fname%>" ><% user_ddata.fname%></option>
+				  <option  ng-selected="user_ddata.display_name==user_ddata.lname" value="<%user_ddata.lname%>" ><%user_ddata.lname%></option>
+				  </select>
+		  <div class="help-block"></div>
+                </div>
+				</div>
+				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Gender</label>
                   <select class="form-control" id="" name="gender" ng-model="user_ddata.gender">
@@ -231,7 +263,18 @@
 		  <div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1">Password</label>
+                  <label for="exampleInputEmail1"> Profile Image</label>
+                  <input type="file"  name="image" ng-model="user_ddata.image" onchange="angular.element(this).scope().uploadedFile(this)">
+		  <div class="help-block"></div>
+                </div>
+				
+				</div>
+				<div class="form-group">
+			  <h3>Account Management</h3>
+			  </div>
+				<div class="row">
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1">New Password</label>
                   <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user_ddata.pass">
 				<div class="help-block"></div>
                 </div>
@@ -240,14 +283,18 @@
                   <input type="password" class="form-control" id="" name="repassword" placeholder="Confirem password" ng-model="user_ddata.repassword">
 				<div class="help-block"></div>
                 </div>
-				</div>
-				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Nationality</label>
                   <input type="text" class="form-control" id="" name="nationality" placeholder="Nationality" ng-model="user_ddata.nationality">
 				<div class="help-block"></div>
                 </div>
-				
+				</div>
+				<div class="row">
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1">Address</label>
+                  <textarea class="form-control" id="" name="address" ng-model="user_ddata.address"></textarea>
+		  <div class="help-block"></div>
+                </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Country</label>
                   <select class="form-control" id="" name="country" placeholder="Country" ng-model="user_ddata.country">
@@ -258,22 +305,46 @@
 				<div class="help-block"></div>
                 </div>
 
-				<div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1">Address</label>
-                  <textarea class="form-control" id="" name="address" ng-model="user_ddata.address"></textarea>
-		  <div class="help-block"></div>
-                </div>
+				
 				</div>
 				<div class="row">
-                <div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1"> Profile Image</label>
-                  <input type="file"  name="image" ng-model="user_ddata.image" onchange="angular.element(this).scope().uploadedFile(this)">
-		  <div class="help-block"></div>
-                </div>
+                
 				</div>
 				<div ng-hide="user_ddata.role!='5'">
 				<div class="form-group ">
-			  <h3>Store Info</h3>
+			  <h3>Affiliate Fees</h3>
+			  </div>
+				
+                <div class="form-group col-xs-12 list list-inset">
+        <div class="row item-input" ng-repeat="input in inputs">
+        <label class="item-input-wrapper col-xs-4">
+		
+		<select class="form-control" ng-model="input.affiliate">
+		<option ng-repeat="cat in category" ng-value="cat.id"><%cat.category_name%></option></select></label>
+		<label class="item-input-wrapper col-xs-4">
+            <input type="text" class="form-control" placeholder="Percentage" ng-model="input.value" />
+        </label>
+        <button class="btn btn-success button button-small button-balanced" ng-if="$index == inputs.length - 1" ng-click="addInput()">
+            <i class="icon ion-plus"></i>
+        </button>
+            <button class="btn btn-danger button button-small button-assertive" ng-if="$index != inputs.length - 1" ng-click="removeInput($index)">
+            <i class="icon ion-minus"></i>
+        </button>
+		</div>
+		</div>
+				<div class="form-group ">
+			  <h3>Store Option</h3>
+			  </div>
+			  <div class=" banner">
+			  <label for="exampleInputEmail1"> Banner</label>
+			  <div class="form-group col-xs-12 show-bn">
+                <img ng-show="user.banner" src="{{URL::asset('uploads/store_banner')}}/thumb_<% user.banner %>" height="300" width="825">  
+                  <span ng-hide="user.banner" class="btn btn-primary btn-file">
+					Upload <input type="file" ng-model="user.store_banner" onchange="angular.element(this).scope().uploadedBannerFile(this)">
+				</span>
+				  
+		  <div class="help-block"></div>
+                </div>
 			  </div>
 			  <div class="row">
 			<div class="form-group col-xs-4">
@@ -289,8 +360,8 @@
 		  <div class="help-block"></div>
                 </div>
                  <div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1"> Banner</label>
-                  <input type="file"  name="store_banner" ng-model="user_ddata.store_banner" onchange="angular.element(this).scope().uploadedBannerFile(this)">
+                  <label for="exampleInputEmail1"> Store Logo</label>
+                  <input type="file"  name="store_logo" ng-model="user.store_logo" onchange="angular.element(this).scope().uploadlogo(this)">
 		  <div class="help-block"></div>
                 </div>
                   
@@ -376,7 +447,57 @@
 		  <div class="help-block"></div>
                 </div>
 				</div>
+			<div class="row">
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputMobile">Selling</label>
+                  <input type="checkbox" class="" id="" name="selling" placeholder="Flickr Link" ng-model="user_ddata.selling"> Enable Selling
+		  </br><em>Enable or disable product selling capability</em>
+		  <div class="help-block"></div>
+                </div>
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputMobile">Publishing</label>
+                  <input type="checkbox" class="" id="" name="publishing"  ng-model="user_ddata.publishing"> Publish product directly
+		  </br><em>Bypass pending products directly</em>
+		  <div class="help-block"></div>
+                </div>
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputMobile">Seller Commission%</label>
+                  <input type="text" class="form-control" id="" name="commission" placeholder="Seller Commission" ng-model="user_ddata.commission">
+		  <em>Bypass pending products directly</em>
+		  <div class="help-block"></div>
+                </div>
+				</div>
 				
+				<div class="row">
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputMobile">Featured Seller</label>
+                  <input type="checkbox" class="" id="" name="featured"  ng-model="user_ddata.featured"> Mark as featured seller
+		  </br><em>This seller will be marked as a featured seller.</em>
+		  <div class="help-block"></div>
+                </div>
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputMobile">Verify By SID</label>
+                  <input type="checkbox" class="" id="" name="verified" ng-model="user_ddata.verified"> Marked as SID Verified Seller
+		  </br><em>This seller will be marked as a verified by SID seller.</em>
+		  <div class="help-block"></div>
+                </div>
+				
+				</div>
+				<div class="row">
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputMobile">Promotional Banner Left Bar</label>
+                  <span ng-hide="user_ddata.banner" class="btn btn-primary btn-file">
+					Add Image <input type="file" ng-model="user_ddata.promotional_banner" onchange="angular.element(this).scope().uploadedPromotionBannerFile(this)">
+				</span>
+		  <div class="help-block"></div>
+                </div>
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputMobile">Promotinoal Banner Link</label>
+                  <input type="text" class="form-control" id="" name="promotinoal_link" placeholder="Promotinoal Link" ng-model="user_ddata.promotinoal_link">
+		  <em>Banner image link.</em>
+		  <div class="help-block"></div>
+                </div>
+				</div>	
 				
 				
 				</div>
@@ -386,10 +507,15 @@
 			  </div>
 			  <div class="row">
 			  <div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1">Name</label>
+                  <label for="exampleInputEmail1">First Name</label>
 				  <input type="hidden" class="form-control" id="" name="shipp_id" ng-model="user_ddata.shipp_id">
 				  
-                  <input type="text" class="form-control" id="" name="ship_name" placeholder="Name" ng-model="user_ddata.ship_name">
+                  <input type="text" class="form-control" id="" name="ship_fname" placeholder="First Name" ng-model="user_ddata.ship_fname">
+				<div class="help-block"></div>
+                </div>
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1">Last Name</label>
+				  <input type="text" class="form-control" id="" name="ship_lname" placeholder="First Name" ng-model="user_ddata.ship_lname">
 				<div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
@@ -408,7 +534,7 @@
                   <label for="exampleInputEmail1">Country</label>
                   <select class="form-control" id="" name="ship_country" placeholder="Country" ng-model="user_ddata.ship_country" ng-change="getState(user_ddata.ship_country);">
 				  <option value="">Select Country</option>
-				  <option ng-repeat="con in country" ng-value="con.id"><%con.name%></option>
+				  <option ng-repeat="con in country" ng-selected="con.id==user_ddata.ship_country" ng-value="con.id"><%con.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -416,7 +542,7 @@
                   <label for="exampleInputEmail1">State</label>
                   <select class="form-control" id="" name="ship_state" placeholder="Country" ng-model="user_ddata.ship_state" ng-change="getCity(user_ddata.ship_state);">
 				  <option value="">Select State</option>
-				  <option ng-repeat="st in store_state" ng-value="st.id"><%st.name%></option>
+				  <option ng-repeat="st in store_state" ng-selected="st.id==user_ddata.ship_state" ng-value="st.id"><%st.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -424,7 +550,7 @@
                   <label for="exampleInputEmail1">City</label>
                   <select class="form-control" id="" name="ship_city" placeholder="Country" ng-model="user_ddata.ship_city">
 				  <option value="">Select City</option>
-				  <option ng-repeat="ct in store_city" ng-value="ct.id"><%ct.name%></option>
+				  <option ng-repeat="ct in store_city" ng-selected="ct.id==user_ddata.ship_city" ng-value="ct.id"><%ct.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -627,10 +753,11 @@
 			  <div class=" banner">
 			  <label for="exampleInputEmail1"> Banner</label>
 			  <div class="form-group col-xs-12 show-bn">
-                <img ng-show="user.banner" src="{{URL::asset('uploads/store_banner')}}/thumb_<% user.banner %>" height="300" width="825">  
+                <img ng-mouseleave="display_cross=0" ng-mouseover="display_cross=1" ng-show="user.banner" src="{{URL::asset('uploads/store_banner')}}/thumb_<% user.banner %>" height="300" width="825">  
                   <span ng-hide="user.banner" class="btn btn-primary btn-file">
 					Upload <input type="file" ng-model="user.store_banner" onchange="angular.element(this).scope().uploadedBannerFile(this)">
 				</span>
+				<a class="bnr-del" ng-show="display_cross==1"><img src="{{URL::asset('admin/img/del.png')}}"></a>
 				  
 		  <div class="help-block"></div>
                 </div>
