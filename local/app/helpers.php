@@ -66,7 +66,7 @@ function getMenu($pid='')
     {
         $pid = 0;
     }
-    $menu= DB::table('menu')->where('pid', '=',$pid)->get(); 
+    $menu= DB::table('menu')->where('pid', '=',$pid)->orderBy('order_no','ASC')->get(); 
     return $menu;
 }
 function configs_value($key)
