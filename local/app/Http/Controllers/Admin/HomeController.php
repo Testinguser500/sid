@@ -100,7 +100,7 @@ class HomeController extends Controller
             $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
             if(($extension=='jpg') || ($extension=='jpeg') || ($extension=='png') ){
             $fileName = time().'.'.$extension; // renameing image 
-			$path = ($destinationPath.'/'.$fileName);
+			$path = ($destinationPath.'/thumb_'.$fileName);
 			Image::make(Input::file('image')->getRealPath())->resize($width, $height)->save($path);	
 			
             Input::file('image')->move($destinationPath, $fileName); 

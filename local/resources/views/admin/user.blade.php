@@ -40,7 +40,7 @@
                 
                 <tr ng-repeat="val in users">
                   <td><% val.id %></td>
-                  <td><% val.name %></td>
+                  <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>
 				  <td><% val.status %></td>
@@ -607,10 +607,11 @@
                 <div class="form-group col-xs-12 list list-inset">
         <div class="row item-input" ng-repeat="input in inputs">
         <label class="item-input-wrapper col-xs-4">
-		<select class="form-control" ng-model="user.affiliate">
+		
+		<select class="form-control" ng-model="input.affiliate">
 		<option ng-repeat="cat in category" ng-value="cat.id"><%cat.category_name%></option></select></label>
 		<label class="item-input-wrapper col-xs-4">
-            <input type="text" class="form-control" placeholder="Type something" ng-model="input.value" />
+            <input type="text" class="form-control" placeholder="Percentage" ng-model="input.value" />
         </label>
         <button class="btn btn-success button button-small button-balanced" ng-if="$index == inputs.length - 1" ng-click="addInput()">
             <i class="icon ion-plus"></i>
@@ -647,7 +648,7 @@
                 </div>
                  <div class="form-group col-xs-4">
                   <label for="exampleInputEmail1"> Store Logo</label>
-                  <input type="file"  name="store_logo" ng-model="user.store_logo" onchange="angular.element(this).scope().uploadedBannerFile(this)">
+                  <input type="file"  name="store_logo" ng-model="user.store_logo" onchange="angular.element(this).scope().uploadlogo(this)">
 		  <div class="help-block"></div>
                 </div>
                   
@@ -737,19 +738,19 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Selling</label>
-                  <input type="checkbox" class="" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.selling"> Enable Selling
+                  <input type="checkbox" class="" id="" name="selling" placeholder="Flickr Link" ng-model="user.selling"> Enable Selling
 		  </br><em>Enable or disable product selling capability</em>
 		  <div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Publishing</label>
-                  <input type="checkbox" class="" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.publishing"> Publish product directly
+                  <input type="checkbox" class="" id="" name="publishing"  ng-model="user.publishing"> Publish product directly
 		  </br><em>Bypass pending products directly</em>
 		  <div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Seller Commission%</label>
-                  <input type="text" class="form-control" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.commission">Publish product directly
+                  <input type="text" class="form-control" id="" name="commission" placeholder="Seller Commission" ng-model="user.commission">
 		  <em>Bypass pending products directly</em>
 		  <div class="help-block"></div>
                 </div>
@@ -758,13 +759,13 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Featured Seller</label>
-                  <input type="checkbox" class="" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.selling"> Mark as featured seller
+                  <input type="checkbox" class="" id="" name="featured"  ng-model="user.featured"> Mark as featured seller
 		  </br><em>This seller will be marked as a featured seller.</em>
 		  <div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Verify By SID</label>
-                  <input type="checkbox" class="" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.publishing"> Marked as SID Verified Seller
+                  <input type="checkbox" class="" id="" name="verified" ng-model="user.verified"> Marked as SID Verified Seller
 		  </br><em>This seller will be marked as a verified by SID seller.</em>
 		  <div class="help-block"></div>
                 </div>
@@ -773,14 +774,14 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Promotional Banner Left Bar</label>
-                  <span ng-hide="user.banner" class="btn btn-default btn-file">
-					Add Image <input type="file" ng-model="user.store_banner" onchange="angular.element(this).scope().uploadedBannerFile(this)">
+                  <span ng-hide="user.banner" class="btn btn-primary btn-file">
+					Add Image <input type="file" ng-model="user.promotional_banner" onchange="angular.element(this).scope().uploadedPromotionBannerFile(this)">
 				</span>
 		  <div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Promotinoal Banner Link</label>
-                  <input type="text" class="form-control" id="" name="flickr_link" placeholder="Flickr Link" ng-model="user.commission">
+                  <input type="text" class="form-control" id="" name="promotinoal_link" placeholder="Promotinoal Link" ng-model="user.promotinoal_link">
 		  <em>Banner image link.</em>
 		  <div class="help-block"></div>
                 </div>
@@ -793,12 +794,12 @@
 			  <div class="row">
 			  <div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">First Name</label>
-                  <input type="text" class="form-control" id="" name="ship_fname" placeholder="Name" ng-model="user.ship_name">
+                  <input type="text" class="form-control" id="" name="ship_fname" placeholder="Name" ng-model="user.ship_fname">
 				<div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Last Name</label>
-                  <input type="text" class="form-control" id="" name="ship_lname" placeholder="Name" ng-model="user.ship_name">
+                  <input type="text" class="form-control" id="" name="ship_lname" placeholder="Name" ng-model="user.ship_lname">
 				<div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">

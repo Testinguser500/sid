@@ -3,16 +3,16 @@
 namespace App;
 use Illuminate\Database\Eloquent\Model;
 
-class Shipping extends Model
+class Affiliate extends Model
 {
-	protected $table = 'shipp_address';
+	protected $table = 'affiliate';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'fname','lname', 'mobile','address','role','country','state','city','status','user_id'
+        'user_id', 'store_id','category_id','fees','user_id'
     ];
 
     /**
