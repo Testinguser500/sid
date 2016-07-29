@@ -32,6 +32,7 @@ Route::get('admins/log_out', 'Admin\HomeController@log_out');
 Route::get('admins/dashboard', 'Admin\HomeController@dashboard');
 Route::get('admins/home', 'Admin\HomeController@home');
 Route::post('admins/imageupload', 'Admin\HomeController@imageupload');
+Route::post('admins/Allimageupload', 'Admin\HomeController@Allimageupload');
 
 Route::get('admins/category', 'Admin\CategoryController@index');
 Route::get('admins/category/all', 'Admin\CategoryController@all');
@@ -90,6 +91,7 @@ Route::post('admins/user/store', 'Admin\UserController@store');
 Route::get('admins/user/edit/{id}', 'Admin\UserController@edit');
 Route::post('admins/user/update', 'Admin\UserController@update');
 Route::post('admins/user/delete', 'Admin\UserController@delete');
+Route::post('admins/user/checkUser', 'Admin\UserController@checkUser');
 
 Route::get('admins/static-content', 'Admin\StaticContentController@index');
 Route::get('admins/static-content/all', 'Admin\StaticContentController@all');
@@ -121,3 +123,10 @@ Route::post('admins/country/update', 'Admin\CountryController@update');
 Route::post('admins/country/delete', 'Admin\CountryController@delete');
 Route::post('admins/country/getState', 'Admin\CountryController@getState');
 Route::post('admins/country/getCity', 'Admin\CountryController@getCity');
+
+Route::get('admins/option', 'Admin\OptionController@index');
+Route::get('admins/option/all', 'Admin\OptionController@all');
+Route::post('admins/option/store', 'Admin\OptionController@store');
+Route::post('admins/option/delete', 'Admin\OptionController@delete');
+Route::get('admins/option/edit/{id}', 'Admin\OptionController@edit');
+Route::post('admins/option/update', 'Admin\OptionController@update');

@@ -100,8 +100,46 @@ class HomeController extends Controller
             $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
             if(($extension=='jpg') || ($extension=='jpeg') || ($extension=='png') ){
             $fileName = time().'.'.$extension; // renameing image 
-			$path = ($destinationPath.'/'.$fileName);
+			$path = ($destinationPath.'/thumb_'.$fileName);
 			Image::make(Input::file('image')->getRealPath())->resize($width, $height)->save($path);	
+			
+            Input::file('image')->move($destinationPath, $fileName); 
+            return $fileName;
+            }else{
+                return false;
+            }
+        
+       }
+	   public function Allimageupload()
+       {
+        if(Request::input('folder'))
+			$folder = '/'.Request::input('folder');
+		
+		if(Request::input('width')&&Request::input('height'))
+		{
+			 $width = Request::input('width');
+			 $height = Request::input('height');
+			
+		}
+		else
+		{
+			$width = 200;
+			$height = 200;
+		}
+		
+            $destinationPath = 'uploads'.@$folder; // upload path
+            $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+            if(($extension=='jpg') || ($extension=='jpeg') || ($extension=='png') ){
+            $fileName = time().'.'.$extension; // renameing image 
+			//thumb
+			$image= Input::file('image');
+			 $path = ($destinationPath . '/thumb_'.$fileName);
+			Image::make($image->getRealPath())->resize($width, $height)->save($path);
+			//mid
+			$path = ($destinationPath . '/mid_'.$fileName);
+			Image::make($image->getRealPath())->resize($width, $height)->save($path);
+			
+			
 			
             Input::file('image')->move($destinationPath, $fileName); 
             return $fileName;

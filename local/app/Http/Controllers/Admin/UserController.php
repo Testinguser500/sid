@@ -3,6 +3,7 @@ use App\User;
 use App\Category; 
 use App\Shipping;
 use App\Store;
+use App\Affiliate;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -29,10 +30,14 @@ class UserController extends Controller
 	}
 	
 	public function all(){ 
-             $category = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->get();
-			$country = DB::table('country')->where('is_delete','=','0')->where('pid','=','0')->get();			 
-             $return['category'] =  $category;
+             $user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->get();
+			$country = DB::table('country')->where('is_delete','=','0')->where('pid','=','0')->get();
+			$category = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
+			$role = DB::table('role')->get();			
+             $return['users'] =  $user;
 			 $return['country'] =  $country;
+			 $return['roles'] =  $role;
+			 $return['category'] = $category;
 			 return $return;
 		
 	}
@@ -42,12 +47,33 @@ class UserController extends Controller
              return view('admin/add_user')->with('users_data',$user)->with('title','User')->with('subtitle','Add');
 		
 	}
+	public function checkUser(){
+		$validation = array(
+			'role'=>'required',
+			'username' => 'required|unique_with:users,role',
+			'email'=>'required|email|unique_with:users,role',
+	
+	);
+	$validator = Validator::make(Request::all(), $validation);
+		
+         
+        if ($validator->fails()) {
+				$list[]='error';
+				$msg=$validator->errors()->all();
+				$list[]=$msg;
+				return $list;
+        }
+		$list[]='success';
+		return $list;
+	}
         public function store(){
+			
+			
 			
 			$validation1=array();
 	$validation = array(
 			'role'=>'required',
-			'name' => 'required',
+			'fname' => 'required',
 			'username' => 'required|unique_with:users,role',
 			'email'=>'required|email|unique_with:users,role',
 			'password'=>'required|min:6',
@@ -57,7 +83,7 @@ class UserController extends Controller
 	);
 	if(Request::input('role')==3)
 	{
-		$validation1 = array('ship_name'=>'required',
+		$validation1 = array('ship_fname'=>'required',
 		'ship_mobile'=>'required',
 		'ship_address'=>'required',
 		'ship_country'=>'required',
@@ -88,15 +114,15 @@ class UserController extends Controller
         }
 		 
         $password = Request::input('password');
-        $user = User::create(['image' =>Request::input('profile_image'),'name' =>Request::input('name'),'username' =>Request::input('username'),'nickname' =>Request::input('nickname'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
+        $user = User::create(['image' =>Request::input('profile_image'),'fname' =>Request::input('fname'),'lname' =>Request::input('lname'),'display_name' =>Request::input('display_name'),'username' =>Request::input('username'),'nickname' =>Request::input('nickname'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
 		$insert_id = $user->id;
 		if(Request::input('role')==3)
 		{
-			Shipping::create(['user_id'=>$insert_id,'name'=>Request::input('ship_name'),'mobile'=>Request::input('ship_mobile'),'address'=>Request::input('ship_address'),'country'=>Request::input('ship_country'),'state'=>Request::input('ship_state'),'city'=>Request::input('ship_city')]);
+			Shipping::create(['user_id'=>$insert_id,'fname'=>Request::input('ship_fname'),'lname'=>Request::input('ship_lname'),'mobile'=>Request::input('ship_mobile'),'address'=>Request::input('ship_address'),'country'=>Request::input('ship_country'),'state'=>Request::input('ship_state'),'city'=>Request::input('ship_city')]);
 		}
 		elseif(Request::input('role')==5)
 		{
-			Store::create(['user_id'=>$insert_id,
+			$store = Store::create(['user_id'=>$insert_id,
 			'store_name'=>Request::input('store_name'),
 			'store_link'=>Request::input('store_link'),
 			'store_address'=>Request::input('store_address'),
@@ -111,7 +137,21 @@ class UserController extends Controller
 			'linkedin_link'=>Request::input('linkedin_link'),
 			'youtube_link'=>Request::input('youtube_link'),
 			'instagram_link'=>Request::input('instagram_link'),
-			'flickr_link'=>Request::input('flickr_link'),'status'=>'Inactive']);
+			'flickr_link'=>Request::input('flickr_link'),'store_status'=>'Inactive',
+			'selling'=>Request::input('selling'),
+			'publishing'=>Request::input('publishing'),
+			'commission'=>Request::input('commission'),
+			'featured'=>Request::input('featured'),
+			'verified'=>Request::input('verified'),
+			'promotinoal_link'=>Request::input('promotinoal_link'),
+			'promotion_banner'=>Request::input('promotion'),
+			'logo'=>Request::input('logo')]);
+			$store_id = $store->id;
+			$affiliatefees = Request::input('affiliatefees');
+			foreach((array)$affiliatefees as $aff)
+			{
+			Affiliate::create(['user_id'=>$insert_id,'store_id'=>$store_id,'category_id'=>$aff['affiliate'],'fees'=>$aff['value']]);
+			}
 		}
 		$emails['email'] = Request::input('email'); 
         $copyright=configs_value('Copyright');        
@@ -159,7 +199,7 @@ class UserController extends Controller
 		if($data->role=='5')
 		$user = DB::table('store')->select('*','id as store_id')->where('user_id', '=',$id)->first();
 		elseif($data->role=='3')
-		$user = DB::table('shipp_address')->select('*','name as shipp_name','id as shipp_id')->where('users_id', '=',$id)->where('status','=','Active')->first();
+		$user = DB::table('shipp_address')->select('*','name as shipp_name','id as shipp_id')->where('user_id', '=',$id)->where('status','=','Active')->first();
 		//print_r($user);
 		 $return['user']=(object) array_merge((array)$data,(array) $user);
 		 //print_r($return['user']);
