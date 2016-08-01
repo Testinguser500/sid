@@ -68,14 +68,13 @@ class EnquiryController extends Controller
         $msg=str_replace("{copyright}",$copyright,$msg);	
         $emails['name']= configs_value('Site Name');
         $emails['from']=configs_value('SMTP User');
-        $emails['to'] =Request::input('email');
-        $msg=Request::input('reply');
+        $emails['to'] =Request::input('email');       
         Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
             $message->from($emails['from'], $emails['name']);
 
             $message->to($emails['to'])->subject($emails['subject']);
         });
-        Enquiry::create(['name' =>$request->get('name'),'email' =>Request::input('email'),'subject' =>Request::input('subject'),'message'=>Request::input('reply'),'reply_to' =>Request::input('reply_to')]);
+        Enquiry::create(['name' =>Request::input('name'),'email' =>Request::input('email'),'subject' =>Request::input('subject'),'message'=>Request::input('reply'),'reply_to' =>Request::input('reply_to')]);
         	  
         $list[]='success';
         $list[]='Reply send successfully.';	 
