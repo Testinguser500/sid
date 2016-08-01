@@ -8,6 +8,27 @@ var app = angular.module('admins', ['ngRoute','textAngular'], function($interpol
       return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
     }
 });
+app.directive("passwordStrength", function(){
+    return {        
+        restrict: 'A',
+        link: function(scope, element, attrs){                    
+            scope.$watch(attrs.passwordStrength, function(value) {
+                console.log(value);
+				
+                if(angular.isDefined(value)){
+					
+                    if (value.length > 8) {
+                        scope.strength = 'strong';
+                    } else if (value.length > 3) {
+                        scope.strength = 'medium';
+                    } else {
+                        scope.strength = 'weak';
+                    }
+                }
+            });
+        }
+    };
+});
 app.config(['$routeProvider', function($routeProvider) {
    $routeProvider.   
    when('/category', {
@@ -15,6 +36,12 @@ app.config(['$routeProvider', function($routeProvider) {
    }). 
    when('/newsletter', {
       templateUrl: 'newsletter', controller: 'NewsletterController'
+   }).
+   when('/template', {
+      templateUrl: 'template', controller: 'TemplateController'
+   }).
+   when('/enquiry', {
+      templateUrl: 'enquiry', controller: 'EnquiryController'
    }).
    when('/config', {
       templateUrl: 'config', controller: 'ConfigController'
@@ -33,8 +60,7 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/static-content', {
       templateUrl: 'static-content', controller: 'StaticContentController'
    }).
-   
-	when('/seller', {
+   when('/seller', {
       templateUrl: 'seller', controller: 'SellerController'
 
    }).   
@@ -289,6 +315,84 @@ app.controller('HomeController', function($scope, $http) {
 
          $scope.init();
 });
+// Enquiry Management
+ app.controller('EnquiryController', function($scope, $http) {
+    
+     $scope.errors=false;
+     $scope.files=false;
+     $scope.loading = true;
+     $scope.enquirys=false;
+     $scope.enquiry=false;
+     $scope.page='index';
+     $scope.faq=false;
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('enquiry/all').
+		success(function(data, status, headers, config) {
+			$scope.enquirys = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+        $scope.replys = function(enquiry) {	
+                $scope.page='reply';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $scope.enquiry=enquiry;
+                $http.get('enquiry/edit/' + enquiry.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.reply = data['reply'];                      
+		        $scope.loading = false;
+ 
+		});;
+	}
+       
+        
+
+        $scope.send = function(enquiry) { 
+            $scope.errors=false;
+            $scope.success_flash=false;
+         
+           $http.post('enquiry/update', {
+			reply: enquiry.reply,
+			subject:enquiry.subject,
+                        email:enquiry.email,
+                        reply_to:enquiry.id
+		}).success(function(data, status, headers, config) {
+                 
+                if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+    
+      $scope.deleteenquiry = function(index) {
+		$scope.loading = true;
+
+		var enquiry = $scope.enquirys[index];
+              
+                $http.post('enquiry/delete',{            
+                    del_id:enquiry.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.enquirys.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+
+         $scope.init();
+});
 // Faq Management
  app.controller('FaqController', function($scope, $http) {
     
@@ -388,6 +492,129 @@ app.controller('HomeController', function($scope, $http) {
                     del_id:faq.id
                 }).success(function(data, status, headers, config) {
                                         $scope.faqs.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+                };
+
+         $scope.init();
+});
+// Template Management
+app.controller('TemplateController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.loading = true;
+     $scope.templates=false;
+     $scope.template=false;
+     $scope.temp=false;
+     $scope.page='index';     
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('template/all').
+		success(function(data, status, headers, config) {
+			$scope.templates = data;
+		        $scope.loading = false;
+ 
+		});
+	}
+       $scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $scope.template=false;
+	}
+       $scope.edittemplate = function(template) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('template/edit/' + template.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.template = data['data'];                      
+		        $scope.loading = false;
+ 
+		});;
+	};
+        
+       $scope.store = function(template) { 
+           $scope.errors_modal=false;
+           $scope.success_flash_modal=false;   
+         
+           $http.post('template/store', {			
+                        subject: template.subject,
+                        message: template.message,                    
+                       
+		}).success(function(data, status, headers, config) {             
+                       if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];                               
+                                $scope.init();
+                               
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      $scope.send_email=function(user_send,temp_id){          
+           $http.post('template/sent', {			
+                      user:user_send,                  
+                      template_id:temp_id,   
+		}).success(function(data, status, headers, config) {             
+                       if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];                               
+                                $scope.init();
+                               
+			}
+			$scope.loading = false;
+ 
+         });
+      }
+        $scope.sendtemplate = function(template){
+            $scope.errors=false;
+            $scope.success_flash=false;   
+            $scope.page='send';
+            $scope.temp=template;
+        }
+        $scope.update = function(template) { 
+           $scope.errors=false;
+           $scope.success_flash=false;         
+           $http.post('template/update', {			
+                      subject: template.subject,
+                      message: template.content,  
+                      template_id: template.id
+		}).success(function(data, status, headers, config) {                  
+                       if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+			        $scope.success_flash=data[1];                             
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+
+      
+      $scope.deletetemplate = function(index) {
+		$scope.loading = true;
+		var templates = $scope.templates[index];              
+                $http.post('template/delete',{            
+                    del_id:templates.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.templates.splice(index, 1);
                                         $scope.loading = false
                                         $scope.success_flash=data[1];
                                         $scope.init();
@@ -630,6 +857,7 @@ app.controller('UserController', function($scope, $http) {
         $scope.inputs.splice(index, 1);
     }
 	$scope.useradd = function() {	
+	$scope.user={};
                 $scope.page='useradd';		
 		$scope.errors=false;
                 $scope.success_flash=false;
@@ -651,6 +879,8 @@ app.controller('UserController', function($scope, $http) {
 		$http.post('user/checkUser', {
 				username:userData.username,
 				email:userData.email,
+				password:userData.password,
+				confirm_password:userData.repassword,
 				role:userData.role
 		}).success(function(data, status, headers, config) {//console.log(data['user']);
 		
@@ -664,7 +894,8 @@ app.controller('UserController', function($scope, $http) {
 			$scope.user.username = userData.username;
 			$scope.user.email = userData.email;
 			$scope.user.role = userData.role;
-			$scope.loading = false;	
+			$scope.loading = false;
+			//console.log($scope.user.username);			
 			$scope.add();
 			}
 			
@@ -681,9 +912,11 @@ app.controller('UserController', function($scope, $http) {
 			$scope.all_user = data['all_user'];
 			$scope.roles = data['roles'];
 			$scope.loading = false;
- //console.log($scope.user_data);
+ console.log($scope.user_ddata);
  $scope.getState($scope.user_ddata.store_country);
  $scope.getCity($scope.user_ddata.store_state);
+ $scope.getState($scope.user_ddata.ship_country);
+ $scope.getCity($scope.user_ddata.ship_state);
 		});
 	};
 	
@@ -692,7 +925,7 @@ app.controller('UserController', function($scope, $http) {
 		$http.post('country/getState',{
 			store_country:pid
 		}).
-		success(function(data, status, headers, config) {//console.log(data);
+		success(function(data, status, headers, config) {console.log(data);
 		$scope.store_state = data;	
  
 		});
@@ -827,13 +1060,15 @@ app.controller('UserController', function($scope, $http) {
 			flickr_link:user_data.flickr_link,
 			store_id:user_data.store_id,
 			shipp_id:user_data.shipp_id,
+			affiliatefees:$scope.inputs,
+			logo:$scope.logo,
+			selling:userData.selling,
+			publishing:userData.publishing,
+			commission:userData.commission,
+			featured:userData.featured,
+			verified:userData.verified,
+			promotinoal_link:userData.promotinoal_link,
 			promotion:$scope.promotion,
-			selling:user_data.selling,
-			publishing:user_data.publishing,
-			commission:user_data.commission,
-			featured:user_data.featured,
-			verified:user_data.verified,
-			promotinoal_link:user_data.promotinoal_link,
 			
                    
 		}).success(function(data, status, headers, config) {
@@ -924,7 +1159,7 @@ app.controller('UserController', function($scope, $http) {
 				$scope.errors=false;
                                 $scope.success_flash=data[1];
 				$scope.users.push(userData);
-                                //$scope.init();
+                                $scope.init();
 			}
 			$scope.loading = false;
  
@@ -1116,7 +1351,7 @@ app.controller('BrandsController', function($scope, $http) {
 		});
 	}
         $scope.add = function() {
-$scope.user=false;			
+                $scope.user=false;			
                 $scope.page='add';		
 		$scope.errors=false;
                 $scope.success_flash=false;

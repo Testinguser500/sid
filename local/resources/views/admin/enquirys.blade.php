@@ -1,19 +1,22 @@
-@extends('admin/layout')
-@section('content')
 
     <!-- Main content -->
     <section class="content">
-       <div class="col-md-12">
-	@if(Session::has('flash_message'))
-        <div class="alert alert-success">
+     
+	 <div class="alert alert-success" ng-if="success_flash">
             <p >
-            {{ Session::get('flash_message') }}
+            <% success_flash %>
             </p>
         </div>
-       @endif   
+        <div class="alert alert-danger"  ng-if="errors">
+            <ul>
+                <li ng-repeat ="er in errors"><% er %></li>
+         
+            </ul>
+        </div>
+      
           <!-- /.box -->
-            @if(count($enquirys)>0)
-          <div class="box">
+          
+          <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> Enquiry List</h3>
              
@@ -32,17 +35,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach($enquirys as $val){ ?>
-                <tr>
-                  <td>{{ $val->id }}</td>
-                  <td>{{ $val->name }}</td>
-                  <td>{{ $val->email }}</td>
-                  <td>{{ $val->subject }}</td>
+                
+                <tr ng-repeat="val in enquirys">
+                  <td><% val.id %></td>
+                  <td><% val.name %></td>
+                  <td><% val.email %></td>
+                  <td><% val.subject %></td>
                   <td>
-                      <a href="{{url('/admin/enquiry/edit') }}/{{ $val->id }}"><i class="fa fa-reply" title="Reply" ></i></a>
-                      <i class="fa fa-trash" style="cursor:pointer" data-toggle="modal" title="Delete"  data-target="#del_modal{{ $val->id }}"></i>
+                      <a href="javascript:void(0);" ng-click="replys(val);"><i class="fa fa-reply" title="Reply" ></i></a>
+                      <i class="fa fa-trash" style="cursor:pointer" data-toggle="modal" title="Delete"  data-target="#del_modal<% val.id %>"></i>
                       
-                    <div class="modal fade" id="del_modal{{  $val->id  }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal fade" id="del_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -54,11 +57,10 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <form action = "{{url('/admin/enquiry/delete')}}" method="post">
-                                  {{ csrf_field() }}
-                               <input type="hidden" name="del_id" value="{{  $val->id  }}" />
-                               <button type="submit" class="btn btn-primary" >Delete</button>
-                            </form>
+                           
+                              
+                               <button ng-click="deleteenquiry($index)" data-dismiss="modal" class="btn btn-primary" >Delete</button>
+                          
                           </div>
                         </div>
                       </div>
@@ -67,7 +69,7 @@
 
                   
                 </tr>
-                <?php } ?>
+               
                 </tbody>
                 <tfoot>
                  <tr>
@@ -82,7 +84,70 @@
             </div>
             <!-- /.box-body -->
           </div>
-         @endif
+         
+          <!-- /.box -->
+           <!-- general form elements -->
+          <div class="box box-primary" ng-if="page=='reply'">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-reply"></i> Enquiry Reply</h3>
+                <div class="pull-right"> <a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
+            </div>
+               <!-- /.box-header -->
+            <div class="box-body">  
+              <table class="table table-bordered table-striped">
+                  <tr>
+                      <td>Name</td>
+                      <td><% enquiry.name %></td>
+                  </tr>
+                  <tr>
+                      <td>E-mail</td>
+                      <td><% enquiry.email %></td>
+                  </tr>
+                  <tr>
+                      <td>Subject</td>
+                      <td><% enquiry.subject %></td>
+                  </tr>
+                   <tr>
+                      <td>Message</td>
+                      <td><% enquiry.message %></td>
+                  </tr>
+              </table>
+           
+            
+            <div class="row" ng-repeat="val in reply"> 
+                    <div class="col-md-12" >
+                         <div class="box box-default box-solid collapsed-box">
+                          <div class="box-header with-border bg-aqua ">
+                              <h3 class="box-title"><i class="fa fa-reply" title="Reply"></i> </h3>
+
+                            <div class="box-tools pull-right">
+                                 
+                              <button data-widget="collapse" class="btn btn-box-tool" type="button"><% val.created_at %>
+                              </button>
+                            </div>
+                            <!-- /.box-tools -->
+                          </div>
+
+                          <!-- /.box-header -->
+                          <div class="box-body" style="display: none;" ng-bind-html="val.message">
+                          
+                          </div>
+                          <!-- /.box-body -->
+                        </div>
+                    </div>
+            </div>
+               
+                          
+                
+              
+                <div text-angular ng-model="enquiry.reply" name="demo-editor" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div> 
+                 
+            </div>
+            <div class="box-footer">
+                <button ng-click="send(enquiry);" class="btn btn-primary">Send</button>
+            </div>
+           
+          </div>
           <!-- /.box -->
         <!-- Button trigger modal -->
 
@@ -92,16 +157,8 @@
           <!-- Form Element sizes -->
          
 
-        </div>
+  
 
     </section>
    
   <!-- /.content-wrapper -->
-   <script>
-    $(function () {
-    $("#example1").DataTable();
-    
-   
-  });
- </script>
-@endsection	

@@ -52,6 +52,8 @@ class UserController extends Controller
 			'role'=>'required',
 			'username' => 'required|unique_with:users,role',
 			'email'=>'required|email|unique_with:users,role',
+			'password'=>'required|min:6',
+			'confirm_password'=>'required|same:password',
 	
 	);
 	$validator = Validator::make(Request::all(), $validation);
@@ -68,7 +70,7 @@ class UserController extends Controller
 	}
         public function store(){
 			
-			
+			echo Request::input('fname');
 			
 			$validation1=array();
 	$validation = array(
@@ -118,7 +120,7 @@ class UserController extends Controller
 		$insert_id = $user->id;
 		if(Request::input('role')==3)
 		{
-			Shipping::create(['user_id'=>$insert_id,'fname'=>Request::input('ship_fname'),'lname'=>Request::input('ship_lname'),'mobile'=>Request::input('ship_mobile'),'address'=>Request::input('ship_address'),'country'=>Request::input('ship_country'),'state'=>Request::input('ship_state'),'city'=>Request::input('ship_city')]);
+			Shipping::create(['user_id'=>$insert_id,'ship_fname'=>Request::input('ship_fname'),'ship_lname'=>Request::input('ship_lname'),'ship_mobile'=>Request::input('ship_mobile'),'ship_address'=>Request::input('ship_address'),'ship_country'=>Request::input('ship_country'),'ship_state'=>Request::input('ship_state'),'ship_city'=>Request::input('ship_city')]);
 		}
 		elseif(Request::input('role')==5)
 		{
@@ -192,14 +194,14 @@ class UserController extends Controller
         
 	 public function edit($id){
 	
-	 $data= DB::table('users')->join('role','users.role', '=', 'role.id')->select('role.name as role_name', 'users.*','role.id as roleid','users.id as userid')->where('users.id', '=',$id)->first();
+	 $data= DB::table('users')->join('role','users.role', '=', 'role.id')->select('role.name as role_name','users.fname as user_fname','users.lname as user_lname', 'users.*','role.id as roleid','users.id as userid')->where('users.id', '=',$id)->first();
 	 //print_r($data);
 	 $role = DB::table('role')->get();
 	 $user = '';
 		if($data->role=='5')
 		$user = DB::table('store')->select('*','id as store_id')->where('user_id', '=',$id)->first();
 		elseif($data->role=='3')
-		$user = DB::table('shipp_address')->select('*','name as shipp_name','id as shipp_id')->where('user_id', '=',$id)->where('status','=','Active')->first();
+		$user = DB::table('shipp_address')->select('*','id as shipp_id')->where('user_id', '=',$id)->where('ship_status','=','Active')->first();
 		//print_r($user);
 		 $return['user']=(object) array_merge((array)$data,(array) $user);
 		 //print_r($return['user']);
@@ -213,7 +215,7 @@ class UserController extends Controller
 	 $validation1=array();
 	$validation = array(
 			'role'=>'required',
-			'name' => 'required',
+			'fname' => 'required',
 			'username' => 'required|unique_with:users,role,'.Request::input('id'),
 			'email'=>'required|email|unique_with:users,role,'.Request::input('id'),
 			'password'=>'min:6',
@@ -223,7 +225,7 @@ class UserController extends Controller
 	);
 	if(Request::input('role')==3)
 	{
-		$validation1 = array('ship_name'=>'required',
+		$validation1 = array('ship_fname'=>'required',
 		'ship_mobile'=>'required',
 		'ship_address'=>'required',
 		'ship_country'=>'required',
