@@ -75,7 +75,7 @@ class OptionController extends Controller
          public function update(){
 	  $chk_id=Request::input('id');
 	  $validator = Validator::make(Request::all(), [
-            'option_name' => 'required|unique:pro_option,option_name,'.$chk_id.'|unique_with:pro_option, option_name, parent_id ='.$chk_id	        
+            'option_name' => 'required|unique:pro_option,option_name,'.$chk_id        
             
           ]);
 	    if ($validator->fails()) {
@@ -92,18 +92,20 @@ class OptionController extends Controller
 	    }
 	 
 	  $variba=Request::input('option_value');
+	 
 	  foreach($variba as $key=>$value)
 	  {
 	       if($value['option_name']!=''){
 			if (array_key_exists('id',$value))
 			 {
-			     $optionData = Option::find($value['id']);
+			    
+	                     $optionData = Option::find($value['id']);
 			     $optionData->option_name=$value['option_name'];
 			     $optionData->is_delete='0';
 			     $optionData->save(); 
 			 }
 			else
-			{   
+			{
 			    Option::create(['option_name' =>$value['option_name'],'parent_id'=>Request::input('id'),'user_id'=>Auth::user()->id,'status' =>'Active']);  
 			}
 	       }
