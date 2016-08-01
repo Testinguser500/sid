@@ -75,7 +75,7 @@ class OptionController extends Controller
          public function update(){
 	  $chk_id=Request::input('id');
 	  $validator = Validator::make(Request::all(), [
-            'option_name' => 'required|unique_with:pro_option, option_name, parent_id ='.$chk_id	        
+            'option_name' => 'required|unique:pro_option,option_name,'.$chk_id.',unique_with:pro_option, option_name, parent_id ='.$chk_id	        
             
           ]);
 	    if ($validator->fails()) {
