@@ -339,7 +339,6 @@ app.controller('HomeController', function($scope, $http) {
 			reply: enquiry.reply,
 			subject:enquiry.subject,
                         email:enquiry.email,
-                        subject:enquiry.subject,
                         reply_to:enquiry.id
 		}).success(function(data, status, headers, config) {
                  
