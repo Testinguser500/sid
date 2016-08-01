@@ -28,7 +28,7 @@ class OptionController extends Controller
        
         public function store(){
 	   $validator = Validator::make(Request::all(), [
-            'option_name' => 'required'                   
+            'option_name' => 'required|unique:pro_option,option_name'                   
         ]);
          
         if ($validator->fails()) {
@@ -73,9 +73,9 @@ class OptionController extends Controller
 	     
 	}
          public function update(){
-	
+	  $chk_id=Request::input('id');
 	  $validator = Validator::make(Request::all(), [
-            'option_name' => 'required',	        
+            'option_name' => 'required|unique_with:pro_option, option_name, parent_id ='.$chk_id	        
             
           ]);
 	    if ($validator->fails()) {
