@@ -95,6 +95,9 @@ app.config(['$routeProvider', function($routeProvider) {
    }).
    when('/option', {
       templateUrl: 'option', controller: 'OptionController'
+   }).
+   when('/product', {
+      templateUrl: 'product', controller: 'ProductController'
    }). 
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
@@ -924,7 +927,8 @@ app.controller('UserController', function($scope, $http) {
 				email:userData.email,
 				password:userData.password,
 				confirm_password:userData.repassword,
-				role:userData.role
+				role:userData.role,
+				ownpassword:userData.ownpassword
 		}).success(function(data, status, headers, config) {//console.log(data['user']);
 		
 		if(data[0]=='error'){
@@ -937,6 +941,7 @@ app.controller('UserController', function($scope, $http) {
 			$scope.user.username = userData.username;
 			$scope.user.email = userData.email;
 			$scope.user.role = userData.role;
+			$scope.user.password = userData.password;
 			$scope.loading = false;
 			//console.log($scope.user.username);			
 			$scope.add();
@@ -1108,6 +1113,23 @@ app.controller('UserController', function($scope, $http) {
 			   
 			   
 		   });
+   }
+   
+   $scope.genratePassword = function(){
+	   var length=6;
+	   var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
+    var pass = "";
+	var charsa = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+    for (var x = 0; x < length; x++) {
+        var i = Math.floor(Math.random() * chars.length);
+        pass += chars.charAt(i);
+		
+					
+    }
+	$scope.formSubmit=true;
+	return pass;
+	//console.log(pass);
+					
    }
 	   $scope.delBanner=function(bannerData)
 	   {
@@ -1375,7 +1397,7 @@ app.controller('StaticContentController', function($scope, $http) {
 
     });
    }
-        $scope.update = function(contents) { console.log(contents);
+        $scope.update = function(contents) { //console.log(contents);
             $scope.errors=false;
             $scope.success_flash=false;
            $http.post('static-content/update', {
@@ -2144,10 +2166,8 @@ app.controller('CountryController', function($scope, $http) {
                                         $scope.success_flash=data[1];
                                         $scope.init();
                                 });
-        };
-		
+        };	
 	
-
 	$scope.addInput = function () {
 	   
 	    $scope.values.push({
@@ -2160,4 +2180,143 @@ app.controller('CountryController', function($scope, $http) {
 	}
 
          $scope.init();
+});
+ 
+ /*****Products*****/
+  app.controller('ProductController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.files='';
+     $scope.loading = true;
+     $scope.products=false;
+     $scope.page='index';
+     $scope.product={};
+     $scope.success_flash=false;
+     
+        $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('product/all').
+		success(function(data, status, headers, config) {
+			$scope.products = data['products'];
+		        $scope.loading = false;
+		});
+	}
+	
+	$scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $scope.product=false;
+		$http.get('product/all').
+		success(function(data, status, headers, config) {
+			$scope.sellers = data['sellers'];
+			$scope.categories = data['categories'];
+			$scope.brands = data['brands'];
+			//console.log($scope.sellers);
+		        $scope.loading = false;
+ 
+		});
+	}
+	
+	 $scope.store = function(product) { 
+           $scope.errors=false;
+           $scope.success_flash=false;   
+
+           $http.post('product/store', {
+			pro_name: product.pro_name,
+			pro_des: product.pro_des,
+			pro_short_des: product.pro_short_des,
+			pro_feature_des: product.pro_feature_des,
+			seller_id: product.seller_id,
+			pro_category_id: product.pro_category_id,
+			brand_id: product.brand_id,
+			product_tags: product.product_tags,
+			price: product.price,
+			no_stock: product.no_stock,
+			meta_title: product.meta_title,
+			meta_description: product.meta_description,
+			meta_keywords: product.meta_keywords,
+                        status: product.status 
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+	
+	
+	$scope.deleteproduct = function(index) { 
+		$scope.loading = true;
+
+		var product = $scope.products[index];
+
+                $http.post('product/delete',{            
+                    del_id:product.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.products.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+        };
+	
+	 $scope.editproduct = function(product) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('product/edit/' + product.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.product = data['product'];
+			$scope.sellers = data['sellers'];
+			$scope.categories = data['categories'];
+			$scope.brands = data['brands'];
+		        $scope.loading = false;
+		});
+	};
+
+        $scope.update = function(product) { 
+            $scope.errors=false;
+            $scope.success_flash=false; //console.log(product);
+           $http.post('product/update', { 
+			id: product.id,
+			pro_name: product.pro_name,
+			pro_des: product.pro_des,
+			pro_short_des: product.pro_short_des,
+			pro_feature_des: product.pro_feature_des,
+			seller_id: product.seller_id,
+			pro_category_id: product.pro_category_id,
+			brand_id: product.brand_id,
+			product_tags: product.product_tags,
+			price: product.price,
+			no_stock: product.no_stock,
+			meta_title: product.meta_title,
+			meta_description: product.meta_description,
+			meta_keywords: product.meta_keywords,
+                        status: product.status 
+		}).success(function(data, status, headers, config) {
+                 
+                if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+				$scope.product={};
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+	$scope.init();
 });

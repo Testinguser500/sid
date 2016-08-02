@@ -53,9 +53,13 @@ class UserController extends Controller
 			'username' => 'required|unique_with:users,role',
 			'email'=>'required|email|unique_with:users,role',
 			'password'=>'required|min:6',
-			'confirm_password'=>'required|same:password',
+			
 	
 	);
+	if(Request::input('ownpassword')==0)
+	{
+		$validation['confirm_password'] = 'required|same:password';
+	}
 	$validator = Validator::make(Request::all(), $validation);
 		
          
@@ -359,7 +363,7 @@ class UserController extends Controller
 		 $data = file_get_contents('http://www.avatarapi.com/js.aspx?email='.$email.'&size=128');
 		if($data=='// No profile information found for this email')
 		{
-			$img = \DefaultProfileImage::create($name, 256, '#000', '#FFF');
+			$img = \DefaultProfileImage::create($name, 150, '#000', '#FFF');
 			$fileName = time().'.png';
 			//echo base_path('../uploads');
 			//dd(asset('uploads'));
@@ -369,7 +373,7 @@ class UserController extends Controller
 			//echo storage_path();
 			echo $path = asset('local/storage/app/');
 			\Storage::put('uploads/'.$fileName, $img->encode());
-			return "<a ><img src='".$path."/".$fileName."'  width='128' height='128></a>";
+			return "<a ><img src='".$path."/uploads/".$fileName."'  width='128' height='128></a>";
 		}
 		else
 		{
