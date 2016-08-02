@@ -36,7 +36,6 @@ Route::post('admins/Allimageupload', 'Admin\HomeController@Allimageupload');
 
 Route::get('admins/category', 'Admin\CategoryController@index');
 Route::get('admins/category/all', 'Admin\CategoryController@all');
-Route::get('admins/category/add', 'Admin\CategoryController@add');
 Route::post('admins/category/store', 'Admin\CategoryController@store');
 Route::post('admins/category/delete', 'Admin\CategoryController@delete');
 Route::get('admins/category/edit/{id}', 'Admin\CategoryController@edit');
