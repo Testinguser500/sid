@@ -849,9 +849,28 @@ app.controller('UserController', function($scope, $http) {
 		success(function(data, status, headers, config) {
 			$scope.users = data['users'];
 			$scope.country = data['country'];
+			$scope.usersRecord = data['total'];
+			//console.log($scope.usersRecord);
 		        $scope.loading = false;
  
 		});
+	}
+	$scope.userlist = function(userData){
+		$scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.post('user/all',{
+			role:userData.role_id
+		}).
+		success(function(data, status, headers, config) {
+			$scope.users = data['users'];
+			$scope.country = data['country'];
+			$scope.usersRecord = data['total'];
+			//console.log($scope.usersRecord);
+		        $scope.loading = false;
+		});
+		
 	}
         $scope.add = function() {	
                 $scope.page='add';		

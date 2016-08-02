@@ -22,11 +22,10 @@
               <h3 class="box-title"><i class="fa fa-list"></i> User List</h3>
 			  <a class="add-link btn btn-success btn-flat btn-grid" href="javascript:void(0);" ng-click="useradd()"><i class="fa fa-plus-square"></i> Add User</a>
 			  <ul class="subsubsub">
-	<li class="all"><a href="users.php" class="current">All <span class="count">(86)</span></a> |</li>
-	<li class="administrator"><a href="users.php?role=administrator">Administrator <span class="count">(2)</span></a> |</li>
-	<li class="customer"><a href="users.php?role=customer">Customer <span class="count">(22)</span></a> |</li>
-	<li class="shop_manager"><a href="users.php?role=shop_manager">Shop Manager <span class="count">(1)</span></a> |</li>
-	<li class="seller"><a href="users.php?role=seller">Seller <span class="count">(61)</span></a></li>
+			  <li ng-repeat="us in usersRecord">
+	<li class="all"><a href="javascript:void(0)" ng-click="init();" class="current">All <span class="count">(<%users.length%>)</span></a> |</li>
+	<li class="administrator" ng-repeat="us in usersRecord"><a href="javascript:void(0)" ng-click="userlist(us)"><%us.name%> <span class="count">(<%us.total_users%>)</span></a> |</li>
+	
 </ul>
             </div>
             <!-- /.box-header -->
