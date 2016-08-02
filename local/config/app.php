@@ -149,6 +149,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 		Felixkiss\UniqueWithValidator\UniqueWithValidatorServiceProvider::class,
+		Cviebrock\ImageValidator\ImageValidatorServiceProvider::class,
+		A6digital\Image\DefaultProfileImageServiceProvider::class,
 
         /*
          * Application Service Providers...

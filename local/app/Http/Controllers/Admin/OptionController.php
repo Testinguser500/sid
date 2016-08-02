@@ -28,7 +28,7 @@ class OptionController extends Controller
        
         public function store(){
 	   $validator = Validator::make(Request::all(), [
-            'option_name' => 'required|unique:pro_option,option_name'                   
+            'option_name' => 'required|soft_unique:pro_option'                   
         ]);
          
         if ($validator->fails()) {
@@ -74,16 +74,33 @@ class OptionController extends Controller
 	}
          public function update(){
 	  $chk_id=Request::input('id');
-	  $validator = Validator::make(Request::all(), [
-            'option_name' => 'required|unique:pro_option,option_name,'.$chk_id        
-            
-          ]);
+          $variba=Request::input('option_value');
+          $validation['option_name'] ='required|soft_unique:pro_option,'.Request::input('id');
+           foreach($variba as $key=>$value)
+	  {
+	       if($value['option_name']!=''){
+			if (array_key_exists('id',$value))
+			 {
+	                   $validation['option_value.'.$key.'.option_name'] = 'required|soft_composite_unique:pro_option,option_name,parent_id='.Request::input('id').','.$value['id'];                         
+	                          
+			 }
+			else
+			{
+                          $validation['option_value.'.$key.'.option_name'] ='required|soft_composite_unique:pro_option,option_name,parent_id='.Request::input('id');      
+      
+			}
+	       }
+	    
+	  }
+	  $validator = Validator::make(Request::all(), $validation);
 	    if ($validator->fails()) {
                    $list[]='error';
                    $msg=$validator->errors()->all();
                    $list[]=$msg;
-                   return $list;
+                   //print_r($list);
+                  return $list;
              }
+             
           $option_values= DB::table('pro_option')->where('parent_id', '=',Request::input('id'))->where('is_delete', '=','0')->get();
 	    foreach($option_values as $ky => $ve){
 	      $optionData = Option::find($ve->id);	    
@@ -91,14 +108,11 @@ class OptionController extends Controller
 	      $optionData->save(); 
 	    }
 	 
-	  $variba=Request::input('option_value');
-	 
 	  foreach($variba as $key=>$value)
 	  {
 	       if($value['option_name']!=''){
 			if (array_key_exists('id',$value))
 			 {
-			    
 	                     $optionData = Option::find($value['id']);
 			     $optionData->option_name=$value['option_name'];
 			     $optionData->is_delete='0';
@@ -106,6 +120,7 @@ class OptionController extends Controller
 			 }
 			else
 			{
+                               
 			    Option::create(['option_name' =>$value['option_name'],'parent_id'=>Request::input('id'),'user_id'=>Auth::user()->id,'status' =>'Active']);  
 			}
 	       }

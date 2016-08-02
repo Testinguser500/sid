@@ -81,6 +81,7 @@ class UserController extends Controller
 			'password'=>'required|min:6',
 			'confirm_password'=>'required|same:password',
 			'profile_image'=>'required',
+			'mobile' => 'required|unique_with:users,role',
 	
 	);
 	if(Request::input('role')==3)
@@ -96,7 +97,7 @@ class UserController extends Controller
 	elseif(Request::input('role')==5)
 	{
 		$validation1 = array(
-		'banner'=>'required',
+		'banner'=>'required|max:1000|image_size:1300,400',
 		'store_country'=>'required',
 		'store_state'=>'required',
 		'store_city'=>'required',
@@ -116,7 +117,7 @@ class UserController extends Controller
         }
 		 
         $password = Request::input('password');
-        $user = User::create(['image' =>Request::input('profile_image'),'fname' =>Request::input('fname'),'lname' =>Request::input('lname'),'display_name' =>Request::input('display_name'),'username' =>Request::input('username'),'nickname' =>Request::input('nickname'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
+        $user = User::create(['image' =>Request::input('profile_image'),'fname' =>Request::input('fname'),'lname' =>Request::input('lname'),'display_name' =>Request::input('display_name'),'username' =>Request::input('username'),'nickname' =>Request::input('nickname'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'home_number' =>Request::input('home_number'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'state' =>Request::input('state'),'city' =>Request::input('city'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
 		$insert_id = $user->id;
 		if(Request::input('role')==3)
 		{
@@ -190,6 +191,24 @@ class UserController extends Controller
            $list[]='Record is deleted successfully.';	 
 	   return $list;
 	    
+	}
+	public function changeStatus()
+	{
+		$id = Request::input('id');
+		$action = Request::input('status');
+		if($action=='Active'){
+			$status ='Inactive';
+		}
+		else
+		{
+			$status = 'Active';
+		}
+		$cat = User::find($id);
+           $cat->status = $status;
+           $cat->save(); 	   		 
+           $list[]='success';
+           $list[]='User status has been changed successfully.';	 
+	   return $list;
 	}
         
 	 public function edit($id){
@@ -332,6 +351,31 @@ class UserController extends Controller
             $m->to($user->email, $user->name)->subject('Your Reminder!');
         });
     }
+	
+	public function getProfileImage()
+	{
+		$email = Request::input('email');
+		$name = Request::input('name');
+		 $data = file_get_contents('http://www.avatarapi.com/js.aspx?email='.$email.'&size=128');
+		if($data=='// No profile information found for this email')
+		{
+			$img = \DefaultProfileImage::create($name, 256, '#000', '#FFF');
+			$fileName = time().'.png';
+			//echo base_path('../uploads');
+			//dd(asset('uploads'));
+			$inPublic = 'uploads';
+			//echo public_path($inPublic);
+			//echo $localPath = str_replace('local\public','',(public_path()));
+			//echo storage_path();
+			echo $path = asset('local/storage/app/');
+			\Storage::put('uploads/'.$fileName, $img->encode());
+			return "<a ><img src='".$path."/".$fileName."'  width='128' height='128></a>";
+		}
+		else
+		{
+			return $data;
+		}
+	}
        
  }
  
