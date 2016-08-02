@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="{{URL::asset('admin/css/_all-skins.min.css')}}">
   <!-- iCheck -->
   <link rel="stylesheet" href="{{URL::asset('admin/iCheck/flat/blue.css')}}">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="{{URL::asset('admin/iCheck/all.css')}}">
   <!-- Morris chart -->
   <link rel="stylesheet" href="{{URL::asset('admin/morris/morris.css')}}">
   <!-- jvectormap -->

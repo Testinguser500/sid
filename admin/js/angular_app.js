@@ -16,13 +16,33 @@ app.directive("passwordStrength", function(){
                 console.log(value);
 				
                 if(angular.isDefined(value)){
+					var numbers = /^[0-9]+$/; 
+					var chars = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 					
-                    if (value.length > 8) {
-                        scope.strength = 'strong';
-                    } else if (value.length > 3) {
+					
+					 if(chars.test(value))
+					{
+						scope.formSubmit=true;
+						scope.strength = 'strong';
+						scope.strengthClass= 'progress-sm';
+						scope.barClass='progress-bar progress-bar-success';
+					}
+                    else if (value.length > 6) {
                         scope.strength = 'medium';
-                    } else {
+						scope.strengthClass= 'progress-xs';
+						scope.barClass='progress-bar progress-bar-warning';
+						scope.formSubmit=false;
+                    } 
+					//else if (value.length > 3) {
+                    //    scope.strength = 'medium';
+					//	scope.strengthClass= 'progress-xs';
+					//	scope.barClass='progress-bar-warning';
+                    //} 
+					else {
                         scope.strength = 'weak';
+						scope.strengthClass= 'progress-xxs';
+						scope.barClass='progress-bar progress-bar-danger';
+						scope.formSubmit=false;
                     }
                 }
             });
@@ -807,6 +827,7 @@ app.controller('UserController', function($scope, $http) {
 	$scope.bannerfiles='';
 	$scope.promotion='';
 	$scope.logo='';
+	$scope.profileImage='';
      $scope.loading = true;
      $scope.users=false;
 	 $scope.user={};
@@ -921,24 +942,36 @@ app.controller('UserController', function($scope, $http) {
 		});
 	};
 	
-	$scope.getState = function(pid){
+	$scope.getState = function(pid,type){
 		//console.log(pid);
 		$http.post('country/getState',{
 			store_country:pid
 		}).
 		success(function(data, status, headers, config) {console.log(data);
-		$scope.store_state = data;	
- 
+		var vari = type + 'state';
+		//console.log(vari)
+		if(type=='user')
+		$scope.user_state = data;
+		elseif(type=='store')
+		{
+			$scope.store_state = data;
+		}
+ //console.log($scope.vari);
 		});
 		
 	}
-	$scope.getCity = function(pid){
+	$scope.getCity = function(pid,type){
 		//console.log(pid);
 		$http.post('country/getCity',{
 			store_country:pid
 		}).
 		success(function(data, status, headers, config) {//console.log(data);
-		$scope.store_city = data;	
+		if(type=='user')
+		$scope.user_city = data;
+		elseif(type=='store')
+		{
+			$scope.store_city = data;
+		}	
  
 		});
 		
@@ -973,10 +1006,21 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.logo=data;$scope.loading = false;});
+            }).success( function(data, status, headers, config){ 
+			if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
+			$scope.logo=data;
+			$scope.user.logo=$scope.logo;
+			$scope.loading = false;
+			}
+			});
 
     });
    }
+   
    $scope.uploadedPromotionBannerFile = function(element) {
            $scope.$apply(function($scope) {
             $scope.loading = true;
@@ -1007,13 +1051,53 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.bannerfiles=data;
+            }).success( function(data, status, headers, config){ 
+			if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
+			$scope.bannerfiles=data;
 			$scope.user.banner=$scope.bannerfiles;
-			console.log($scope.user.banner);
-			$scope.loading = false;});
+			//console.log($scope.user.banner);
+			$scope.loading = false;
+			}
+			});
 
     });
    }
+   $scope.getProfileImage=function(user_data)
+   {
+	   
+	   $scope.errors=false;
+            $scope.success_flash=false;
+           $http.post('user/getProfileImage',
+
+		   { email:user_data.email,
+		   name:user_data.username
+		   
+		   }).success( function(data, status, headers, config)
+		   {
+			   //$scope.user.profile = data;
+			   var dt=data.split("<img src='");
+			   var dt1=dt[1].split("'");
+			   console.log(dt1[0]);
+			   $scope.profileImage = dt1[0]
+			   $scope.user.profile = $scope.profileImage;
+			   
+			   
+		   });
+   }
+	   $scope.delBanner=function(bannerData)
+	   {
+		   $scope.user.banner=false;
+		   
+	   }
+	   $scope.removelogo=function()
+	   {
+		   $scope.user.logo=false;
+		   
+	   }
         $scope.update = function(user_data) { //console.log($scope.bannerfiles);
             $scope.errors=false;
             $scope.success_flash=false;
@@ -1027,6 +1111,7 @@ app.controller('UserController', function($scope, $http) {
 			email: user_data.email,
 			gender:user_data.gender,
 			mobile: user_data.mobile,
+			home_number: user_data.home_number,
 			website: user_data.website,
 			bio: user_data.bio,
 			password: user_data.pass,
@@ -1036,7 +1121,7 @@ app.controller('UserController', function($scope, $http) {
 			address:user_data.address,
 			id: user_data.userid,
 			status: user_data.status,
-			profile_image: $scope.files,
+			profile_image: $scope.profileImage,
 			store_name: user_data.store_name,
 			store_link: user_data.store_link,
 			store_address: user_data.store_address,
@@ -1113,6 +1198,8 @@ app.controller('UserController', function($scope, $http) {
 			nationality: userData.nationality,
 			country: userData.country,
 			address:userData.address,
+			state:userData.state,
+			city:userData.city,
 			id: userData.id,
 			status: userData.status,
 			profile_image: $scope.files,
@@ -1180,6 +1267,22 @@ app.controller('UserController', function($scope, $http) {
                                         $scope.init();
                                 });
                 };
+				
+		$scope.changeStatus=function(userData)
+	   {
+		   $scope.loading = true;
+	   $http.post('user/changeStatus',{
+		   id:userData.id,
+		   status:userData.status
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		                             
+			$scope.loading = false
+			$scope.success_flash=data[1];
+			$scope.init();
+			});
+	   }
 				
          $scope.init(); 
 

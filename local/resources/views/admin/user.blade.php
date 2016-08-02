@@ -43,7 +43,7 @@
                   <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>
-				  <td><% val.status %></td>
+				  <td><a href="javascript:void(0);" ng-click="changeStatus(val);"><span class="label <% (val.status=='Active')?'label-success':'label-danger'%>"><% val.status %></a></td>
                   <td><i ng-click="edituser(val)" class="fa fa-edit" style="cursor:pointer"></i> <i class="fa fa-trash" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
                  
                   <!-- Modal -->
@@ -120,15 +120,29 @@
                 </div>
 				<div class="form-group">
                   <label for="exampleInputEmail1">Email(required)</label>
-                  <input type="text" class="form-control" id="" name="email" placeholder="Email" ng-model="user_ddata.email">
+                  <input type="text" class="form-control" id="" name="email" placeholder="Email" ng-model="user_ddata.email" ng-blur="getProfileImage(user_ddata)">
 		  <div class="help-block"></div>
-                </div>
+                </div >
+				
+				
 				<div class="form-group">
                   <label for="exampleInputEmail1">Password</label>
                   <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user_ddata.password" password-strength="user_ddata.password">
-				  <span class="help-inline"  data-ng-class="strength">This password is <%strength%> </span>
+				  
+				  
 				<div class="help-block"></div>
                 </div>
+				<div class="form-group">
+				<div class="col-xs-4">
+				<span class="help-inline"  data-ng-class="strength"><%strength%> </span>
+				<div class="progress <%strengthClass%>">
+                <div class=" <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                  
+                </div>
+              </div>
+			  </div>
+				</div>
+				<div style="clear:both"></div>
 				<div class="form-group">
                   <label for="exampleInputEmail1">Confirm Password</label>
                   <input type="password" class="form-control" id="" name="repassword" placeholder="Confirem password" ng-model="user_ddata.repassword">
@@ -145,8 +159,14 @@
 				  </select>
 		  <div class="help-block"></div>
                 </div>
+				<div class="form-group">
+				<label class="">
+                  
+				  <input type="checkbox" checked="" ng-model="user_ddata.notify">Send mail to user by this email.
+                </label>
+				</div>
 				</form>
-				<div class="box-footer">
+				<div class="box-footer" ng-show="formSubmit">
                 <button  ng-click="checkUser(user_ddata);" class="btn btn-primary">Submit</button>
 				
               </div>
@@ -582,6 +602,9 @@
             </div>
 		  <!------ Add User ---------------->
 		  <div class="box-body">
+		  <div class="form-group">
+				<img src="<% user.profile %>">
+				</div>
 			  <div class="form-group">
 			  <h3>User Info</h3>
 			  </div>
@@ -605,26 +628,24 @@
 		  <div class="help-block"></div>
                 </div>
 				
-                <div class="form-group col-xs-4">
+				</div>
+				<div class="row">
+				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">First Name</label>
                   <input type="text" class="form-control" id="" name="fname" placeholder="First Name" ng-model="user.fname">
 		  <div class="help-block"></div>
                 </div>
-				
-				
-				</div>
-				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Last Name</label>
                   <input type="text" class="form-control" id="" name="lname" placeholder="Last Name" ng-model="user.lname">
 		  <div class="help-block"></div>
                 </div>
-			<div class="form-group col-xs-4">
+			<!--<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Nickname</label>
                   <input type="text" class="form-control" id="" name="nickname" placeholder="Nickname" ng-model="user.nickname" >
 		  <div class="help-block"></div>
-                </div>
-				<div class="form-group col-xs-4">
+                </div>-->
+				<!--<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Display name publicly as</label>
                   <select class="form-control" id="" name="display_name" ng-model="user.display_name">
 				  
@@ -634,7 +655,7 @@
 				  <option value="<%user.lname%>" ><%user.lname%></option>
 				  </select>
 		  <div class="help-block"></div>
-                </div>
+                </div>-->
 				</div>
 				<div class="row">
 				<div class="form-group col-xs-4">
@@ -662,6 +683,11 @@
                   <input type="text" class="form-control" id="" name="mobile" placeholder="Mobile" ng-model="user.mobile">
 		  <div class="help-block"></div>
                 </div>
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputMobile">Home Number</label>
+                  <input type="text" class="form-control" id="" name="home_number" placeholder="Home Number" ng-model="user.home_number">
+		  <div class="help-block"></div>
+                </div>
 				
 				
 				<div class="form-group col-xs-4">
@@ -679,11 +705,11 @@
                   <textarea type="text" class="form-control" id="" name="bio" placeholder="Biographical Info" ng-model="user.bio"></textarea>
 		  <div class="help-block"></div>
                 </div>
-				<div class="form-group col-xs-4">
+				<!--<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1"> Profile Image</label>
                   <input type="file"  name="image" ng-model="user.image" onchange="angular.element(this).scope().uploadedFile(this)">
 		  <div class="help-block"></div>
-                </div>
+                </div>-->
 				</div>
 				<div class="form-group">
 			  <h3>Account Management</h3>
@@ -712,12 +738,31 @@
                   <textarea class="form-control" id="" name="address" ng-model="user.address"></textarea>
 		  <div class="help-block"></div>
                 </div>
+				</div>
+				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Country</label>
-                  <select class="form-control" id="" name="country" placeholder="Country" ng-model="user.country">
+                  <select class="form-control" id="" name="country" placeholder="Country" ng-model="user.country" ng-change="getState(user.country,'user');">
 				  <option value="">Select Country</option>
-				  <option ng-repeat="con in country" ng-value="con.name"><%con.name%></option>
+				  <option ng-repeat="con in country" ng-value="con.id"><%con.name%></option>
 				  
+				  </select>
+				<div class="help-block"></div>
+                </div>
+				
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1">State</label>
+                  <select class="form-control" id="" name="state" ng-model="user.state" ng-change="getCity(user.state,'user');">
+				  <option value="">Select State</option>
+				  <option ng-repeat="st in user_state" ng-value="st.id"><%st.name%></option>
+				  </select>
+				<div class="help-block"></div>
+                </div>
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1">City</label>
+                  <select class="form-control" id="" name="city" ng-model="user.city">
+				  <option value="">Select City</option>
+				  <option ng-repeat="ct in user_city" ng-value="ct.id"><%ct.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -757,7 +802,8 @@
                   <span ng-hide="user.banner" class="btn btn-primary btn-file">
 					Upload <input type="file" ng-model="user.store_banner" onchange="angular.element(this).scope().uploadedBannerFile(this)">
 				</span>
-				<a class="bnr-del" ng-show="display_cross==1"><img src="{{URL::asset('admin/img/del.png')}}"></a>
+				<em>Upload a banner for your store. Banner size is(1300x400) and not  more than 1 mb.</em>
+				<a href="javascript:void(0);" ng-click="delBanner(user.banner);display_cross=0" title="Delete" class="bnr-del" ng-mouseleave="display_cross=0" ng-mouseover="display_cross=1" ng-show="display_cross==1"><img src="{{URL::asset('admin/img/del.png')}}"></a>
 				  
 		  <div class="help-block"></div>
                 </div>
@@ -773,18 +819,26 @@
                   <input type="text" class="form-control" id="" name="store_link" placeholder="Store Link" ng-model="user.store_link">
 		  <div class="help-block"></div>
                 </div>
-                 <div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1"> Store Logo</label>
-                  <input type="file"  name="store_logo" ng-model="user.store_logo" onchange="angular.element(this).scope().uploadlogo(this)">
-		  <div class="help-block"></div>
-                </div>
+                 
                   
 				</div>
 				<div class="row">
-				
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1"> Store Logo</label>
+                  <span ng-hide="user.banner" class="btn btn-primary btn-file">
+					Upload<input type="file"  name="store_logo" ng-model="user.store_logo" onchange="angular.element(this).scope().uploadlogo(this)">
+					</span>
+		  <div class="help-block"></div>
+                </div>
+				<div ng-if="user.logo" class="form-group col-xs-4">
+				<img src="{{URL::asset('uploads/store_logo')}}/thumb_<%user.logo%>">
+				<a href="javascript:void(0);" ng-click="removelogo();"><i class="fa fa-trash"></i></a>
+				</div>
+				</div>
+				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Country</label>
-                  <select class="form-control" id="" name="store_country" placeholder="Country" ng-model="user.store_country" ng-change="getState(user.store_country);">
+                  <select class="form-control" id="" name="store_country" placeholder="Country" ng-model="user.store_country" ng-change="getState(user.store_country,'store');">
 				  <option value="">Select Country</option>
 				  <option ng-repeat="con in country" ng-value="con.id"><%con.name%></option>
 				  </select>
@@ -793,7 +847,7 @@
 				
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">State</label>
-                  <select class="form-control" id="" name="state" ng-model="user.store_state" ng-change="getCity(user.store_state);">
+                  <select class="form-control" id="" name="state" ng-model="user.store_state" ng-change="getCity(user.store_state,'store');">
 				  <option value="">Select State</option>
 				  <option ng-repeat="st in store_state" ng-value="st.id"><%st.name%></option>
 				  </select>

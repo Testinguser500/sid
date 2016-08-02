@@ -13,6 +13,7 @@ use App\Http\Controllers\cart\Cart;
 use Session;
 use Request;
 use Image;
+use File;
 class HomeController extends Controller
 {
 	public function index(){   
@@ -114,11 +115,22 @@ class HomeController extends Controller
        {
         if(Request::input('folder'))
 			$folder = '/'.Request::input('folder');
+		$image= Input::file('image');
 		
 		if(Request::input('width')&&Request::input('height'))
 		{
-			 $width = Request::input('width');
-			 $height = Request::input('height');
+			$image_info = getimagesize(Input::file('image'));
+            $image_width = $image_info[0];
+            $image_height = $image_info[1];
+			$width = Request::input('width');
+			$height = Request::input('height');
+			if($image_width!=$width&&$image_height&&File::size($image)>1000)
+			{
+				$list[]='error';
+				$msgs[]='Fix your image dimension or size.';
+				$list[]=$msgs;
+				return $list;
+			}
 			
 		}
 		else
@@ -132,7 +144,7 @@ class HomeController extends Controller
             if(($extension=='jpg') || ($extension=='jpeg') || ($extension=='png') ){
             $fileName = time().'.'.$extension; // renameing image 
 			//thumb
-			$image= Input::file('image');
+			
 			 $path = ($destinationPath . '/thumb_'.$fileName);
 			Image::make($image->getRealPath())->resize($width, $height)->save($path);
 			//mid

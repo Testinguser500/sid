@@ -4,9 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b159d08f5aa38ae1b86562c2cbee0b5b",
-    "content-hash": "b2ad637298373244fdca538aa748644d",
+    "hash": "27e3b97f5b531157da9b2827efd73223",
+    "content-hash": "14800020a7bdd6f18d58c57ff64c1915",
     "packages": [
+        {
+            "name": "a6digital/laravel-default-profile-image",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/a6digital/laravel-default-profile-image.git",
+                "reference": "65ae9de21b3aad8ad6a8adbff44235d00ad42bf6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/a6digital/laravel-default-profile-image/zipball/65ae9de21b3aad8ad6a8adbff44235d00ad42bf6",
+                "reference": "65ae9de21b3aad8ad6a8adbff44235d00ad42bf6",
+                "shasum": ""
+            },
+            "require": {
+                "intervention/image": "2.*",
+                "php": ">=5.4.0"
+            },
+            "type": "laravel-library",
+            "autoload": {
+                "psr-0": {
+                    "A6digital\\Image": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hasan Toprakkaya",
+                    "email": "hasan@a6digital.com"
+                }
+            ],
+            "description": "Laravel package to create default profile image using name of user.",
+            "homepage": "https://github.com/a6digital/laravel-default-profile-image",
+            "keywords": [
+                "laravel default profile image"
+            ],
+            "time": "2015-05-01 17:03:54"
+        },
         {
             "name": "classpreloader/classpreloader",
             "version": "3.0.0",
@@ -60,6 +101,56 @@
                 "preload"
             ],
             "time": "2015-11-09 22:51:51"
+        },
+        {
+            "name": "cviebrock/image-validator",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cviebrock/image-validator.git",
+                "reference": "c49c328b010077b173b56229bfbd4e5230d0cbdc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cviebrock/image-validator/zipball/c49c328b010077b173b56229bfbd4e5230d0cbdc",
+                "reference": "c49c328b010077b173b56229bfbd4e5230d0cbdc",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.*",
+                "illuminate/translation": "5.*",
+                "illuminate/validation": "5.*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "orchestra/testbench": "3.0.*",
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cviebrock\\ImageValidator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colin Viebrock",
+                    "email": "colin@viebrock.ca"
+                }
+            ],
+            "description": "Custom Laravel Validator for image dimensions",
+            "homepage": "https://github.com/cviebrock/image-validator",
+            "keywords": [
+                "image",
+                "laravel",
+                "validator"
+            ],
+            "time": "2016-07-20 19:04:51"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
