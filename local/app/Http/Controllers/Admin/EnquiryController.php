@@ -61,13 +61,20 @@ class EnquiryController extends Controller
 		return $list;
         }
         $emails['subject']=Request::input('subject');
-        $msg=Request::input('reply');
+        $copyright=configs_value('Copyright');        
+        $em_content=email_section('5');   
+        $msg=$em_content->email_body;
+        $msg=str_replace("{content}",Request::input('reply'),$msg);
+        $msg=str_replace("{copyright}",$copyright,$msg);	
+        $emails['name']= configs_value('Site Name');
+        $emails['from']=configs_value('SMTP User');
+        $emails['to'] =Request::input('email');       
         Mail::send('email',  ['msg' => $msg], function ($message) use ($emails) {
-            $message->from('test@infoseeksoftwaresystems.com', 'Laravel');
+            $message->from($emails['from'], $emails['name']);
 
-            $message->to('srishti.infoseek@gmail.com')->subject($emails['subject']);
+            $message->to($emails['to'])->subject($emails['subject']);
         });
-        Enquiry::create(['name' =>$request->get('name'),'email' =>Request::input('email'),'subject' =>Request::input('subject'),'message'=>Request::input('reply'),'reply_to' =>Request::input('reply_to')]);
+        Enquiry::create(['name' =>Request::input('name'),'email' =>Request::input('email'),'subject' =>Request::input('subject'),'message'=>Request::input('reply'),'reply_to' =>Request::input('reply_to')]);
         	  
         $list[]='success';
         $list[]='Reply send successfully.';	 

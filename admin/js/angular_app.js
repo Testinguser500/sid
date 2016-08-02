@@ -378,9 +378,9 @@ app.controller('HomeController', function($scope, $http) {
          
            $http.post('enquiry/update', {
 			reply: enquiry.reply,
+                        name: enquiry.name,
 			subject:enquiry.subject,
                         email:enquiry.email,
-                        subject:enquiry.subject,
                         reply_to:enquiry.id
 		}).success(function(data, status, headers, config) {
                  
