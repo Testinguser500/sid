@@ -25,12 +25,12 @@ app.directive("passwordStrength", function(){
 						scope.formSubmit=true;
 						scope.strength = 'strong';
 						scope.strengthClass= 'progress-sm';
-						scope.barClass='progress-bar-success';
+						scope.barClass='progress-bar progress-bar-success';
 					}
                     else if (value.length > 6) {
                         scope.strength = 'medium';
 						scope.strengthClass= 'progress-xs';
-						scope.barClass='progress-bar-warning';
+						scope.barClass='progress-bar progress-bar-warning';
 						scope.formSubmit=false;
                     } 
 					//else if (value.length > 3) {
@@ -41,7 +41,7 @@ app.directive("passwordStrength", function(){
 					else {
                         scope.strength = 'weak';
 						scope.strengthClass= 'progress-xxs';
-						scope.barClass='progress-bar-danger';
+						scope.barClass='progress-bar progress-bar-danger';
 						scope.formSubmit=false;
                     }
                 }
@@ -1066,14 +1066,15 @@ app.controller('UserController', function($scope, $http) {
 
     });
    }
-   $scope.getProfileImage=function(email)
+   $scope.getProfileImage=function(user_data)
    {
 	   
 	   $scope.errors=false;
             $scope.success_flash=false;
            $http.post('user/getProfileImage',
 
-		   { email:email
+		   { email:user_data.email,
+		   name:user_data.username
 		   
 		   }).success( function(data, status, headers, config)
 		   {

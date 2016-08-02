@@ -120,7 +120,7 @@
                 </div>
 				<div class="form-group">
                   <label for="exampleInputEmail1">Email(required)</label>
-                  <input type="text" class="form-control" id="" name="email" placeholder="Email" ng-model="user_ddata.email" ng-blur="getProfileImage(user_ddata.email)">
+                  <input type="text" class="form-control" id="" name="email" placeholder="Email" ng-model="user_ddata.email" ng-blur="getProfileImage(user_ddata)">
 		  <div class="help-block"></div>
                 </div >
 				
@@ -136,7 +136,7 @@
 				<div class="col-xs-4">
 				<span class="help-inline"  data-ng-class="strength"><%strength%> </span>
 				<div class="progress <%strengthClass%>">
-                <div class="progress-bar <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                <div class=" <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                   
                 </div>
               </div>

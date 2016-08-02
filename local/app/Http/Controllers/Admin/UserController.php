@@ -355,16 +355,21 @@ class UserController extends Controller
 	public function getProfileImage()
 	{
 		$email = Request::input('email');
-		$data = file_get_contents('http://www.avatarapi.com/js.aspx?email='.$email.'&size=128');
+		$name = Request::input('name');
+		 $data = file_get_contents('http://www.avatarapi.com/js.aspx?email='.$email.'&size=128');
 		if($data=='// No profile information found for this email')
 		{
-			$img = \DefaultProfileImage::create("Name Surname", 256, '#000', '#FFF');
+			$img = \DefaultProfileImage::create($name, 256, '#000', '#FFF');
+			$fileName = time().'.png';
 			//echo base_path('../uploads');
 			//dd(asset('uploads'));
 			$inPublic = 'uploads';
-			
-			echo $localPath = str_replace('public\//','',(public_path($inPublic)));
-			//\Storage::put(asset('uploads/profile.png'), $img->encode());
+			//echo public_path($inPublic);
+			//echo $localPath = str_replace('local\public','',(public_path()));
+			//echo storage_path();
+			echo $path = asset('local/storage/app/');
+			\Storage::put('uploads/'.$fileName, $img->encode());
+			return "<a ><img src='".$path."/".$fileName."'  width='128' height='128></a>";
 		}
 		else
 		{
