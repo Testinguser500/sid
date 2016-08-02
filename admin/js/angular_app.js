@@ -906,7 +906,8 @@ app.controller('UserController', function($scope, $http) {
 				email:userData.email,
 				password:userData.password,
 				confirm_password:userData.repassword,
-				role:userData.role
+				role:userData.role,
+				ownpassword:userData.ownpassword
 		}).success(function(data, status, headers, config) {//console.log(data['user']);
 		
 		if(data[0]=='error'){
@@ -919,6 +920,7 @@ app.controller('UserController', function($scope, $http) {
 			$scope.user.username = userData.username;
 			$scope.user.email = userData.email;
 			$scope.user.role = userData.role;
+			$scope.user.password = userData.password;
 			$scope.loading = false;
 			//console.log($scope.user.username);			
 			$scope.add();
@@ -1090,6 +1092,23 @@ app.controller('UserController', function($scope, $http) {
 			   
 			   
 		   });
+   }
+   
+   $scope.genratePassword = function(){
+	   var length=6;
+	   var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
+    var pass = "";
+	var charsa = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+    for (var x = 0; x < length; x++) {
+        var i = Math.floor(Math.random() * chars.length);
+        pass += chars.charAt(i);
+		
+					
+    }
+	$scope.formSubmit=true;
+	return pass;
+	//console.log(pass);
+					
    }
 	   $scope.delBanner=function(bannerData)
 	   {

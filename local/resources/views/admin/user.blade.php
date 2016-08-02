@@ -21,6 +21,13 @@
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> User List</h3>
 			  <a class="add-link btn btn-success btn-flat btn-grid" href="javascript:void(0);" ng-click="useradd()"><i class="fa fa-plus-square"></i> Add User</a>
+			  <ul class="subsubsub">
+	<li class="all"><a href="users.php" class="current">All <span class="count">(86)</span></a> |</li>
+	<li class="administrator"><a href="users.php?role=administrator">Administrator <span class="count">(2)</span></a> |</li>
+	<li class="customer"><a href="users.php?role=customer">Customer <span class="count">(22)</span></a> |</li>
+	<li class="shop_manager"><a href="users.php?role=shop_manager">Shop Manager <span class="count">(1)</span></a> |</li>
+	<li class="seller"><a href="users.php?role=seller">Seller <span class="count">(61)</span></a></li>
+</ul>
             </div>
             <!-- /.box-header -->
             
@@ -123,8 +130,26 @@
                   <input type="text" class="form-control" id="" name="email" placeholder="Email" ng-model="user_ddata.email" ng-blur="getProfileImage(user_ddata)">
 		  <div class="help-block"></div>
                 </div >
-				
-				
+				<div class="form-group">
+				<div class="col-xs-4">
+				<button  ng-click="user_ddata.ownpassword=1;user_ddata.password=genratePassword();" class="btn btn-default">Genrate Password</button>
+				</div>
+				<div class="col-xs-4">
+				<button  ng-click="user_ddata.ownpassword=0;user_ddata.password=''" class="btn btn-default">Own Password</button>
+				</div>
+				</div>
+				<div style="clear:both"></div>
+				<div ng-show="user_ddata.ownpassword==1">
+				<div class="form-group">
+                  <label for="exampleInputEmail1">Password</label>
+				  <input type="hidden"  ng-model="user_ddata.ownpassword">
+                   <div><strong><%user_ddata.password%></strong></div>
+				  
+				  
+				<div class="help-block"></div>
+                </div>
+				</div>
+				<div ng-show="user_ddata.ownpassword==0">
 				<div class="form-group">
                   <label for="exampleInputEmail1">Password</label>
                   <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user_ddata.password" password-strength="user_ddata.password">
@@ -134,7 +159,7 @@
                 </div>
 				<div class="form-group">
 				<div class="col-xs-4">
-				<span class="help-inline"  data-ng-class="strength"><%strength%> </span>
+				<span class="help-inline" data-ng-class="strength"><%strength%> </span>
 				<div class="progress <%strengthClass%>">
                 <div class=" <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                   
@@ -148,6 +173,7 @@
                   <input type="password" class="form-control" id="" name="repassword" placeholder="Confirem password" ng-model="user_ddata.repassword">
 				<div class="help-block"></div>
                 </div>
+				</div>
 			  <div class="form-group">
 			  
                   <label for="exampleInputEmail1">Role</label>
@@ -166,6 +192,7 @@
                 </label>
 				</div>
 				</form>
+				
 				<div class="box-footer" ng-show="formSubmit">
                 <button  ng-click="checkUser(user_ddata);" class="btn btn-primary">Submit</button>
 				
@@ -715,30 +742,19 @@
 			  <h3>Account Management</h3>
 			  </div>
 				<div class="row">
-				<div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1">New Password</label>
-                  <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user.password">
-				<div class="help-block"></div>
-                </div>
-				<div class="form-group col-xs-4">
-                  <label for="exampleInputEmail1">Confirm Password</label>
-                  <input type="password" class="form-control" id="" name="repassword" placeholder="Confirem password" ng-model="user.repassword">
-				<div class="help-block"></div>
-                </div>
+				
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Nationality</label>
                   <input type="text" class="form-control" id="" name="nationality" placeholder="Nationality" ng-model="user.nationality">
 				<div class="help-block"></div>
                 </div>
-				</div>
-				<div class="row">
-				
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Address</label>
                   <textarea class="form-control" id="" name="address" ng-model="user.address"></textarea>
 		  <div class="help-block"></div>
                 </div>
 				</div>
+				
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Country</label>
