@@ -217,7 +217,7 @@
                   <label for="exampleInputEmail1">Sellers</label>
                    <select class="form-control" id="" name="seller_id" placeholder="Sellers" ng-model="product.seller_id">
 		    <option value="">Select Seller</option>
-		    <option ng-repeat="ss in sellers" ng-value="ss.id" ng-selected="ss.id==product.seller_id"><%ss.name%></option> 
+		    <option ng-repeat="ss in sellers" ng-value="ss.id" ng-selected="ss.id==product.seller_id"><%ss.fname%></option> 
 		   </select>
 		  <div class="help-block"></div>
                 </div>
