@@ -132,3 +132,10 @@ Route::post('admins/option/store', 'Admin\OptionController@store');
 Route::post('admins/option/delete', 'Admin\OptionController@delete');
 Route::get('admins/option/edit/{id}', 'Admin\OptionController@edit');
 Route::post('admins/option/update', 'Admin\OptionController@update');
+
+Route::get('admins/product', 'Admin\ProductController@index');
+Route::get('admins/product/all', 'Admin\ProductController@all');
+Route::post('admins/product/store', 'Admin\ProductController@store');
+Route::post('admins/product/delete', 'Admin\ProductController@delete');
+Route::get('admins/product/edit/{id}', 'Admin\ProductController@edit');
+Route::post('admins/product/update', 'Admin\ProductController@update');
