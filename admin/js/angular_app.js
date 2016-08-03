@@ -855,6 +855,60 @@ app.controller('UserController', function($scope, $http) {
  
 		});
 	}
+	$scope.users_id = [{}];
+        //id: null
+    
+	$scope.checkAll = function () {
+		
+		
+        if (!$scope.selectedAll) {
+            $scope.selectedAll = true;
+        } else {
+            $scope.selectedAll = false;
+        }
+		
+        angular.forEach($scope.users, function (item) {
+			//alert(item);
+			//console.log(val);
+            item.value = $scope.selectedAll;
+			if($scope.selectedAll)
+			{
+			$scope.users_id.push({
+				id:item.id
+			});
+			}
+			else
+			{
+				$scope.users_id=[{
+				id:null
+			}];
+			}
+        });
+		console.log($scope.users_id);
+		 
+
+    };
+	$scope.selection=[];
+	$scope.toggleSelection = function toggleSelection(employeeName) {
+		alert(employeeName);
+     var idx = $scope.users_id.indexOf(employeeName);
+ alert(idx);
+     // is currently selected
+     if (idx > -1) {
+       $scope.selection.splice(idx, 1);
+	   $scope.users_id.push({
+	   id:employeeName});
+     }
+ 
+     // is newly selected
+     else {
+       $scope.selection.push(employeeName);
+	   $scope.users_id.splice(employeeName+1, 1);
+     }
+	 console.log($scope.selection);
+	 console.log($scope.users_id);
+   };
+   
 	$scope.userlist = function(userData){
 		$scope.page='index';
                 $scope.errors=false;

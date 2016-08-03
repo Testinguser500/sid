@@ -34,7 +34,7 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
+                  <th>#<input type="checkbox" ng-click="selectAllFriends()"	 ng-model="isAllSelected"></th>
                   <th>User Name</th>
                   <th>Email</th>
 				  <th>Role</th>
@@ -45,7 +45,7 @@
                 <tbody>
                 
                 <tr ng-repeat="val in users">
-                  <td><% val.id %></td>
+                  <td><input type="checkbox" value="<%val.id%>" ng-checked="val.checked" ng-model="val.checked"    ><% val.id %></td>
                   <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>
