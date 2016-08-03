@@ -22,12 +22,29 @@
               <h3 class="box-title"><i class="fa fa-list"></i> User List</h3>
 			  <a class="add-link btn btn-success btn-flat btn-grid" href="javascript:void(0);" ng-click="useradd()"><i class="fa fa-plus-square"></i> Add User</a>
 			  <ul class="subsubsub">
-	<li class="all"><a href="users.php" class="current">All <span class="count">(86)</span></a> |</li>
-	<li class="administrator"><a href="users.php?role=administrator">Administrator <span class="count">(2)</span></a> |</li>
-	<li class="customer"><a href="users.php?role=customer">Customer <span class="count">(22)</span></a> |</li>
-	<li class="shop_manager"><a href="users.php?role=shop_manager">Shop Manager <span class="count">(1)</span></a> |</li>
-	<li class="seller"><a href="users.php?role=seller">Seller <span class="count">(61)</span></a></li>
+			  <li ng-repeat="us in usersRecord">
+	<li class="all"><a href="javascript:void(0)" ng-click="init();" class="current">All <span class="count">(<%users.length%>)</span></a> |</li>
+	<li class="administrator" ng-repeat="us in usersRecord"><a href="javascript:void(0)" ng-click="userlist(us)"><%us.name%> <span class="count">(<%us.total_users%>)</span></a> |</li>
+	
 </ul>
+<div class="bulk row" >
+<div class="col-md-2">
+<select class="form-control" name="">
+<option value="">Bulk Action</option>
+<option>Delete</option>
+</select>
+</div>
+<div class="col-md-1">
+<button class="btn btn-default">Apply</button></div>
+<div class="col-md-4">
+<select class="form-control" name="" ng-model="roless" >
+<option value="">Change Role to ...</option>
+<option ng-repeat="ro in roles" value="ro.id"><%ro.name%></option>
+</select>
+</div>
+<div class="col-md-4">
+<button class="btn btn-default" ng-click="roleChange(roless);">Apply</button></div>
+</div>
             </div>
             <!-- /.box-header -->
             
@@ -35,10 +52,11 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
+                  <th>#<input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
                   <th>User Name</th>
                   <th>Email</th>
 				  <th>Role</th>
+				  <th>Post</th>
 				  <th>Status</th>
                   <th> </th>                 
                 </tr>
@@ -46,11 +64,14 @@
                 <tbody>
                 
                 <tr ng-repeat="val in users">
-                  <td><% val.id %></td>
+                  <td><input type="checkbox" ng-model="val.value" ng-change="optionToggled($index)" value="<% val.id %>"/> <% val.id %></td>
                   <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>
-				  <td><a href="javascript:void(0);" ng-click="changeStatus(val);"><span class="label <% (val.status=='Active')?'label-success':'label-danger'%>"><% val.status %></a></td>
+				  <td>0</td>
+				  <td><a href="javascript:void(0);" ng-click="changeStatus(val);"><span class="label <% (val.status=='Active')?'label-success':'label-danger'%>">
+				  <% val.status %></a>
+				  </td>
                   <td><i ng-click="edituser(val)" class="fa fa-edit" style="cursor:pointer"></i> <i class="fa fa-trash" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
                  
                   <!-- Modal -->

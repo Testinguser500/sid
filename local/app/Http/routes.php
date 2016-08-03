@@ -36,7 +36,6 @@ Route::post('admins/Allimageupload', 'Admin\HomeController@Allimageupload');
 
 Route::get('admins/category', 'Admin\CategoryController@index');
 Route::get('admins/category/all', 'Admin\CategoryController@all');
-Route::get('admins/category/add', 'Admin\CategoryController@add');
 Route::post('admins/category/store', 'Admin\CategoryController@store');
 Route::post('admins/category/delete', 'Admin\CategoryController@delete');
 Route::get('admins/category/edit/{id}', 'Admin\CategoryController@edit');
@@ -86,6 +85,7 @@ Route::post('admins/enquiry/delete', 'Admin\EnquiryController@delete');
 
 Route::get('admins/user', 'Admin\UserController@index');
 Route::get('admins/user/all', 'Admin\UserController@all');
+Route::post('admins/user/all', 'Admin\UserController@all');
 Route::get('admins/user/add', 'Admin\UserController@add');
 Route::post('admins/user/store', 'Admin\UserController@store');
 Route::get('admins/user/edit/{id}', 'Admin\UserController@edit');
@@ -94,6 +94,7 @@ Route::post('admins/user/delete', 'Admin\UserController@delete');
 Route::post('admins/user/checkUser', 'Admin\UserController@checkUser');
 Route::post('admins/user/changeStatus', 'Admin\UserController@changeStatus');
 Route::post('admins/user/getProfileImage', 'Admin\UserController@getProfileImage');
+Route::post('admins/user/changeRole', 'Admin\UserController@changeRole');
 
 Route::get('admins/static-content', 'Admin\StaticContentController@index');
 Route::get('admins/static-content/all', 'Admin\StaticContentController@all');

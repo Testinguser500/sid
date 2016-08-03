@@ -28,7 +28,7 @@ class OptionController extends Controller
        
         public function store(){
 	   $validator = Validator::make(Request::all(), [
-            'option_name' => 'required|soft_unique:pro_option'                   
+            'option_name' => 'required|soft_unique:pro_option,option_name'                   
         ]);
          
         if ($validator->fails()) {
@@ -75,7 +75,7 @@ class OptionController extends Controller
          public function update(){
 	  $chk_id=Request::input('id');
           $variba=Request::input('option_value');
-          $validation['option_name'] ='required|soft_unique:pro_option,'.Request::input('id');
+          $validation['option_name'] ='required|soft_unique:pro_option,option_name,'.Request::input('id');
            foreach($variba as $key=>$value)
 	  {
 	       if($value['option_name']!=''){

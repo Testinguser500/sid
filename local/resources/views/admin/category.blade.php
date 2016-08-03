@@ -102,7 +102,7 @@
                   <div text-angular ng-model="category.description" name="demo-editor" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>  
 		  <div class="help-block"></div>
                 </div> 
-                     <div class="form-group">
+                <div class="form-group">
                   <label for="exampleInputEmail1">Meta Title</label>
                   <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="category.meta_title">
 		  <div class="help-block"></div>
@@ -119,17 +119,28 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
-                  <img class='' src="{{URL::asset('uploads')}}/<% category.image %>" width="100">
+<!--                  <img class='' src="{{URL::asset('uploads')}}/<% category.image %>" width="100">
                   <input type="file"  name="image" ng-model="category.file" onchange="angular.element(this).scope().uploadedFile(this)">
+		  <div class="help-block"></div>-->
+                <div class="form-group col-xs-12 show-bn">
+                <img src="{{URL::asset('uploads/category')}}/<% files %>" width="310" height="210" ng-show="files" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" >  
+                  <br/>
+                  <span class="btn btn-primary btn-file" ng-hide="files">
+		   Upload <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+		  </span>
+		<em>Upload a category image for your store. Image size is(310x210) and not  more than 1 mb.</em>
+		<a ng-show="display_cross==1" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" class="bnr-del " title="Delete" ng-click="delcatefiles(files);display_cross=0" href="javascript:void(0);">
+                    <img src="{{URL::asset('admin/img/del.png')}}">
+                </a>
+				  
 		  <div class="help-block"></div>
+                </div>
                 </div> 
                  <div class="form-group">
                   <label for="exampleInputEmail1">Parent Category</label>
                   <select class="form-control" name="parent_cat"  ng-model="category.parent_id">
-                      <option value="0">Please select</option>
-                      
-                      <option ng-repeat="cat in all_cat" ng-if="cat.id !=  category.id" ng-selected="category.parent_id" ng-value="cat.id"><% cat.category_name %></option>
-                       
+                      <option value="0">Please select</option>                      
+                      <option ng-repeat="cat in all_cat" ng-if="cat.id !=  category.id" ng-selected="category.parent_id==cat.id" value="<% cat.id %>" ng-value="cat.id"><% cat.category_name %></option>                      
                   </select>
 		  <div class="help-block"></div>
                 </div> 
@@ -161,7 +172,7 @@
                   <input type="text" class="form-control" id="" name="name" placeholder="Name" ng-model="cat.category_name">
 		  <div class="help-block"></div>
                 </div> 
-                  <div class="form-group">
+                <div class="form-group">
                   <label for="exampleInputEmail1">Meta Title</label>
                   <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="cat.meta_title">
 		  <div class="help-block"></div>
@@ -171,7 +182,7 @@
                   <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="cat.meta_description">
 		  <div class="help-block"></div>
                 </div> 
-                  <div class="form-group">
+                <div class="form-group">
                   <label for="exampleInputEmail1">Meta Keyword</label>
                   <input type="text" class="form-control" id="" name="meta_keyword" placeholder="Meta Keyword" ng-model="cat.meta_keyword">
 		  <div class="help-block"></div>
@@ -185,14 +196,26 @@
                 </div> 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
-                  <input type="file"  name="image" ng-model="cat.image" onchange="angular.element(this).scope().uploadedFile(this)" >
+
+                  <div class="form-group col-xs-12 show-bn">
+                <img src="{{URL::asset('uploads/category')}}/<% files %>" width="310" height="210" ng-show="files" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" >  
+                  <br/>
+                  <span class="btn btn-primary btn-file" ng-hide="files">
+		   Upload <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+		  </span>
+		<em>Upload a category image for your store. Image size is(310x210) and not  more than 1 mb.</em>
+		<a ng-show="display_cross==1" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" class="bnr-del " title="Delete" ng-click="delcatefiles(files);display_cross=0" href="javascript:void(0);">
+                    <img src="{{URL::asset('admin/img/del.png')}}">
+                </a>
+				  
 		  <div class="help-block"></div>
+                </div>
                 </div> 
                   <div class="form-group">
                   <label for="exampleInputEmail1">Parent Category</label>
                   <select class="form-control" name="parent_cat"  ng-model="cat.parent_id" ng-init="cat.parent_id=0">
                       <option value="0">Please select</option>                                            
-                      <option ng-repeat="cast in all_cat" ng-value="cast.id" ng-if="cast.id !=  category.id" ng-selected="cat.parent_id"><% cast.category_name %></option>
+                      <option ng-repeat="cast in all_cat" ng-value="cast.id" ><% cast.category_name %></option>
                   </select>
 		  <div class="help-block"></div>
                 </div> 
@@ -225,12 +248,3 @@
   <!-- /.content-wrapper -->
  
    
-<!--              <script>
-            $(function () {
-              // Replace the <textarea id="editor1"> with a CKEditor
-              // instance, using default configuration.
-             // CKEDITOR.replace('editor1');
-
-              $(".textarea").wysihtml5();
-            });
-          </script>-->

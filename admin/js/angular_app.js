@@ -209,10 +209,12 @@ app.controller('HomeController', function($scope, $http) {
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
-    
+     $scope.category={};
      $scope.success_flash=false;
      $scope.init = function() {	
                 $scope.page='index';
+                $scope.files='';
+                $scope.category={};
                 $scope.errors=false;               
 		$scope.loading = true;
 		$http.get('category/all').
@@ -242,6 +244,9 @@ app.controller('HomeController', function($scope, $http) {
 		$http.get('category/edit/' + category.id, {			
 		}).success(function(data, status, headers, config) {
 			$scope.category = data['category'];
+                        var im=$scope.category.image;
+                        var im1= im.split("category/"); 
+                        $scope.files=im1[1]; 
                         $scope.all_cat = data['all_cat'];
 		        $scope.loading = false;
  
@@ -253,16 +258,32 @@ app.controller('HomeController', function($scope, $http) {
            var fd = new FormData();
             //Take the first selected file
             fd.append("image",element.files[0]);
+            fd.append("folder",'category');
+	    fd.append("width",'310');
+	    fd.append("height",'210');
             $http.post('imageupload', fd, {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;});
+            }).success( function(data, status, headers, config){ 
+                        if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
+                                $scope.errors=false;
+                                $scope.files=data;                    
+                                $scope.loading = false;
+			}
+        });
 
     });
    }
+        $scope.delcatefiles=function(file) {
+                $scope.files='';
+        }
 
-        $scope.update = function(category) { console.log($scope.category.file);
+        $scope.update = function(category) { 
             $scope.errors=false;
             $scope.success_flash=false;
          
@@ -308,11 +329,11 @@ app.controller('HomeController', function($scope, $http) {
                         meta_keyword: category.meta_keyword
 
 		} ).success(function(data, status, headers, config) {
-                   $scope.files='';
+                    
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
-				
+				$scope.files='';
 				$scope.errors=false;
                                 $scope.success_flash=data[1];				
                                 $scope.init();
@@ -849,9 +870,99 @@ app.controller('UserController', function($scope, $http) {
 		success(function(data, status, headers, config) {
 			$scope.users = data['users'];
 			$scope.country = data['country'];
+			$scope.usersRecord = data['total'];
+			$scope.roles = data['roles'];
+			//console.log($scope.usersRecord);
 		        $scope.loading = false;
  
 		});
+	}
+	$scope.users_id = [{}];
+        //id: null
+    
+	$scope.checkAll = function () {
+		
+		
+        if (!$scope.selectedAll) {
+            $scope.selectedAll = true;
+        } else {
+            $scope.selectedAll = false;
+        }
+		
+        angular.forEach($scope.users, function (item) {
+			//alert(item);
+			//console.log(val);
+            item.value = $scope.selectedAll;
+			if($scope.selectedAll)
+			{
+			$scope.users_id.push({
+				id:item.id
+			});
+			}
+			else
+			{
+				$scope.users_id=[{
+				id:null
+			}];
+			}
+        });
+		//console.log($scope.users_id);
+		 
+
+    };
+	$scope.selection=[];
+	$scope.toggleSelection = function toggleSelection(employeeName) {
+		alert(employeeName);
+     var idx = $scope.users_id.indexOf(employeeName);
+ alert(idx);
+     // is currently selected
+     if (idx > -1) {
+       $scope.selection.splice(idx, 1);
+	   $scope.users_id.push({
+	   id:employeeName});
+     }
+ 
+     // is newly selected
+     else {
+       $scope.selection.push(employeeName);
+	   $scope.users_id.splice(employeeName+1, 1);
+     }
+	 console.log($scope.selection);
+	 console.log($scope.users_id);
+   };
+   $scope.roleChange = function(roless){
+		$scope.errors=false;
+		$scope.success_flash=false;
+		$scope.loading = true;
+		console.log($scope.users_id);
+	   $http.post('user/changeRole',{
+			id:$scope.users_id,
+			role:roless
+		}).
+		success(function(data, status, headers, config) {
+			
+			$scope.success_flash= data[1];
+			//console.log($scope.usersRecord);
+		        $scope.loading = false;
+				$scope.init();
+		});
+   }
+	$scope.userlist = function(userData){
+		$scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.post('user/all',{
+			role:userData.role_id
+		}).
+		success(function(data, status, headers, config) {
+			$scope.users = data['users'];
+			$scope.country = data['country'];
+			$scope.usersRecord = data['total'];
+			//console.log($scope.usersRecord);
+		        $scope.loading = false;
+		});
+		
 	}
         $scope.add = function() {	
                 $scope.page='add';		
@@ -1455,17 +1566,17 @@ app.controller('StaticContentController', function($scope, $http) {
 //Brands
 app.controller('BrandsController', function($scope, $http) {
 
-    $scope.errors=false;
-	$scope.files = '';
+     $scope.errors=false;
+     $scope.files = '';
      $scope.loading = true;
-     $scope.brands=false;
-	 $scope.brand=false;
-	 $scope.user=false;
+     $scope.brands={};
+     $scope.brand={};
      $scope.page='index';
      $scope.success_flash=false;
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
+                $scope.files = '';
                 $scope.success_flash=false;
 		$scope.loading = true;
 		$http.get('brand/all').
@@ -1476,18 +1587,15 @@ app.controller('BrandsController', function($scope, $http) {
  
 		});
 	}
-        $scope.add = function() {
-                $scope.user=false;			
+        $scope.add = function() {               			
                 $scope.page='add';		
 		$scope.errors=false;
                 $scope.success_flash=false;
-                $http.get('brand/all').
-		success(function(data, status, headers, config) {
-			$scope.all_brand = data;
-		        $scope.loading = false;
- 
-		});
+               
 	}
+        $scope.delbrandfiles=function(file) {
+                $scope.files='';
+        }
         $scope.editbrand = function(brand_data) {
 		$scope.loading = true;
                 $scope.errors=false;
@@ -1495,8 +1603,10 @@ app.controller('BrandsController', function($scope, $http) {
                 $scope.page='edit';
 		$http.get('brand/edit/' + brand_data.id, {			
 		}).success(function(data, status, headers, config) {
-			$scope.brands = data['brands'];
-                        $scope.all_brand = data['all_brand'];
+			$scope.brand = data['brands'];
+                        var im=$scope.brand.image;
+                        var im1= im.split("brand/"); 
+                        $scope.files=im1[1]; 
 		        $scope.loading = false;
  
 		});;
@@ -1507,36 +1617,47 @@ app.controller('BrandsController', function($scope, $http) {
            var fd = new FormData();
             //Take the first selected file
             fd.append("image",element.files[0]);
-			fd.append("folder",'brand');
-			fd.append("width",'150');
-			fd.append("height",'150');
+	    fd.append("folder",'brand');
+	    fd.append("width",'200');
+	    fd.append("height",'80');
             $http.post('imageupload', fd, {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
+            }).success( function(data, status, headers, config){  if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
+                                $scope.errors=false;
+                                $scope.files=data;                    
+                                $scope.loading = false;
+			}});
 
     });
 	}
-        $scope.update = function(brands) { console.log(brands);
+        $scope.update = function(brands) {
             $scope.errors=false;
             $scope.success_flash=false;
            $http.post('brand/update', {
 			brand_name: brands.brand_name,
 			description: brands.description,
 			status:brands.status,
-			image: $scope.files,id: brands.id
+			image: $scope.files,id: brands.id,
+                        meta_title: brands.meta_title,
+                        meta_description: brands.meta_description,
+                        meta_keyword: brands.meta_keyword
                    
 		}).success(function(data, status, headers, config) {
-                    console.log(data);
-            if(data[0]=='error'){
+                   
+                        if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
-				if($scope.files)
-				$scope.brands.image = $scope.files;
-			$scope.errors=false;
-			$scope.files='';
-			$scope.success_flash= data[1];
+							
+                                $scope.errors=false;
+                                $scope.files='';
+                                $scope.success_flash= data[1];
+                                $scope.init();
 			
 			}
 			$scope.loading = false;
@@ -1544,15 +1665,19 @@ app.controller('BrandsController', function($scope, $http) {
          });
       };
 	  
-	  $scope.store = function(userData) {console.log($scope.files); 
+	  $scope.store = function(brand) {
            $scope.errors=false;
            $scope.success_flash=false;
            $http.post('brand/store', {
-			brand_name: userData.brand_name,
-			description: userData.description,
-			id: userData.id,
-			status: userData.status,
-			image: $scope.files
+			brand_name: brand.brand_name,
+			description: brand.description,
+			id: brand.id,
+			status: brand.status,
+			image: $scope.files,
+                        meta_title: brand.meta_title,
+                        meta_description: brand.meta_description,
+                        meta_keyword: brand.meta_keyword
+
 
 		}).success(function(data, status, headers, config) {
                     $scope.files='';
@@ -1563,7 +1688,7 @@ app.controller('BrandsController', function($scope, $http) {
 				$scope.errors=false;
 				$scope.user=false;
                                 $scope.success_flash=data[1];
-				$scope.brands.push(userData);
+				$scope.brands.push(brand);
                                 $scope.init();
 			}
 			$scope.loading = false;
