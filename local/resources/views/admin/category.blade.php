@@ -102,7 +102,7 @@
                   <div text-angular ng-model="category.description" name="demo-editor" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>  
 		  <div class="help-block"></div>
                 </div> 
-                     <div class="form-group">
+                <div class="form-group">
                   <label for="exampleInputEmail1">Meta Title</label>
                   <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="category.meta_title">
 		  <div class="help-block"></div>
@@ -172,7 +172,7 @@
                   <input type="text" class="form-control" id="" name="name" placeholder="Name" ng-model="cat.category_name">
 		  <div class="help-block"></div>
                 </div> 
-                  <div class="form-group">
+                <div class="form-group">
                   <label for="exampleInputEmail1">Meta Title</label>
                   <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="cat.meta_title">
 		  <div class="help-block"></div>
@@ -182,7 +182,7 @@
                   <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="cat.meta_description">
 		  <div class="help-block"></div>
                 </div> 
-                  <div class="form-group">
+                <div class="form-group">
                   <label for="exampleInputEmail1">Meta Keyword</label>
                   <input type="text" class="form-control" id="" name="meta_keyword" placeholder="Meta Keyword" ng-model="cat.meta_keyword">
 		  <div class="help-block"></div>

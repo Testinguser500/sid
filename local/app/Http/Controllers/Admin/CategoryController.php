@@ -99,7 +99,7 @@ class CategoryController extends Controller
          $cat = Category::find(Request::input('id'));
          $cat->category_name = Request::input('category_name');
          if((Request::input('image'))){
-	 $cat->image = Request::input('image');
+	 $cat->image = 'category/'.Request::input('image');
          }
 	 $cat->description =Request::input('description');
 	 $cat->parent_id=Request::input('parent_id');
