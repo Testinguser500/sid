@@ -85,6 +85,7 @@ Route::post('admins/enquiry/delete', 'Admin\EnquiryController@delete');
 
 Route::get('admins/user', 'Admin\UserController@index');
 Route::get('admins/user/all', 'Admin\UserController@all');
+Route::post('admins/user/all', 'Admin\UserController@all');
 Route::get('admins/user/add', 'Admin\UserController@add');
 Route::post('admins/user/store', 'Admin\UserController@store');
 Route::get('admins/user/edit/{id}', 'Admin\UserController@edit');

@@ -30,14 +30,27 @@ class UserController extends Controller
 	}
 	
 	public function all(){ 
-             $user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->get();
+	 $role = Request::input('role');
+		if($role)
+		{
+			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('users.role','=',$role)->where('is_delete','=','0')->get();
+			//print_r($user);
+		}
+		else
+		{
+			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->get();
+			//print_r($user);
+		}
 			$country = DB::table('country')->where('is_delete','=','0')->where('pid','=','0')->get();
 			$category = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
-			$role = DB::table('role')->get();			
+			$role = DB::table('role')->get();
+			$totalData = DB::table('role')->leftjoin('users','role.id','=','users.role')->select(DB::raw('count(users.id) as total_users,role.name,role.id as role_id'))->where('users.is_delete','=','0')->groupBy('users.role')->get();	
+					
              $return['users'] =  $user;
 			 $return['country'] =  $country;
 			 $return['roles'] =  $role;
 			 $return['category'] = $category;
+			 $return['total'] = $totalData;
 			 return $return;
 		
 	}
