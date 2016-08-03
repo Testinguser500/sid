@@ -35,7 +35,7 @@ class CategoryController extends Controller
             'meta_title'=>'required',
             'meta_description'=>'required',
             'meta_keyword'=>'required',
-            'image'=>'required'
+            //'image'=>'required'
         ]);
          
         if ($validator->fails()) {
