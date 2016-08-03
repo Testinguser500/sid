@@ -2317,7 +2317,8 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.sellers = data['sellers'];
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
-			//console.log($scope.sellers);
+			$scope.all_category = data['all_category'];
+			console.log($scope.all_category);
 		        $scope.loading = false;
  
 		});

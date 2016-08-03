@@ -29,10 +29,12 @@ class ProductController extends Controller
              $sellers    = DB::table('users')->where('status','=','Active')->where('is_delete','=',0)->where('role','=',5)->get();
 	     $categories = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get(); 
+		 $all_category = self::getcataegorywithSub();
 	     $return['products']   = $products;
 	     $return['sellers']    = $sellers;
 	     $return['categories'] = $categories;
 	     $return['brands']     = $brands;
+		 $return['all_category'] = $all_category;
 	     return $return ;
 	}
 	
@@ -183,7 +185,29 @@ class ProductController extends Controller
         $list[]='Record is updated successfully.';	 
 	return $list;
 	 }
-       
+    
+	public function getcataegorywithSub($pid=0)
+	{
+		$categories = array();
+		$result = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$pid)->get();
+		foreach((array)$result as $key=>$mainCategory)
+		{
+			$category = array();
+			 $category['id'] = $mainCategory->id;
+			$category['name'] = $mainCategory->category_name;
+			$category['parent_id'] = $mainCategory->parent_id;
+			$category['sub_categories'] = self::getcataegorywithSub($category['id']);
+			$categories[$mainCategory->id] = $category;
+			//$sub = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$val->id)->get();
+			//$val->sub = $sub;
+			//$result[$key]=$val;
+			
+			//$result[$key]->sub = self::getcataegorywithSub($val->id);
+			
+		}
+		
+		return $categories;
+	}
  }
  
 ?>

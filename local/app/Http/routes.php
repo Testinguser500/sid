@@ -40,6 +40,7 @@ Route::post('admins/category/store', 'Admin\CategoryController@store');
 Route::post('admins/category/delete', 'Admin\CategoryController@delete');
 Route::get('admins/category/edit/{id}', 'Admin\CategoryController@edit');
 Route::post('admins/category/update', 'Admin\CategoryController@update');
+Route::get('admins/category/getcataegorywithSub', 'Admin\CategoryController@getcataegorywithSub');
 
 Route::get('admins/brand', 'Admin\BrandController@index');
 Route::get('admins/brand/all', 'Admin\BrandController@all');
