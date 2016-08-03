@@ -160,6 +160,26 @@ class HomeController extends Controller
             }
         
        }
+ 
+ 
+	/*******multiple images uploading*********/
+	public function imagemutipleupload(){
+		
+		if(Request::input('folder'))
+			$folder = '/'.Request::input('folder');
+		
+		if(Request::input('width')&&Request::input('height'))
+		{
+			$width = Request::input('width');
+			$height = Request::input('height');
+		}
+		else
+		{
+			$width = 200;
+			$height = 200;
+		}
+	       $destinationPath = 'uploads'.@$folder; // upload path
+	}
  }
  
 ?>

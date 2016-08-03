@@ -2169,8 +2169,22 @@ app.controller('CountryController', function($scope, $http) {
      $scope.products=false;
      $scope.page='index';
      $scope.product={};
+     $scope.images={};
      $scope.success_flash=false;
-     
+     $scope.tab = 1;
+
+    $scope.setTab = function(newTab){
+      $scope.tab = newTab;
+    };
+
+    $scope.isSet = function(tabNum){
+      return $scope.tab === tabNum;
+    };
+    
+    $scope.showMe = false;
+    $scope.myFunc = function() {
+        $scope.showMe = !$scope.showMe;
+    }
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2198,10 +2212,49 @@ app.controller('CountryController', function($scope, $http) {
 		});
 	}
 	
-	 $scope.store = function(product) { 
+	   // GET THE FILE INFORMATION.
+//	 $scope.uploadedMultipleFile = function(element) { //alert(element);
+//		
+//		$scope.files = [];
+//		 $scope.$apply(function () {
+//
+//                // STORE THE FILE OBJECT IN AN ARRAY.
+//                for (var i = 0; i < element.files.length; i++) {
+//                    $scope.files.push(element.files[i]); console.log(element.files[i]);
+//                }
+//		
+//		 //FILL FormData WITH FILE DETAILS.
+//		var data = new FormData();
+//
+//		for (var i in $scope.files) {
+//		    data.append("uploadedFile", $scope.files[i]);
+//		}
+//
+//            });
+//           $scope.$apply(function($scope) {
+//            $scope.loading = true;
+//           var fd = new FormData();
+//            //Take the first selected file
+//            //fd.append("image",element.files[0]);
+//	    angular.forEach(element, function (value, key) {
+//                    fd.append(key, value);
+//                });
+//			fd.append("folder",'product');
+//			fd.append("width",'150');
+//			fd.append("height",'150');
+//            $http.post('imagemutipleupload', fd, {
+//                withCredentials: true,
+//                headers: {'Content-Type': undefined },
+//                transformRequest: angular.identity
+//            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
+//
+//    });
+	//}
+	 
+	 $scope.store = function(product,images) { 
            $scope.errors=false;
            $scope.success_flash=false;   
-
+           console.log(product);
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -2216,7 +2269,8 @@ app.controller('CountryController', function($scope, $http) {
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
-                        status: product.status 
+                        status: product.status,
+			images: images
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){
