@@ -47,7 +47,7 @@
 </div>
             </div>
             <!-- /.box-header -->
-            
+            <% users_id %>
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -63,7 +63,7 @@
                 <tbody>
                 
                 <tr ng-repeat="val in users">
-                  <td><input type="checkbox" ng-model="val.value" ng-change="optionToggled($index)" value="<% val.id %>"/><% val.id %></td>
+                  <td><input type="checkbox" ng-model="users_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/><% val.id %></td>
                   <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>
