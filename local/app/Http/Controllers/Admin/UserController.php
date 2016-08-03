@@ -54,6 +54,21 @@ class UserController extends Controller
 			 return $return;
 		
 	}
+	public function changeRole()
+	{
+		$user_id = Request::input('id');
+		$role = Request::input('role');
+		$array = (array_filter($user_id));
+		DB::table('users')
+            ->whereIn('id', $array)
+            ->update(['role' => $role]);
+			
+			$list[]='success';
+			$msg='Role has been changed successfully.';
+			$list=$msg;
+		return $list;
+		
+	}
        public function add(){ 
              
              $user = DB::table('users')->get();  

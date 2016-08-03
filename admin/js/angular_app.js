@@ -871,6 +871,7 @@ app.controller('UserController', function($scope, $http) {
 			$scope.users = data['users'];
 			$scope.country = data['country'];
 			$scope.usersRecord = data['total'];
+			$scope.roles = data['roles'];
 			//console.log($scope.usersRecord);
 		        $scope.loading = false;
  
@@ -905,7 +906,7 @@ app.controller('UserController', function($scope, $http) {
 			}];
 			}
         });
-		console.log($scope.users_id);
+		//console.log($scope.users_id);
 		 
 
     };
@@ -929,7 +930,23 @@ app.controller('UserController', function($scope, $http) {
 	 console.log($scope.selection);
 	 console.log($scope.users_id);
    };
-   
+   $scope.roleChange = function(roless){
+		$scope.errors=false;
+		$scope.success_flash=false;
+		$scope.loading = true;
+		console.log($scope.users_id);
+	   $http.post('user/changeRole',{
+			id:$scope.users_id,
+			role:roless
+		}).
+		success(function(data, status, headers, config) {
+			
+			$scope.success_flash= data[1];
+			//console.log($scope.usersRecord);
+		        $scope.loading = false;
+				$scope.init();
+		});
+   }
 	$scope.userlist = function(userData){
 		$scope.page='index';
                 $scope.errors=false;

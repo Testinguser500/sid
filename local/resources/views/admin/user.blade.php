@@ -27,6 +27,24 @@
 	<li class="administrator" ng-repeat="us in usersRecord"><a href="javascript:void(0)" ng-click="userlist(us)"><%us.name%> <span class="count">(<%us.total_users%>)</span></a> |</li>
 	
 </ul>
+<div class="bulk row" >
+<div class="col-md-2">
+<select class="form-control" name="">
+<option value="">Bulk Action</option>
+<option>Delete</option>
+</select>
+</div>
+<div class="col-md-2">
+<button class="btn btn-default">Apply</button></div>
+<div class="col-md-4">
+<select class="form-control" name="" ng-model="roless" >
+<option value="">Change Role to ...</option>
+<option ng-repeat="ro in roles" value="ro.id"><%ro.name%></option>
+</select>
+</div>
+<div class="col-md-4">
+<button class="btn btn-default" ng-click="roleChange(roless);">Apply</button></div>
+</div>
             </div>
             <!-- /.box-header -->
             
@@ -34,7 +52,7 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#<input type="checkbox" ng-click="selectAllFriends()"	 ng-model="isAllSelected"></th>
+                  <th>#<input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
                   <th>User Name</th>
                   <th>Email</th>
 				  <th>Role</th>
@@ -45,7 +63,7 @@
                 <tbody>
                 
                 <tr ng-repeat="val in users">
-                  <td><input type="checkbox" value="<%val.id%>" ng-checked="val.checked" ng-model="val.checked"    ><% val.id %></td>
+                  <td><input type="checkbox" ng-model="val.value" ng-change="optionToggled($index)" value="<% val.id %>"/><% val.id %></td>
                   <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>

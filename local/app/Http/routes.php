@@ -94,6 +94,7 @@ Route::post('admins/user/delete', 'Admin\UserController@delete');
 Route::post('admins/user/checkUser', 'Admin\UserController@checkUser');
 Route::post('admins/user/changeStatus', 'Admin\UserController@changeStatus');
 Route::post('admins/user/getProfileImage', 'Admin\UserController@getProfileImage');
+Route::post('admins/user/changeRole', 'Admin\UserController@changeRole');
 
 Route::get('admins/static-content', 'Admin\StaticContentController@index');
 Route::get('admins/static-content/all', 'Admin\StaticContentController@all');
