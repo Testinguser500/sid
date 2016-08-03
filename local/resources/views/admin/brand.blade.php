@@ -83,9 +83,6 @@
           <!-- /.box -->
         <!-- Button trigger modal -->
 
-
-
-
           <!-- Form Element sizes -->
          <div class="box box-primary" ng-if="page=='add'">
             <div class="box-header with-border">
@@ -95,14 +92,28 @@
             <!-- /.box-header -->
             <!-- form start -->
             
-                 {{ csrf_field() }}
               <div class="box-body">
 			 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Name</label>
                   <input type="text" class="form-control" id="" name="name" ng-model="brand.brand_name" placeholder="Name" >
 		  <div class="help-block"></div>
+                </div>
+                 <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Title</label>
+                  <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="brand.meta_title">
+		  <div class="help-block"></div>
                 </div> 
+                 <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Description</label>
+                  <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="brand.meta_description">
+		  <div class="help-block"></div>
+                </div> 
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Keyword</label>
+                  <input type="text" class="form-control" id="" name="meta_keyword" placeholder="Meta Keyword" ng-model="brand.meta_keyword">
+		  <div class="help-block"></div>
+                </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Description</label>
                   <div text-angular ng-model="brand.description" name="description" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>  
@@ -110,13 +121,25 @@
                 </div> 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
-                  <input type="file"  name="image" ng-model="brand.image" onchange="angular.element(this).scope().uploadedFile(this)">
+
+                <div class="form-group col-xs-12 show-bn">
+                <img src="{{URL::asset('uploads/brand')}}/<% files %>" width="200" height="80" ng-show="files" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" >  
+                  <br/>
+                  <span class="btn btn-primary btn-file" ng-hide="files">
+		   Upload <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+		  </span>
+		<em>Upload a brand image for your store. Image size is(200x80) and not  more than 1 mb.</em>
+		<a ng-show="display_cross==1" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" class="bnr-del " title="Delete" ng-click="delbrandfiles(files);display_cross=0" href="javascript:void(0);">
+                    <img src="{{URL::asset('admin/img/del.png')}}">
+                </a>
+				  
 		  <div class="help-block"></div>
+                </div>
                 </div> 
                  
                   <div class="form-group">
                   <label for="exampleInputEmail1">Status </label>
-                  <input type="radio"  id="" name="status" ng-model="brand.status" value="Active">Active <input type="radio" id="" name="status" value="Inactive" ng-model="brand.status" ng-init="user.status='Inactive'">Inactive 
+                  <input type="radio"  id="" name="status" ng-model="brand.status" ng-init="brand.status='Active'" value="Active">Active <input type="radio" id="" name="status" value="Inactive" ng-model="brand.status" >Inactive 
 		  <div class="help-block"></div>
                 </div> 
              </div>
@@ -129,7 +152,7 @@
           </div>
 
    <!--- Edit Brand------>
-			  <div class="box box-primary" ng-if="page=='edit'">
+         <div class="box box-primary" ng-if="page=='edit'">
             <div class="box-header with-border">
                 <h3 class="box-title"><i class="fa fa-edit"></i> Edit Brand</h3>
                  <div class="pull-right"> <a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
@@ -138,35 +161,61 @@
             <!-- form start -->
             
                  {{ csrf_field() }}
-                  <input type="hidden" class="form-control" id="" name="brand_id" ng-model="brands.id" placeholder="Name" value="<% brands.id %>">
+                  <input type="hidden" class="form-control" id="" name="brand_id" ng-model="brand.id" placeholder="Name" value="<% brands.id %>">
               <div class="box-body">
 			 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Name</label>
-                  <input type="text" class="form-control" id="" name="brand_name" ng-model="brands.brand_name" placeholder="Name" value="<% brands.brand_name %>}">
+                  <input type="text" class="form-control" id="" name="brand_name" ng-model="brand.brand_name" placeholder="Name" >
+		  <div class="help-block"></div>
+                </div> 
+                   <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Title</label>
+                  <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="brand.meta_title">
+		  <div class="help-block"></div>
+                </div> 
+                 <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Description</label>
+                  <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="brand.meta_description">
 		  <div class="help-block"></div>
                 </div> 
                 <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Keyword</label>
+                  <input type="text" class="form-control" id="" name="meta_keyword" placeholder="Meta Keyword" ng-model="brand.meta_keyword">
+		  <div class="help-block"></div>
+                </div>
+                <div class="form-group">
                   <label for="exampleInputEmail1">Description</label>
-                  <div text-angular ng-model="brands.description" name="description" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>  
+                  <div text-angular ng-model="brand.description" name="description" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>  
 		  <div class="help-block"></div>
                 </div> 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
-                  <img class='' src="{{URL::asset('uploads/brand')}}/<% brands.image %>" width="100">
-                  <input type="file"  name="image" ng-model="brands.image" onchange="angular.element(this).scope().uploadedFile(this)">
+                 <div class="form-group col-xs-12 show-bn">
+                <img src="{{URL::asset('uploads/brand')}}/<% files %>" width="200" height="80" ng-show="files" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" >  
+                  <br/>
+                  <span class="btn btn-primary btn-file" ng-hide="files">
+		   Upload <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+		  </span>
+		<em>Upload a brand image for your store. Image size is(200x80) and not  more than 1 mb.</em>
+		<a ng-show="display_cross==1" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" class="bnr-del " title="Delete" ng-click="delbrandfiles(files);display_cross=0" href="javascript:void(0);">
+                    <img src="{{URL::asset('admin/img/del.png')}}">
+                </a>
+				  
+		  <div class="help-block"></div>
+                </div>
 		  <div class="help-block"></div>
                 </div> 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Status </label>
-                  <input type="radio"  id="" name="status" value="Active" ng-model="brands.status" ng-checked="brands.status">Active <input type="radio" id="" name="status" value="Inactive" ng-model="brands.status" ng-checked="brands.status" >Inactive 
+                  <input type="radio"  id="" name="status" value="Active" ng-model="brand.status" ng-checked="brands.status">Active <input type="radio" id="" name="status" value="Inactive" ng-model="brand.status" ng-checked="brands.status" >Inactive 
 		  <div class="help-block"></div>
                 </div> 
              </div>
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button ng-click="update(brands)" class="btn btn-primary">Submit</button>
+                <button ng-click="update(brand)" class="btn btn-primary">Submit</button>
               </div>
           
           </div>

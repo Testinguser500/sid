@@ -35,7 +35,10 @@ class BrandController extends Controller
 	
   
 	   $validator = Validator::make(Request::all(), [
-            'brand_name' => 'required',
+            'brand_name' => 'required|soft_unique_single:brands,brand_name',
+            'meta_title'=>'required',
+            'meta_description'=>'required',
+            'meta_keyword'=>'required',
 	    'image'=>'required',
             'description'=>'required',            
             
@@ -49,10 +52,7 @@ class BrandController extends Controller
         }
 		 
          $destinationPath = 'uploads'; // upload path
-         //$extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
-         //$fileName = rand(11111,99999).'.'.$extension; // renameing image
-         //Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
-	 Brand::create(['image' =>Request::input('image'),'brand_name' =>Request::input('brand_name'),'description' =>Request::input('description'),'is_delete'=>'0','status' =>Request::input('status'),'user_id'=>Auth::user()->id]);  
+         Brand::create(['image' =>'brand/'.Request::input('image'),'meta_title' =>Request::input('meta_title'),'meta_description' =>Request::input('meta_description'),'meta_keyword' =>Request::input('meta_keyword'),'brand_name' =>Request::input('brand_name'),'description' =>Request::input('description'),'is_delete'=>'0','status' =>Request::input('status'),'user_id'=>Auth::user()->id]);  
 		  
          $list[]='success';
             $list[]='Record is added successfully.';	 
@@ -73,11 +73,8 @@ class BrandController extends Controller
         
 	 public function edit($id){
 	
-		$brands= DB::table('brands')->where('id', '=',$id)->first();
-		$all_brands= DB::table('brands')->get(); 
-         
-		$return['brands']=$brands;
-		$return['all_brands']=$all_brands;
+		$brands= DB::table('brands')->where('id', '=',$id)->first();	
+		$return['brands']=$brands;		
 		return $return; 
 	     
 	}
@@ -86,14 +83,16 @@ class BrandController extends Controller
 	  $validator = Validator::make(Request::all(), [
             'brand_name' => 'required',	    
             'description'=>'required',        
-            
+            'meta_title'=>'required',
+            'meta_description'=>'required',
+            'meta_keyword'=>'required',
         ]);
          
         if ($validator->fails()) {
-					$list[]='error';
-				  $msg=$validator->errors()->all();
-			      $list[]=$msg;
-				  return $list;
+			$list[]='error';
+			$msg=$validator->errors()->all();
+			$list[]=$msg;
+			return $list;
         }
 	 if(Request::input('image')!=''){	 
          //$destinationPath = 'uploads'; // upload path
@@ -104,8 +103,11 @@ class BrandController extends Controller
          $brand = Brand::find(Request::input('id'));
          $brand->brand_name = Request::input('brand_name');
          if((isset($fileName)) && ($fileName!='')){
-	 $brand->image = $fileName;
+	 $brand->image = 'brand/'.$fileName;
          }
+         $brand->meta_title =Request::input('meta_title');
+         $brand->meta_description =Request::input('meta_description');
+         $brand->meta_keyword =Request::input('meta_keyword');
 	 $brand->description =Request::input('description');	 
          $brand->status=Request::input('status');
          $brand->save(); 
