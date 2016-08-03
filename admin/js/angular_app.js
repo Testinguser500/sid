@@ -209,10 +209,12 @@ app.controller('HomeController', function($scope, $http) {
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
-    
+     $scope.category={};
      $scope.success_flash=false;
      $scope.init = function() {	
                 $scope.page='index';
+                $scope.files='';
+                $scope.category={};
                 $scope.errors=false;               
 		$scope.loading = true;
 		$http.get('category/all').
@@ -242,6 +244,9 @@ app.controller('HomeController', function($scope, $http) {
 		$http.get('category/edit/' + category.id, {			
 		}).success(function(data, status, headers, config) {
 			$scope.category = data['category'];
+                        var im=$scope.category.image;
+                        var im1= im.split("category/"); 
+                        $scope.files=im1[1]; 
                         $scope.all_cat = data['all_cat'];
 		        $scope.loading = false;
  
@@ -253,16 +258,32 @@ app.controller('HomeController', function($scope, $http) {
            var fd = new FormData();
             //Take the first selected file
             fd.append("image",element.files[0]);
+            fd.append("folder",'category');
+	    fd.append("width",'310');
+	    fd.append("height",'210');
             $http.post('imageupload', fd, {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;});
+            }).success( function(data, status, headers, config){ 
+                        if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
+                                $scope.errors=false;
+                                $scope.files=data;                    
+                                $scope.loading = false;
+			}
+        });
 
     });
    }
+        $scope.delcatefiles=function(file) {
+                $scope.files='';
+        }
 
-        $scope.update = function(category) { console.log($scope.category.file);
+        $scope.update = function(category) { 
             $scope.errors=false;
             $scope.success_flash=false;
          
@@ -308,11 +329,11 @@ app.controller('HomeController', function($scope, $http) {
                         meta_keyword: category.meta_keyword
 
 		} ).success(function(data, status, headers, config) {
-                   $scope.files='';
+                    
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
-				
+				$scope.files='';
 				$scope.errors=false;
                                 $scope.success_flash=data[1];				
                                 $scope.init();
