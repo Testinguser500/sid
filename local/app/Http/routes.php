@@ -24,6 +24,8 @@ Route::get('/', function () {
 //Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 //Route::resource('api/admins','HomeController');
+
+//Admin Panel
 Route::get('admins/', 'Admin\HomeController@index');
 Route::get('admins', 'Admin\HomeController@index');
 Route::get('admins/login', 'Admin\HomeController@index');
@@ -33,6 +35,7 @@ Route::get('admins/dashboard', 'Admin\HomeController@dashboard');
 Route::get('admins/home', 'Admin\HomeController@home');
 Route::post('admins/imageupload', 'Admin\HomeController@imageupload');
 Route::post('admins/Allimageupload', 'Admin\HomeController@Allimageupload');
+Route::get('admins/not_access', 'Admin\HomeController@not_access');
 
 Route::get('admins/category', 'Admin\CategoryController@index');
 Route::get('admins/category/all', 'Admin\CategoryController@all');
@@ -40,10 +43,10 @@ Route::post('admins/category/store', 'Admin\CategoryController@store');
 Route::post('admins/category/delete', 'Admin\CategoryController@delete');
 Route::get('admins/category/edit/{id}', 'Admin\CategoryController@edit');
 Route::post('admins/category/update', 'Admin\CategoryController@update');
+Route::get('admins/category/getcataegorywithSub', 'Admin\CategoryController@getcataegorywithSub');
 
 Route::get('admins/brand', 'Admin\BrandController@index');
 Route::get('admins/brand/all', 'Admin\BrandController@all');
-Route::get('admins/brand/add', 'Admin\BrandController@add');
 Route::post('admins/brand/store', 'Admin\BrandController@store');
 Route::post('admins/brand/delete', 'Admin\BrandController@delete');
 Route::get('admins/brand/edit/{id}', 'Admin\BrandController@edit');
@@ -95,6 +98,7 @@ Route::post('admins/user/checkUser', 'Admin\UserController@checkUser');
 Route::post('admins/user/changeStatus', 'Admin\UserController@changeStatus');
 Route::post('admins/user/getProfileImage', 'Admin\UserController@getProfileImage');
 Route::post('admins/user/changeRole', 'Admin\UserController@changeRole');
+Route::post('admins/user/deleteAll', 'Admin\UserController@deleteAll');
 
 Route::get('admins/static-content', 'Admin\StaticContentController@index');
 Route::get('admins/static-content/all', 'Admin\StaticContentController@all');
@@ -140,4 +144,17 @@ Route::post('admins/product/store', 'Admin\ProductController@store');
 Route::post('admins/product/delete', 'Admin\ProductController@delete');
 Route::get('admins/product/edit/{id}', 'Admin\ProductController@edit');
 Route::post('admins/product/update', 'Admin\ProductController@update');
+<<<<<<< HEAD
 Route::post('admins/product/getoptionvalue', 'Admin\ProductController@getoptionvalue');
+=======
+
+//Seller Panel
+Route::get('seller/login', 'Seller\HomeController@index');
+Route::post('seller/log_user', 'Seller\HomeController@log_user');
+Route::get('seller/log_out', 'Seller\HomeController@log_out');
+Route::get('seller/dashboard', 'Seller\HomeController@dashboard');
+Route::get('seller/home', 'Seller\HomeController@home');
+Route::post('seller/imageupload', 'Seller\HomeController@imageupload');
+Route::post('seller/Allimageupload', 'Seller\HomeController@Allimageupload');
+Route::get('seller/not_access', 'Seller\HomeController@not_access');
+>>>>>>> ae2f9a945728d77d0e3aabd6513b42d375463022

@@ -42,7 +42,7 @@ app.directive("passwordStrength", function(){
                         scope.strength = 'weak';
 						scope.strengthClass= 'progress-xxs';
 						scope.barClass='progress-bar progress-bar-danger';
-						scope.formSubmit=false;
+						//scope.formSubmit=false;
                     }
                 }
             });
@@ -864,7 +864,7 @@ app.controller('UserController', function($scope, $http) {
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
-                $scope.success_flash=false;
+                //$scope.success_flash=false;
 		$scope.loading = true;
 		$http.get('user/all').
 		success(function(data, status, headers, config) {
@@ -877,7 +877,7 @@ app.controller('UserController', function($scope, $http) {
  
 		});
 	}
-	$scope.users_id = [{}];
+	$scope.users_id = {};
         //id: null
     
 	$scope.checkAll = function () {
@@ -890,46 +890,65 @@ app.controller('UserController', function($scope, $http) {
         }
 		
         angular.forEach($scope.users, function (item) {
-			//alert(item);
-			//console.log(val);
-            item.value = $scope.selectedAll;
+			//alert(item);			
+           
 			if($scope.selectedAll)
 			{
-			$scope.users_id.push({
-				id:item.id
-			});
+			$scope.users_id[item.id]=true;
+				
 			}
 			else
 			{
-				$scope.users_id=[{
-				id:null
-			}];
+
+				$scope.users_id[item.id]=false;
 			}
         });
-		//console.log($scope.users_id);
+		
 		 
 
     };
-	$scope.selection=[];
-	$scope.toggleSelection = function toggleSelection(employeeName) {
-		alert(employeeName);
-     var idx = $scope.users_id.indexOf(employeeName);
- alert(idx);
-     // is currently selected
-     if (idx > -1) {
-       $scope.selection.splice(idx, 1);
-	   $scope.users_id.push({
-	   id:employeeName});
-     }
- 
-     // is newly selected
-     else {
-       $scope.selection.push(employeeName);
-	   $scope.users_id.splice(employeeName+1, 1);
-     }
-	 console.log($scope.selection);
-	 console.log($scope.users_id);
+	
+	/* $scope.optionToggled = function (ids) {
+		
+                console.log( $scope.users_id[ids] ); 
+//                if($scope.users_id[ids]==true)
+//                {
+//                var use_id=$scope.getObjectKeyIndex($scope.users_id, ids);
+//                $scope.users_id.splice(use_id, 1);
+//               }
+// Returns int(1) (or null if the key doesn't exist)
+
+
+//     var idx = $scope.users_id.indexOf(employeeName);
+// alert(idx);
+//     // is currently selected
+//     if (idx > -1) {
+//       $scope.selection.splice(idx, 1);
+//	   $scope.users_id.push({
+//	   id:employeeName});
+//     }
+// 
+//     // is newly selected
+//     else {
+//       $scope.selection.push(employeeName);
+//	   $scope.users_id.splice(employeeName+1, 1);
+//     }
+//	 console.log($scope.selection);
+//	 console.log($scope.users_id);
    };
+   $scope.getObjectKeyIndex =function(obj, keyToFind) {
+    var i = 0, key;
+
+    for (key in obj) {
+        if (key == keyToFind) {
+            return i;
+        }
+
+        i++;
+    }
+
+    return null;
+} */
    $scope.roleChange = function(roless){
 		$scope.errors=false;
 		$scope.success_flash=false;
@@ -943,6 +962,24 @@ app.controller('UserController', function($scope, $http) {
 			
 			$scope.success_flash= data[1];
 			//console.log($scope.usersRecord);
+		        $scope.loading = false;
+				$scope.init();
+		});
+   }
+   //bulk delete
+   $scope.bulkDelete = function(userData){
+	   console.log(userData);
+	   $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.post('user/deleteAll',{
+			action:userData,
+			id:$scope.users_id,
+		}).
+		success(function(data, status, headers, config) {
+			$scope.success_flash= data[1];
+			console.log($scope.success_flash);
 		        $scope.loading = false;
 				$scope.init();
 		});
@@ -1032,6 +1069,7 @@ app.controller('UserController', function($scope, $http) {
 			$scope.user.email = userData.email;
 			$scope.user.role = userData.role;
 			$scope.user.password = userData.password;
+			$scope.user.notify = userData.notify;
 			$scope.loading = false;
 			//console.log($scope.user.username);			
 			$scope.add();
@@ -1063,14 +1101,19 @@ app.controller('UserController', function($scope, $http) {
 		$http.post('country/getState',{
 			store_country:pid
 		}).
-		success(function(data, status, headers, config) {console.log(data);
+		success(function(data, status, headers, config) {//console.log(data);
 		var vari = type + 'state';
-		//console.log(vari)
+		console.log(type);
 		if(type=='user')
 		$scope.user_state = data;
-		elseif(type=='store')
+		else if(type=='store')
 		{
 			$scope.store_state = data;
+		}
+		else if(type=='shipp')
+		{
+			$scope.shipps_state=data;
+			//console.log(type);
 		}
  //console.log($scope.vari);
 		});
@@ -1084,10 +1127,14 @@ app.controller('UserController', function($scope, $http) {
 		success(function(data, status, headers, config) {//console.log(data);
 		if(type=='user')
 		$scope.user_city = data;
-		elseif(type=='store')
+		else if(type=='store')
 		{
 			$scope.store_city = data;
-		}	
+		}
+		else if(type=='shipp')
+		{
+			$scope.shipps_city=data;
+		}		
  
 		});
 		
@@ -1217,6 +1264,7 @@ app.controller('UserController', function($scope, $http) {
 					
     }
 	$scope.formSubmit=true;
+	console.log($scope.formSubmit);
 	return pass;
 	//console.log(pass);
 					
@@ -1307,7 +1355,7 @@ app.controller('UserController', function($scope, $http) {
  
          });
       };
-	  
+//store user  
 	  $scope.store = function(userData) {console.log($scope.files) ;
            $scope.errors=false;
            $scope.success_flash=false;
@@ -1319,26 +1367,27 @@ app.controller('UserController', function($scope, $http) {
 			fname: userData.fname,
 			lname: userData.lname,
 			username: userData.username,
-			nickname: userData.nickname,
-			display_name: userData.display_name,
+			//nickname: userData.nickname,
+			//display_name: userData.display_name,
 			email: userData.email,
 			gender:userData.gender,
 			mobile: userData.mobile,
+			home_number: userData.home_number,
 			website: userData.website,
 			bio: userData.bio,
-			password: userData.password,
-			confirm_password:userData.repassword,
+			profile_image: $scope.profileImage,
+			password: $scope.user.password,
+			//confirm_password:userData.repassword,
 			nationality: userData.nationality,
 			country: userData.country,
 			address:userData.address,
 			state:userData.state,
 			city:userData.city,
 			id: userData.id,
+			notify:$scope.user.notify,
 			status: userData.status,
-			profile_image: $scope.files,
-			store_name: userData.store_name,
-			store_link: userData.store_link,
-			store_address: userData.store_address,
+			
+			
 			ship_fname: userData.ship_fname,
 			ship_lname: userData.ship_lname,
 			ship_mobile: userData.ship_mobile,
@@ -1347,6 +1396,10 @@ app.controller('UserController', function($scope, $http) {
 			ship_state: userData.ship_state,
 			ship_city: userData.ship_city,
 			banner:$scope.bannerfiles,
+			store_name: userData.store_name,
+			store_link: userData.store_link,
+			logo:$scope.logo,
+			store_address: userData.store_address,
 			store_country:userData.store_country,
 			store_state:userData.store_state,
 			store_city:userData.store_city,
@@ -1360,7 +1413,6 @@ app.controller('UserController', function($scope, $http) {
 			instagram_link:userData.instagram_link,
 			flickr_link:userData.flickr_link,
 			affiliatefees:$scope.inputs,
-			logo:$scope.logo,
 			selling:userData.selling,
 			publishing:userData.publishing,
 			commission:userData.commission,
@@ -2348,9 +2400,14 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.sellers = data['sellers'];
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
+<<<<<<< HEAD
 			$scope.datatyps = data['datatyps'];
 			$scope.options = data['options'];
 			//console.log($scope.sellers);
+=======
+			$scope.all_category = data['all_category'];
+			console.log($scope.all_category);
+>>>>>>> ae2f9a945728d77d0e3aabd6513b42d375463022
 		        $scope.loading = false;
  
 		});

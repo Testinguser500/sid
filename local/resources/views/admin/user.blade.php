@@ -13,7 +13,7 @@
          
             </ul>
         </div>
-       <div class="col-md-12">
+       
 	     
           <!-- /.box -->
             
@@ -29,17 +29,17 @@
 </ul>
 <div class="bulk row" >
 <div class="col-md-2">
-<select class="form-control" name="">
+<select class="form-control" name="" ng-model="bulk">
 <option value="">Bulk Action</option>
-<option>Delete</option>
+<option value="delete">Delete</option>
 </select>
 </div>
 <div class="col-md-1">
-<button class="btn btn-default">Apply</button></div>
+<button class="btn btn-default" ng-click="bulkDelete(bulk);">Apply</button></div>
 <div class="col-md-4">
 <select class="form-control" name="" ng-model="roless" >
 <option value="">Change Role to ...</option>
-<option ng-repeat="ro in roles" value="ro.id"><%ro.name%></option>
+<option ng-repeat="ro in roles" ng-value="ro.id"><%ro.name%></option>
 </select>
 </div>
 <div class="col-md-4">
@@ -47,7 +47,7 @@
 </div>
             </div>
             <!-- /.box-header -->
-            
+           
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -64,7 +64,9 @@
                 <tbody>
                 
                 <tr ng-repeat="val in users">
-                  <td><input type="checkbox" ng-model="val.value" ng-change="optionToggled($index)" value="<% val.id %>"/> <% val.id %></td>
+
+                  <td><input type="checkbox" ng-model="users_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/><% val.id %></td>
+
                   <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>
@@ -156,7 +158,7 @@
 				<button  ng-click="user_ddata.ownpassword=1;user_ddata.password=genratePassword();" class="btn btn-default">Genrate Password</button>
 				</div>
 				<div class="col-xs-4">
-				<button  ng-click="user_ddata.ownpassword=0;user_ddata.password=''" class="btn btn-default">Own Password</button>
+				<button  ng-click="user_ddata.ownpassword=0;user_ddata.password='';formSubmit=false" class="btn btn-default">Own Password</button>
 				</div>
 				</div>
 				<div style="clear:both"></div>
@@ -191,7 +193,7 @@
 				<div style="clear:both"></div>
 				<div class="form-group">
                   <label for="exampleInputEmail1">Confirm Password</label>
-                  <input type="password" class="form-control" id="" name="repassword" placeholder="Confirem password" ng-model="user_ddata.repassword">
+                  <input type="password" class="form-control" id="" name="repassword" placeholder="Confirm password" ng-model="user_ddata.repassword">
 				<div class="help-block"></div>
                 </div>
 				</div>
@@ -648,10 +650,10 @@
                 <h3 class="box-title"><i class="fa fa-plus"></i> Add User</h3>
                 <div class="pull-right"><a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
             </div>
-		  <!------ Add User ---------------->
+<!----------------- Add User -------------------------------------------->
 		  <div class="box-body">
 		  <div class="form-group">
-				<img src="<% user.profile %>">
+				<img class="img-circle" height="80px" width="80px" src="<% user.profile %>">
 				</div>
 			  <div class="form-group">
 			  <h3>User Info</h3>
@@ -723,7 +725,7 @@
 				<div class="row">			  
                 <div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Email(required)</label>
-                  <input type="text" class="form-control" id="" name="email" placeholder="Email" ng-model="user.email">
+                  <input type="text" class="form-control" readonly="readonly" id="" name="email" placeholder="Email" ng-model="user.email">
 		  <div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
@@ -751,6 +753,7 @@
 			  <div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Biographical Info</label>
                   <textarea type="text" class="form-control" id="" name="bio" placeholder="Biographical Info" ng-model="user.bio"></textarea>
+				  
 		  <div class="help-block"></div>
                 </div>
 				<!--<div class="form-group col-xs-4">
@@ -1037,7 +1040,7 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Country</label>
-                  <select class="form-control" id="" name="ship_country" placeholder="Country" ng-model="user.ship_country" ng-change="getState(user.ship_country);">
+                  <select class="form-control" id="" name="ship_country"  ng-model="user.ship_country" ng-change="getState(user.ship_country,'shipp');">
 				  <option value="">Select Country</option>
 				  <option ng-repeat="con in country" ng-value="con.id"><%con.name%></option>
 				  </select>
@@ -1045,9 +1048,9 @@
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">State</label>
-                  <select class="form-control" id="" name="ship_state" placeholder="Country" ng-model="user.ship_state" ng-change="getCity(user.ship_state);">
+                  <select class="form-control" id="" name="ship_state"  ng-model="user.ship_state" ng-change="getCity(user.ship_state,'shipp');">
 				  <option value="">Select State</option>
-				  <option ng-repeat="st in store_state" ng-value="st.id"><%st.name%></option>
+				  <option ng-repeat="st in shipps_state" ng-value="st.id"><%st.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -1055,7 +1058,7 @@
                   <label for="exampleInputEmail1">City</label>
                   <select class="form-control" id="" name="ship_city" placeholder="Country" ng-model="user.ship_city">
 				  <option value="">Select City</option>
-				  <option ng-repeat="ct in store_city" ng-value="ct.id"><%ct.name%></option>
+				  <option ng-repeat="ct in shipps_city" ng-value="ct.id"><%ct.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>

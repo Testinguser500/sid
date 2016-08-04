@@ -21,11 +21,7 @@ class BrandController extends Controller
              return view('admin/brand')->with('brands',$brands)->with('title','Brands')->with('subtitle','List');
 		
 	}
-       public function add(){ 
-             
-            
-             return view('admin/add_brand')->with('title','Brands')->with('subtitle','Add');	
-	}
+      
 	public function all(){ 
              $brand = DB::table('brands')->where('is_delete','=','0')->get();  
              return  $brand;

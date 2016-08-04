@@ -30,6 +30,10 @@ class ProductController extends Controller
 	     $products   = DB::table('product')->select('categorys.category_name as category_name', 'product.*')->join('categorys', 'product.pro_category_id', '=', 'categorys.id')->where('product.is_delete','=','0')->get();
              $sellers    = DB::table('users')->where('status','=','Active')->where('is_delete','=',0)->where('role','=',5)->get();
 	     $categories = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
+<<<<<<< HEAD
+	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get(); 
+		 $all_category = self::getcataegorywithSub();
+=======
 	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get();
 	     $datatyps   = DB::table('product_data_type')->get();
 	     $options    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get(); 
@@ -37,12 +41,17 @@ class ProductController extends Controller
 	//	$images    = DB::table('product_images')->where('product_id','=',$vv->id)->get();	
 	//     }
 	     //$return['images']     = $images;
+>>>>>>> e39b3faf4d7766392d53be855a7a52b9c06d9d37
 	     $return['products']   = $products;
 	     $return['sellers']    = $sellers;
 	     $return['categories'] = $categories;
 	     $return['brands']     = $brands;
+<<<<<<< HEAD
 	     $return['datatyps']   = $datatyps;
 	     $return['options']   = $options;
+=======
+		 $return['all_category'] = $all_category;
+>>>>>>> ae2f9a945728d77d0e3aabd6513b42d375463022
 	     return $return ;
 	}
 	
@@ -204,7 +213,29 @@ class ProductController extends Controller
         $list[]='Record is updated successfully.';	 
 	return $list;
 	 }
-       
+    
+	public function getcataegorywithSub($pid=0)
+	{
+		$categories = array();
+		$result = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$pid)->get();
+		foreach((array)$result as $key=>$mainCategory)
+		{
+			$category = array();
+			 $category['id'] = $mainCategory->id;
+			$category['name'] = $mainCategory->category_name;
+			$category['parent_id'] = $mainCategory->parent_id;
+			$category['sub_categories'] = self::getcataegorywithSub($category['id']);
+			$categories[$mainCategory->id] = $category;
+			//$sub = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$val->id)->get();
+			//$val->sub = $sub;
+			//$result[$key]=$val;
+			
+			//$result[$key]->sub = self::getcataegorywithSub($val->id);
+			
+		}
+		
+		return $categories;
+	}
  }
  
 ?>

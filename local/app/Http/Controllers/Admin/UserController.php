@@ -56,8 +56,14 @@ class UserController extends Controller
 	}
 	public function changeRole()
 	{
-		$user_id = Request::input('id');
-		$role = Request::input('role');
+		$chk_id = Request::input('id');
+		 $role = Request::input('role');
+		foreach((array)$chk_id as $key=>$id)
+	   {
+		   if($id)
+			   $user_id[]=$key;
+	   }
+		
 		$array = (array_filter($user_id));
 		DB::table('users')
             ->whereIn('id', $array)
@@ -65,10 +71,11 @@ class UserController extends Controller
 			
 			$list[]='success';
 			$msg='Role has been changed successfully.';
-			$list=$msg;
+			$list[]=$msg;
 		return $list;
 		
 	}
+	
        public function add(){ 
              
              $user = DB::table('users')->get();  
@@ -102,7 +109,7 @@ class UserController extends Controller
 	}
         public function store(){
 			
-			echo Request::input('fname');
+			//echo Request::input('fname');
 			
 			$validation1=array();
 	$validation = array(
@@ -110,9 +117,8 @@ class UserController extends Controller
 			'fname' => 'required',
 			'username' => 'required|unique_with:users,role',
 			'email'=>'required|email|unique_with:users,role',
-			'password'=>'required|min:6',
-			'confirm_password'=>'required|same:password',
-			'profile_image'=>'required',
+			//'password'=>'required|min:6',
+			//'profile_image'=>'required',
 			'mobile' => 'required|unique_with:users,role',
 	
 	);
@@ -129,7 +135,7 @@ class UserController extends Controller
 	elseif(Request::input('role')==5)
 	{
 		$validation1 = array(
-		'banner'=>'required|max:1000|image_size:1300,400',
+		'banner'=>'required|max:1000',
 		'store_country'=>'required',
 		'store_state'=>'required',
 		'store_city'=>'required',
@@ -149,7 +155,7 @@ class UserController extends Controller
         }
 		 
         $password = Request::input('password');
-        $user = User::create(['image' =>Request::input('profile_image'),'fname' =>Request::input('fname'),'lname' =>Request::input('lname'),'display_name' =>Request::input('display_name'),'username' =>Request::input('username'),'nickname' =>Request::input('nickname'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'home_number' =>Request::input('home_number'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'state' =>Request::input('state'),'city' =>Request::input('city'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
+        $user = User::create(['image' =>Request::input('profile_image'),'fname' =>Request::input('fname'),'lname' =>Request::input('lname'),'username' =>Request::input('username'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'home_number' =>Request::input('home_number'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'state' =>Request::input('state'),'city' =>Request::input('city'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
 		$insert_id = $user->id;
 		if(Request::input('role')==3)
 		{
@@ -188,6 +194,8 @@ class UserController extends Controller
 			Affiliate::create(['user_id'=>$insert_id,'store_id'=>$store_id,'category_id'=>$aff['affiliate'],'fees'=>$aff['value']]);
 			}
 		}
+		if(Request::input('notify'))
+		{
 		$emails['email'] = Request::input('email'); 
         $copyright=configs_value('Copyright');        
         $em_content=email_section('1');   
@@ -208,12 +216,13 @@ class UserController extends Controller
 
 			$message->to($emails['email'])->subject($emails['subject']);
 		});  
+		}
 		$list[]='success';
 		$list[]='Record is added successfully.';	 
 	    return $list;
 	   
 	}
-        public function delete(Request $request){
+        public function delete(){
 	
 	   $chk_id=Request::input('del_id');	
            $cat = User::find($chk_id);
@@ -222,6 +231,28 @@ class UserController extends Controller
            $list[]='success';
            $list[]='Record is deleted successfully.';	 
 	   return $list;
+	    
+	}
+	public function deleteAll(){
+	
+	    $action = Request::input('action');
+	   $chk_id=Request::input('id');
+	   foreach((array)$chk_id as $key=>$id)
+	   {
+		   if($id)
+			   $user_id[]=$key;
+	   }
+		if($action=='delete')	   
+		{
+			DB::table('users')
+            ->whereIn('id', $user_id)
+            ->update(['is_delete' => '1']);
+		
+			$list[]='success';
+			$list[]='Record is deleted successfully.';	 
+			return $list;
+		}
+		
 	    
 	}
 	public function changeStatus()
