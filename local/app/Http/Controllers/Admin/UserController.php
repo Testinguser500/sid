@@ -281,15 +281,24 @@ class UserController extends Controller
 	 $role = DB::table('role')->get();
 	 $user = '';
 		if($data->role=='5')
+		{
 		$user = DB::table('store')->select('*','id as store_id')->where('user_id', '=',$id)->first();
+		
+		$afiliate = DB::table('affiliate')->select('*','id as affiliate_id')->where('store_id','=',$user->store_id)->get();
+		$user->affiliate = $afiliate;
+		}
 		elseif($data->role=='3')
+		{
 		$user = DB::table('shipp_address')->select('*','id as shipp_id')->where('user_id', '=',$id)->where('ship_status','=','Active')->first();
+		}
+		$category = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 		//print_r($user);
 		 $return['user']=(object) array_merge((array)$data,(array) $user);
 		 //print_r($return['user']);
          $return['all_user']=$user;
 		 $return['roles']=$role;
-	 //return view('admin/edit_user')->with('user_data',$user)->with('data',$data)->with('title','User')->with('subtitle','Edit');
+		 $return['category'] = $category;
+	 
 	    return $return; 
 	}
          public function update(){
@@ -342,13 +351,14 @@ class UserController extends Controller
          
          }
          $cat = User::find(Request::input('id'));
-         $cat->name = Request::input('name');
+         $cat->fname = Request::input('fname');
+		 $cat->lname = Request::input('lname');
          if((isset($fileName)) && ($fileName!='')){
 			$cat->image = $fileName;
          }
 		 
 		 $cat->username =Request::input('username');
-		 $cat->nickname =Request::input('nickname');
+		
 		 $cat->email =Request::input('email');
 		 if(Request::input('password'))
 			 $cat->password= bcrypt(Request::input('password'));
@@ -356,6 +366,7 @@ class UserController extends Controller
 		 $cat->gender=Request::input('gender');
 		 $cat->website =Request::input('website');
 		 $cat->mobile =Request::input('mobile');
+		 $cat->home_number =Request::input('home_number');
 		 $cat->address=Request::input('address');
 		 $cat->nationality =Request::input('nationality');
 		 $cat->country =Request::input('country');
@@ -382,19 +393,41 @@ class UserController extends Controller
 			$store->store_name = Request::input('store_name');
 			if(Request::input('banner'))
 			$store->banner = Request::input('banner');
+			if(Request::input('logo'))
+			$store->logo = Request::input('logo');
+		
 			$store->store_country = Request::input('store_country');
 			$store->store_state = Request::input('store_state');
 			$store->store_city = Request::input('store_city');
 			$store->store_address = Request::input('store_address');
 			$store->phone = Request::input('store_phone');
 			$store->facebook_link = Request::input('facebook_link');
-			$store->google_link = Request::input('google_link');
+			$store->google_link = Request::input('google_plus_link');
 			$store->twitter_link = Request::input('twitter_link');
 			$store->linkedin_link = Request::input('linkedin_link');
 			$store->youtube_link = Request::input('youtube_link');
 			$store->instagram_link = Request::input('instagram_link');
 			$store->flickr_link = Request::input('flickr_link');
+			$store->selling = Request::input('selling');
+			$store->publishing = Request::input('publishing');
+			$store->commission = Request::input('commission');
+			$store->featured = Request::input('featured');
+			$store->verified = Request::input('verified');
+			$store->promotinoal_link = Request::input('promotinoal_link');
+			$store->promotion_banner = Request::input('promotion');
 			$store->save();
+			
+			if(Request::input('affiliatefees'))
+			{
+				$store_id= Request::input('store_id');
+				DB::table('affiliate')->where('store_id','=',$store_id)->delete();
+				$affiliatefees = Request::input('affiliatefees');
+				//print_r($affiliatefees);
+				foreach((array)$affiliatefees as $aff)
+				{
+				Affiliate::create(['user_id'=>Request::input('id'),'store_id'=>$store_id,'category_id'=>$aff['category_id'],'fees'=>$aff['fees']]);
+				}
+			}
 		 }
 		  
 		$list[]='success';
