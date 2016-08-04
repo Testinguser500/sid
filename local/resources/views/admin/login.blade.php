@@ -1,9 +1,9 @@
 @extends('admin/auth_layout')
 @section('content')
 <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Admin can sign in to start your session</p>
 
-<!--    <form action="{{url('/admin/log_user')}}" method="post">-->
+
          <input type="hidden" name="_token"  ng-model="_token" value="{{ csrf_token() }}">
       <div class="form-group has-feedback">
         <input name="email" type="email" class="form-control" placeholder="Email" ng-model="email">
@@ -21,8 +21,6 @@
         </div>
         <!-- /.col -->
       </div>   
-<!--</form>-->
-
 
    
     <!-- /.social-auth-links -->

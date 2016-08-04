@@ -24,6 +24,8 @@ Route::get('/', function () {
 //Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 //Route::resource('api/admins','HomeController');
+
+//Admin Panel
 Route::get('admins/', 'Admin\HomeController@index');
 Route::get('admins', 'Admin\HomeController@index');
 Route::get('admins/login', 'Admin\HomeController@index');
@@ -142,3 +144,13 @@ Route::post('admins/product/store', 'Admin\ProductController@store');
 Route::post('admins/product/delete', 'Admin\ProductController@delete');
 Route::get('admins/product/edit/{id}', 'Admin\ProductController@edit');
 Route::post('admins/product/update', 'Admin\ProductController@update');
+
+//Seller Panel
+Route::get('seller/login', 'Seller\HomeController@index');
+Route::post('seller/log_user', 'Seller\HomeController@log_user');
+Route::get('seller/log_out', 'Seller\HomeController@log_out');
+Route::get('seller/dashboard', 'Seller\HomeController@dashboard');
+Route::get('seller/home', 'Seller\HomeController@home');
+Route::post('seller/imageupload', 'Seller\HomeController@imageupload');
+Route::post('seller/Allimageupload', 'Seller\HomeController@Allimageupload');
+Route::get('seller/not_access', 'Seller\HomeController@not_access');
