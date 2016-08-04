@@ -128,14 +128,14 @@
 		       </select>
 		      <div class="help-block"></div>
 		    </div>-->
-		    <div class="form-group">
+		    <!--<div class="form-group">
 		      <label for="exampleInputEmail1">Product Brand</label>
 		       <select class="form-control" id="" name="brand_id" placeholder="Product Brand" ng-model="product.brand_id">
 			<option value="">Select Product Brand</option>
 			<option ng-repeat="br in brands" ng-value="br.id" ng-selected="br.id==product.brand_id"><%br.brand_name%></option> 
 		       </select>
 		      <div class="help-block"></div>
-		    </div>
+		    </div>-->
 		    <div class="form-group">
 		      <label for="exampleInputEmail1">Product Tags</label>
 		      <input type="text" class="form-control" id="" name="product_tags" placeholder="Product Tags" ng-model="product.product_tags">
@@ -179,46 +179,181 @@
 		      <div class="help-block"></div>
 		    </div> 
 		    
-		    <div class="row" >
-			<div class="col-md-2">
-			<ul class="nav nav-pills nav-stacked">
-			<li ng-class="{ active: isSet(1) }">
-			<a href ng-click="setTab(1)">General</a>
-			</li>
-			<li ng-class="{ active: isSet(2) }">
-			<a href ng-click="setTab(2)">Inventory</a>
-			</li>
-			<li ng-class="{ active: isSet(3) }">
-			<a href ng-click="setTab(3)">Shipping</a>
-			</li>
-			</ul>
-			</div>
-			<div class="col-md-8">
-			<div class="jumbotron">
-			<div ng-show="isSet(1)">
-			<h1>Home page</h1>
-			<p>Welcome to the website!</p>
-			<p><a class="btn btn-primary btn-lg" role="button">Learn more</a></p>
-			</div>
-			<div ng-show="isSet(2)">
-			<h1>Profile page</h1>
-			<p>Profile information</p>
-			</div>
-			<div ng-show="isSet(3)">
-			<h1>Messages</h1>
-			<p> Some messages </p>
-			</div>
-			</div>
-			</div>
-		   </div>
-	       
+			 <div class="main-form-pro row">
+		         <label for="exampleInputEmail1">Product Data-</label>
+			<select name="pro_data_type" ng-model="product.pro_datatype_id" ng-init="product.pro_datatype_id=1">
+			 <optgroup label="Product Type">
+			 <option ng-repeat="dt in datatyps" ng-value="dt.id" ng-selected="dt.id==product.pro_datatype_id" value="<%dt.id%>"><%dt.data_type%></option> 
+			 </optgroup>
+			</select>   
+		    <span title="Click to toggle" class="handlediv" ng-click="myFunc3()"><i class="fa fa-caret-down custom"></i></span>
+			 <div class="col-xs-12 main--tab" ng-show="showMe3">
+			     <div class="col-md-2">
+				   <div class="first-box" ng-if="product.pro_datatype_id == '1'">
+					<ul class="nav nav-pills nav-stacked">
+					<li ng-class="{ active: isSet(1) }">
+					<a href ng-click="setTab(1)"><i class="fa fa-bars" aria-hidden="true"></i>General</a>
+					</li>
+					<li ng-class="{ active: isSet(2) }">
+					<a href ng-click="setTab(2)"><i class="fa fa-line-chart" aria-hidden="true"></i>Inventory</a>
+					</li>
+					<li ng-class="{ active: isSet(3) }">
+					<a href ng-click="setTab(3)"><i class="fa fa-bus" aria-hidden="true"></i>Shipping</a>
+					</li>
+					<li ng-class="{ active: isSet(4) }">
+					<a href ng-click="setTab(4)"><i class="fa fa-link" aria-hidden="true"></i>Linked Products</a>
+					</li>
+					<li ng-class="{ active: isSet(5) }">
+					<a href ng-click="setTab(5)"><i class="fa fa-minus-square-o" aria-hidden="true"></i>Attributes</a>
+					</li>
+					<li ng-class="{ active: isSet(6) }">
+					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
+					</li>
+					</ul>
+				   </div>
+				   <div class="second-box" ng-if="product.pro_datatype_id == '2'">
+					<ul class="nav nav-pills nav-stacked">
+					<li ng-class="{ active: isSet(2) }">
+					<a href ng-click="setTab(2)">Inventory</a>
+					</li>
+				       <li ng-class="{ active: isSet(4) }">
+					<a href ng-click="setTab(4)">Linked Products</a>
+					</li>
+					<li ng-class="{ active: isSet(5) }">
+					<a href ng-click="setTab(5)">Attributes</a>
+					</li>
+					<li ng-class="{ active: isSet(6) }">
+					<a href ng-click="setTab(6)">Advanced</a>
+					</li>
+					<li ng-class="{ active: isSet(7) }">
+					<a href ng-click="setTab(7)">Tabs</a>
+					</li>
+					</ul>
+				   </div>
+				   <div class="third-box" ng-if="product.pro_datatype_id == '3'">
+					<ul class="nav nav-pills nav-stacked">
+					<li ng-class="{ active: isSet(1) }">
+					<a href ng-click="setTab(1)">General3</a>
+					</li>
+					<li ng-class="{ active: isSet(2) }">
+					<a href ng-click="setTab(2)">Inventory3</a>
+					</li>
+					<li ng-class="{ active: isSet(3) }">
+					<a href ng-click="setTab(3)">Shipping3</a>
+					</li>
+					</ul>
+				   </div>
+			     </div>
+			     <div class="col-md-8">
+				   <div class="jumbotron">
+					 <div ng-show="isSet(1)">
+					     <div class="form-group">
+					     <label for="exampleInputEmail1">SKU</label>
+					     <input type="text" placeholder="" value="" id="sku" name="sku">
+					     </div>
+					     <div class="form-group">
+					     <label for="exampleInputEmail1">Regular Price (Rs.)</label>
+					     <input type="text" placeholder="" value="" id="regular_price" name="regular_price">
+					     </div>
+					     <div class="form-group">
+					     <label for="exampleInputEmail1">Sale Price (Rs.)</label>
+					     <input type="text" placeholder="" value="" id="sale_price" name="sale_price">
+					     </div>
+					     <div class="form-group">
+					     <label for="exampleInputEmail1">Sale Price Dates From</label>
+					     <input type="date" placeholder="YYYY-MM-DD" id="sale_price_dates_from" name="sale_price_dates_from">
+					     </div>
+					     <div class="form-group">
+					     <label for="exampleInputEmail1">Sale Price Dates To</label>
+					     <input type="date" placeholder="YYYY-MM-DD" id="sale_price_dates_to" name="sale_price_dates_to">
+					     </div>
+					     <div class="form-group">
+					     <label for="exampleInputEmail1">Youtube Link</label>
+					     <textarea cols="20" rows="2" placeholder="Youtube Link for multiple enter in new line" id="video" name="video"></textarea>
+					     </div>
+					 </div>
+					 <div ng-show="isSet(2)">
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Manage stock?</label>
+					     <input type="checkbox" name=""> Enable stock management at product level
+					     </div>
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Stock status</label>
+					     <select>
+						  <option value="in_stock">In stock</option>
+						  <option value="out_stock">Out stock</option>
+					     </select>
+					     </div>
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Sold Individually</label>
+					     <input type="checkbox" name=""> Enable this to only allow one of this item to be bought in a single order
+					     </div>
+					 </div>
+					 <div ng-show="isSet(3)">
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Weight(kg)</label>
+					     <input type="text" placeholder="0" name="weight">
+					     </div>
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Dimensions (cm)</label>
+					     <input type="text" placeholder="Length" name="length">
+					     <input type="text" placeholder="Width" name="width">
+					     <input type="text" placeholder="Height" name="height">
+					     </div>
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Shipping class</label>
+					     <select>
+						  <option value="no_shipping">No shipping class</option>
+					     </select>
+					     </div>
+					 </div>
+					 <div ng-show="isSet(4)">
+					 <h1>Messages4</h1>
+					 <p> Some messages4 </p>
+					 </div>
+					 <div ng-show="isSet(5)">
+					 <div class="form-group">
+					     <select name="pro_opt_name_id" ng-model="product.pro_opt_name_id" ng-change="GetSelectedOptions(product.pro_opt_name_id)">
+						<option ng-repeat="opnam in options" ng-value="opnam.id" ng-selected="opnam.id==product.pro_opt_name_id" value="<%opnam.id%>"><% opnam.option_name %></option>
+					     </select>   
+					  </div>
+					 <div class="form-group">
+					 <select name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
+						<option ng-repeat="opv in optionvalues" ng-value="opv.id" ng-selected="opv.id==product.pro_opt_values_id" value="<%opv.id%>"><% opv.option_name %></option>
+					     </select>
+					     <!--<select multiple>
+						  <option value=""></option>
+						  <option value="">1MB</option>
+						  <option value="">3GB</option>
+					     </select>-->
+					  </div>
+					 </div>
+					 <div ng-show="isSet(6)">
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Purchase Note</label>
+					     <textarea cols="20" rows="2" placeholder="" id="" name=""></textarea>
+					  </div>
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Menu Order</label>
+					     <input type="number" step="1" placeholder="" value="0" id="menu_order" name="menu_order" style="" class="short">
+					 </div>
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Enable reviews</label>
+					     <input type="checkbox" name="">
+					 </div>
+					 </div>
+					
+				    </div>
+			     </div>
+			 </div>
+		    </div>
 	       </div>
 	       <div class="col-xs-3">
 			 <div class="row">
 			   <div class="col-xs-12">
 			      <div class="main-form-chk">
 			      <label for="exampleInputEmail1">Product Categories</label>
-			      <span title="Click to toggle" class="handlediv" ng-click="myFunc()"><i class="fa fa-caret-down custom" ></i></span>
+			      <span title="Click to toggle" class="handlediv" ng-click="myFunc()"><i class="fa fa-caret-down custom"></i></span>
 			      <div class="form-chk" ng-show="showMe">
 			      <input type="text" placeholder="Filter Categories" ng-model="test"><br>
 			      <div class="frm-cat">
@@ -230,7 +365,20 @@
 			      </div>
 			   </div>
 			   <div class="col-xs-12">Images</div>
-			   <div class="col-xs-12">Brand</div>
+			   <div class="col-xs-12">
+			   <div class="main-form-chk">
+			   <label for="exampleInputEmail1">Product Brands</label>
+			   <span title="Click to toggle" class="handlediv" ng-click="myFunc1()"><i class="fa fa-caret-down custom" ></i></span>
+			   <div class="form-chk" ng-show="showMe1">
+			      <input type="text" placeholder="Filter Brands" ng-model="brd"><br>
+			      <div class="frm-cat">
+				   <span class="form-brd" ng-repeat="br in brands | filter : brd">
+				    <input type="radio" id="" name="brand_id" ng-model="product.brand_id" ng-value="br.id"><%br.brand_name%><br>
+				 </span>
+			      </div>
+			   </div>
+			   </div>
+			   </div>
 			 </div> 
 	       </div>
 		 </div>

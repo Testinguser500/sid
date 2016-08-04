@@ -29,10 +29,9 @@ class HomeController extends Controller
 		
 	}
 	public function home(){ 
-           if ((Auth::check()) && (Auth::user()->role==1) ) { 
+           if ((Auth::check()) &&  (Auth::user()->role==1) && (Auth::user()->status=='Active') ) { 
              return view('admin/home')->with('title','Admin')->with('subtitle','Control Panel');
-           }else if((Auth::check()) && (Auth::user()->role!=1)){
-                
+           }else if((Auth::check()) && ((Auth::user()->role!=1) || (Auth::user()->status=='Inactive'))){                
              return redirect('admins/not_access');
            }
            else{
@@ -60,7 +59,7 @@ class HomeController extends Controller
 				 
 			 
 		  }else{   
-                    if (Auth::attempt(['email' => Request::input('email'), 'password' => Request::input('password'),'role'=>1])) {
+                    if (Auth::attempt(['email' => Request::input('email'), 'password' => Request::input('password'),'role'=>1,'status'=>'Active'])) {
                         // Authentication passed...
                        if (Session::has('redirect_url'))
                        {
