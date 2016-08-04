@@ -31,7 +31,7 @@ class HomeController extends Controller
 	public function home(){ 
            if ((Auth::check()) && (Auth::user()->role==1) ) { 
              return view('admin/home')->with('title','Admin')->with('subtitle','Control Panel');
-           }else if(Auth::user()->role != 1){
+           }else if((Auth::check()) && (Auth::user()->role!=1)){
                 
              return redirect('admins/not_access');
            }
