@@ -56,9 +56,14 @@ class UserController extends Controller
 	}
 	public function changeRole()
 	{
-		$user_id = Request::input('id');
-		$role = Request::input('role');
-		print_r($user_id);exit;
+		$chk_id = Request::input('id');
+		 $role = Request::input('role');
+		foreach((array)$chk_id as $key=>$id)
+	   {
+		   if($id)
+			   $user_id[]=$key;
+	   }
+		
 		$array = (array_filter($user_id));
 		DB::table('users')
             ->whereIn('id', $array)
@@ -66,7 +71,7 @@ class UserController extends Controller
 			
 			$list[]='success';
 			$msg='Role has been changed successfully.';
-			$list=$msg;
+			$list[]=$msg;
 		return $list;
 		
 	}
@@ -228,16 +233,24 @@ class UserController extends Controller
 	}
 	public function deleteAll(){
 	
-	   echo $action = Request::input('action');
+	    $action = Request::input('action');
 	   $chk_id=Request::input('id');
-	   
-print_r($chk_id);	   
-           $cat = User::find($chk_id);
-           $cat->is_delete = '1';
-           $cat->save(); 	   		 
-           $list[]='success';
-           $list[]='Record is deleted successfully.';	 
-	   return $list;
+	   foreach((array)$chk_id as $key=>$id)
+	   {
+		   if($id)
+			   $user_id[]=$key;
+	   }
+		if($action=='delete')	   
+		{
+			DB::table('users')
+            ->whereIn('id', $user_id)
+            ->update(['is_delete' => '1']);
+		
+			$list[]='success';
+			$list[]='Record is deleted successfully.';	 
+			return $list;
+		}
+		
 	    
 	}
 	public function changeStatus()
