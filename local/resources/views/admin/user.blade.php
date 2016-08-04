@@ -13,7 +13,7 @@
          
             </ul>
         </div>
-       <div class="col-md-12">
+       
 	     
           <!-- /.box -->
             
@@ -29,17 +29,17 @@
 </ul>
 <div class="bulk row" >
 <div class="col-md-2">
-<select class="form-control" name="">
+<select class="form-control" name="" ng-model="bulk">
 <option value="">Bulk Action</option>
-<option>Delete</option>
+<option value="delete">Delete</option>
 </select>
 </div>
 <div class="col-md-1">
-<button class="btn btn-default">Apply</button></div>
+<button class="btn btn-default" ng-click="bulkDelete(bulk);">Apply</button></div>
 <div class="col-md-4">
 <select class="form-control" name="" ng-model="roless" >
 <option value="">Change Role to ...</option>
-<option ng-repeat="ro in roles" value="ro.id"><%ro.name%></option>
+<option ng-repeat="ro in roles" ng-value="ro.id"><%ro.name%></option>
 </select>
 </div>
 <div class="col-md-4">
@@ -47,7 +47,7 @@
 </div>
             </div>
             <!-- /.box-header -->
-            <% users_id %>
+           
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -64,11 +64,9 @@
                 <tbody>
                 
                 <tr ng-repeat="val in users">
-<<<<<<< HEAD
+
                   <td><input type="checkbox" ng-model="users_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/><% val.id %></td>
-=======
-                  <td><input type="checkbox" ng-model="val.value" ng-change="optionToggled($index)" value="<% val.id %>"/> <% val.id %></td>
->>>>>>> d62ffc513e1aaca599896bc82fe3ca15e061fa74
+
                   <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>
@@ -160,7 +158,7 @@
 				<button  ng-click="user_ddata.ownpassword=1;user_ddata.password=genratePassword();" class="btn btn-default">Genrate Password</button>
 				</div>
 				<div class="col-xs-4">
-				<button  ng-click="user_ddata.ownpassword=0;user_ddata.password=''" class="btn btn-default">Own Password</button>
+				<button  ng-click="user_ddata.ownpassword=0;user_ddata.password='';formSubmit=false" class="btn btn-default">Own Password</button>
 				</div>
 				</div>
 				<div style="clear:both"></div>
@@ -195,7 +193,7 @@
 				<div style="clear:both"></div>
 				<div class="form-group">
                   <label for="exampleInputEmail1">Confirm Password</label>
-                  <input type="password" class="form-control" id="" name="repassword" placeholder="Confirem password" ng-model="user_ddata.repassword">
+                  <input type="password" class="form-control" id="" name="repassword" placeholder="Confirm password" ng-model="user_ddata.repassword">
 				<div class="help-block"></div>
                 </div>
 				</div>

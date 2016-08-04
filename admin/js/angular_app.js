@@ -42,7 +42,7 @@ app.directive("passwordStrength", function(){
                         scope.strength = 'weak';
 						scope.strengthClass= 'progress-xxs';
 						scope.barClass='progress-bar progress-bar-danger';
-						scope.formSubmit=false;
+						//scope.formSubmit=false;
                     }
                 }
             });
@@ -864,7 +864,7 @@ app.controller('UserController', function($scope, $http) {
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
-                $scope.success_flash=false;
+                //$scope.success_flash=false;
 		$scope.loading = true;
 		$http.get('user/all').
 		success(function(data, status, headers, config) {
@@ -962,6 +962,24 @@ app.controller('UserController', function($scope, $http) {
 			
 			$scope.success_flash= data[1];
 			//console.log($scope.usersRecord);
+		        $scope.loading = false;
+				$scope.init();
+		});
+   }
+   //bulk delete
+   $scope.bulkDelete = function(userData){
+	   console.log(userData);
+	   $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.post('user/deleteAll',{
+			action:userData,
+			id:$scope.users_id,
+		}).
+		success(function(data, status, headers, config) {
+			$scope.success_flash= data[1];
+			console.log($scope.success_flash);
 		        $scope.loading = false;
 				$scope.init();
 		});
@@ -1236,6 +1254,7 @@ app.controller('UserController', function($scope, $http) {
 					
     }
 	$scope.formSubmit=true;
+	console.log($scope.formSubmit);
 	return pass;
 	//console.log(pass);
 					
