@@ -2400,14 +2400,11 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.sellers = data['sellers'];
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
-<<<<<<< HEAD
 			$scope.datatyps = data['datatyps'];
 			$scope.options = data['options'];
 			//console.log($scope.sellers);
-=======
 			$scope.all_category = data['all_category'];
 			console.log($scope.all_category);
->>>>>>> ae2f9a945728d77d0e3aabd6513b42d375463022
 		        $scope.loading = false;
  
 		});
