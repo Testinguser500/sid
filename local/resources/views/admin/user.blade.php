@@ -650,10 +650,10 @@
                 <h3 class="box-title"><i class="fa fa-plus"></i> Add User</h3>
                 <div class="pull-right"><a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
             </div>
-		  <!------ Add User ---------------->
+<!----------------- Add User -------------------------------------------->
 		  <div class="box-body">
 		  <div class="form-group">
-				<img src="<% user.profile %>">
+				<img class="img-circle" height="80px" width="80px" src="<% user.profile %>">
 				</div>
 			  <div class="form-group">
 			  <h3>User Info</h3>
@@ -725,7 +725,7 @@
 				<div class="row">			  
                 <div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Email(required)</label>
-                  <input type="text" class="form-control" id="" name="email" placeholder="Email" ng-model="user.email">
+                  <input type="text" class="form-control" readonly="readonly" id="" name="email" placeholder="Email" ng-model="user.email">
 		  <div class="help-block"></div>
                 </div>
 				<div class="form-group col-xs-4">
@@ -753,6 +753,7 @@
 			  <div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Biographical Info</label>
                   <textarea type="text" class="form-control" id="" name="bio" placeholder="Biographical Info" ng-model="user.bio"></textarea>
+				  
 		  <div class="help-block"></div>
                 </div>
 				<!--<div class="form-group col-xs-4">
@@ -1039,7 +1040,7 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Country</label>
-                  <select class="form-control" id="" name="ship_country" placeholder="Country" ng-model="user.ship_country" ng-change="getState(user.ship_country);">
+                  <select class="form-control" id="" name="ship_country"  ng-model="user.ship_country" ng-change="getState(user.ship_country,'shipp');">
 				  <option value="">Select Country</option>
 				  <option ng-repeat="con in country" ng-value="con.id"><%con.name%></option>
 				  </select>
@@ -1047,9 +1048,9 @@
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">State</label>
-                  <select class="form-control" id="" name="ship_state" placeholder="Country" ng-model="user.ship_state" ng-change="getCity(user.ship_state);">
+                  <select class="form-control" id="" name="ship_state"  ng-model="user.ship_state" ng-change="getCity(user.ship_state,'shipp');">
 				  <option value="">Select State</option>
-				  <option ng-repeat="st in store_state" ng-value="st.id"><%st.name%></option>
+				  <option ng-repeat="st in shipps_state" ng-value="st.id"><%st.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -1057,7 +1058,7 @@
                   <label for="exampleInputEmail1">City</label>
                   <select class="form-control" id="" name="ship_city" placeholder="Country" ng-model="user.ship_city">
 				  <option value="">Select City</option>
-				  <option ng-repeat="ct in store_city" ng-value="ct.id"><%ct.name%></option>
+				  <option ng-repeat="ct in shipps_city" ng-value="ct.id"><%ct.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>

@@ -1069,6 +1069,7 @@ app.controller('UserController', function($scope, $http) {
 			$scope.user.email = userData.email;
 			$scope.user.role = userData.role;
 			$scope.user.password = userData.password;
+			$scope.user.notify = userData.notify;
 			$scope.loading = false;
 			//console.log($scope.user.username);			
 			$scope.add();
@@ -1100,14 +1101,19 @@ app.controller('UserController', function($scope, $http) {
 		$http.post('country/getState',{
 			store_country:pid
 		}).
-		success(function(data, status, headers, config) {console.log(data);
+		success(function(data, status, headers, config) {//console.log(data);
 		var vari = type + 'state';
-		//console.log(vari)
+		console.log(type);
 		if(type=='user')
 		$scope.user_state = data;
-		elseif(type=='store')
+		else if(type=='store')
 		{
 			$scope.store_state = data;
+		}
+		else if(type=='shipp')
+		{
+			$scope.shipps_state=data;
+			//console.log(type);
 		}
  //console.log($scope.vari);
 		});
@@ -1121,10 +1127,14 @@ app.controller('UserController', function($scope, $http) {
 		success(function(data, status, headers, config) {//console.log(data);
 		if(type=='user')
 		$scope.user_city = data;
-		elseif(type=='store')
+		else if(type=='store')
 		{
 			$scope.store_city = data;
-		}	
+		}
+		else if(type=='shipp')
+		{
+			$scope.shipps_city=data;
+		}		
  
 		});
 		
@@ -1345,7 +1355,7 @@ app.controller('UserController', function($scope, $http) {
  
          });
       };
-	  
+//store user  
 	  $scope.store = function(userData) {console.log($scope.files) ;
            $scope.errors=false;
            $scope.success_flash=false;
@@ -1357,26 +1367,27 @@ app.controller('UserController', function($scope, $http) {
 			fname: userData.fname,
 			lname: userData.lname,
 			username: userData.username,
-			nickname: userData.nickname,
-			display_name: userData.display_name,
+			//nickname: userData.nickname,
+			//display_name: userData.display_name,
 			email: userData.email,
 			gender:userData.gender,
 			mobile: userData.mobile,
+			home_number: userData.home_number,
 			website: userData.website,
 			bio: userData.bio,
-			password: userData.password,
-			confirm_password:userData.repassword,
+			profile_image: $scope.profileImage,
+			password: $scope.user.password,
+			//confirm_password:userData.repassword,
 			nationality: userData.nationality,
 			country: userData.country,
 			address:userData.address,
 			state:userData.state,
 			city:userData.city,
 			id: userData.id,
+			notify:$scope.user.notify,
 			status: userData.status,
-			profile_image: $scope.files,
-			store_name: userData.store_name,
-			store_link: userData.store_link,
-			store_address: userData.store_address,
+			
+			
 			ship_fname: userData.ship_fname,
 			ship_lname: userData.ship_lname,
 			ship_mobile: userData.ship_mobile,
@@ -1385,6 +1396,10 @@ app.controller('UserController', function($scope, $http) {
 			ship_state: userData.ship_state,
 			ship_city: userData.ship_city,
 			banner:$scope.bannerfiles,
+			store_name: userData.store_name,
+			store_link: userData.store_link,
+			logo:$scope.logo,
+			store_address: userData.store_address,
 			store_country:userData.store_country,
 			store_state:userData.store_state,
 			store_city:userData.store_city,
@@ -1398,7 +1413,6 @@ app.controller('UserController', function($scope, $http) {
 			instagram_link:userData.instagram_link,
 			flickr_link:userData.flickr_link,
 			affiliatefees:$scope.inputs,
-			logo:$scope.logo,
 			selling:userData.selling,
 			publishing:userData.publishing,
 			commission:userData.commission,
