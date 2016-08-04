@@ -140,3 +140,4 @@ Route::post('admins/product/store', 'Admin\ProductController@store');
 Route::post('admins/product/delete', 'Admin\ProductController@delete');
 Route::get('admins/product/edit/{id}', 'Admin\ProductController@edit');
 Route::post('admins/product/update', 'Admin\ProductController@update');
+Route::post('admins/product/getoptionvalue', 'Admin\ProductController@getoptionvalue');

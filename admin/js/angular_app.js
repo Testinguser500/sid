@@ -2310,6 +2310,15 @@ app.controller('CountryController', function($scope, $http) {
     $scope.myFunc = function() {
         $scope.showMe = !$scope.showMe;
     }
+    $scope.myFunc1 = function() {
+        $scope.showMe1 = !$scope.showMe1;
+    }
+    $scope.myFunc3 = function() {
+        $scope.showMe3 = !$scope.showMe3;
+    }
+    $scope.changeState=function(param){
+       
+    } 
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2320,7 +2329,15 @@ app.controller('CountryController', function($scope, $http) {
 		        $scope.loading = false;
 		});
 	}
-	
+	$scope.GetSelectedOptions = function(optionid) { alert(optionid);
+	$http.post('product/getoptionvalue',{
+			parent_id: optionid
+		}).
+		success(function(data, status, headers, config) {
+			$scope.optionvalues = data['optionvalues'];
+		        $scope.loading = false;
+		});
+	}
 	$scope.add = function() {	
                 $scope.page='add';		
 		$scope.errors=false;
@@ -2331,6 +2348,8 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.sellers = data['sellers'];
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
+			$scope.datatyps = data['datatyps'];
+			$scope.options = data['options'];
 			//console.log($scope.sellers);
 		        $scope.loading = false;
  

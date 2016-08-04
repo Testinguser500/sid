@@ -3,7 +3,9 @@ use App\User;
 use App\Product;
 use App\ProductImage;
 use App\Category;
-use App\Brand; 
+use App\Brand;
+use App\ProductDataType;
+use App\Option; 
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -29,6 +31,8 @@ class ProductController extends Controller
              $sellers    = DB::table('users')->where('status','=','Active')->where('is_delete','=',0)->where('role','=',5)->get();
 	     $categories = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get();
+	     $datatyps   = DB::table('product_data_type')->get();
+	     $options    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get(); 
 	//     foreach($products as $kk => $vv){
 	//	$images    = DB::table('product_images')->where('product_id','=',$vv->id)->get();	
 	//     }
@@ -37,7 +41,16 @@ class ProductController extends Controller
 	     $return['sellers']    = $sellers;
 	     $return['categories'] = $categories;
 	     $return['brands']     = $brands;
+	     $return['datatyps']   = $datatyps;
+	     $return['options']   = $options;
 	     return $return ;
+	}
+	
+	public function getoptionvalue(){
+	   $pid= Request::input('parent_id');
+	   $optionvalues    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$pid)->where('status', '=','Active')->get();
+	   $return['optionvalues']   = $optionvalues;
+	   return $return;
 	}
 	
        /*******insert the data*****/
