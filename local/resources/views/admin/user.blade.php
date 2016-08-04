@@ -29,13 +29,13 @@
 </ul>
 <div class="bulk row" >
 <div class="col-md-2">
-<select class="form-control" name="">
+<select class="form-control" name="" ng-model="bulk">
 <option value="">Bulk Action</option>
-<option>Delete</option>
+<option value="delete">Delete</option>
 </select>
 </div>
 <div class="col-md-1">
-<button class="btn btn-default">Apply</button></div>
+<button class="btn btn-default" ng-click="bulkDelete(bulk);">Apply</button></div>
 <div class="col-md-4">
 <select class="form-control" name="" ng-model="roless" >
 <option value="">Change Role to ...</option>

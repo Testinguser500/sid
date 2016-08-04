@@ -947,6 +947,24 @@ app.controller('UserController', function($scope, $http) {
 				$scope.init();
 		});
    }
+   //bulk delete
+   $scope.bulkDelete = function(userData){
+	   console.log(userData);
+	   $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		$http.post('user/deleteAll',{
+			action:userData,
+			id:$scope.users_id,
+		}).
+		success(function(data, status, headers, config) {
+			$scope.success_flash= data[1];
+			//console.log($scope.usersRecord);
+		        $scope.loading = false;
+				$scope.init();
+		});
+   }
 	$scope.userlist = function(userData){
 		$scope.page='index';
                 $scope.errors=false;

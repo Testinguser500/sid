@@ -58,6 +58,7 @@ class UserController extends Controller
 	{
 		$user_id = Request::input('id');
 		$role = Request::input('role');
+		print_r($user_id);exit;
 		$array = (array_filter($user_id));
 		DB::table('users')
             ->whereIn('id', $array)
@@ -69,6 +70,7 @@ class UserController extends Controller
 		return $list;
 		
 	}
+	
        public function add(){ 
              
              $user = DB::table('users')->get();  
@@ -213,9 +215,23 @@ class UserController extends Controller
 	    return $list;
 	   
 	}
-        public function delete(Request $request){
+        public function delete(){
 	
 	   $chk_id=Request::input('del_id');	
+           $cat = User::find($chk_id);
+           $cat->is_delete = '1';
+           $cat->save(); 	   		 
+           $list[]='success';
+           $list[]='Record is deleted successfully.';	 
+	   return $list;
+	    
+	}
+	public function deleteAll(){
+	
+	   echo $action = Request::input('action');
+	   $chk_id=Request::input('id');
+	   
+print_r($chk_id);	   
            $cat = User::find($chk_id);
            $cat->is_delete = '1';
            $cat->save(); 	   		 
