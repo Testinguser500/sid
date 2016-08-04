@@ -1089,10 +1089,14 @@ app.controller('UserController', function($scope, $http) {
 			$scope.roles = data['roles'];
 			$scope.loading = false;
  console.log($scope.user_ddata);
- $scope.getState($scope.user_ddata.store_country);
- $scope.getCity($scope.user_ddata.store_state);
- $scope.getState($scope.user_ddata.ship_country);
- $scope.getCity($scope.user_ddata.ship_state);
+ $scope.getState($scope.user_ddata.country,'user');
+ $scope.getCity($scope.user_ddata.state,'user');
+ $scope.getState($scope.user_ddata.store_country,'store');
+ $scope.getCity($scope.user_ddata.store_state,'store');
+ $scope.getState($scope.user_ddata.ship_country,'shipp');
+ $scope.getCity($scope.user_ddata.ship_state,'shipp');
+ $scope.category = data['category'];
+ $scope.inputs = $scope.user_ddata.affiliate;
 		});
 	};
 	
@@ -1177,6 +1181,7 @@ app.controller('UserController', function($scope, $http) {
 			{
 			$scope.logo=data;
 			$scope.user.logo=$scope.logo;
+			$scope.user_ddata.logo=$scope.logo;
 			$scope.loading = false;
 			}
 			});
@@ -1197,7 +1202,11 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.promotion=data;$scope.loading = false;});
+            }).success( function(data, status, headers, config){ 
+			$scope.promotion=data;
+			$scope.user_ddata.promotional_banner=$scope.promotion;
+			$scope.user.promotional_banner=$scope.promotion;
+			$scope.loading = false;});
 
     });
    }
@@ -1222,6 +1231,7 @@ app.controller('UserController', function($scope, $http) {
 			{
 			$scope.bannerfiles=data;
 			$scope.user.banner=$scope.bannerfiles;
+			$scope.user_ddata.banner=$scope.bannerfiles;
 			//console.log($scope.user.banner);
 			$scope.loading = false;
 			}
@@ -1270,13 +1280,22 @@ app.controller('UserController', function($scope, $http) {
 					
    }
 	   $scope.delBanner=function(bannerData)
-	   {
+	   {//console.log(bannerData);
 		   $scope.user.banner=false;
+		   $scope.user_ddata.banner=false;
 		   
 	   }
 	   $scope.removelogo=function()
 	   {
 		   $scope.user.logo=false;
+		   $scope.user_ddata.logo=false;
+		   
+	   }
+	   $scope.removepromotional_banner=function()
+	   {
+		   
+		   $scope.user_ddata.promotional_banner = false;
+		   $scope.user.promotional_banner = false;
 		   
 	   }
         $scope.update = function(user_data) { //console.log($scope.bannerfiles);
@@ -1286,9 +1305,9 @@ app.controller('UserController', function($scope, $http) {
 			role:user_data.role,
 			fname: user_data.fname,
 			lname: user_data.lname,
-			display_name:user_data.display_name,
+			//display_name:user_data.display_name,
 			username: user_data.username,
-			nickname: user_data.nickname,
+			//nickname: user_data.nickname,
 			email: user_data.email,
 			gender:user_data.gender,
 			mobile: user_data.mobile,
@@ -1296,9 +1315,11 @@ app.controller('UserController', function($scope, $http) {
 			website: user_data.website,
 			bio: user_data.bio,
 			password: user_data.pass,
-			confirm_password:user_data.repassword,
+			//confirm_password:user_data.repassword,
 			nationality: user_data.nationality,
 			country: user_data.country,
+			state:user_data.state,
+			city:user_data.city,
 			address:user_data.address,
 			id: user_data.userid,
 			status: user_data.status,
@@ -1329,12 +1350,12 @@ app.controller('UserController', function($scope, $http) {
 			shipp_id:user_data.shipp_id,
 			affiliatefees:$scope.inputs,
 			logo:$scope.logo,
-			selling:userData.selling,
-			publishing:userData.publishing,
-			commission:userData.commission,
-			featured:userData.featured,
-			verified:userData.verified,
-			promotinoal_link:userData.promotinoal_link,
+			selling:user_data.selling,
+			publishing:user_data.publishing,
+			commission:user_data.commission,
+			featured:user_data.featured,
+			verified:user_data.verified,
+			promotinoal_link:user_data.promotinoal_link,
 			promotion:$scope.promotion,
 			
                    

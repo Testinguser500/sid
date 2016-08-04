@@ -12,7 +12,7 @@ class Store extends Model
      * @var array
      */
     protected $fillable = [
-        'name','store_link','banner', 'phone','address','country','state','city','facebook_link','google_link','twitter_link','linkedin_link','youtube_link','instagram_link','flickr_link','status','user_id','selling','publishing','commission','featured','verified','promotinoal_link','promotion_banner','logo'
+        'store_name','store_link','banner', 'phone','store_address','store_country','store_state','store_city','facebook_link','google_link','twitter_link','linkedin_link','youtube_link','instagram_link','flickr_link','status','user_id','selling','publishing','commission','featured','verified','promotinoal_link','promotion_banner','logo'
     ];
 
     /**
