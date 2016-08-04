@@ -619,7 +619,7 @@
 				<div class="row">
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Country</label>
-                  <select class="form-control" id="" name="ship_country" placeholder="Country" ng-model="user_ddata.ship_country" ng-change="getState(user_ddata.ship_country);">
+                  <select class="form-control" id="" name="ship_country" placeholder="Country" ng-model="user_ddata.ship_country" ng-change="getState(user_ddata.ship_country,'shipp');">
 				  <option value="">Select Country</option>
 				  <option ng-repeat="con in country" ng-selected="con.id==user_ddata.ship_country" ng-value="con.id"><%con.name%></option>
 				  </select>
@@ -627,9 +627,9 @@
                 </div>
 				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">State</label>
-                  <select class="form-control" id="" name="ship_state" placeholder="Country" ng-model="user_ddata.ship_state" ng-change="getCity(user_ddata.ship_state);">
+                  <select class="form-control" id="" name="ship_state" placeholder="Country" ng-model="user_ddata.ship_state" ng-change="getCity(user_ddata.ship_state,'shipp');">
 				  <option value="">Select State</option>
-				  <option ng-repeat="st in store_state" ng-selected="st.id==user_ddata.ship_state" ng-value="st.id"><%st.name%></option>
+				  <option ng-repeat="st in shipps_state" ng-selected="st.id==user_ddata.ship_state" ng-value="st.id"><%st.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>
@@ -637,7 +637,7 @@
                   <label for="exampleInputEmail1">City</label>
                   <select class="form-control" id="" name="ship_city" placeholder="Country" ng-model="user_ddata.ship_city">
 				  <option value="">Select City</option>
-				  <option ng-repeat="ct in store_city" ng-selected="ct.id==user_ddata.ship_city" ng-value="ct.id"><%ct.name%></option>
+				  <option ng-repeat="ct in shipps_city" ng-selected="ct.id==user_ddata.ship_city" ng-value="ct.id"><%ct.name%></option>
 				  </select>
 				<div class="help-block"></div>
                 </div>

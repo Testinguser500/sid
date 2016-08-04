@@ -12,7 +12,7 @@ class Shipping extends Model
      * @var array
      */
     protected $fillable = [
-        'fname','lname', 'mobile','address','role','country','state','city','status','user_id'
+        'ship_fname','ship_lname', 'ship_mobile','ship_address','role','ship_country','ship_state','ship_city','ship_status','user_id'
     ];
 
     /**
