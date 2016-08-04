@@ -877,7 +877,7 @@ app.controller('UserController', function($scope, $http) {
  
 		});
 	}
-	$scope.users_id = [{}];
+	$scope.users_id = {};
         //id: null
     
 	$scope.checkAll = function () {
@@ -890,46 +890,65 @@ app.controller('UserController', function($scope, $http) {
         }
 		
         angular.forEach($scope.users, function (item) {
-			//alert(item);
-			//console.log(val);
-            item.value = $scope.selectedAll;
+			//alert(item);			
+           
 			if($scope.selectedAll)
 			{
-			$scope.users_id.push({
-				id:item.id
-			});
+			$scope.users_id[item.id]=true;
+				
 			}
 			else
 			{
-				$scope.users_id=[{
-				id:null
-			}];
+
+				$scope.users_id[item.id]=false;
 			}
         });
-		//console.log($scope.users_id);
+		
 		 
 
     };
-	$scope.selection=[];
-	$scope.toggleSelection = function toggleSelection(employeeName) {
-		alert(employeeName);
-     var idx = $scope.users_id.indexOf(employeeName);
- alert(idx);
-     // is currently selected
-     if (idx > -1) {
-       $scope.selection.splice(idx, 1);
-	   $scope.users_id.push({
-	   id:employeeName});
-     }
- 
-     // is newly selected
-     else {
-       $scope.selection.push(employeeName);
-	   $scope.users_id.splice(employeeName+1, 1);
-     }
-	 console.log($scope.selection);
-	 console.log($scope.users_id);
+	
+	/* $scope.optionToggled = function (ids) {
+		
+                console.log( $scope.users_id[ids] ); 
+//                if($scope.users_id[ids]==true)
+//                {
+//                var use_id=$scope.getObjectKeyIndex($scope.users_id, ids);
+//                $scope.users_id.splice(use_id, 1);
+//               }
+// Returns int(1) (or null if the key doesn't exist)
+
+
+//     var idx = $scope.users_id.indexOf(employeeName);
+// alert(idx);
+//     // is currently selected
+//     if (idx > -1) {
+//       $scope.selection.splice(idx, 1);
+//	   $scope.users_id.push({
+//	   id:employeeName});
+//     }
+// 
+//     // is newly selected
+//     else {
+//       $scope.selection.push(employeeName);
+//	   $scope.users_id.splice(employeeName+1, 1);
+//     }
+//	 console.log($scope.selection);
+//	 console.log($scope.users_id);
    };
+   $scope.getObjectKeyIndex =function(obj, keyToFind) {
+    var i = 0, key;
+
+    for (key in obj) {
+        if (key == keyToFind) {
+            return i;
+        }
+
+        i++;
+    }
+
+    return null;
+} */
    $scope.roleChange = function(roless){
 		$scope.errors=false;
 		$scope.success_flash=false;
