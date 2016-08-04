@@ -34,7 +34,7 @@
 <option>Delete</option>
 </select>
 </div>
-<div class="col-md-2">
+<div class="col-md-1">
 <button class="btn btn-default">Apply</button></div>
 <div class="col-md-4">
 <select class="form-control" name="" ng-model="roless" >
@@ -56,6 +56,7 @@
                   <th>User Name</th>
                   <th>Email</th>
 				  <th>Role</th>
+				  <th>Post</th>
 				  <th>Status</th>
                   <th> </th>                 
                 </tr>
@@ -63,11 +64,18 @@
                 <tbody>
                 
                 <tr ng-repeat="val in users">
+<<<<<<< HEAD
                   <td><input type="checkbox" ng-model="users_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/><% val.id %></td>
+=======
+                  <td><input type="checkbox" ng-model="val.value" ng-change="optionToggled($index)" value="<% val.id %>"/> <% val.id %></td>
+>>>>>>> d62ffc513e1aaca599896bc82fe3ca15e061fa74
                   <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
 				  <td><% val.role_name %></td>
-				  <td><a href="javascript:void(0);" ng-click="changeStatus(val);"><span class="label <% (val.status=='Active')?'label-success':'label-danger'%>"><% val.status %></a></td>
+				  <td>0</td>
+				  <td><a href="javascript:void(0);" ng-click="changeStatus(val);"><span class="label <% (val.status=='Active')?'label-success':'label-danger'%>">
+				  <% val.status %></a>
+				  </td>
                   <td><i ng-click="edituser(val)" class="fa fa-edit" style="cursor:pointer"></i> <i class="fa fa-trash" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
                  
                   <!-- Modal -->

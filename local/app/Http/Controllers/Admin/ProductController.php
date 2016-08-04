@@ -28,16 +28,27 @@ class ProductController extends Controller
 	     $products   = DB::table('product')->select('categorys.category_name as category_name', 'product.*')->join('categorys', 'product.pro_category_id', '=', 'categorys.id')->where('product.is_delete','=','0')->get();
              $sellers    = DB::table('users')->where('status','=','Active')->where('is_delete','=',0)->where('role','=',5)->get();
 	     $categories = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
+<<<<<<< HEAD
 	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get(); 
+		 $all_category = self::getcataegorywithSub();
+=======
+	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get();
+	//     foreach($products as $kk => $vv){
+	//	$images    = DB::table('product_images')->where('product_id','=',$vv->id)->get();	
+	//     }
+	     //$return['images']     = $images;
+>>>>>>> e39b3faf4d7766392d53be855a7a52b9c06d9d37
 	     $return['products']   = $products;
 	     $return['sellers']    = $sellers;
 	     $return['categories'] = $categories;
 	     $return['brands']     = $brands;
+		 $return['all_category'] = $all_category;
 	     return $return ;
 	}
 	
        /*******insert the data*****/
         public function store(){
+	    $catids= array();
 	    $regex = "/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/";
 	   $validator = Validator::make(Request::all(), [
             'pro_name' => 'required',
@@ -76,13 +87,16 @@ class ProductController extends Controller
 	      $list[]=$msg;
 	      return $list;
         }
-	       
+	$proids = null;
+	$catids= Request::input('pro_category_id');
+	$newproids = implode(",", array_keys($catids));
+	 
 	 Product::create(['pro_name' =>Request::input('pro_name'),
 			 'pro_des' =>Request::input('pro_des'),
 			 'pro_short_des' =>Request::input('pro_short_des'),
 			 'pro_feature_des' =>Request::input('pro_feature_des'),
 			 'seller_id' =>Request::input('seller_id'),
-			 'pro_category_id' =>Request::input('pro_category_id'),
+			 'pro_category_id' =>$newproids,
 			 'brand_id' =>Request::input('brand_id'),
 			 'product_tags' =>Request::input('product_tags'),
 			 'price' =>Request::input('price'),
@@ -183,7 +197,29 @@ class ProductController extends Controller
         $list[]='Record is updated successfully.';	 
 	return $list;
 	 }
-       
+    
+	public function getcataegorywithSub($pid=0)
+	{
+		$categories = array();
+		$result = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$pid)->get();
+		foreach((array)$result as $key=>$mainCategory)
+		{
+			$category = array();
+			 $category['id'] = $mainCategory->id;
+			$category['name'] = $mainCategory->category_name;
+			$category['parent_id'] = $mainCategory->parent_id;
+			$category['sub_categories'] = self::getcataegorywithSub($category['id']);
+			$categories[$mainCategory->id] = $category;
+			//$sub = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$val->id)->get();
+			//$val->sub = $sub;
+			//$result[$key]=$val;
+			
+			//$result[$key]->sub = self::getcataegorywithSub($val->id);
+			
+		}
+		
+		return $categories;
+	}
  }
  
 ?>
