@@ -17,8 +17,11 @@ use File;
 class HomeController extends Controller
 {
 	public function index(){   
-             $this->middleware('guest');
-             return view('admin/login');
+             if (!Auth::check()) { 
+                 return view('admin/login');
+             }else{
+                 return redirect('admins/home'); 
+             }
 		  
 	}
         public function dashboard(){            
@@ -26,10 +29,21 @@ class HomeController extends Controller
 		
 	}
 	public function home(){ 
-           
+           if ((Auth::check()) && (Auth::user()->role==1) ) { 
              return view('admin/home')->with('title','Admin')->with('subtitle','Control Panel');
+           }else if((Auth::check()) && (Auth::user()->role!=1)){
+                
+             return redirect('admins/not_access');
+           }
+           else{
+               return redirect('admins/login');
+           }
 		
 	}
+        public function not_access()
+        {
+            return view('admin/not_access')->with('title','Sorry')->with('subtitle','Not access');
+        }
 	public function log_user(){
            // echo Request::input('done');
 			$validator = Validator::make(Request::all(), [          
@@ -46,7 +60,7 @@ class HomeController extends Controller
 				 
 			 
 		  }else{   
-                    if (Auth::attempt(['email' => Request::input('email'), 'password' => Request::input('password'),  'role' =>1])) {
+                    if (Auth::attempt(['email' => Request::input('email'), 'password' => Request::input('password'),'role'=>1])) {
                         // Authentication passed...
                        if (Session::has('redirect_url'))
                        {

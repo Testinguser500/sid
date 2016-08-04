@@ -33,6 +33,7 @@ Route::get('admins/dashboard', 'Admin\HomeController@dashboard');
 Route::get('admins/home', 'Admin\HomeController@home');
 Route::post('admins/imageupload', 'Admin\HomeController@imageupload');
 Route::post('admins/Allimageupload', 'Admin\HomeController@Allimageupload');
+Route::get('admins/not_access', 'Admin\HomeController@not_access');
 
 Route::get('admins/category', 'Admin\CategoryController@index');
 Route::get('admins/category/all', 'Admin\CategoryController@all');
@@ -44,7 +45,6 @@ Route::get('admins/category/getcataegorywithSub', 'Admin\CategoryController@getc
 
 Route::get('admins/brand', 'Admin\BrandController@index');
 Route::get('admins/brand/all', 'Admin\BrandController@all');
-Route::get('admins/brand/add', 'Admin\BrandController@add');
 Route::post('admins/brand/store', 'Admin\BrandController@store');
 Route::post('admins/brand/delete', 'Admin\BrandController@delete');
 Route::get('admins/brand/edit/{id}', 'Admin\BrandController@edit');
