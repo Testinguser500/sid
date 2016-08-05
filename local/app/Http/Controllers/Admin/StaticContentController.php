@@ -42,8 +42,12 @@ class StaticContentController extends Controller
  public function update(){
 	
 	  $validator = Validator::make(Request::all(), [
-            'title' => 'required',	    
-            'description'=>'required',        
+		'title' => 'required',	    
+		'description'=>'required',
+		'meta_title'=>'required',
+		'meta_title'=>'required',
+		'meta_description'=>'required',
+		'meta_keyword'=>'required',
             
         ]);
          
@@ -66,8 +70,9 @@ class StaticContentController extends Controller
 	 $cat->image = $fileName;
          }
 	 $cat->short_description =Request::input('short_description');
-         $cat->description =Request::input('description');
-	 
+         $cat->meta_title =Request::input('meta_title');
+	 $cat->meta_description =Request::input('meta_description');
+	 $cat->meta_keyword =Request::input('meta_keyword');
          $cat->save(); 
 		  
 		$list[]='success';

@@ -283,9 +283,11 @@ class UserController extends Controller
 		if($data->role=='5')
 		{
 		$user = DB::table('store')->select('*','id as store_id')->where('user_id', '=',$id)->first();
-		
+		if($user)
+		{
 		$afiliate = DB::table('affiliate')->select('*','id as affiliate_id')->where('store_id','=',$user->store_id)->get();
 		$user->affiliate = $afiliate;
+		}
 		}
 		elseif($data->role=='3')
 		{
@@ -378,12 +380,13 @@ class UserController extends Controller
 		 if(Request::input('role')==3)
 		 {
 			$shipp = Shipping::find(Request::input('shipp_id'));
-			$shipp->name=Request::input('ship_name');
-			$shipp->mobile=Request::input('ship_mobile');
-			$shipp->address=Request::input('ship_address');
+			$shipp->ship_fname=Request::input('ship_fname');
+			$shipp->ship_lname=Request::input('ship_lname');
+			$shipp->ship_mobile=Request::input('ship_mobile');
+			$shipp->ship_address=Request::input('ship_address');
 			$shipp->ship_country=Request::input('ship_country');
-			$shipp->state=Request::input('ship_state');
-			$shipp->city=Request::input('ship_city');
+			$shipp->ship_state=Request::input('ship_state');
+			$shipp->ship_city=Request::input('ship_city');
 			$shipp->save();
 			
 		 }

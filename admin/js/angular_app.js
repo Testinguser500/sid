@@ -1300,7 +1300,9 @@ app.controller('UserController', function($scope, $http) {
 	   }
         $scope.update = function(user_data) { //console.log($scope.bannerfiles);
             $scope.errors=false;
+			$scope.loading=true;
             $scope.success_flash=false;
+			getProfileImage(user_data);
            $http.post('user/update', {
 			role:user_data.role,
 			fname: user_data.fname,
@@ -1327,7 +1329,8 @@ app.controller('UserController', function($scope, $http) {
 			store_name: user_data.store_name,
 			store_link: user_data.store_link,
 			store_address: user_data.store_address,
-			ship_name: user_data.ship_name,
+			ship_fname: user_data.ship_fname,
+			ship_lname: user_data.ship_lname,
 			ship_mobile: user_data.ship_mobile,
 			ship_address: user_data.ship_address,
 			ship_country: user_data.ship_country,
@@ -1567,7 +1570,11 @@ app.controller('StaticContentController', function($scope, $http) {
 			title: contents.title,
 			short_description: contents.short_description,
 			description:contents.description,
-			image: $scope.files,id: contents.id
+			image: $scope.files,
+			id: contents.id,
+			meta_title:contents.meta_title,
+			meta_description:contents.meta_description,
+			meta_keyword:contents.meta_keyword,
                    
 		}).success(function(data, status, headers, config) {
 			
@@ -2378,7 +2385,9 @@ app.controller('CountryController', function($scope, $http) {
       return $scope.tab === tabNum;
     };
     
-    $scope.showMe = false;
+    $scope.showMe = true;
+    $scope.showMe1 = true;
+    $scope.showMe3 = true;
     $scope.myFunc = function() {
         $scope.showMe = !$scope.showMe;
     }
@@ -2393,7 +2402,8 @@ app.controller('CountryController', function($scope, $http) {
     }
     $scope.changeState=function(param){
        
-    } 
+    }
+
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2404,7 +2414,7 @@ app.controller('CountryController', function($scope, $http) {
 		        $scope.loading = false;
 		});
 	}
-	$scope.GetSelectedOptions = function(optionid) { alert(optionid);
+	$scope.GetSelectedOptions = function(optionid) { console.log($scope.optionvalues);
 	$http.post('product/getoptionvalue',{
 			parent_id: optionid
 		}).
@@ -2413,6 +2423,7 @@ app.controller('CountryController', function($scope, $http) {
 		        $scope.loading = false;
 		});
 	}
+	
 	$scope.add = function() {	
                 $scope.page='add';		
 		$scope.errors=false;
@@ -2427,7 +2438,12 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.options = data['options'];
 			
 			$scope.all_category = data['all_category'];
+<<<<<<< HEAD
 			
+=======
+			console.log($scope.all_category);
+			console.log($scope.categories);
+>>>>>>> a56d84285ad5e453e7572b5bbee31e63ec2a9af3
 		        $scope.loading = false;
  
 		});
@@ -2533,6 +2549,17 @@ app.controller('CountryController', function($scope, $http) {
 			product_tags: product.product_tags,
 			price: product.price,
 			no_stock: product.no_stock,
+			sale_price: product.sale_price,
+			pro_opt_name_id: product.pro_opt_name_id,
+			pro_opt_values_id: product.pro_opt_values_id,
+			sku: product.sku,
+			date_from: product.date_from,
+			date_to: product.date_to,
+			video: product.video,
+			weight: product.weight,
+			length: product.length,
+			width: product.width,
+			height: product.height,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,

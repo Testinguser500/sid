@@ -71,7 +71,11 @@ class ProductController extends Controller
 	    'brand_id' => 'required',
 	    'product_tags' => 'required',
 	    'price' => ['required','regex:'.$regex],
+	    'sale_price' => ['required','regex:'.$regex],
 	    'no_stock' => 'required|integer|min:0',
+	    'length' => 'required_with:width,height|check_demension_value',
+	    'width' => 'required_with:length,height|check_demension_value',
+	    'height' => 'required_with:length,width|check_demension_value',
 	    'meta_title' => 'required',
 	    'meta_description' => 'required',
 	    'meta_keywords' => 'required'                    
@@ -86,6 +90,7 @@ class ProductController extends Controller
 			'brand_id' => 'Brand',
 			'product_tags' => 'Product Tags',
 			'price' => 'Price',
+			'sale_price' => 'Sale Price',
 			'no_stock' => 'No. of Stock',
 			'meta_title' => 'Meta Title',
 			'meta_description' => 'Meta Description',
@@ -98,10 +103,11 @@ class ProductController extends Controller
 	      $list[]=$msg;
 	      return $list;
         }
-	$proids = null;
 	$catids= Request::input('pro_category_id');
 	$newproids = implode(",", array_keys($catids));
-	 
+        $ovids= Request::input('pro_opt_values_id');
+	$newovids = implode(",", $ovids);
+	
 	 Product::create(['pro_name' =>Request::input('pro_name'),
 			 'pro_des' =>Request::input('pro_des'),
 			 'pro_short_des' =>Request::input('pro_short_des'),
@@ -111,7 +117,18 @@ class ProductController extends Controller
 			 'brand_id' =>Request::input('brand_id'),
 			 'product_tags' =>Request::input('product_tags'),
 			 'price' =>Request::input('price'),
+			 'sale_price' =>Request::input('sale_price'),
 			 'no_stock' =>Request::input('no_stock'),
+			 'pro_opt_name_id'=>Request::input('pro_opt_name_id'),
+			 'pro_opt_values_id'=>$newovids,
+			 'sku'=>Request::input('sku'),
+			 'date_from'=>Request::input('date_from'),
+			 'date_to'=>Request::input('date_to'),
+			 'video'=>Request::input('video'),
+			 'weight'=>Request::input('weight'),
+			 'length'=>Request::input('length'),
+			 'width'=>Request::input('width'),
+			 'height'=>Request::input('height'),
 			 'meta_title' =>Request::input('meta_title'),
 			 'meta_description' =>Request::input('meta_description'),
 			 'meta_keywords' =>Request::input('meta_keywords'),
@@ -219,7 +236,7 @@ class ProductController extends Controller
 			 $category['id'] = $mainCategory->id;
 			$category['name'] = $mainCategory->category_name;
 			$category['parent_id'] = $mainCategory->parent_id;
-			$category['sub_categories'] = self::getcataegorywithSub($category['id']);
+			$mainCategory->all_category = self::getcataegorywithSub($category['id']);
 			$categories[$mainCategory->id] = $category;
 			//$sub = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$val->id)->get();
 			//$val->sub = $sub;
@@ -229,7 +246,7 @@ class ProductController extends Controller
 			
 		}
 		
-		return $categories;
+		return $result;
 	}
  }
  

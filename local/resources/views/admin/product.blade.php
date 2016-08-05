@@ -141,11 +141,11 @@
 		      <input type="text" class="form-control" id="" name="product_tags" placeholder="Product Tags" ng-model="product.product_tags">
 		      <div class="help-block"></div>
 		    </div>
-		    <div class="form-group">
+		    <!--<div class="form-group">
 		      <label for="exampleInputEmail1">Price</label>
 		      <input type="text" class="form-control" id="" name="price" placeholder="Price" ng-model="product.price">
 		      <div class="help-block"></div>
-		    </div>
+		    </div>-->
 		    <div class="form-group">
 		      <label for="exampleInputEmail1">No. of Stocks</label>
 		      <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
@@ -214,32 +214,55 @@
 				   <div class="second-box" ng-if="product.pro_datatype_id == '2'">
 					<ul class="nav nav-pills nav-stacked">
 					<li ng-class="{ active: isSet(2) }">
-					<a href ng-click="setTab(2)">Inventory</a>
+					<a href ng-click="setTab(2)"><i class="fa fa-line-chart" aria-hidden="true"></i>Inventory</a>
 					</li>
 				       <li ng-class="{ active: isSet(4) }">
-					<a href ng-click="setTab(4)">Linked Products</a>
+					<a href ng-click="setTab(4)"><i class="fa fa-link" aria-hidden="true"></i>Linked Products</a>
 					</li>
 					<li ng-class="{ active: isSet(5) }">
-					<a href ng-click="setTab(5)">Attributes</a>
+					<a href ng-click="setTab(5)"><i class="fa fa-minus-square-o" aria-hidden="true"></i>Attributes</a>
 					</li>
 					<li ng-class="{ active: isSet(6) }">
-					<a href ng-click="setTab(6)">Advanced</a>
-					</li>
-					<li ng-class="{ active: isSet(7) }">
-					<a href ng-click="setTab(7)">Tabs</a>
+					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
 					</li>
 					</ul>
 				   </div>
 				   <div class="third-box" ng-if="product.pro_datatype_id == '3'">
 					<ul class="nav nav-pills nav-stacked">
 					<li ng-class="{ active: isSet(1) }">
-					<a href ng-click="setTab(1)">General3</a>
+					<a href ng-click="setTab(1)"><i class="fa fa-bars" aria-hidden="true"></i>General</a>
+					</li>
+					<li ng-class="{ active: isSet(4) }">
+					<a href ng-click="setTab(4)"><i class="fa fa-link" aria-hidden="true"></i>Linked Products</a>
+					</li>
+					<li ng-class="{ active: isSet(5) }">
+					<a href ng-click="setTab(5)"><i class="fa fa-minus-square-o" aria-hidden="true"></i>Attributes</a>
+					</li>
+					<li ng-class="{ active: isSet(6) }">
+					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
+					</li>
+					</ul>
+				   </div>
+				   
+				   <div class="third-box" ng-if="product.pro_datatype_id == '4'">
+					<ul class="nav nav-pills nav-stacked">
+					<li ng-class="{ active: isSet(1) }">
+					<a href ng-click="setTab(1)"><i class="fa fa-bars" aria-hidden="true"></i>General</a>
 					</li>
 					<li ng-class="{ active: isSet(2) }">
-					<a href ng-click="setTab(2)">Inventory3</a>
+					<a href ng-click="setTab(2)"><i class="fa fa-line-chart" aria-hidden="true"></i>Inventory</a>
 					</li>
 					<li ng-class="{ active: isSet(3) }">
-					<a href ng-click="setTab(3)">Shipping3</a>
+					<a href ng-click="setTab(3)"><i class="fa fa-bus" aria-hidden="true"></i>Shipping</a>
+					</li>
+					<li ng-class="{ active: isSet(4) }">
+					<a href ng-click="setTab(4)"><i class="fa fa-link" aria-hidden="true"></i>Linked Products</a>
+					</li>
+					<li ng-class="{ active: isSet(5) }">
+					<a href ng-click="setTab(5)"><i class="fa fa-minus-square-o" aria-hidden="true"></i>Attributes</a>
+					</li>
+					<li ng-class="{ active: isSet(6) }">
+					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
 					</li>
 					</ul>
 				   </div>
@@ -249,27 +272,28 @@
 					 <div ng-show="isSet(1)">
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">SKU</label>
-					     <input type="text" placeholder="" value="" id="sku" name="sku">
+					     <input type="text" placeholder="" class="form-control" value="" id="sku" name="sku" ng-model="product.sku">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Regular Price (Rs.)</label>
-					     <input type="text" placeholder="" value="" id="regular_price" name="regular_price">
+					     <!--<input type="text" placeholder="" value="" id="regular_price" name="regular_price">-->
+					     <input type="text" class="form-control" id="" name="price" placeholder="Price" ng-model="product.price">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price (Rs.)</label>
-					     <input type="text" placeholder="" value="" id="sale_price" name="sale_price">
+					     <input type="text" placeholder="" class="form-control" value="" id="sale_price" name="sale_price" ng-model="product.sale_price">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates From</label>
-					     <input type="date" placeholder="YYYY-MM-DD" id="sale_price_dates_from" name="sale_price_dates_from">
+					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from" ng-model="product.date_from">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates To</label>
-					     <input type="date" placeholder="YYYY-MM-DD" id="sale_price_dates_to" name="sale_price_dates_to">
+					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Youtube Link</label>
-					     <textarea cols="20" rows="2" placeholder="Youtube Link for multiple enter in new line" id="video" name="video"></textarea>
+					     <textarea cols="20" rows="2" class="form-control" placeholder="Youtube Link for multiple enter in new line" id="video" name="video" ng-model="product.video"></textarea>
 					     </div>
 					 </div>
 					 <div ng-show="isSet(2)">
@@ -279,7 +303,7 @@
 					     </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Stock status</label>
-					     <select>
+					     <select class="form-control">
 						  <option value="in_stock">In stock</option>
 						  <option value="out_stock">Out stock</option>
 					     </select>
@@ -292,17 +316,17 @@
 					 <div ng-show="isSet(3)">
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Weight(kg)</label>
-					     <input type="text" placeholder="0" name="weight">
+					     <input type="text" class="form-control" placeholder="0" name="weight" ng-model="product.weight">
 					     </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Dimensions (cm)</label>
-					     <input type="text" placeholder="Length" name="length">
-					     <input type="text" placeholder="Width" name="width">
-					     <input type="text" placeholder="Height" name="height">
+					     <input type="text" placeholder="Length" name="length" class="form-control" ng-model="product.length">
+					     <input type="text" placeholder="Width" name="width" class="form-control" ng-model="product.width">
+					     <input type="text" placeholder="Height" name="height" class="form-control" ng-model="product.height">
 					     </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Shipping class</label>
-					     <select>
+					     <select class="form-control">
 						  <option value="no_shipping">No shipping class</option>
 					     </select>
 					     </div>
@@ -313,29 +337,25 @@
 					 </div>
 					 <div ng-show="isSet(5)">
 					 <div class="form-group">
-					     <select name="pro_opt_name_id" ng-model="product.pro_opt_name_id" ng-change="GetSelectedOptions(product.pro_opt_name_id)">
+					     <label for="exampleInputEmail1">Custom Product option</label>
+					     <select class="form-control" name="pro_opt_name_id" ng-model="product.pro_opt_name_id"  ng-change="GetSelectedOptions(product.pro_opt_name_id)">
 						<option ng-repeat="opnam in options" ng-value="opnam.id" ng-selected="opnam.id==product.pro_opt_name_id" value="<%opnam.id%>"><% opnam.option_name %></option>
 					     </select>   
 					  </div>
 					 <div class="form-group">
-					 <select name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
+					 <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
 						<option ng-repeat="opv in optionvalues" ng-value="opv.id" ng-selected="opv.id==product.pro_opt_values_id" value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
-					     <!--<select multiple>
-						  <option value=""></option>
-						  <option value="">1MB</option>
-						  <option value="">3GB</option>
-					     </select>-->
 					  </div>
 					 </div>
 					 <div ng-show="isSet(6)">
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Purchase Note</label>
-					     <textarea cols="20" rows="2" placeholder="" id="" name=""></textarea>
+					     <textarea cols="20" rows="2" placeholder="" id="" name="" class="form-control"></textarea>
 					  </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Menu Order</label>
-					     <input type="number" step="1" placeholder="" value="0" id="menu_order" name="menu_order" style="" class="short">
+					     <input type="number" class="form-control" step="1" placeholder="" value="0" id="menu_order" name="menu_order" style="" class="short">
 					 </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Enable reviews</label>
@@ -350,6 +370,18 @@
 	       </div>
 	       <div class="col-xs-3">
 			 <div class="row">
+			 <div>
+			 <!--<script type="text/ng-template" id="categoryTree">
+        <% category.name %>
+        <ul ng-if="category.all_category">
+            <li ng-repeat="category in category.all_category" ng-include="'categoryTree'">           
+            </li>
+        </ul>
+    </script>
+    <ul>
+        <li ng-repeat="category in all_category" ng-include="'categoryTree'"></li>
+    </ul> -->
+			 </div>
 			   <div class="col-xs-12">
 			      <div class="main-form-chk">
 			      <label for="exampleInputEmail1">Product Categories</label>
@@ -357,9 +389,19 @@
 			      <div class="form-chk" ng-show="showMe">
 			      <input type="text" placeholder="Filter Categories" ng-model="test"><br>
 			      <div class="frm-cat">
-			      <span ng-repeat="cat1 in categories | filter : test">
+				  <script type="text/ng-template" id="categoryTree">
+        <input type="checkbox" ng-model="catetory.id" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
+        <ul ng-if="category.all_category">
+            <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
+            </li>
+        </ul>
+    </script>
+    <ul class="ul-cat">
+        <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree'"></li>
+    </ul> 
+			      <!--<span ng-repeat="cat1 in categories | filter : test">
 				   <input type="checkbox" ng-model="product.pro_category_id[cat1.id]" name="pro_category_id[]" > <%cat1.category_name%><br>
-			       </span>
+			       </span>-->
 			      </div>
 			      </div>
 			      </div>
