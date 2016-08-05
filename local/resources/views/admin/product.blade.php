@@ -214,16 +214,16 @@
 				   <div class="second-box" ng-if="product.pro_datatype_id == '2'">
 					<ul class="nav nav-pills nav-stacked">
 					<li ng-class="{ active: isSet(2) }">
-					<a href ng-click="setTab(2)">Inventory</a>
+					<a href ng-click="setTab(2)"><i class="fa fa-line-chart" aria-hidden="true"></i>Inventory</a>
 					</li>
 				       <li ng-class="{ active: isSet(4) }">
-					<a href ng-click="setTab(4)">Linked Products</a>
+					<a href ng-click="setTab(4)"><i class="fa fa-link" aria-hidden="true"></i>Linked Products</a>
 					</li>
 					<li ng-class="{ active: isSet(5) }">
-					<a href ng-click="setTab(5)">Attributes</a>
+					<a href ng-click="setTab(5)"><i class="fa fa-minus-square-o" aria-hidden="true"></i>Attributes</a>
 					</li>
 					<li ng-class="{ active: isSet(6) }">
-					<a href ng-click="setTab(6)">Advanced</a>
+					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
 					</li>
 					</ul>
 				   </div>
