@@ -390,7 +390,7 @@
 			      <input type="text" placeholder="Filter Categories" ng-model="test"><br>
 			      <div class="frm-cat">
 				  <script type="text/ng-template" id="categoryTree">
-        <input type="checkbox" ng-model="catetory.id" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
+        <input type="checkbox" ng-model="category.id" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
         <ul ng-if="category.all_category">
             <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
             </li>
