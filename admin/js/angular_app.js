@@ -2438,12 +2438,10 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.options = data['options'];
 			
 			$scope.all_category = data['all_category'];
-<<<<<<< HEAD
-			
-=======
+
 			console.log($scope.all_category);
 			console.log($scope.categories);
->>>>>>> a56d84285ad5e453e7572b5bbee31e63ec2a9af3
+
 		        $scope.loading = false;
  
 		});

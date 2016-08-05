@@ -145,13 +145,8 @@ Route::post('admins/product/store', 'Admin\ProductController@store');
 Route::post('admins/product/delete', 'Admin\ProductController@delete');
 Route::get('admins/product/edit/{id}', 'Admin\ProductController@edit');
 Route::post('admins/product/update', 'Admin\ProductController@update');
-<<<<<<< HEAD
-
 Route::post('admins/product/getoptionvalue', 'Admin\ProductController@getoptionvalue');
 
-=======
-Route::post('admins/product/getoptionvalue', 'Admin\ProductController@getoptionvalue');
->>>>>>> a56d84285ad5e453e7572b5bbee31e63ec2a9af3
 
 //Seller Panel
 Route::get('seller/login', 'Seller\HomeController@index');
@@ -162,7 +157,4 @@ Route::get('seller/home', 'Seller\HomeController@home');
 Route::post('seller/imageupload', 'Seller\HomeController@imageupload');
 Route::post('seller/Allimageupload', 'Seller\HomeController@Allimageupload');
 Route::get('seller/not_access', 'Seller\HomeController@not_access');
-<<<<<<< HEAD
 
-=======
->>>>>>> a56d84285ad5e453e7572b5bbee31e63ec2a9af3
