@@ -35,6 +35,7 @@ Route::get('admins/dashboard', 'Admin\HomeController@dashboard');
 Route::get('admins/home', 'Admin\HomeController@home');
 Route::post('admins/imageupload', 'Admin\HomeController@imageupload');
 Route::post('admins/Allimageupload', 'Admin\HomeController@Allimageupload');
+Route::post('admins/imagemutipleupload', 'Admin\HomeController@imagemutipleupload');
 Route::get('admins/not_access', 'Admin\HomeController@not_access');
 
 Route::get('admins/category', 'Admin\CategoryController@index');
@@ -155,9 +156,12 @@ Route::get('seller/home', 'Seller\HomeController@home');
 Route::post('seller/imageupload', 'Seller\HomeController@imageupload');
 Route::post('seller/Allimageupload', 'Seller\HomeController@Allimageupload');
 Route::get('seller/not_access', 'Seller\HomeController@not_access');
+<<<<<<< HEAD
 Route::get('seller/setting', 'Seller\SettingController@index');
 Route::get('seller/setting/all', 'Seller\SettingController@all');
 Route::post('seller/country/getState', 'Admin\CountryController@getState');
 Route::post('seller/country/getCity', 'Admin\CountryController@getCity');
 Route::post('seller/setting/update', 'Seller\SettingController@update');
+=======
+>>>>>>> 402ffca7a9ba9abbe2b7ed7102de2af943740581
 
