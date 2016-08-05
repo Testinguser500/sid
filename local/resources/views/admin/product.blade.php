@@ -350,6 +350,18 @@
 	       </div>
 	       <div class="col-xs-3">
 			 <div class="row">
+			 <div>
+			 <!--<script type="text/ng-template" id="categoryTree">
+        <% category.name %>
+        <ul ng-if="category.all_category">
+            <li ng-repeat="category in category.all_category" ng-include="'categoryTree'">           
+            </li>
+        </ul>
+    </script>
+    <ul>
+        <li ng-repeat="category in all_category" ng-include="'categoryTree'"></li>
+    </ul> -->
+			 </div>
 			   <div class="col-xs-12">
 			      <div class="main-form-chk">
 			      <label for="exampleInputEmail1">Product Categories</label>
@@ -357,9 +369,19 @@
 			      <div class="form-chk" ng-show="showMe">
 			      <input type="text" placeholder="Filter Categories" ng-model="test"><br>
 			      <div class="frm-cat">
-			      <span ng-repeat="cat1 in categories | filter : test">
+				  <script type="text/ng-template" id="categoryTree">
+        <input type="checkbox" ng-model="catetory.id" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
+        <ul ng-if="category.all_category">
+            <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
+            </li>
+        </ul>
+    </script>
+    <ul class="ul-cat">
+        <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree'"></li>
+    </ul> 
+			      <!--<span ng-repeat="cat1 in categories | filter : test">
 				   <input type="checkbox" ng-model="product.pro_category_id[cat1.id]" name="pro_category_id[]" > <%cat1.category_name%><br>
-			       </span>
+			       </span>-->
 			      </div>
 			      </div>
 			      </div>

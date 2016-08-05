@@ -219,7 +219,7 @@ class ProductController extends Controller
 			 $category['id'] = $mainCategory->id;
 			$category['name'] = $mainCategory->category_name;
 			$category['parent_id'] = $mainCategory->parent_id;
-			$category['sub_categories'] = self::getcataegorywithSub($category['id']);
+			$mainCategory->all_category = self::getcataegorywithSub($category['id']);
 			$categories[$mainCategory->id] = $category;
 			//$sub = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$val->id)->get();
 			//$val->sub = $sub;
@@ -229,7 +229,7 @@ class ProductController extends Controller
 			
 		}
 		
-		return $categories;
+		return $result;
 	}
  }
  

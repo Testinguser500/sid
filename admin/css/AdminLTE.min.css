@@ -65,3 +65,14 @@
 .subsubsub li {
     display: inline;
 }
+.ul-cat {
+    margin-right: 0;
+    padding-left: 10px;
+}
+.cat-tree {
+    display: table;
+    list-style: outside none none;
+}
+.ul-cat ul {
+    padding: 0 0 0 16px;
+}

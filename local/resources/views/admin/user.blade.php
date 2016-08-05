@@ -52,7 +52,8 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#<input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
+                  <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
+				  <th>#</th>
                   <th>User Name</th>
                   <th>Email</th>
 				  <th>Role</th>
@@ -65,7 +66,8 @@
                 
                 <tr ng-repeat="val in users">
 
-                  <td><input type="checkbox" ng-model="users_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/><% val.id %></td>
+                  <td><input type="checkbox" ng-model="users_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/></td>
+				  <td><%$index+1%></td>
 
                   <td><% val.fname %> <% val.lname %></td>
                   <td><% val.email %></td>
