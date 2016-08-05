@@ -2373,7 +2373,8 @@ app.controller('CountryController', function($scope, $http) {
      $scope.products=false;
      $scope.page='index';
      $scope.product={};
-     $scope.pr_imgs = []; 
+     $scope.pr_imgs = [];
+     $scope.product.pro_category_id={};
      $scope.success_flash=false;
      $scope.tab = 1;
     $scope.showMeimg=true;
