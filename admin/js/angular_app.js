@@ -1202,11 +1202,18 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ 
+            }).success( function(data, status, headers, config){
+		if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
 			$scope.promotion=data;
 			$scope.user_ddata.promotional_banner=$scope.promotion;
 			$scope.user.promotional_banner=$scope.promotion;
-			$scope.loading = false;});
+			$scope.loading = false;
+			}
+				});
 
     });
    }
@@ -2438,12 +2445,7 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.options = data['options'];
 			
 			$scope.all_category = data['all_category'];
-<<<<<<< HEAD
-			
-=======
-			console.log($scope.all_category);
-			console.log($scope.categories);
->>>>>>> a56d84285ad5e453e7572b5bbee31e63ec2a9af3
+
 		        $scope.loading = false;
  
 		});

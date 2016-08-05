@@ -13,7 +13,7 @@
         <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> Store Setting</h3>
-              <div class="pull-right"> <a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
+              
             </div>
             <div class="box-body">
             <div class=" banner">

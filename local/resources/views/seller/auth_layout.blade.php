@@ -43,7 +43,7 @@
         </div>
     
      @if(Session::has('flash_message'))
-         <div class="alert alert-success">
+         <div class="alert alert-success" ng-hide="errors">
             <p >
 		   {{ Session::get('flash_message') }}
             </p>
