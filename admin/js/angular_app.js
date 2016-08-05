@@ -1301,7 +1301,7 @@ app.controller('UserController', function($scope, $http) {
 	   $scope.removepromotional_banner=function()
 	   {
 		   
-		   $scope.user_ddata.promotional_banner = false;
+		   $scope.user_ddata.promotion_banner = false;
 		   $scope.user.promotional_banner = false;
 		   
 	   }
