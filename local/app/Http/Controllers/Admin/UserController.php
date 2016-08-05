@@ -283,9 +283,11 @@ class UserController extends Controller
 		if($data->role=='5')
 		{
 		$user = DB::table('store')->select('*','id as store_id')->where('user_id', '=',$id)->first();
-		
+		if($user)
+		{
 		$afiliate = DB::table('affiliate')->select('*','id as affiliate_id')->where('store_id','=',$user->store_id)->get();
 		$user->affiliate = $afiliate;
+		}
 		}
 		elseif($data->role=='3')
 		{

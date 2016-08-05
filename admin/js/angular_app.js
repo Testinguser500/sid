@@ -1300,7 +1300,9 @@ app.controller('UserController', function($scope, $http) {
 	   }
         $scope.update = function(user_data) { //console.log($scope.bannerfiles);
             $scope.errors=false;
+			$scope.loading=true;
             $scope.success_flash=false;
+			getProfileImage(user_data);
            $http.post('user/update', {
 			role:user_data.role,
 			fname: user_data.fname,
@@ -2415,6 +2417,29 @@ app.controller('CountryController', function($scope, $http) {
 		        $scope.loading = false;
 		});
 	}
+	$scope.categories = [{
+      title: 'Computers',
+      categories: [{
+          title: 'Laptops',
+          categories: [{
+            title: 'Ultrabooks'
+          },{
+            title: 'Macbooks'
+          }]
+        },{
+          title: 'Desktops'
+        },{
+          title: 'Tablets',
+          categories: [{
+            title: 'Apple'
+          },{
+            title: 'Android'
+          }]
+        }
+      ]
+    },{
+      title: 'Printers'
+    }];
 	$scope.add = function() {	
                 $scope.page='add';		
 		$scope.errors=false;
@@ -2430,6 +2455,7 @@ app.controller('CountryController', function($scope, $http) {
 			//console.log($scope.sellers);
 			$scope.all_category = data['all_category'];
 			console.log($scope.all_category);
+			console.log($scope.categories);
 		        $scope.loading = false;
  
 		});
