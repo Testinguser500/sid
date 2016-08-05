@@ -1570,7 +1570,11 @@ app.controller('StaticContentController', function($scope, $http) {
 			title: contents.title,
 			short_description: contents.short_description,
 			description:contents.description,
-			image: $scope.files,id: contents.id
+			image: $scope.files,
+			id: contents.id,
+			meta_title:contents.meta_title,
+			meta_description:contents.meta_description,
+			meta_keyword:contents.meta_keyword,
                    
 		}).success(function(data, status, headers, config) {
 			
@@ -2417,29 +2421,7 @@ app.controller('CountryController', function($scope, $http) {
 		        $scope.loading = false;
 		});
 	}
-	$scope.categories = [{
-      title: 'Computers',
-      categories: [{
-          title: 'Laptops',
-          categories: [{
-            title: 'Ultrabooks'
-          },{
-            title: 'Macbooks'
-          }]
-        },{
-          title: 'Desktops'
-        },{
-          title: 'Tablets',
-          categories: [{
-            title: 'Apple'
-          },{
-            title: 'Android'
-          }]
-        }
-      ]
-    },{
-      title: 'Printers'
-    }];
+	
 	$scope.add = function() {	
                 $scope.page='add';		
 		$scope.errors=false;
