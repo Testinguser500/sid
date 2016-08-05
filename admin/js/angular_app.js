@@ -2380,7 +2380,8 @@ app.controller('CountryController', function($scope, $http) {
      $scope.products=false;
      $scope.page='index';
      $scope.product={};
-     $scope.pr_imgs = []; 
+     $scope.pr_imgs = [];
+     $scope.product.pro_category_id={};
      $scope.success_flash=false;
      $scope.tab = 1;
     $scope.showMeimg=true;
@@ -2446,6 +2447,12 @@ app.controller('CountryController', function($scope, $http) {
 			
 			$scope.all_category = data['all_category'];
 
+<<<<<<< HEAD
+			console.log($scope.all_category);
+			console.log($scope.categories);
+
+=======
+>>>>>>> 52dadbb52ce7f05c0acb6a764cc84dab5ab992a0
 		        $scope.loading = false;
  
 		});

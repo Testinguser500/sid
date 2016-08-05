@@ -147,6 +147,7 @@ Route::get('admins/product/edit/{id}', 'Admin\ProductController@edit');
 Route::post('admins/product/update', 'Admin\ProductController@update');
 Route::post('admins/product/getoptionvalue', 'Admin\ProductController@getoptionvalue');
 
+
 //Seller Panel
 Route::get('seller/login', 'Seller\HomeController@index');
 Route::post('seller/log_user', 'Seller\HomeController@log_user');
