@@ -141,11 +141,11 @@
 		      <input type="text" class="form-control" id="" name="product_tags" placeholder="Product Tags" ng-model="product.product_tags">
 		      <div class="help-block"></div>
 		    </div>
-		    <div class="form-group">
+		    <!--<div class="form-group">
 		      <label for="exampleInputEmail1">Price</label>
 		      <input type="text" class="form-control" id="" name="price" placeholder="Price" ng-model="product.price">
 		      <div class="help-block"></div>
-		    </div>
+		    </div>-->
 		    <div class="form-group">
 		      <label for="exampleInputEmail1">No. of Stocks</label>
 		      <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
@@ -214,32 +214,55 @@
 				   <div class="second-box" ng-if="product.pro_datatype_id == '2'">
 					<ul class="nav nav-pills nav-stacked">
 					<li ng-class="{ active: isSet(2) }">
-					<a href ng-click="setTab(2)">Inventory</a>
+					<a href ng-click="setTab(2)"><i class="fa fa-line-chart" aria-hidden="true"></i>Inventory</a>
 					</li>
 				       <li ng-class="{ active: isSet(4) }">
-					<a href ng-click="setTab(4)">Linked Products</a>
+					<a href ng-click="setTab(4)"><i class="fa fa-link" aria-hidden="true"></i>Linked Products</a>
 					</li>
 					<li ng-class="{ active: isSet(5) }">
-					<a href ng-click="setTab(5)">Attributes</a>
+					<a href ng-click="setTab(5)"><i class="fa fa-minus-square-o" aria-hidden="true"></i>Attributes</a>
 					</li>
 					<li ng-class="{ active: isSet(6) }">
-					<a href ng-click="setTab(6)">Advanced</a>
-					</li>
-					<li ng-class="{ active: isSet(7) }">
-					<a href ng-click="setTab(7)">Tabs</a>
+					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
 					</li>
 					</ul>
 				   </div>
 				   <div class="third-box" ng-if="product.pro_datatype_id == '3'">
 					<ul class="nav nav-pills nav-stacked">
 					<li ng-class="{ active: isSet(1) }">
-					<a href ng-click="setTab(1)">General3</a>
+					<a href ng-click="setTab(1)"><i class="fa fa-bars" aria-hidden="true"></i>General</a>
+					</li>
+					<li ng-class="{ active: isSet(4) }">
+					<a href ng-click="setTab(4)"><i class="fa fa-link" aria-hidden="true"></i>Linked Products</a>
+					</li>
+					<li ng-class="{ active: isSet(5) }">
+					<a href ng-click="setTab(5)"><i class="fa fa-minus-square-o" aria-hidden="true"></i>Attributes</a>
+					</li>
+					<li ng-class="{ active: isSet(6) }">
+					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
+					</li>
+					</ul>
+				   </div>
+				   
+				   <div class="third-box" ng-if="product.pro_datatype_id == '4'">
+					<ul class="nav nav-pills nav-stacked">
+					<li ng-class="{ active: isSet(1) }">
+					<a href ng-click="setTab(1)"><i class="fa fa-bars" aria-hidden="true"></i>General</a>
 					</li>
 					<li ng-class="{ active: isSet(2) }">
-					<a href ng-click="setTab(2)">Inventory3</a>
+					<a href ng-click="setTab(2)"><i class="fa fa-line-chart" aria-hidden="true"></i>Inventory</a>
 					</li>
 					<li ng-class="{ active: isSet(3) }">
-					<a href ng-click="setTab(3)">Shipping3</a>
+					<a href ng-click="setTab(3)"><i class="fa fa-bus" aria-hidden="true"></i>Shipping</a>
+					</li>
+					<li ng-class="{ active: isSet(4) }">
+					<a href ng-click="setTab(4)"><i class="fa fa-link" aria-hidden="true"></i>Linked Products</a>
+					</li>
+					<li ng-class="{ active: isSet(5) }">
+					<a href ng-click="setTab(5)"><i class="fa fa-minus-square-o" aria-hidden="true"></i>Attributes</a>
+					</li>
+					<li ng-class="{ active: isSet(6) }">
+					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
 					</li>
 					</ul>
 				   </div>
@@ -253,7 +276,8 @@
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Regular Price (Rs.)</label>
-					     <input type="text" placeholder="" value="" id="regular_price" name="regular_price">
+					     <!--<input type="text" placeholder="" value="" id="regular_price" name="regular_price">-->
+					     <input type="text" class="form-control" id="" name="price" placeholder="Price" ng-model="product.price">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price (Rs.)</label>
@@ -261,7 +285,7 @@
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates From</label>
-					     <input type="date" placeholder="YYYY-MM-DD" id="sale_price_dates_from" name="sale_price_dates_from">
+					     <input type="text" placeholder="YYYY-MM-DD" id="sale_price_dates_from" name="sale_price_dates_from">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates To</label>
