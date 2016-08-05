@@ -272,7 +272,7 @@
 					 <div ng-show="isSet(1)">
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">SKU</label>
-					     <input type="text" placeholder="" class="form-control" value="" id="sku" name="sku">
+					     <input type="text" placeholder="" class="form-control" value="" id="sku" name="sku" ng-model="product.sku">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Regular Price (Rs.)</label>
@@ -281,19 +281,19 @@
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price (Rs.)</label>
-					     <input type="text" placeholder="" class="form-control" value="" id="sale_price" name="sale_price">
+					     <input type="text" placeholder="" class="form-control" value="" id="sale_price" name="sale_price" ng-model="product.sale_price">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates From</label>
-					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="sale_price_dates_from" name="sale_price_dates_from">
+					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from" ng-model="product.date_from">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates To</label>
-					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="sale_price_dates_to" name="sale_price_dates_to">
+					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Youtube Link</label>
-					     <textarea cols="20" rows="2" class="form-control" placeholder="Youtube Link for multiple enter in new line" id="video" name="video"></textarea>
+					     <textarea cols="20" rows="2" class="form-control" placeholder="Youtube Link for multiple enter in new line" id="video" name="video" ng-model="product.video"></textarea>
 					     </div>
 					 </div>
 					 <div ng-show="isSet(2)">
@@ -316,13 +316,13 @@
 					 <div ng-show="isSet(3)">
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Weight(kg)</label>
-					     <input type="text" class="form-control" placeholder="0" name="weight">
+					     <input type="text" class="form-control" placeholder="0" name="weight" ng-model="product.weight">
 					     </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Dimensions (cm)</label>
-					     <input type="text" placeholder="Length" name="length" class="form-control">
-					     <input type="text" placeholder="Width" name="width" class="form-control">
-					     <input type="text" placeholder="Height" name="height" class="form-control">
+					     <input type="text" placeholder="Length" name="length" class="form-control" ng-model="product.length">
+					     <input type="text" placeholder="Width" name="width" class="form-control" ng-model="product.width">
+					     <input type="text" placeholder="Height" name="height" class="form-control" ng-model="product.height">
 					     </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Shipping class</label>
@@ -346,11 +346,6 @@
 					 <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
 						<option ng-repeat="opv in optionvalues" ng-value="opv.id" ng-selected="opv.id==product.pro_opt_values_id" value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
-					     <!--<select multiple>
-						  <option value=""></option>
-						  <option value="">1MB</option>
-						  <option value="">3GB</option>
-					     </select>-->
 					  </div>
 					 </div>
 					 <div ng-show="isSet(6)">

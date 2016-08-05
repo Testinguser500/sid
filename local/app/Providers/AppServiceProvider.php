@@ -82,6 +82,7 @@ class AppServiceProvider extends ServiceProvider
             return empty( $result );
         }, 'This value :attribute already exists!');
          Validator::extend('soft_unique_single', function ($attribute, $value, $parameters, $validator) {
+            
             // Custom validation logic
 
             // remove first parameter and assume it is the table name
@@ -109,8 +110,22 @@ class AppServiceProvider extends ServiceProvider
           
             return empty( $result );
         }, 'This value :attribute already exists!');
+         
+         
+     Validator::extend('check_demension_value', function ($attribute, $value, $parameters, $validator) {
+        //print_r($parameters); echo $value ;
+        if($value > 0)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+     },'This value :attribute should be greater than zero.');
+
     }
-    
+
 
     /**
      * Register any application services.

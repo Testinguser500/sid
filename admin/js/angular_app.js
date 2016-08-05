@@ -2408,7 +2408,7 @@ app.controller('CountryController', function($scope, $http) {
 		        $scope.loading = false;
 		});
 	}
-	$scope.GetSelectedOptions = function(optionid) { 
+	$scope.GetSelectedOptions = function(optionid) { console.log($scope.optionvalues);
 	$http.post('product/getoptionvalue',{
 			parent_id: optionid
 		}).
@@ -2515,6 +2515,17 @@ app.controller('CountryController', function($scope, $http) {
 			product_tags: product.product_tags,
 			price: product.price,
 			no_stock: product.no_stock,
+			sale_price: product.sale_price,
+			pro_opt_name_id: product.pro_opt_name_id,
+			pro_opt_values_id: product.pro_opt_values_id,
+			sku: product.sku,
+			date_from: product.date_from,
+			date_to: product.date_to,
+			video: product.video,
+			weight: product.weight,
+			length: product.length,
+			width: product.width,
+			height: product.height,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
