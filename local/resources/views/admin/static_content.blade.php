@@ -66,7 +66,7 @@
 
 		<div class="box box-primary" ng-if="page=='edit'">
             <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-edit"></i> Edit User</h3>
+                <h3 class="box-title"><i class="fa fa-edit"></i> Edit Content</h3>
                  <div class="pull-right"> <a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
             </div>
             <!-- /.box-header -->
@@ -101,7 +101,21 @@
                   <input type="file" ng-file-select  name="image" ng-model="content.image" onchange="angular.element(this).scope().uploadedFile(this)">
 		  <div class="help-block"></div>
                 </div> 
-                 
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Title</label>
+                  <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="content.meta_title">
+		  <div class="help-block"></div>
+                </div> 
+                 <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Description</label>
+                  <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="content.meta_description">
+		  <div class="help-block"></div>
+                </div> 
+                  <div class="form-group">
+                  <label for="exampleInputEmail1">Meta Keyword</label>
+                  <input type="text" class="form-control" id="" name="meta_keyword" placeholder="Meta Keyword" ng-model="content.meta_keyword">
+		  <div class="help-block"></div>
+                </div>
                   
              </div>
               <!-- /.box-body -->

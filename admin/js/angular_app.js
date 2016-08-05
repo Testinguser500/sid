@@ -1570,7 +1570,11 @@ app.controller('StaticContentController', function($scope, $http) {
 			title: contents.title,
 			short_description: contents.short_description,
 			description:contents.description,
-			image: $scope.files,id: contents.id
+			image: $scope.files,
+			id: contents.id,
+			meta_title:contents.meta_title,
+			meta_description:contents.meta_description,
+			meta_keyword:contents.meta_keyword,
                    
 		}).success(function(data, status, headers, config) {
 			
