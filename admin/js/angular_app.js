@@ -2358,7 +2358,9 @@ app.controller('CountryController', function($scope, $http) {
       return $scope.tab === tabNum;
     };
     
-    $scope.showMe = false;
+    $scope.showMe = true;
+    $scope.showMe1 = true;
+    $scope.showMe3 = true;
     $scope.myFunc = function() {
         $scope.showMe = !$scope.showMe;
     }
@@ -2370,7 +2372,8 @@ app.controller('CountryController', function($scope, $http) {
     }
     $scope.changeState=function(param){
        
-    } 
+    }
+
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2381,7 +2384,7 @@ app.controller('CountryController', function($scope, $http) {
 		        $scope.loading = false;
 		});
 	}
-	$scope.GetSelectedOptions = function(optionid) { alert(optionid);
+	$scope.GetSelectedOptions = function(optionid) { 
 	$http.post('product/getoptionvalue',{
 			parent_id: optionid
 		}).
