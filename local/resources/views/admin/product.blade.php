@@ -272,7 +272,7 @@
 					 <div ng-show="isSet(1)">
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">SKU</label>
-					     <input type="text" placeholder="" value="" id="sku" name="sku">
+					     <input type="text" placeholder="" class="form-control" value="" id="sku" name="sku">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Regular Price (Rs.)</label>
@@ -281,19 +281,19 @@
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price (Rs.)</label>
-					     <input type="text" placeholder="" value="" id="sale_price" name="sale_price">
+					     <input type="text" placeholder="" class="form-control" value="" id="sale_price" name="sale_price">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates From</label>
-					     <input type="text" placeholder="YYYY-MM-DD" id="sale_price_dates_from" name="sale_price_dates_from">
+					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="sale_price_dates_from" name="sale_price_dates_from">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates To</label>
-					     <input type="date" placeholder="YYYY-MM-DD" id="sale_price_dates_to" name="sale_price_dates_to">
+					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="sale_price_dates_to" name="sale_price_dates_to">
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Youtube Link</label>
-					     <textarea cols="20" rows="2" placeholder="Youtube Link for multiple enter in new line" id="video" name="video"></textarea>
+					     <textarea cols="20" rows="2" class="form-control" placeholder="Youtube Link for multiple enter in new line" id="video" name="video"></textarea>
 					     </div>
 					 </div>
 					 <div ng-show="isSet(2)">
@@ -303,7 +303,7 @@
 					     </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Stock status</label>
-					     <select>
+					     <select class="form-control">
 						  <option value="in_stock">In stock</option>
 						  <option value="out_stock">Out stock</option>
 					     </select>
@@ -316,17 +316,17 @@
 					 <div ng-show="isSet(3)">
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Weight(kg)</label>
-					     <input type="text" placeholder="0" name="weight">
+					     <input type="text" class="form-control" placeholder="0" name="weight">
 					     </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Dimensions (cm)</label>
-					     <input type="text" placeholder="Length" name="length">
-					     <input type="text" placeholder="Width" name="width">
-					     <input type="text" placeholder="Height" name="height">
+					     <input type="text" placeholder="Length" name="length" class="form-control">
+					     <input type="text" placeholder="Width" name="width" class="form-control">
+					     <input type="text" placeholder="Height" name="height" class="form-control">
 					     </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Shipping class</label>
-					     <select>
+					     <select class="form-control">
 						  <option value="no_shipping">No shipping class</option>
 					     </select>
 					     </div>
@@ -337,12 +337,13 @@
 					 </div>
 					 <div ng-show="isSet(5)">
 					 <div class="form-group">
-					     <select name="pro_opt_name_id" ng-model="product.pro_opt_name_id" ng-change="GetSelectedOptions(product.pro_opt_name_id)">
+					     <label for="exampleInputEmail1">Custom Product option</label>
+					     <select class="form-control" name="pro_opt_name_id" ng-model="product.pro_opt_name_id"  ng-change="GetSelectedOptions(product.pro_opt_name_id)">
 						<option ng-repeat="opnam in options" ng-value="opnam.id" ng-selected="opnam.id==product.pro_opt_name_id" value="<%opnam.id%>"><% opnam.option_name %></option>
 					     </select>   
 					  </div>
 					 <div class="form-group">
-					 <select name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
+					 <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
 						<option ng-repeat="opv in optionvalues" ng-value="opv.id" ng-selected="opv.id==product.pro_opt_values_id" value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
 					     <!--<select multiple>
@@ -355,11 +356,11 @@
 					 <div ng-show="isSet(6)">
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Purchase Note</label>
-					     <textarea cols="20" rows="2" placeholder="" id="" name=""></textarea>
+					     <textarea cols="20" rows="2" placeholder="" id="" name="" class="form-control"></textarea>
 					  </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Menu Order</label>
-					     <input type="number" step="1" placeholder="" value="0" id="menu_order" name="menu_order" style="" class="short">
+					     <input type="number" class="form-control" step="1" placeholder="" value="0" id="menu_order" name="menu_order" style="" class="short">
 					 </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Enable reviews</label>
