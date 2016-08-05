@@ -350,28 +350,12 @@
           
         </li>
 
-        <?php foreach(getMenu() as $val)
-        {
-            $subMenu = getMenu($val->menu_id);?>
         <li class="treeview">
-          <a href="<?php if(!$subMenu) echo '#'.$val->filename; else echo 'javascript:void(0)';?>">
+          <a href="#setting">
             
-              <i class="fa <?php echo $val->icon; ?>"></i> <span><?php echo $val->name;?></span>
-              <?php if(!empty($subMenu)) {?>
-              <i class="fa fa-angle-left pull-right"></i>
-              
-          </a>
-          <ul class="treeview-menu">
-              <?php      foreach ((array)$subMenu as $sm)
-              {?>
-            <li><a href="#<?php echo $sm->filename;?>"><i class="fa fa-circle-o"></i><?php echo $sm->name;?></a></li>
-              <?php } ?>
-          </ul>
-            <?php } else {?>
-            </a>
-            <?php }?>
-        </li>
-        <?php }?>
+              <i class="fa fa-cogs"></i> <span>Store Setting</span>
+                          </a>
+                    </li>
 
       </ul>
     </section>
