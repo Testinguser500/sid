@@ -190,20 +190,44 @@ class HomeController extends Controller
 	/*******multiple images uploading*********/
 	public function imagemutipleupload(){
 		
-		if(Request::input('folder'))
-			$folder = '/'.Request::input('folder');
-		
+	        if(Request::input('folder'))
+		$folder = '/'.Request::input('folder');
+		$image= Input::file('image');
 		if(Request::input('width')&&Request::input('height'))
 		{
+			
+                        $image_info = getimagesize(Input::file('image'));
+                        $image_width = $image_info[0];
+                        $image_height = $image_info[1];
 			$width = Request::input('width');
 			$height = Request::input('height');
+			if($image_width!=$width&&$image_height&&File::size($image)>1000)
+			{
+				$list[]='error';
+				$msgs[]='Fix your image dimension ('.Request::input('width').'x'.Request::input('height').') or size.';
+				$list[]=$msgs;
+				return $list;
+			}
 		}
 		else
 		{
 			$width = 200;
 			$height = 200;
 		}
-	       $destinationPath = 'uploads'.@$folder; // upload path
+		
+            $destinationPath = 'uploads'.@$folder; // upload path
+            $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+            if(($extension=='jpg') || ($extension=='jpeg') || ($extension=='png') ){
+            $fileName = time().'.'.$extension; // renameing image 
+	    $path = ($destinationPath.'/thumb_'.$fileName);
+	    Image::make(Input::file('image')->getRealPath())->resize(200, 200)->save($path);	
+            $path = ($destinationPath.'/mid_'.$fileName);
+	    Image::make(Input::file('image')->getRealPath())->resize(400, 400)->save($path);	
+            Input::file('image')->move($destinationPath, $fileName); 
+            return 'product/'.$fileName;
+            }else{
+                return false;
+            }
 	}
  }
  

@@ -1649,8 +1649,7 @@ app.controller('BrandsController', function($scope, $http) {
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
-                $scope.files = '';
-                $scope.success_flash=false;
+                $scope.files = '';               
 		$scope.loading = true;
 		$http.get('brand/all').
 		success(function(data, status, headers, config) {
@@ -2367,10 +2366,10 @@ app.controller('CountryController', function($scope, $http) {
      $scope.products=false;
      $scope.page='index';
      $scope.product={};
-     $scope.images={};
+     $scope.pr_imgs = []; 
      $scope.success_flash=false;
      $scope.tab = 1;
-
+    $scope.showMeimg=true;
     $scope.setTab = function(newTab){
       $scope.tab = newTab;
     };
@@ -2388,6 +2387,9 @@ app.controller('CountryController', function($scope, $http) {
     }
     $scope.myFunc3 = function() {
         $scope.showMe3 = !$scope.showMe3;
+    }
+    $scope.myFuncimg = function() {
+        $scope.showMeimg = !$scope.showMeimg;
     }
     $scope.changeState=function(param){
        
@@ -2423,14 +2425,60 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
 			$scope.options = data['options'];
-			//console.log($scope.sellers);
+			
 			$scope.all_category = data['all_category'];
-			console.log($scope.all_category);
+			
 		        $scope.loading = false;
  
 		});
 	}
-	
+	// image upload
+        $scope.uploadedFile = function(element) {
+            $scope.$apply(function($scope) {
+            $scope.loading = true;
+            var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+	    fd.append("folder",'product');
+	    fd.append("width",'500');
+	    fd.append("height",'500');
+            $http.post('imagemutipleupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){   
+                  if(data[0]=='error'){
+				$scope.errors=data[1];
+		  }else{
+                                $scope.errors=false;
+                                $scope.pr_imgs.push({
+                                img: data,def:0
+                                });                  
+                                $scope.loading = false;
+		  }
+               
+   
+                $scope.loading = false;
+            });
+
+    });
+   }
+   $scope.setdefault=function(index){
+       angular.forEach($scope.pr_imgs, function (item,key) {
+			$scope.pr_imgs[key]['def']=0;        
+			
+        });
+        $scope.pr_imgs[index]['def']=1;
+   }
+   $scope.unsetdefault=function(index){
+      
+        $scope.pr_imgs[index]['def']=0;
+   }
+   $scope.removeimgs=function(index)
+   {
+      $scope.pr_imgs.splice(index,1);
+   }
+     
 	   // GET THE FILE INFORMATION.
 //	 $scope.uploadedMultipleFile = function(element) { //alert(element);
 //		

@@ -364,7 +364,28 @@
 			      </div>
 			      </div>
 			   </div>
-			   <div class="col-xs-12">Images</div>
+			   <div class="col-xs-12">
+			   <div class="main-form-chk">
+			   <label for="exampleInputEmail1">Images</label>
+			   <span title="Click to toggle" class="handlediv" ng-click="myFuncimg()"><i class="fa fa-caret-down custom" ></i></span>
+			   <div class="form-img-chk" ng-show="showMeimg">
+                           
+			     <div class="imgs_ro" ng-repeat="val in pr_imgs">               
+                                 <img src="{{URL::asset('uploads')}}/<% val.img %>"  alt="" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1"/>
+                                  <a class="ms_ov" href="javascript:void(0);" ng-if="$index != values.length - 1" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1" ng-show="tr_dis[$index]==1" >
+                                      <i class="fa fa-check" title="Set default" ng-show="val.def==0"  ng-click="setdefault($index)"></i>
+                                      <i class="fa fa-check grr_ic"  title="Unset default"  ng-show="val.def==1"  ng-click="unsetdefault($index)"></i>
+                                      <i class="fa fa-trash" title="Delete"  ng-click="removeimgs($index)" ></i>
+                                  </a>
+                              </div>
+                              <div style="clear:both"></div>
+			     <div class="btn btn-primary btn-file" ng-show="pr_imgs.length < 8">
+                                 <i class="fa fa-plus"></i> <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+		             </div>
+                           
+			   </div>
+			   </div>
+			   </div>
 			   <div class="col-xs-12">
 			   <div class="main-form-chk">
 			   <label for="exampleInputEmail1">Product Brands</label>

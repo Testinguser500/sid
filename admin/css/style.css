@@ -73,6 +73,34 @@ textarea.ta-bind {
     margin: 12px;
     padding: 10px;
 }
+.form-img-chk {
+    border-top: 1px solid #ccc;
+    margin: 12px 0;   
+    padding:10px 0;
+}
+.form-img-chk img{width:100%}
+.form-img-chk  .imgs_ro{
+    margin-top:10px;
+    float: left;
+    margin-left: 1px;
+    width: 32.8%;
+}
+.ms_ov.ng-scope {
+    background-color: rgba(14, 14, 29, 0.5);
+   
+    height: 75px;
+    margin: auto 0 auto -75px;
+    position: absolute;
+    vertical-align: middle;
+    width: 77px;
+}
+a.ms_ov{text-decoration: none}
+
+.ms_ov i { color: #fff;
+    margin-left: 16px;
+    margin-top: 50px;width:10px;float:left;
+}
+.ms_ov i.grr_ic{color:#47A447;}
 .main-form-chk > label {
     line-height: 25px;
     padding-left: 5px;
