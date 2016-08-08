@@ -2373,7 +2373,8 @@ app.controller('CountryController', function($scope, $http) {
      $scope.products=false;
      $scope.page='index';
      $scope.product={};
-     $scope.pr_imgs = []; 
+     $scope.pr_imgs = [];
+     $scope.pro_opt_values_id = [];
      $scope.success_flash=false;
      $scope.tab = 1;
     $scope.showMeimg=true;
@@ -2438,12 +2439,8 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.options = data['options'];
 			
 			$scope.all_category = data['all_category'];
-<<<<<<< HEAD
-			
-=======
 			console.log($scope.all_category);
 			console.log($scope.categories);
->>>>>>> a56d84285ad5e453e7572b5bbee31e63ec2a9af3
 		        $scope.loading = false;
  
 		});
@@ -2479,6 +2476,7 @@ app.controller('CountryController', function($scope, $http) {
 
     });
    }
+   
    $scope.setdefault=function(index){
        angular.forEach($scope.pr_imgs, function (item,key) {
 			$scope.pr_imgs[key]['def']=0;        
@@ -2495,49 +2493,12 @@ app.controller('CountryController', function($scope, $http) {
       $scope.pr_imgs.splice(index,1);
    }
      
-	   // GET THE FILE INFORMATION.
-//	 $scope.uploadedMultipleFile = function(element) { //alert(element);
-//		
-//		$scope.files = [];
-//		 $scope.$apply(function () {
-//
-//                // STORE THE FILE OBJECT IN AN ARRAY.
-//                for (var i = 0; i < element.files.length; i++) {
-//                    $scope.files.push(element.files[i]); console.log(element.files[i]);
-//                }
-//		
-//		 //FILL FormData WITH FILE DETAILS.
-//		var data = new FormData();
-//
-//		for (var i in $scope.files) {
-//		    data.append("uploadedFile", $scope.files[i]);
-//		}
-//
-//            });
-//           $scope.$apply(function($scope) {
-//            $scope.loading = true;
-//           var fd = new FormData();
-//            //Take the first selected file
-//            //fd.append("image",element.files[0]);
-//	    angular.forEach(element, function (value, key) {
-//                    fd.append(key, value);
-//                });
-//			fd.append("folder",'product');
-//			fd.append("width",'150');
-//			fd.append("height",'150');
-//            $http.post('imagemutipleupload', fd, {
-//                withCredentials: true,
-//                headers: {'Content-Type': undefined },
-//                transformRequest: angular.identity
-//            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
-//
-//    });
-	//}
+	   
 	 
 	 $scope.store = function(product,images) { 
            $scope.errors=false;
            $scope.success_flash=false;   
-           console.log(product);
+           console.log(product);console.log(images);
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -2550,6 +2511,7 @@ app.controller('CountryController', function($scope, $http) {
 			price: product.price,
 			no_stock: product.no_stock,
 			sale_price: product.sale_price,
+			pro_datatype_id: product.pro_datatype_id,
 			pro_opt_name_id: product.pro_opt_name_id,
 			pro_opt_values_id: product.pro_opt_values_id,
 			sku: product.sku,
