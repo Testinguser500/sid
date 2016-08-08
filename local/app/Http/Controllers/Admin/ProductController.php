@@ -67,7 +67,7 @@ class ProductController extends Controller
 	    'pro_short_des' => 'required',
 	    'pro_feature_des' => 'required',
 	    'seller_id' => 'required',
-	    //'pro_category_id' => 'required',
+	    'pro_category_id' => 'required',
 	    'brand_id' => 'required',
 	    'product_tags' => 'required',
 	    'price' => ['required','regex:'.$regex],
@@ -103,10 +103,15 @@ class ProductController extends Controller
 	      $list[]=$msg;
 	      return $list;
         }
-	//$catids= Request::input('pro_category_id');
-	//$newproids = implode(",", array_keys($catids));
-	//echo "grty";
-       $ovids= Request::input('pro_opt_values_id'); 
+	$catids= Request::input('pro_category_id'); ;
+	$newcatarr= array();
+	foreach($catids as $ck => $cv){ 
+	    if($cv == '1'){ 
+		$newcatarr[] = $ck;	
+	    }
+	}
+	$newproids = implode(",", $newcatarr);
+        $ovids= Request::input('pro_opt_values_id'); 
 	$newovids = implode(",", $ovids); 
 	
 	 $prod = Product::create(['pro_name' =>Request::input('pro_name'),
@@ -114,7 +119,7 @@ class ProductController extends Controller
 			 'pro_short_des' =>Request::input('pro_short_des'),
 			 'pro_feature_des' =>Request::input('pro_feature_des'),
 			 'seller_id' =>Request::input('seller_id'),
-			// 'pro_category_id' =>$newproids,
+			 'pro_category_id' =>$newproids,
 			 'brand_id' =>Request::input('brand_id'),
 			 'product_tags' =>Request::input('product_tags'),
 			 'price' =>Request::input('price'),
@@ -122,7 +127,7 @@ class ProductController extends Controller
 			 'no_stock' =>Request::input('no_stock'),
 			 'pro_datatype_id'=>Request::input('pro_datatype_id'),
 			 'pro_opt_name_id'=>Request::input('pro_opt_name_id'),
-			'pro_opt_values_id'=>$newovids,
+			 'pro_opt_values_id'=>$newovids,
 			 'sku'=>Request::input('sku'),
 			 'date_from'=>Request::input('date_from'),
 			 'date_to'=>Request::input('date_to'),
