@@ -390,11 +390,8 @@
 			      <input type="text" placeholder="Filter Categories" ng-model="test"><br>
 			      <div class="frm-cat">
 				  <script type="text/ng-template" id="categoryTree">
-<<<<<<< HEAD
-        <input type="checkbox" ng-model="category.id" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
-=======
+       
         <input type="checkbox" ng-model="product.pro_category_id[category.id]" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
->>>>>>> cd6ac6a325ee02d54abc2633b77cef832dcea0e6
         <ul ng-if="category.all_category">
             <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
             </li>
@@ -452,7 +449,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button ng-click="store(product,images)" type="submit" class="btn btn-primary">Submit</button>
+                <button ng-click="store(product,pr_imgs)" type="submit" class="btn btn-primary">Submit</button>
               </div>
             
           </div>

@@ -103,12 +103,18 @@ class ProductController extends Controller
 	      $list[]=$msg;
 	      return $list;
         }
-	$catids= Request::input('pro_category_id');
-	$newproids = implode(",", array_keys($catids));
-        $ovids= Request::input('pro_opt_values_id');
-	$newovids = implode(",", $ovids);
+	$catids= Request::input('pro_category_id'); ;
+	$newcatarr= array();
+	foreach($catids as $ck => $cv){ 
+	    if($cv == '1'){ 
+		$newcatarr[] = $ck;	
+	    }
+	}
+	$newproids = implode(",", $newcatarr);
+        $ovids= Request::input('pro_opt_values_id'); 
+	$newovids = implode(",", $ovids); 
 	
-	 Product::create(['pro_name' =>Request::input('pro_name'),
+	 $prod = Product::create(['pro_name' =>Request::input('pro_name'),
 			 'pro_des' =>Request::input('pro_des'),
 			 'pro_short_des' =>Request::input('pro_short_des'),
 			 'pro_feature_des' =>Request::input('pro_feature_des'),
@@ -119,6 +125,7 @@ class ProductController extends Controller
 			 'price' =>Request::input('price'),
 			 'sale_price' =>Request::input('sale_price'),
 			 'no_stock' =>Request::input('no_stock'),
+			 'pro_datatype_id'=>Request::input('pro_datatype_id'),
 			 'pro_opt_name_id'=>Request::input('pro_opt_name_id'),
 			 'pro_opt_values_id'=>$newovids,
 			 'sku'=>Request::input('sku'),
@@ -132,8 +139,17 @@ class ProductController extends Controller
 			 'meta_title' =>Request::input('meta_title'),
 			 'meta_description' =>Request::input('meta_description'),
 			 'meta_keywords' =>Request::input('meta_keywords'),
-			 'status' =>Request::input('status')]);  
-		  
+			 'status' =>Request::input('status')]);
+	 
+		$insertedId = $prod->id;
+		if($insertedId > 0){
+			$images = Request::input('images'); //print_r($images);
+			 foreach($images as $imgvvv){
+			ProductImage::create(['image' => $imgvvv['img'],
+			 'product_id' => $insertedId,
+			 'def' => $imgvvv['def']]);
+			} 
+		}
          $list[]='success';
          $list[]='Record is added successfully.';	 
 	 return $list;
