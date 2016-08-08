@@ -173,7 +173,7 @@
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
 <% plans.image %>
-                  <div class="form-group col-xs-12 show-pn">
+                  <div class="form-group col-xs-12 show-bn">
                 <img src="{{URL::asset('uploads/plan')}}/<% plansimage %>" width="310" height="210" ng-show="files" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" >  
                   <br/>
                   <span class="btn btn-primary btn-file" ng-hide="files">

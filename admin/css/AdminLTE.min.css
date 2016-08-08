@@ -76,3 +76,11 @@
 .ul-cat ul {
     padding: 0 0 0 16px;
 }
+.lnk-img {
+ float: right;
+    height: 20px;
+    margin-right: 5px;
+    position: relative;
+    top: -27px;
+    width: 20px;
+}

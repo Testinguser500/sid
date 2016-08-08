@@ -20,7 +20,7 @@
           <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> User List</h3>
-			  <a class="add-link btn btn-success btn-flat btn-grid" href="javascript:void(0);" ng-click="useradd()"><i class="fa fa-plus-square"></i> Add User</a>
+			  <a class="add-link btn btn-success btn-flat btn-grid" href="javascript:void(0);" ng-click="add()"><i class="fa fa-plus-square"></i> Add User</a>
 			  <ul class="subsubsub">
 			  <li ng-repeat="us in usersRecord">
 	<li class="all"><a href="javascript:void(0)" ng-click="init();" class="current">All <span class="count">(<%users.length%>)</span></a> |</li>
@@ -76,7 +76,10 @@
 				  <td><a href="javascript:void(0);" ng-click="changeStatus(val);"><span class="label <% (val.status=='Active')?'label-success':'label-danger'%>">
 				  <% val.status %></a>
 				  </td>
-                  <td><i ng-click="edituser(val)" class="fa fa-edit" style="cursor:pointer"></i> <i class="fa fa-trash" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
+                  <td><i ng-click="edituser(val)" class="fa fa-edit" style="cursor:pointer"></i>
+		    <i ng-if="val.status=='Active'" class="fa fa-ban" ng-click="val.status='Block';changeStatus(val);" title="Block" style="cursor:pointer"></i>
+		    <i ng-if="val.status=='Block'" class="fa fa-ban" ng-click="val.status='Inactive';changeStatus(val);" title="Unblock" style="cursor:pointer"></i>
+		    <i class="fa fa-trash" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
                  
                   <!-- Modal -->
                     <div class="modal fade" id="del_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -433,8 +436,9 @@
                 </div>
                   <div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Store Link</label>
-                  <input type="text" class="form-control" id="" name="store_link" placeholder="Store Link" ng-model="user_ddata.store_link">
-		  <div class="help-block"></div>
+                  <input type="text" class="form-control" id="" maxlength="5" name="store_link" placeholder="Store Link" ng-model="user_ddata.store_link" ng-keyup="checkLink(user_ddata);"><img class="lnk-img" ng-show="linkloading" src="{{URL::asset('admin/img/loader1.gif')}}"><img ng-show="succ_flash" class="lnk-img" src="{{URL::asset('admin/img/tick.png')}}"><img ng-show="error" class="lnk-img" src="{{URL::asset('admin/img/cross.png')}}">
+		  <div class="help-block">{{URL::asset('')}}<%user_ddata.store_link%></div>
+		  
                 </div>
                   
 				</div>
@@ -875,8 +879,8 @@
                 </div>
                   <div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Store Link</label>
-                  <input type="text" class="form-control" id="" name="store_link" placeholder="Store Link" ng-model="user.store_link">
-		  <div class="help-block"></div>
+                  <input type="text" class="form-control" id="" maxlength="5" name="store_link" placeholder="Store Link" ng-model="user.store_link" ng-keyup="checkLink(user);"><img class="lnk-img" ng-show="linkloading" src="{{URL::asset('admin/img/loader1.gif')}}"><img ng-show="succ_flash" class="lnk-img" src="{{URL::asset('admin/img/tick.png')}}"><img ng-show="error" class="lnk-img" src="{{URL::asset('admin/img/cross.png')}}">
+		  <div class="help-block">{{URL::asset('')}}<%user.store_link%></div>
                 </div>
                  
                   

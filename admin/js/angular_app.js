@@ -1133,6 +1133,37 @@ app.controller('UserController', function($scope, $http) {
 			
 		});
 	};
+	$scope.checkLink = function(userData)
+	{
+		$scope.linkloading = true;
+		$scope.loading = true;
+                $scope.error=false;
+		$scope.succ_flash= false;
+                $scope.success_flash=false;
+                
+		$http.post('user/checkLink', {
+				store_link:userData.store_link,
+				store_id:userData.store_id
+		}).success(function(data, status, headers, config) {//console.log(data['user']);
+		
+		if(data[0]=='error'){
+				$scope.error=data[1];
+				$scope.loading = true;
+				$scope.succ_flash= false;
+			$scope.linkloading = false;
+			}else{
+				
+			console.log(data);
+			$scope.errors=false;
+			$scope.loading = false;
+			$scope.succ_flash= true;
+			$scope.linkloading = false;
+			console.log($scope.success_flash);			
+			
+			}
+			
+		});
+	}
         $scope.edituser = function(category) {
 		$scope.loading = true;
                 $scope.errors=false;
@@ -1542,6 +1573,7 @@ app.controller('UserController', function($scope, $http) {
 				
 		$scope.changeStatus=function(userData)
 	   {
+		
 		   $scope.loading = true;
 	   $http.post('user/changeStatus',{
 		   id:userData.id,
@@ -2503,12 +2535,7 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.options = data['options'];
 			
 			$scope.all_category = data['all_category'];
-<<<<<<< HEAD
 
-=======
-			console.log($scope.all_category);
-			console.log($scope.categories);
->>>>>>> 54f3305ee74eaccd001117a11a32c9e998ff8e25
 		        $scope.loading = false;
  
 		});
