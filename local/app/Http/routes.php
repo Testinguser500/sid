@@ -147,6 +147,7 @@ Route::get('admins/product/edit/{id}', 'Admin\ProductController@edit');
 Route::post('admins/product/update', 'Admin\ProductController@update');
 Route::post('admins/product/getoptionvalue', 'Admin\ProductController@getoptionvalue');
 
+
 //Seller Panel
 Route::get('seller/login', 'Seller\HomeController@index');
 Route::post('seller/log_user', 'Seller\HomeController@log_user');
@@ -156,4 +157,11 @@ Route::get('seller/home', 'Seller\HomeController@home');
 Route::post('seller/imageupload', 'Seller\HomeController@imageupload');
 Route::post('seller/Allimageupload', 'Seller\HomeController@Allimageupload');
 Route::get('seller/not_access', 'Seller\HomeController@not_access');
+
+Route::get('seller/setting', 'Seller\SettingController@index');
+Route::get('seller/setting/all', 'Seller\SettingController@all');
+Route::post('seller/country/getState', 'Admin\CountryController@getState');
+Route::post('seller/country/getCity', 'Admin\CountryController@getCity');
+Route::post('seller/setting/update', 'Seller\SettingController@update');
+
 

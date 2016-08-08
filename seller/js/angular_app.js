@@ -54,8 +54,8 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/category', {
       templateUrl: 'category',controller: 'CategoryController'
    }). 
-   when('/newsletter', {
-      templateUrl: 'newsletter', controller: 'NewsletterController'
+   when('/setting', {
+      templateUrl: 'setting', controller: 'SettingController'
    }).
    when('/template', {
       templateUrl: 'template', controller: 'TemplateController'
@@ -439,7 +439,7 @@ app.controller('HomeController', function($scope, $http) {
          $scope.init();
 });
 // Faq Management
- app.controller('FaqController', function($scope, $http) {
+ app.controller('SettingController', function($scope, $http) {
     
      $scope.errors=false;
      $scope.files='';
@@ -452,12 +452,49 @@ app.controller('HomeController', function($scope, $http) {
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
-		$http.get('faq/all').
+		$http.get('setting/all').
 		success(function(data, status, headers, config) {
-			$scope.faqs = data;
+			$scope.store_data = data['store_data'];
+			$scope.country = data['country'];
+			console.log($scope.store_data);
 		        $scope.loading = false;
+		$scope.getState($scope.store_data.store_country,'store');
+		$scope.getCity($scope.store_data.store_state,'store');
  
 		});
+	}
+	$scope.getState = function(pid,type){
+		//console.log(pid);
+		$http.post('country/getState',{
+			store_country:pid
+		}).
+		success(function(data, status, headers, config) {console.log(data);
+		var vari = type + 'state';
+		//console.log(vari)
+		if(type=='user')
+		$scope.user_state = data;
+		else if(type=='store')
+		{
+			$scope.store_state = data;
+		}
+		});
+		
+	}
+	$scope.getCity = function(pid,type){
+		//console.log(pid);
+		$http.post('country/getCity',{
+			store_country:pid
+		}).
+		success(function(data, status, headers, config) {//console.log(data);
+		if(type=='user')
+		$scope.user_city = data;
+		else if(type=='store')
+		{
+			$scope.store_city = data;
+		}	
+ 
+		});
+		
 	}
         $scope.add = function() {	
                 $scope.page='add';		
@@ -479,16 +516,31 @@ app.controller('HomeController', function($scope, $http) {
 		});
 	};
         
-
-        $scope.update = function(faq) { 
+	$scope.removelogo = function()
+	{
+		$scope.store_data.logo=false;
+	}
+	$scope.delBanner = function()
+	{
+		$scope.store_data.banner=false;
+	}
+        $scope.update = function(storeData) { 
             $scope.errors=false;
             $scope.success_flash=false;
-         
-           $http.post('faq/update', {
-			question: faq.quest,
-			answer: faq.ans,
-                        status: faq.status,
-                        faq_id:faq.id,
+         console.log(storeData);
+           $http.post('setting/update', {
+		store_id:storeData.id,
+		store_name: storeData.store_name,
+		store_link: storeData.store_link,
+		store_address: storeData.store_address,
+		banner:$scope.bannerfiles,
+		store_country:storeData.store_country,
+		store_state:storeData.store_state,
+		store_city:storeData.store_city,
+		
+		store_phone:storeData.phone,
+		logo:$scope.logo,
+
 		}).success(function(data, status, headers, config) {
                  
                 if(data[0]=='error'){
@@ -504,44 +556,63 @@ app.controller('HomeController', function($scope, $http) {
          });
       };
 
-      $scope.store = function(faq) { 
-           $scope.errors=false;
-           $scope.success_flash=false;   
-
-           $http.post('faq/store', {
-			question: faq.quest,
-			answer: faq.ans,
-                        status: faq.status,
-			
-                     
-		} ).success(function(data, status, headers, config) {
-                  
-                    if(data[0]=='error'){
+      $scope.uploadlogo = function(element) {
+           $scope.$apply(function($scope) {
+            $scope.loading = true;
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'store_logo');
+			fd.append("width",'150');
+			fd.append("height",'150');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ 
+			if(data[0]=='error'){
 				$scope.errors=data[1];
-			}else{
-				
-				$scope.errors=false;
-                                $scope.success_flash=data[1];				
-                                $scope.init();
 			}
+			else
+			{
+			$scope.logo=data;
+			$scope.store_data.logo=$scope.logo;
 			$scope.loading = false;
- 
-         });
-      };
-      $scope.deletefaq = function(index) {
-		$scope.loading = true;
+			}
+			});
 
-		var faq = $scope.faqs[index];
-              
-                $http.post('faq/delete',{            
-                    del_id:faq.id
-                }).success(function(data, status, headers, config) {
-                                        $scope.faqs.splice(index, 1);
-                                        $scope.loading = false
-                                        $scope.success_flash=data[1];
-                                        $scope.init();
-                                });
-                };
+    });
+   }
+   
+   $scope.uploadedBannerFile = function(element) {
+           $scope.$apply(function($scope) {
+            $scope.loading = true;
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'store_banner');
+			fd.append("width",'1300');
+			fd.append("height",'400');
+            $http.post('Allimageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ 
+			if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
+			$scope.bannerfiles=data;
+			$scope.store_data.banner=$scope.bannerfiles;
+			//console.log($scope.user.banner);
+			$scope.loading = false;
+			}
+			});
+
+    });
+   }
+      
 
          $scope.init();
 });
@@ -1105,7 +1176,7 @@ app.controller('UserController', function($scope, $http) {
 		//console.log(vari)
 		if(type=='user')
 		$scope.user_state = data;
-		elseif(type=='store')
+		else if(type=='store')
 		{
 			$scope.store_state = data;
 		}
@@ -1121,7 +1192,7 @@ app.controller('UserController', function($scope, $http) {
 		success(function(data, status, headers, config) {//console.log(data);
 		if(type=='user')
 		$scope.user_city = data;
-		elseif(type=='store')
+		else if(type=='store')
 		{
 			$scope.store_city = data;
 		}	

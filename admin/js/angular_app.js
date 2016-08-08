@@ -1202,11 +1202,18 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ 
+            }).success( function(data, status, headers, config){
+		if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
 			$scope.promotion=data;
 			$scope.user_ddata.promotional_banner=$scope.promotion;
 			$scope.user.promotional_banner=$scope.promotion;
-			$scope.loading = false;});
+			$scope.loading = false;
+			}
+				});
 
     });
    }
@@ -1294,7 +1301,7 @@ app.controller('UserController', function($scope, $http) {
 	   $scope.removepromotional_banner=function()
 	   {
 		   
-		   $scope.user_ddata.promotional_banner = false;
+		   $scope.user_ddata.promotion_banner = false;
 		   $scope.user.promotional_banner = false;
 		   
 	   }
@@ -2375,6 +2382,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.product={};
      $scope.pr_imgs = [];
      $scope.pro_opt_values_id = [];
+     $scope.product.pro_category_id={};
      $scope.success_flash=false;
      $scope.tab = 1;
     $scope.showMeimg=true;
