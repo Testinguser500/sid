@@ -107,6 +107,36 @@ class UserController extends Controller
 		$list[]='success';
 		return $list;
 	}
+	public function checkLink()
+	{
+	    $link=Request::input('store_link');
+	    $store_id = Request::input('store_id');
+	    if($link)
+	    {
+			if($store_id)
+			{
+				    
+			$validation = array(
+				    'store_link'=>'required|unique:store,store_link,'.Request::input('store_id')
+			);
+			}
+			else
+			{
+			$validation = array(
+				    'store_link'=>'unique:store'
+			);	    
+			}
+			$validator = Validator::make(Request::all(), $validation);
+			 if ($validator->fails()) {
+				$lists[]='error';
+				$msg=$validator->errors()->all();
+				$lists[]=$msg;
+				return $lists;
+			}
+		$lists='success';
+		return $lists;
+	    }
+	}
         public function store(){
 			
 			//echo Request::input('fname');
@@ -262,10 +292,15 @@ class UserController extends Controller
 		if($action=='Active'){
 			$status ='Inactive';
 		}
-		else
+		else if($action=='Inactive')
 		{
 			$status = 'Active';
 		}
+		else if($action=='Block')
+		{
+			$status = 'Block';
+		}
+		
 		$cat = User::find($id);
            $cat->status = $status;
            $cat->save(); 	   		 

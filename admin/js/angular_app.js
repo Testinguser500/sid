@@ -8,6 +8,59 @@ var app = angular.module('admins', ['ngRoute','textAngular'], function($interpol
       return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
     }
 });
+ app.directive('textarea', function() {
+    return {
+        restrict: 'E',
+        link: function( scope , element , attributes ) {
+            var threshold    = 35,
+                minHeight    = element[0].offsetHeight,
+                paddingLeft  = element.css('paddingLeft'),
+                paddingRight = element.css('paddingRight');
+
+            var $shadow = angular.element('<div></div>').css({
+                position:   'absolute',
+                top:        -10000,
+                left:       -10000,
+                width:      element[0].offsetWidth - parseInt(paddingLeft || 0) - parseInt(paddingRight || 0),
+                fontSize:   element.css('fontSize'),
+                fontFamily: element.css('fontFamily'),
+                lineHeight: element.css('lineHeight'),
+                resize:     'none'
+            });
+
+            angular.element( document.body ).append( $shadow );
+
+            var update = function() {
+                var times = function(string, number) {
+                    for (var i = 0, r = ''; i < number; i++) {
+                        r += string;
+                    }
+                    return r;
+                }
+
+                var val = element.val().replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/&/g, '&amp;')
+                    .replace(/\n$/, '<br/>&nbsp;')
+                    .replace(/\n/g, '<br/>')
+                    .replace(/\s{2,}/g, function( space ) {
+                        return times('&nbsp;', space.length - 1) + ' ';
+                    });
+
+                $shadow.html( val );
+
+                element.css( 'height' , Math.max( $shadow[0].offsetHeight + threshold , minHeight ) );
+            }
+
+            scope.$on('$destroy', function() {
+                $shadow.remove();
+            });
+
+            element.bind( 'keyup keydown keypress change' , update );
+            update();
+        }
+    }
+});
 app.directive("passwordStrength", function(){
     return {        
         restrict: 'A',
@@ -98,7 +151,10 @@ app.config(['$routeProvider', function($routeProvider) {
    }).
    when('/product', {
       templateUrl: 'product', controller: 'ProductController'
-   }). 
+   }).
+   when('/plan', {
+      templateUrl: 'plan', controller: 'PlanController'
+   }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -127,7 +183,7 @@ app.controller('HomeController', function($scope, $http) {
          
 		$http.post('log_user', {
 			email: $scope.email,
-			password: $scope.password,
+			password: $scope.password
                    
 		}).success(function(data, status, headers, config) {
             if(data[0]=='error'){
@@ -591,7 +647,7 @@ app.controller('TemplateController', function($scope, $http) {
          
            $http.post('template/store', {			
                         subject: template.subject,
-                        message: template.message,                    
+                        message: template.message                    
                        
 		}).success(function(data, status, headers, config) {             
                        if(data[0]=='error'){
@@ -1077,6 +1133,37 @@ app.controller('UserController', function($scope, $http) {
 			
 		});
 	};
+	$scope.checkLink = function(userData)
+	{
+		$scope.linkloading = true;
+		$scope.loading = true;
+                $scope.error=false;
+		$scope.succ_flash= false;
+                $scope.success_flash=false;
+                
+		$http.post('user/checkLink', {
+				store_link:userData.store_link,
+				store_id:userData.store_id
+		}).success(function(data, status, headers, config) {//console.log(data['user']);
+		
+		if(data[0]=='error'){
+				$scope.error=data[1];
+				$scope.loading = true;
+				$scope.succ_flash= false;
+			$scope.linkloading = false;
+			}else{
+				
+			console.log(data);
+			$scope.errors=false;
+			$scope.loading = false;
+			$scope.succ_flash= true;
+			$scope.linkloading = false;
+			console.log($scope.success_flash);			
+			
+			}
+			
+		});
+	}
         $scope.edituser = function(category) {
 		$scope.loading = true;
                 $scope.errors=false;
@@ -1486,6 +1573,7 @@ app.controller('UserController', function($scope, $http) {
 				
 		$scope.changeStatus=function(userData)
 	   {
+		
 		   $scope.loading = true;
 	   $http.post('user/changeStatus',{
 		   id:userData.id,
@@ -2486,8 +2574,7 @@ app.controller('CountryController', function($scope, $http) {
 			 $scope.optval = [];
 			$scope.pr_imgs = [];
 			$scope.all_category = data['all_category'];
-			console.log($scope.all_category);
-			console.log($scope.categories);
+
 		        $scope.loading = false;
  
 		});
@@ -2657,3 +2744,90 @@ app.controller('CountryController', function($scope, $http) {
       };
 	$scope.init();
 });
+  
+//Subscription Plan
+  app.controller('PlanController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.files='';
+     $scope.loading = true;
+     $scope.page='index';
+     $scope.plans=false;
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('paln/all').
+		success(function(data, status, headers, config) {
+			$scope.products = data['products'];
+		        $scope.loading = false;
+		});
+	};
+	
+	$scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $scope.product=false;
+		$http.get('plan/all').
+		success(function(data, status, headers, config) {
+			$scope.loading = false;
+ 
+		});
+	};
+	$scope.uploadedFile = function(element) {
+           $scope.$apply(function($scope) {
+            
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+            fd.append("folder",'plan');
+	    fd.append("width",'310');
+	    fd.append("height",'210');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ 
+                        if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
+                                $scope.errors=false;
+                                $scope.files=data;
+				console.log($scope.files);
+				$scope.plansimage = $scope.files;
+				console.log($scope.plansimage);
+                                $scope.loading = false;
+			}
+        });
+
+    });
+   }
+	$scope.store = function(product) { 
+           $scope.errors=false;
+           $scope.success_flash=false;   
+           console.log(product);
+           $http.post('plan/store', {
+			plan_name:product.plan_name,
+			plan_duration:product.plan_duration,
+			plan_price:product.plan_price,
+			description:product.description,
+			image:$scope.files,
+			status:product.status
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+     
+  });
