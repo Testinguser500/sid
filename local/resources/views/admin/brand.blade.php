@@ -18,23 +18,35 @@
           <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> Brand List</h3>
-              <div class="pull-right"> <a href="javascript:void(0);" ng-click="add()" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a></div>
+              <div class="pull-right"> <a href="javascript:void(0);" ng-click="add()" class="btn btn-primary"><i class="fa fa-plus"></i> Add Brand</a></div>
             </div>
             <!-- /.box-header -->
             
             <div class="box-body">
+               <div class="row">
+                <div class="form-group col-md-3 pull-right">
+		  
+		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
+		</div>
+              </div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Brand Name</th>
-                  <th>Brand Status</th>
+                  <th ng-click="sort('id')" style="cursor:pointer">#
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('brand_name')" style="cursor:pointer">Brand Name
+                      <span class="glyphicon sort-icon"  ng-show="sortKey=='brand_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('status')" style="cursor:pointer">Brand Status
+                   <span class="glyphicon sort-icon"  ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
                   <th> </th>                 
                 </tr>
                 </thead>
                 <tbody>
                 
-                <tr ng-repeat="val in brands">
+                <tr dir-paginate="val in brands|orderBy:sortKey:reverse|itemsPerPage:10|filter:search">
                   <td><% val.id %></td>
                   <td><% val.brand_name %></td>
                   <td><% val.status %></td>
@@ -76,6 +88,11 @@
                 </tr>
                 </tfoot>
               </table>
+                <dir-pagination-controls
+					max-size="10"
+					direction-links="true"
+					boundary-links="true" >
+		</dir-pagination-controls>
             </div>
             <!-- /.box-body -->
           </div>

@@ -22,16 +22,26 @@
             <!-- /.box-header -->
             
             <div class="box-body">
+               <div class="row">
+                <div class="form-group col-md-3 pull-right">
+		  
+		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
+		</div>
+              </div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Template Subject</th>                 
+                  <th ng-click="sort('id')" style="cursor:pointer">#
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('subject')" style="cursor:pointer">Template Subject
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='subject'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>                 
                   <th> </th>                 
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="val in templates">
+                <tr dir-paginate="val in templates|orderBy:sortKey:reverse|itemsPerPage:10|filter:search">
                   <td><% val.id %></td>
                   <td><% val.subject %></td>
                  
@@ -74,6 +84,11 @@
                 </tr>
                 </tfoot>
               </table>
+                 <dir-pagination-controls
+					max-size="10"
+					direction-links="true"
+					boundary-links="true" >
+		</dir-pagination-controls>
             </div>
             <!-- /.box-body -->
           </div>

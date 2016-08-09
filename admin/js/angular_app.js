@@ -1,4 +1,4 @@
-var app = angular.module('admins', ['ngRoute','textAngular'], function($interpolateProvider) {
+var app = angular.module('admins', ['ngRoute','textAngular','angularUtils.directives.dirPagination'], function($interpolateProvider) {
 	$interpolateProvider.startSymbol('<%');
 	$interpolateProvider.endSymbol('%>');
       
@@ -260,13 +260,16 @@ app.controller('HomeController', function($scope, $http) {
     
      $scope.errors=false;
 
-     $scope.files='';
-
+     $scope.files='';     
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
      $scope.category={};
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.files='';
@@ -426,6 +429,10 @@ app.controller('HomeController', function($scope, $http) {
      $scope.page='index';
      $scope.faq=false;
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -504,6 +511,10 @@ app.controller('HomeController', function($scope, $http) {
      $scope.page='index';
      $scope.faq=false;
      $scope.success_flash=false;
+       $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -610,6 +621,10 @@ app.controller('TemplateController', function($scope, $http) {
      $scope.temp=false;
      $scope.page='index';     
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -1749,6 +1764,10 @@ app.controller('BrandsController', function($scope, $http) {
      $scope.brand={};
      $scope.page='index';
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
@@ -2349,6 +2368,10 @@ app.controller('CountryController', function($scope, $http) {
      $scope.option={};
      $scope.values={};
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2476,6 +2499,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.success_flash=false;
      $scope.tab = 1;
     $scope.showMeimg=true;
+
     $scope.setTab = function(newTab){
       $scope.tab = newTab;
     };
@@ -2570,11 +2594,19 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
+<<<<<<< HEAD
+			$scope.options = data['options'];			
+			$scope.all_category = data['all_category'];
+			console.log($scope.all_category);
+			console.log($scope.categories);
+
+=======
 			$scope.options = data['options'];
 			$scope.product={};
 			 $scope.optval = [];
 			$scope.pr_imgs = [];
 			$scope.all_category = data['all_category'];
+>>>>>>> 118110e5abce2b32f34467e020c7ff3defb83f52
 
 		        $scope.loading = false;
  
