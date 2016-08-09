@@ -187,12 +187,12 @@ class UserController extends Controller
         $password = Request::input('password');
         $user = User::create(['image' =>Request::input('profile_image'),'fname' =>Request::input('fname'),'lname' =>Request::input('lname'),'username' =>Request::input('username'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'home_number' =>Request::input('home_number'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'state' =>Request::input('state'),'city' =>Request::input('city'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
 		$insert_id = $user->id;
-		if(Request::input('role')==3)
-		{
+		//if(Request::input('role')==3)
+		//{
 			Shipping::create(['user_id'=>$insert_id,'ship_fname'=>Request::input('ship_fname'),'ship_lname'=>Request::input('ship_lname'),'ship_mobile'=>Request::input('ship_mobile'),'ship_address'=>Request::input('ship_address'),'ship_country'=>Request::input('ship_country'),'ship_state'=>Request::input('ship_state'),'ship_city'=>Request::input('ship_city')]);
-		}
-		elseif(Request::input('role')==5)
-		{
+		//}
+		//elseif(Request::input('role')==5)
+		//{
 			$store = Store::create(['user_id'=>$insert_id,
 			'store_name'=>Request::input('store_name'),
 			'store_link'=>Request::input('store_link'),
@@ -223,7 +223,7 @@ class UserController extends Controller
 			{
 			Affiliate::create(['user_id'=>$insert_id,'store_id'=>$store_id,'category_id'=>$aff['affiliate'],'fees'=>$aff['value']]);
 			}
-		}
+		//}
 		if(Request::input('notify'))
 		{
 		$emails['email'] = Request::input('email'); 
@@ -412,8 +412,8 @@ class UserController extends Controller
 		 $cat->role=Request::input('role');
          $cat->save(); 
 		  
-		 if(Request::input('role')==3)
-		 {
+		 //if(Request::input('role')==3)
+		 //{
 			$shipp = Shipping::find(Request::input('shipp_id'));
 			$shipp->ship_fname=Request::input('ship_fname');
 			$shipp->ship_lname=Request::input('ship_lname');
@@ -424,9 +424,9 @@ class UserController extends Controller
 			$shipp->ship_city=Request::input('ship_city');
 			$shipp->save();
 			
-		 }
-		 elseif(Request::input('role')==5)
-		 {
+		 //}
+		 //elseif(Request::input('role')==5)
+		 //{
 			$store = Store::find(Request::input('store_id'));
 			$store->store_name = Request::input('store_name');
 			if(Request::input('banner'))
@@ -466,7 +466,7 @@ class UserController extends Controller
 				Affiliate::create(['user_id'=>Request::input('id'),'store_id'=>$store_id,'category_id'=>$aff['category_id'],'fees'=>$aff['fees']]);
 				}
 			}
-		 }
+		 //}
 		  
 		$list[]='success';
 		$msgs='Record updated successfully.';

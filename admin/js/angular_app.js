@@ -2717,7 +2717,7 @@ app.controller('CountryController', function($scope, $http) {
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
-		$http.get('paln/all').
+		$http.get('plan/all').
 		success(function(data, status, headers, config) {
 			$scope.products = data['products'];
 		        $scope.loading = false;
