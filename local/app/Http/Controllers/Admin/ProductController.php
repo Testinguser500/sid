@@ -5,7 +5,8 @@ use App\ProductImage;
 use App\Category;
 use App\Brand;
 use App\ProductDataType;
-use App\Option; 
+use App\Option;
+use App\ProductAttribute;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -53,7 +54,9 @@ class ProductController extends Controller
 	public function getoptionvalue(){
 	   $pid= Request::input('parent_id');
 	   $optionvalues    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$pid)->where('status', '=','Active')->get();
-	   $return['optionvalues']   = $optionvalues;
+	   $optionname   = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',0)->where('id', '=',$pid)->where('status', '=','Active')->get();
+	   $return['optionvalues']   = $optionvalues; 
+	   $return['optionname']   = $optionname;
 	   return $return;
 	}
 	
@@ -111,9 +114,7 @@ class ProductController extends Controller
 	    }
 	}
 	$newproids = implode(",", $newcatarr);
-        $ovids= Request::input('pro_opt_values_id'); 
-	$newovids = implode(",", $ovids); 
-	
+        
 	 $prod = Product::create(['pro_name' =>Request::input('pro_name'),
 			 'pro_des' =>Request::input('pro_des'),
 			 'pro_short_des' =>Request::input('pro_short_des'),
@@ -126,8 +127,8 @@ class ProductController extends Controller
 			 'sale_price' =>Request::input('sale_price'),
 			 'no_stock' =>Request::input('no_stock'),
 			 'pro_datatype_id'=>Request::input('pro_datatype_id'),
-			 'pro_opt_name_id'=>Request::input('pro_opt_name_id'),
-			 'pro_opt_values_id'=>$newovids,
+			 //'pro_opt_name_id'=>Request::input('pro_opt_name_id'),
+			 //'pro_opt_values_id'=>$newovids,
 			 'sku'=>Request::input('sku'),
 			 'date_from'=>Request::input('date_from'),
 			 'date_to'=>Request::input('date_to'),
@@ -142,6 +143,15 @@ class ProductController extends Controller
 			 'status' =>Request::input('status')]);
 	 
 		$insertedId = $prod->id;
+		$ovids= Request::input('pro_opt_values_id');  
+			
+			foreach($ovids as $kop => $vop){ 
+			$newopvarr = implode(",",$vop);
+			 ProductAttribute::create(['option_name_id' => $kop,
+						   'option_value_ids'=> $newopvarr,
+						   'product_id' => $insertedId,
+						  ]);
+			}
 		if($insertedId > 0){
 			$images = Request::input('images'); //print_r($images);
 			 foreach($images as $imgvvv){

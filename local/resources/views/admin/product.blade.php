@@ -338,15 +338,27 @@
 					 <div ng-show="isSet(5)">
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Custom Product option</label>
-					     <select class="form-control" name="pro_opt_name_id" ng-model="product.pro_opt_name_id"  ng-change="GetSelectedOptions(product.pro_opt_name_id)">
+					     <!--<select class="form-control" name="pro_opt_name_id" ng-model="product.pro_opt_name_id"  ng-change="GetSelectedOptions(product.pro_opt_name_id)">
 						<option ng-repeat="opnam in options" ng-value="opnam.id" ng-selected="opnam.id==product.pro_opt_name_id" value="<%opnam.id%>"><% opnam.option_name %></option>
-					     </select>   
+					     </select>-->
+					     <select class="form-control" name="pro_opt_name_id" ng-model="product.pro_opt_name_id"  ng-change="">
+						<option ng-repeat="opnam in options" ng-if="check_exist(opnam.id)" ng-value="opnam.id" ng-selected="opnam.id==product.pro_opt_name_id" value="<%opnam.id%>"><% opnam.option_name %></option>
+					     </select>
+					     <button ng-click="addData(product.pro_opt_name_id);product.pro_opt_name_id=''" type="submit" class="btn btn-primary">Add</button>
 					  </div>
-					 <div class="form-group">
+					 <div class="form-group" ng-repeat="newvalue in optval">
+					    <% newvalue.parent_name[0].option_name %>
+					     <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id[newvalue.optid]" multiple>
+						<option ng-repeat="opv in newvalue.all" ng-value="opv.id"  value="<%opv.id%>"><% opv.option_name %></option>
+					     </select>
+					     <a href="" ng-click="removeData($index)">Remove</a>
+					 </div>
+					 
+					 <!--<div class="form-group">
 					 <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
 						<option ng-repeat="opv in optionvalues" ng-value="opv.id" ng-selected="opv.id==product.pro_opt_values_id" value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
-					  </div>
+					  </div>-->
 					 </div>
 					 <div ng-show="isSet(6)">
 					 <div class="form-group">

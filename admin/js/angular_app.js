@@ -2470,6 +2470,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.product={};
      $scope.pr_imgs = [];
      $scope.pro_opt_values_id = [];
+     $scope.optval = [];
      $scope.product.pro_category_id={};
      $scope.success_flash=false;
      $scope.tab = 1;
@@ -2512,6 +2513,7 @@ app.controller('CountryController', function($scope, $http) {
 		});
 	}
 	$scope.GetSelectedOptions = function(optionid) { console.log($scope.optionvalues);
+	
 	$http.post('product/getoptionvalue',{
 			parent_id: optionid
 		}).
@@ -2520,6 +2522,41 @@ app.controller('CountryController', function($scope, $http) {
 		        $scope.loading = false;
 		});
 	}
+	$scope.addData = function (optionid) { 
+           if(optionid!=''){
+	    $http.post('product/getoptionvalue',{
+			parent_id: optionid
+		}).
+		success(function(data, status, headers, config) {
+			$scope.optval.push({
+		         optid:optionid,
+	                 all :data['optionvalues'],
+			 parent_name: data['optionname']
+		        });
+		        $scope.loading = false;
+		});
+	   }
+	}
+    $scope.check_exist=function(optid){
+	var exist_val=0;
+	angular.forEach($scope.optval, function (item,key) {
+			if(item.optid==optid)  {
+				exist_val=1;
+			}
+			
+        });
+	if(exist_val==1){
+		return false;
+	}else{
+		return true;
+	}
+	
+    }
+    $scope.removeData=function(index)
+	{
+	   $scope.optval.splice(index,1);
+	}
+	
 	
 	$scope.add = function() {	
                 $scope.page='add';		
@@ -2533,7 +2570,9 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
 			$scope.options = data['options'];
-			
+			$scope.product={};
+			 $scope.optval = [];
+			$scope.pr_imgs = [];
 			$scope.all_category = data['all_category'];
 
 		        $scope.loading = false;
@@ -2572,28 +2611,29 @@ app.controller('CountryController', function($scope, $http) {
     });
    }
    
-   $scope.setdefault=function(index){
+	 $scope.setdefault=function(index){
        angular.forEach($scope.pr_imgs, function (item,key) {
 			$scope.pr_imgs[key]['def']=0;        
 			
         });
         $scope.pr_imgs[index]['def']=1;
-   }
-   $scope.unsetdefault=function(index){
-      
-        $scope.pr_imgs[index]['def']=0;
-   }
-   $scope.removeimgs=function(index)
-   {
-      $scope.pr_imgs.splice(index,1);
-   }
+	}
+	$scope.unsetdefault=function(index){
+	   
+	     $scope.pr_imgs[index]['def']=0;
+	}
+	$scope.removeimgs=function(index)
+	{
+	   $scope.pr_imgs.splice(index,1);
+	}
      
 	   
 	 
-	 $scope.store = function(product,images) { 
+	 $scope.store = function(product,images) {
+		
            $scope.errors=false;
            $scope.success_flash=false;   
-           console.log(product);console.log(images);
+           console.log(product);
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -2607,7 +2647,7 @@ app.controller('CountryController', function($scope, $http) {
 			no_stock: product.no_stock,
 			sale_price: product.sale_price,
 			pro_datatype_id: product.pro_datatype_id,
-			pro_opt_name_id: product.pro_opt_name_id,
+			//pro_opt_name_id: product.pro_opt_name_id,
 			pro_opt_values_id: product.pro_opt_values_id,
 			sku: product.sku,
 			date_from: product.date_from,
