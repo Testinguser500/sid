@@ -326,11 +326,11 @@ class UserController extends Controller
 		}
 		//elseif($data->role=='3')
 		//{
-		$user = DB::table('shipp_address')->select('*','id as shipp_id')->where('user_id', '=',$id)->where('ship_status','=','Active')->first();
+		$user1 = DB::table('shipp_address')->select('*','id as shipp_id')->where('user_id', '=',$id)->where('ship_status','=','Active')->first();
 		//}
 		$category = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 		//print_r($user);
-		 $return['user']=(object) array_merge((array)$data,(array) $user);
+		 $return['user']=(object) array_merge((array)$data,(array) $user,(array)$user1);
 		 //print_r($return['user']);
          $return['all_user']=$user;
 		 $return['roles']=$role;
