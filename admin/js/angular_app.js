@@ -2498,8 +2498,11 @@ app.controller('CountryController', function($scope, $http) {
      $scope.product.pro_category_id={};
      $scope.success_flash=false;
      $scope.tab = 1;
-    $scope.showMeimg=true;
-
+     $scope.showMeimg=true;     
+      $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
     $scope.setTab = function(newTab){
       $scope.tab = newTab;
     };
@@ -2594,19 +2597,13 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
-<<<<<<< HEAD
-			$scope.options = data['options'];			
-			$scope.all_category = data['all_category'];
-			console.log($scope.all_category);
-			console.log($scope.categories);
 
-=======
 			$scope.options = data['options'];
 			$scope.product={};
 			 $scope.optval = [];
 			$scope.pr_imgs = [];
 			$scope.all_category = data['all_category'];
->>>>>>> 118110e5abce2b32f34467e020c7ff3defb83f52
+
 
 		        $scope.loading = false;
  
