@@ -49,22 +49,34 @@
             <!-- /.box-header -->
            
             <div class="box-body">
+		<div class="row">
+                <div class="form-group col-md-3 pull-right">
+		  
+		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
+		</div>
+              </div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
-				  <th>#</th>
-                  <th>User Name</th>
-                  <th>Email</th>
-				  <th>Role</th>
+				  <th ng-click="sort('id')" style="cursor:pointer">#</th>
+                  <th ng-click="sort('name')" style="cursor:pointer">User Name
+		  <span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		  </th>
+		  
+                  <th ng-click="sort('email')" style="cursor:pointer">Email
+		  <span class="glyphicon sort-icon"  ng-show="sortKey=='email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+				  <th ng-click="sort('role')" style="cursor:pointer">Role
+				  <span class="glyphicon sort-icon"  ng-show="sortKey=='role'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
 				  <th>Post</th>
-				  <th>Status</th>
+				  <th ng-click="sort('status')" style="cursor:pointer">Status
+				  <span class="glyphicon sort-icon"  ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                   <th> </th>                 
                 </tr>
                 </thead>
                 <tbody>
                 
-                <tr ng-repeat="val in users">
+                <tr dir-paginate="val in users|orderBy:sortKey:reverse|itemsPerPage:10|filter:search">
 
                   <td><input type="checkbox" ng-model="users_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/></td>
 				  <td><%$index+1%></td>
@@ -117,6 +129,11 @@
                 </tr>
                 </tfoot>
               </table>
+	      <dir-pagination-controls
+					max-size="10"
+					direction-links="true"
+					boundary-links="true" >
+		</dir-pagination-controls>
             </div>
             <!-- /.box-body -->
           </div>

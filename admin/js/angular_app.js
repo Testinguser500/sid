@@ -932,6 +932,10 @@ app.controller('UserController', function($scope, $http) {
 	 $scope.banner=false;
      $scope.page='index';
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
@@ -1189,7 +1193,7 @@ app.controller('UserController', function($scope, $http) {
 			$scope.user_ddata = data['user'];
 			$scope.all_user = data['all_user'];
 			$scope.roles = data['roles'];
-			$scope.loading = false;
+			
  console.log($scope.user_ddata);
  $scope.user_ddata.password='';
  $scope.getState($scope.user_ddata.country,'user');
@@ -1200,6 +1204,7 @@ app.controller('UserController', function($scope, $http) {
  $scope.getCity($scope.user_ddata.ship_state,'shipp');
  $scope.category = data['category'];
  $scope.inputs = $scope.user_ddata.affiliate;
+ $scope.loading = false;
 		});
 	};
 	
@@ -2594,19 +2599,12 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
-<<<<<<< HEAD
-			$scope.options = data['options'];			
-			$scope.all_category = data['all_category'];
-			console.log($scope.all_category);
-			console.log($scope.categories);
-
-=======
 			$scope.options = data['options'];
 			$scope.product={};
 			 $scope.optval = [];
 			$scope.pr_imgs = [];
 			$scope.all_category = data['all_category'];
->>>>>>> 118110e5abce2b32f34467e020c7ff3defb83f52
+
 
 		        $scope.loading = false;
  
