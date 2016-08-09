@@ -107,6 +107,36 @@ class UserController extends Controller
 		$list[]='success';
 		return $list;
 	}
+	public function checkLink()
+	{
+	    $link=Request::input('store_link');
+	    $store_id = Request::input('store_id');
+	    if($link)
+	    {
+			if($store_id)
+			{
+				    
+			$validation = array(
+				    'store_link'=>'required|unique:store,store_link,'.Request::input('store_id')
+			);
+			}
+			else
+			{
+			$validation = array(
+				    'store_link'=>'unique:store'
+			);	    
+			}
+			$validator = Validator::make(Request::all(), $validation);
+			 if ($validator->fails()) {
+				$lists[]='error';
+				$msg=$validator->errors()->all();
+				$lists[]=$msg;
+				return $lists;
+			}
+		$lists='success';
+		return $lists;
+	    }
+	}
         public function store(){
 			
 			//echo Request::input('fname');
@@ -157,12 +187,12 @@ class UserController extends Controller
         $password = Request::input('password');
         $user = User::create(['image' =>Request::input('profile_image'),'fname' =>Request::input('fname'),'lname' =>Request::input('lname'),'username' =>Request::input('username'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'home_number' =>Request::input('home_number'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'state' =>Request::input('state'),'city' =>Request::input('city'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
 		$insert_id = $user->id;
-		if(Request::input('role')==3)
-		{
+		//if(Request::input('role')==3)
+		//{
 			Shipping::create(['user_id'=>$insert_id,'ship_fname'=>Request::input('ship_fname'),'ship_lname'=>Request::input('ship_lname'),'ship_mobile'=>Request::input('ship_mobile'),'ship_address'=>Request::input('ship_address'),'ship_country'=>Request::input('ship_country'),'ship_state'=>Request::input('ship_state'),'ship_city'=>Request::input('ship_city')]);
-		}
-		elseif(Request::input('role')==5)
-		{
+		//}
+		//elseif(Request::input('role')==5)
+		//{
 			$store = Store::create(['user_id'=>$insert_id,
 			'store_name'=>Request::input('store_name'),
 			'store_link'=>Request::input('store_link'),
@@ -193,7 +223,7 @@ class UserController extends Controller
 			{
 			Affiliate::create(['user_id'=>$insert_id,'store_id'=>$store_id,'category_id'=>$aff['affiliate'],'fees'=>$aff['value']]);
 			}
-		}
+		//}
 		if(Request::input('notify'))
 		{
 		$emails['email'] = Request::input('email'); 
@@ -262,10 +292,15 @@ class UserController extends Controller
 		if($action=='Active'){
 			$status ='Inactive';
 		}
-		else
+		else if($action=='Inactive')
 		{
 			$status = 'Active';
 		}
+		else if($action=='Block')
+		{
+			$status = 'Block';
+		}
+		
 		$cat = User::find($id);
            $cat->status = $status;
            $cat->save(); 	   		 
@@ -289,10 +324,10 @@ class UserController extends Controller
 		$user->affiliate = $afiliate;
 		}
 		}
-		elseif($data->role=='3')
-		{
+		//elseif($data->role=='3')
+		//{
 		$user = DB::table('shipp_address')->select('*','id as shipp_id')->where('user_id', '=',$id)->where('ship_status','=','Active')->first();
-		}
+		//}
 		$category = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 		//print_r($user);
 		 $return['user']=(object) array_merge((array)$data,(array) $user);
@@ -313,20 +348,25 @@ class UserController extends Controller
 			'email'=>'required|email|unique_with:users,role,'.Request::input('id'),
 			'password'=>'min:6',
 			'confirm_password'=>'same:password',
+			'ship_fname'=>'required',
+			'ship_mobile'=>'required',
+			'ship_address'=>'required',
+			'ship_country'=>'required',
+			'ship_state'=>'required',
+			'ship_city'=>'required',
 			
 	
 	);
-	if(Request::input('role')==3)
-	{
-		$validation1 = array('ship_fname'=>'required',
-		'ship_mobile'=>'required',
-		'ship_address'=>'required',
-		'ship_country'=>'required',
-		'ship_state'=>'required',
-		'ship_city'=>'required',
-		);
-	}
-	elseif(Request::input('role')==5)
+	if(Request::input('password'))
+	   {
+	    $validation['password']='required|min:6';
+	    $validation['confirm_password']='required|same:password';
+	   }
+	//if(Request::input('role')==3)
+	//{
+		//$validation1 = array(		);
+	//}
+	if(Request::input('role')==5)
 	{
 		$validation1 = array(
 		
@@ -377,8 +417,8 @@ class UserController extends Controller
 		 $cat->role=Request::input('role');
          $cat->save(); 
 		  
-		 if(Request::input('role')==3)
-		 {
+		 //if(Request::input('role')==3)
+		 //{
 			$shipp = Shipping::find(Request::input('shipp_id'));
 			$shipp->ship_fname=Request::input('ship_fname');
 			$shipp->ship_lname=Request::input('ship_lname');
@@ -389,9 +429,9 @@ class UserController extends Controller
 			$shipp->ship_city=Request::input('ship_city');
 			$shipp->save();
 			
-		 }
-		 elseif(Request::input('role')==5)
-		 {
+		 //}
+		 //elseif(Request::input('role')==5)
+		 //{
 			$store = Store::find(Request::input('store_id'));
 			$store->store_name = Request::input('store_name');
 			if(Request::input('banner'))
@@ -431,7 +471,7 @@ class UserController extends Controller
 				Affiliate::create(['user_id'=>Request::input('id'),'store_id'=>$store_id,'category_id'=>$aff['category_id'],'fees'=>$aff['fees']]);
 				}
 			}
-		 }
+		 //}
 		  
 		$list[]='success';
 		$msgs='Record updated successfully.';

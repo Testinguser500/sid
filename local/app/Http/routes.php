@@ -100,6 +100,7 @@ Route::post('admins/user/changeStatus', 'Admin\UserController@changeStatus');
 Route::post('admins/user/getProfileImage', 'Admin\UserController@getProfileImage');
 Route::post('admins/user/changeRole', 'Admin\UserController@changeRole');
 Route::post('admins/user/deleteAll', 'Admin\UserController@deleteAll');
+Route::post('admins/user/checkLink', 'Admin\UserController@checkLink');
 
 Route::get('admins/static-content', 'Admin\StaticContentController@index');
 Route::get('admins/static-content/all', 'Admin\StaticContentController@all');
@@ -146,6 +147,11 @@ Route::post('admins/product/delete', 'Admin\ProductController@delete');
 Route::get('admins/product/edit/{id}', 'Admin\ProductController@edit');
 Route::post('admins/product/update', 'Admin\ProductController@update');
 Route::post('admins/product/getoptionvalue', 'Admin\ProductController@getoptionvalue');
+
+Route::get('admins/plan', 'Admin\PlanController@index');
+Route::get('admins/plan/all', 'Admin\PlanController@all');
+Route::post('admins/plan/store', 'Admin\PlanController@store');
+
 
 
 //Seller Panel
