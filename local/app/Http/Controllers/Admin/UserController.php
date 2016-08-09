@@ -341,6 +341,7 @@ class UserController extends Controller
 	}
          public function update(){
 	//print_r(Request::all());
+	
 	 $validation1=array();
 	$validation = array(
 			'role'=>'required',
@@ -388,9 +389,9 @@ class UserController extends Controller
 				  return $list;
         }
 		 
-          if(Request::input('image')){	 
+          if(Request::input('profile_image')){	 
          
-         $fileName = Request::input('profile_image'); // renameing image
+         $fileName = asset('uploads/user/').'/'.Request::input('profile_image'); // renameing image
          
          }
 	 $user_id = Request::input('id');
@@ -462,7 +463,7 @@ class UserController extends Controller
 			$store->featured = Request::input('featured');
 			$store->verified = Request::input('verified');
 			$store->promotinoal_link = Request::input('promotinoal_link');
-			$store->promotion_banner = Request::input('promotion');
+			$store->promotional_banner = Request::input('promotion');
 			$store->save();
 			}
 			else
@@ -489,7 +490,7 @@ class UserController extends Controller
 			'featured'=>Request::input('featured'),
 			'verified'=>Request::input('verified'),
 			'promotinoal_link'=>Request::input('promotinoal_link'),
-			'promotion_banner'=>Request::input('promotion'),
+			'promotional_banner'=>Request::input('promotion'),
 			'logo'=>Request::input('logo')]);
 			}
 			
@@ -539,7 +540,7 @@ class UserController extends Controller
 			//echo public_path($inPublic);
 			//echo $localPath = str_replace('local\public','',(public_path()));
 			//echo storage_path();
-			echo $path = asset('local/storage/app/');
+			 $path = asset('local/storage/app/');
 			\Storage::put('uploads/'.$fileName, $img->encode());
 			return "<a ><img src='".$path."/uploads/".$fileName."'  width='128' height='128></a>";
 		}

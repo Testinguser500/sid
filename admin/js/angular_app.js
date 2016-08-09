@@ -1264,7 +1264,17 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
+            }).success( function(data, status, headers, config){
+		if(data[0]=='error'){
+			$scope.errors=data[1];
+		}
+		else
+		{
+		$scope.files = data;
+		$scope.image = $scope.files;
+		$scope.loading = false;
+		}
+		});
 
     });
    }
@@ -1417,7 +1427,7 @@ app.controller('UserController', function($scope, $http) {
             $scope.errors=false;
 			$scope.loading=true;
             $scope.success_flash=false;
-			$scope.getProfileImage(user_data);
+		//$scope.getProfileImage(user_data);
            $http.post('user/update', {
 			role:user_data.role,
 			fname: user_data.fname,
@@ -1440,7 +1450,7 @@ app.controller('UserController', function($scope, $http) {
 			address:user_data.address,
 			id: user_data.userid,
 			status: user_data.status,
-			profile_image: $scope.profileImage,
+			profile_image: $scope.files,
 			store_name: user_data.store_name,
 			store_link: user_data.store_link,
 			store_address: user_data.store_address,

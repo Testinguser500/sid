@@ -50,12 +50,12 @@
            
             <div class="box-body">
 		<div class="row">
-                <div class="form-group col-md-3 pull-left">    
+                <div class="form-group col-md-2 pull-left">    
       <select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="100">100</option>
-                        <option value="1000">1000</option>
+                        <option value="5" ng-selected="tb_pag==5">5</option>
+                        <option value="10" ng-selected="tb_pag==10">10</option>
+                        <option value="100" ng-selected="tb_pag==100">100</option>
+                        <option value="1000" ng-selected="tb_pag==1000">1000</option>
                     </select>
   </div>
                 <div class="form-group col-md-3 pull-right">    
@@ -355,36 +355,47 @@
                   <textarea type="text" class="form-control" id="" name="bio" placeholder="Biographical Info" ng-model="user_ddata.bio"></textarea>
 		  <div class="help-block"></div>
                 </div>
+			  <div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1"> Profile Image</label>
+		  <span class="btn btn-primary btn-file">
+                  Upload<input type="file" name="image" ng-model="user_ddata.image" onchange="angular.element(this).scope().uploadedFile(this)">
+		  </span>
+		  <div class="help-block"></div>
+                </div>
+			  <div class="form-group col-xs-4" ng-show="image">
+			   <img src="{{URL::asset('uploads/user/')}}/<% image %>" width="100" height="100"> 
+			  </div>
 				
 				
 				</div>
 				<div class="form-group">
 			  <h3>Account Management</h3>
 			  </div>
-				<div>
-				<div class="form-group">
+				<div class="row">
+				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Password</label>
                   <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user_ddata.password" password-strength="user_ddata.password">
 				  
 				  
-				<div class="help-block"></div>
+				<div class="help-block"><span class="help-inline" data-ng-class="strength"><%strength%> </span>
+				<div class="progress <%strengthClass%>">
+				    <div class=" <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+			    </div></div>
                 </div>
-			    <div class="form-group">
+			    <!--<div class="form-group">
 			    <div class="col-xs-4">
 				<span class="help-inline" data-ng-class="strength"><%strength%> </span>
 				<div class="progress <%strengthClass%>">
-				    <div class=" <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-				      
-			    </div>
+				    <div class=" <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
 			    </div>
 			  </div>
-				</div>
-				<div style="clear:both"></div>
-				<div class="form-group">
-                  <label for="exampleInputEmail1">Confirm Password</label>
-                  <input type="password" class="form-control" id="" name="repassword" placeholder="Confirm password" ng-model="user_ddata.repassword">
+				</div>-->
+				<!--<div style="clear:both"></div>-->
+				<div class="form-group col-xs-4">
+				<label for="exampleInputEmail1">Confirm Password</label>
+				<input type="password" class="form-control" id="" name="repassword" placeholder="Confirm password" ng-model="user_ddata.repassword">
 				<div class="help-block"></div>
-                </div>
+			      </div>
 				</div>
 				<div class="row">
 				
@@ -541,7 +552,7 @@
                 </div>
                   <div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Store Link</label>
-                  <input type="text" class="form-control" id="" maxlength="5" name="store_link" placeholder="Store Link" ng-model="user_ddata.store_link" ng-keyup="checkLink(user_ddata);"><img class="lnk-img" ng-show="linkloading" src="{{URL::asset('admin/img/loader1.gif')}}"><img ng-show="succ_flash" class="lnk-img" src="{{URL::asset('admin/img/tick.png')}}"><img ng-show="error" class="lnk-img" src="{{URL::asset('admin/img/cross.png')}}">
+                  <input type="text" class="form-control" id="" maxlength="5" readonly="readonly" name="store_link" placeholder="Store Link" ng-model="user_ddata.store_link" ng-keyup="checkLink(user_ddata);"><img class="lnk-img" ng-show="linkloading" src="{{URL::asset('admin/img/loader1.gif')}}"><img ng-show="succ_flash" class="lnk-img" src="{{URL::asset('admin/img/tick.png')}}"><img ng-show="error" class="lnk-img" src="{{URL::asset('admin/img/cross.png')}}">
 		  <div class="help-block">{{URL::asset('')}}<%user_ddata.store_link%></div>
 		  
                 </div>
