@@ -20,7 +20,7 @@
           <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> User List</h3>
-			  <a class="add-link btn btn-success btn-flat btn-grid" href="javascript:void(0);" ng-click="add()"><i class="fa fa-plus-square"></i> Add User</a>
+			  <a class="add-link btn btn-success btn-flat btn-grid" href="javascript:void(0);" ng-click="useradd()"><i class="fa fa-plus-square"></i> Add User</a>
 			  <ul class="subsubsub">
 			  <li ng-repeat="us in usersRecord">
 	<li class="all"><a href="javascript:void(0)" ng-click="init();" class="current">All <span class="count">(<%users.length%>)</span></a> |</li>
@@ -50,10 +50,17 @@
            
             <div class="box-body">
 		<div class="row">
-                <div class="form-group col-md-3 pull-right">
-		  
-		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
-		</div>
+                <div class="form-group col-md-3 pull-left">    
+      <select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="100">100</option>
+                        <option value="1000">1000</option>
+                    </select>
+  </div>
+                <div class="form-group col-md-3 pull-right">    
+    <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
+  </div>
               </div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -76,7 +83,7 @@
                 </thead>
                 <tbody>
                 
-                <tr dir-paginate="val in users|orderBy:sortKey:reverse|itemsPerPage:10|filter:search">
+                <tr dir-paginate="val in users|orderBy:sortKey:reverse|itemsPerPage:tb_pag|filter:search">
 
                   <td><input type="checkbox" ng-model="users_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/></td>
 				  <td><%$index+1%></td>
@@ -130,7 +137,7 @@
                 </tfoot>
               </table>
 	      <dir-pagination-controls
-					max-size="10"
+					max-size="tb_pag"
 					direction-links="true"
 					boundary-links="true" >
 		</dir-pagination-controls>
