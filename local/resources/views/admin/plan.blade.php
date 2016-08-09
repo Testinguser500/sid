@@ -122,7 +122,8 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button ng-click="update(plan)" class="btn btn-primary">Submit</button>
+                <button ng-hide='loading' ng-click="update(plan)" class="btn btn-primary">Submit</button>
+		<button ng-show='loading' class="btn btn-primary">Loading..</button>
               </div>
             
           </div>
@@ -138,33 +139,33 @@
 			 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Name</label>
-                  <input type="text" class="form-control" id="" name="name" placeholder="Plan Name" ng-model="plan.plan_name">
+                  <input type="text" class="form-control" id="" name="name" placeholder="Plan Name" ng-model="plans.plan_name">
 		  <div class="help-block"></div>
                 </div> 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Plan Duration</label>
-                  <input type="text" class="form-control" id="" name="plan_duration" placeholder="Plan Duration In Days" ng-model="plan.plan_duration">Days
+                  <input type="text" class="form-control" id="" name="plan_duration" placeholder="Plan Duration In Days" ng-model="plans.plan_duration">Days
 		  <div class="help-block"></div>
                 </div>
 		<div class="form-group">
                   <label for="exampleInputEmail1">Plan Price</label>
-                  <input type="text" class="form-control" id="" name="plan_price" placeholder="Plan Price" ng-model="plan.plan_price">Days
+                  <input type="text" class="form-control" id="" name="plan_price" placeholder="Plan Price" ng-model="plans.plan_price">Days
 		  <div class="help-block"></div>
                 </div>
 		
                 <div class="form-group">
                   <label for="exampleInputEmail1">Description</label>
-                  <div text-angular ng-model="plan.description" name="demo-editor" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div> 
+                  <div text-angular ng-model="plans.description" name="demo-editor" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div> 
                                     
 		  <div class="help-block"></div>
                 </div> 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Image</label>
-<% plans.image %>
+
                   <div class="form-group col-xs-12 show-bn">
-                <img src="{{URL::asset('uploads/plan')}}/<% plansimage %>" width="310" height="210" ng-show="files" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" >  
+                <img src="{{URL::asset('uploads/plan')}}/<% image %>" width="310" height="210" ng-show="image" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" >  
                   <br/>
-                  <span class="btn btn-primary btn-file" ng-hide="files">
+                  <span class="btn btn-primary btn-file" ng-hide="image">
 		   Upload <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
 		  </span>
 		<em>Image size is(310x210) and not  more than 1 mb.</em>
@@ -178,14 +179,15 @@
                   
                   <div class="form-group">
                   <label for="exampleInputEmail1">Status </label>
-                   <input type="radio"  id="" name="status" ng-model="plan.status"  value="Active" ng-init="plan.status='Active'"  >Active <input type="radio" id="" name="status" value="Inactive" ng-model="plan.status"   >Inactive 
+                   <input type="radio"  id="" name="status" ng-model="plans.status"  value="Active" ng-init="plans.status='Active'"  >Active <input type="radio" id="" name="status" value="Inactive" ng-model="plans.status"   >Inactive 
 		  <div class="help-block"></div>
                 </div> 
              </div>
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button ng-click="store(plan);" class="btn btn-primary">Submit</button>
+                <button ng-hide="loading" ng-click="store(plans);" class="btn btn-primary">Submit</button>
+		<button ng-show='loading'  class="btn btn-primary">Loading</button>
               </div>
           
           </div>

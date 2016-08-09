@@ -2794,6 +2794,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.page='index';
      $scope.plans=false;
      $scope.plan='';
+     $scope.plan.plan_image='';
      $scope.success_flash=false;
      $scope.sort = function(keyname){
 		$scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -2824,6 +2825,7 @@ app.controller('CountryController', function($scope, $http) {
 		});
 	};
 	$scope.uploadedFile = function(element) {
+		$scope.loading = true;
            $scope.$apply(function($scope) {
             
            var fd = new FormData();
@@ -2839,14 +2841,16 @@ app.controller('CountryController', function($scope, $http) {
             }).success( function(data, status, headers, config){ 
                         if(data[0]=='error'){
 				$scope.errors=data[1];
+				$scope.loading = true;
 			}
 			else
 			{
                                 $scope.errors=false;
                                 $scope.files=data;
 				console.log($scope.files);
+				$scope.image = $scope.files;
 				$scope.plan.plan_image = $scope.files;
-				console.log($scope.plansimage);
+				console.log($scope.plan.plan_image);
                                 $scope.loading = false;
 			}
         });
