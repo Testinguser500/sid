@@ -33,12 +33,12 @@ class UserController extends Controller
 	 $role = Request::input('role');
 		if($role)
 		{
-			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('users.role','=',$role)->where('is_delete','=','0')->get();
+			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('users.role','=',$role)->where('is_delete','=','0')->orderBy('users.id', 'desc')->get();
 			//print_r($user);
 		}
 		else
 		{
-			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->get();
+			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->orderBy('users.id', 'desc')->get();
 			//print_r($user);
 		}
 			$country = DB::table('country')->where('is_delete','=','0')->where('pid','=','0')->get();

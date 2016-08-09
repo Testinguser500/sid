@@ -151,6 +151,8 @@ Route::post('admins/product/getoptionvalue', 'Admin\ProductController@getoptionv
 Route::get('admins/plan', 'Admin\PlanController@index');
 Route::get('admins/plan/all', 'Admin\PlanController@all');
 Route::post('admins/plan/store', 'Admin\PlanController@store');
+Route::get('admins/plan/edit/{id}', 'Admin\PlanController@edit');
+Route::post('admins/plan/update', 'Admin\PlanController@update');
 
 
 

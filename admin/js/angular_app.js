@@ -2793,14 +2793,21 @@ app.controller('CountryController', function($scope, $http) {
      $scope.loading = true;
      $scope.page='index';
      $scope.plans=false;
+     $scope.plan='';
      $scope.success_flash=false;
-     $scope.init = function() {	
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
+     $scope.init = function() {
+	
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
 		$http.get('plan/all').
 		success(function(data, status, headers, config) {
-			$scope.products = data['products'];
+			$scope.plans = data;
+			console.log($scope.plans);
 		        $scope.loading = false;
 		});
 	};
@@ -2838,7 +2845,7 @@ app.controller('CountryController', function($scope, $http) {
                                 $scope.errors=false;
                                 $scope.files=data;
 				console.log($scope.files);
-				$scope.plansimage = $scope.files;
+				$scope.plan.plan_image = $scope.files;
 				console.log($scope.plansimage);
                                 $scope.loading = false;
 			}
@@ -2870,5 +2877,49 @@ app.controller('CountryController', function($scope, $http) {
  
          });
       };
-     
+      
+      $scope.editplan = function(plan) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('plan/edit/' + plan.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.plan = data['plan'];
+			$scope.loading = false;
+		});
+	};
+	
+	$scope.update=function(plan)
+	{
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.page='edit';
+		$http.post('plan/update',{
+			plan_id:plan.id,
+			plan_name:plan.plan_name,
+			plan_duration:plan.plan_duration,
+			plan_price:plan.plan_price,
+			description:plan.description,
+			image:$scope.files,
+			plan_status:plan.plan_status
+			}).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+		});
+	}
+	$scope.delfiles = function()
+	{
+		$scope.plan.plan_image='';
+	}
+     $scope.init();
   });
