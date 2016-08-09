@@ -18,23 +18,35 @@
           <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> Option List</h3>
-              <div class="pull-right"> <a href="javascript:void(0)" ng-click="add();"class="btn btn-primary"><i class="fa fa-plus"></i> Add</a></div>
+              <div class="pull-right"> <a href="javascript:void(0)" ng-click="add();"class="btn btn-primary"><i class="fa fa-plus"></i> Add Option</a></div>
             </div>
             <!-- /.box-header -->
             
             <div class="box-body">
+             <div class="row">
+                <div class="form-group col-md-3 pull-right">
+		  
+		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
+		</div>
+              </div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Option Name</th>
-                  <th>Status</th>
+                  <th ng-click="sort('id')" style="cursor:pointer">#
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('option_name')" style="cursor:pointer">Option Name
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='option_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('status')" style="cursor:pointer">Status
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
                   <th> </th>                 
                 </tr>
                 </thead>
                 <tbody>
                 
-                <tr ng-repeat="val in options"> 
+                <tr dir-paginate="val in options|orderBy:sortKey:reverse|itemsPerPage:10|filter:search"> 
                   <td><% val.id %></td>
                   <td><% val.option_name %></td>
                   <td><% val.status %></td>
@@ -74,8 +86,13 @@
                   <th>Status</th>
                   <th> </th>                 
                 </tr>
-                </tfoot>
+                </tfoot>                
               </table>
+                  <dir-pagination-controls
+					max-size="10"
+					direction-links="true"
+					boundary-links="true" >
+		</dir-pagination-controls>
             </div>
             <!-- /.box-body -->
           </div>

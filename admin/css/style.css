@@ -86,8 +86,7 @@ textarea.ta-bind {
     width: 32.8%;
 }
 .ms_ov.ng-scope {
-    background-color: rgba(14, 14, 29, 0.5);
-   
+    background-color: rgba(14, 14, 29, 0.5);   
     height: 75px;
     margin: auto 0 auto -75px;
     position: absolute;

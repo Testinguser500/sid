@@ -285,7 +285,8 @@
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates From</label>
-					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from" ng-model="product.date_from">
+					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from"  ng-model="product.date_from">
+                                           
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates To</label>
