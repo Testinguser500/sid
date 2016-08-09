@@ -337,7 +337,7 @@
 				<div class="form-group">
 			  <h3>Account Management</h3>
 			  </div>
-				<div ng-show="user_ddata.ownpassword==0">
+				<div>
 				<div class="form-group">
                   <label for="exampleInputEmail1">Password</label>
                   <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user_ddata.password" password-strength="user_ddata.password">
@@ -661,8 +661,8 @@
 				</span>
 		  <div class="help-block"></div>
                 </div>
-				<div ng-if="user_ddata.promotion_banner" class="form-group col-xs-4">
-				<img src="{{URL::asset('uploads/promotion')}}/thumb_<%user_ddata.promotion_banner%>">
+				<div ng-if="user_ddata.promotional_banner" class="form-group col-xs-4">
+				<img src="{{URL::asset('uploads/promotion')}}/thumb_<%user_ddata.promotional_banner%>">
 				<a href="javascript:void(0);" ng-click="removepromotional_banner();"><i class="fa fa-trash"></i></a>
 				</div>
 				<div class="form-group col-xs-4">

@@ -324,10 +324,10 @@ class UserController extends Controller
 		$user->affiliate = $afiliate;
 		}
 		}
-		elseif($data->role=='3')
-		{
+		//elseif($data->role=='3')
+		//{
 		$user = DB::table('shipp_address')->select('*','id as shipp_id')->where('user_id', '=',$id)->where('ship_status','=','Active')->first();
-		}
+		//}
 		$category = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 		//print_r($user);
 		 $return['user']=(object) array_merge((array)$data,(array) $user);
@@ -348,20 +348,25 @@ class UserController extends Controller
 			'email'=>'required|email|unique_with:users,role,'.Request::input('id'),
 			'password'=>'min:6',
 			'confirm_password'=>'same:password',
+			'ship_fname'=>'required',
+			'ship_mobile'=>'required',
+			'ship_address'=>'required',
+			'ship_country'=>'required',
+			'ship_state'=>'required',
+			'ship_city'=>'required',
 			
 	
 	);
-	if(Request::input('role')==3)
-	{
-		$validation1 = array('ship_fname'=>'required',
-		'ship_mobile'=>'required',
-		'ship_address'=>'required',
-		'ship_country'=>'required',
-		'ship_state'=>'required',
-		'ship_city'=>'required',
-		);
-	}
-	elseif(Request::input('role')==5)
+	if(Request::input('password'))
+	   {
+	    $validation['password']='required|min:6';
+	    $validation['confirm_password']='required|same:password';
+	   }
+	//if(Request::input('role')==3)
+	//{
+		//$validation1 = array(		);
+	//}
+	if(Request::input('role')==5)
 	{
 		$validation1 = array(
 		

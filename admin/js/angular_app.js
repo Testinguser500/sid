@@ -66,9 +66,9 @@ app.directive("passwordStrength", function(){
         restrict: 'A',
         link: function(scope, element, attrs){                    
             scope.$watch(attrs.passwordStrength, function(value) {
-                console.log(value);
+                //console.log(value);
 				
-                if(angular.isDefined(value)){
+                if(angular.isDefined(value)&& value!=''){
 					var numbers = /^[0-9]+$/; 
 					var chars = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 					
@@ -1176,6 +1176,7 @@ app.controller('UserController', function($scope, $http) {
 			$scope.roles = data['roles'];
 			$scope.loading = false;
  console.log($scope.user_ddata);
+ $scope.user_ddata.password='';
  $scope.getState($scope.user_ddata.country,'user');
  $scope.getCity($scope.user_ddata.state,'user');
  $scope.getState($scope.user_ddata.store_country,'store');
@@ -1392,11 +1393,11 @@ app.controller('UserController', function($scope, $http) {
 		   $scope.user.promotional_banner = false;
 		   
 	   }
-        $scope.update = function(user_data) { //console.log($scope.bannerfiles);
+        $scope.update = function(user_data) { //console.log(user_data);
             $scope.errors=false;
 			$scope.loading=true;
             $scope.success_flash=false;
-			getProfileImage(user_data);
+			$scope.getProfileImage(user_data);
            $http.post('user/update', {
 			role:user_data.role,
 			fname: user_data.fname,
@@ -1410,8 +1411,8 @@ app.controller('UserController', function($scope, $http) {
 			home_number: user_data.home_number,
 			website: user_data.website,
 			bio: user_data.bio,
-			password: user_data.pass,
-			//confirm_password:user_data.repassword,
+			password: user_data.password,
+			confirm_password:user_data.repassword,
 			nationality: user_data.nationality,
 			country: user_data.country,
 			state:user_data.state,
