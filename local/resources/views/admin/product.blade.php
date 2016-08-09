@@ -344,7 +344,6 @@
 					     <select class="form-control" name="pro_opt_name_id" ng-model="product.pro_opt_name_id"  ng-change="">
 						<option ng-repeat="opnam in options" ng-if="check_exist(opnam.id)" ng-value="opnam.id" ng-selected="opnam.id==product.pro_opt_name_id" value="<%opnam.id%>"><% opnam.option_name %></option>
 					     </select>
-					     <%product.pro_opt_name_id%>
 					     <button ng-click="addData(product.pro_opt_name_id);product.pro_opt_name_id=''" type="submit" class="btn btn-primary">Add</button>
 					  </div>
 					 <div class="form-group" ng-repeat="newvalue in optval">
