@@ -20,7 +20,7 @@
           <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> User List</h3>
-			  <a class="add-link btn btn-success btn-flat btn-grid" href="javascript:void(0);" ng-click="add()"><i class="fa fa-plus-square"></i> Add User</a>
+			  <a class="add-link btn btn-success btn-flat btn-grid" href="javascript:void(0);" ng-click="useradd()"><i class="fa fa-plus-square"></i> Add User</a>
 			  <ul class="subsubsub">
 			  <li ng-repeat="us in usersRecord">
 	<li class="all"><a href="javascript:void(0)" ng-click="init();" class="current">All <span class="count">(<%users.length%>)</span></a> |</li>
@@ -49,22 +49,41 @@
             <!-- /.box-header -->
            
             <div class="box-body">
+		<div class="row">
+                <div class="form-group col-md-2 pull-left">    
+      <select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
+                        <option value="5" ng-selected="tb_pag==5">5</option>
+                        <option value="10" ng-selected="tb_pag==10">10</option>
+                        <option value="100" ng-selected="tb_pag==100">100</option>
+                        <option value="1000" ng-selected="tb_pag==1000">1000</option>
+                    </select>
+  </div>
+                <div class="form-group col-md-3 pull-right">    
+    <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
+  </div>
+              </div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
-				  <th>#</th>
-                  <th>User Name</th>
-                  <th>Email</th>
-				  <th>Role</th>
+				  <th ng-click="sort('id')" style="cursor:pointer">#</th>
+                  <th ng-click="sort('name')" style="cursor:pointer">User Name
+		  <span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		  </th>
+		  
+                  <th ng-click="sort('email')" style="cursor:pointer">Email
+		  <span class="glyphicon sort-icon"  ng-show="sortKey=='email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+				  <th ng-click="sort('role')" style="cursor:pointer">Role
+				  <span class="glyphicon sort-icon"  ng-show="sortKey=='role'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
 				  <th>Post</th>
-				  <th>Status</th>
+				  <th ng-click="sort('status')" style="cursor:pointer">Status
+				  <span class="glyphicon sort-icon"  ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                   <th> </th>                 
                 </tr>
                 </thead>
                 <tbody>
                 
-                <tr ng-repeat="val in users">
+                <tr dir-paginate="val in users|orderBy:sortKey:reverse|itemsPerPage:tb_pag|filter:search">
 
                   <td><input type="checkbox" ng-model="users_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/></td>
 				  <td><%$index+1%></td>
@@ -117,6 +136,11 @@
                 </tr>
                 </tfoot>
               </table>
+	      <dir-pagination-controls
+					max-size="tb_pag"
+					direction-links="true"
+					boundary-links="true" >
+		</dir-pagination-controls>
             </div>
             <!-- /.box-body -->
           </div>
@@ -331,36 +355,47 @@
                   <textarea type="text" class="form-control" id="" name="bio" placeholder="Biographical Info" ng-model="user_ddata.bio"></textarea>
 		  <div class="help-block"></div>
                 </div>
+			  <div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1"> Profile Image</label>
+		  <span class="btn btn-primary btn-file">
+                  Upload<input type="file" name="image" ng-model="user_ddata.image" onchange="angular.element(this).scope().uploadedFile(this)">
+		  </span>
+		  <div class="help-block"></div>
+                </div>
+			  <div class="form-group col-xs-4" ng-show="image">
+			   <img src="{{URL::asset('uploads/user/')}}/<% image %>" width="100" height="100"> 
+			  </div>
 				
 				
 				</div>
 				<div class="form-group">
 			  <h3>Account Management</h3>
 			  </div>
-				<div>
-				<div class="form-group">
+				<div class="row">
+				<div class="form-group col-xs-4">
                   <label for="exampleInputEmail1">Password</label>
                   <input type="password" class="form-control" id="" name="password" placeholder="Password" ng-model="user_ddata.password" password-strength="user_ddata.password">
 				  
 				  
-				<div class="help-block"></div>
+				<div class="help-block"><span class="help-inline" data-ng-class="strength"><%strength%> </span>
+				<div class="progress <%strengthClass%>">
+				    <div class=" <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+			    </div></div>
                 </div>
-			    <div class="form-group">
+			    <!--<div class="form-group">
 			    <div class="col-xs-4">
 				<span class="help-inline" data-ng-class="strength"><%strength%> </span>
 				<div class="progress <%strengthClass%>">
-				    <div class=" <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-				      
-			    </div>
+				    <div class=" <%barClass%> progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
 			    </div>
 			  </div>
-				</div>
-				<div style="clear:both"></div>
-				<div class="form-group">
-                  <label for="exampleInputEmail1">Confirm Password</label>
-                  <input type="password" class="form-control" id="" name="repassword" placeholder="Confirm password" ng-model="user_ddata.repassword">
+				</div>-->
+				<!--<div style="clear:both"></div>-->
+				<div class="form-group col-xs-4">
+				<label for="exampleInputEmail1">Confirm Password</label>
+				<input type="password" class="form-control" id="" name="repassword" placeholder="Confirm password" ng-model="user_ddata.repassword">
 				<div class="help-block"></div>
-                </div>
+			      </div>
 				</div>
 				<div class="row">
 				
@@ -517,7 +552,7 @@
                 </div>
                   <div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Store Link</label>
-                  <input type="text" class="form-control" id="" maxlength="5" name="store_link" placeholder="Store Link" ng-model="user_ddata.store_link" ng-keyup="checkLink(user_ddata);"><img class="lnk-img" ng-show="linkloading" src="{{URL::asset('admin/img/loader1.gif')}}"><img ng-show="succ_flash" class="lnk-img" src="{{URL::asset('admin/img/tick.png')}}"><img ng-show="error" class="lnk-img" src="{{URL::asset('admin/img/cross.png')}}">
+                  <input type="text" class="form-control" id="" maxlength="5" readonly="readonly" name="store_link" placeholder="Store Link" ng-model="user_ddata.store_link" ng-keyup="checkLink(user_ddata);"><img class="lnk-img" ng-show="linkloading" src="{{URL::asset('admin/img/loader1.gif')}}"><img ng-show="succ_flash" class="lnk-img" src="{{URL::asset('admin/img/tick.png')}}"><img ng-show="error" class="lnk-img" src="{{URL::asset('admin/img/cross.png')}}">
 		  <div class="help-block">{{URL::asset('')}}<%user_ddata.store_link%></div>
 		  
                 </div>

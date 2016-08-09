@@ -932,6 +932,10 @@ app.controller('UserController', function($scope, $http) {
 	 $scope.banner=false;
      $scope.page='index';
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
@@ -1189,7 +1193,7 @@ app.controller('UserController', function($scope, $http) {
 			$scope.user_ddata = data['user'];
 			$scope.all_user = data['all_user'];
 			$scope.roles = data['roles'];
-			$scope.loading = false;
+			
  console.log($scope.user_ddata);
  $scope.user_ddata.password='';
  $scope.getState($scope.user_ddata.country,'user');
@@ -1200,6 +1204,7 @@ app.controller('UserController', function($scope, $http) {
  $scope.getCity($scope.user_ddata.ship_state,'shipp');
  $scope.category = data['category'];
  $scope.inputs = $scope.user_ddata.affiliate;
+ $scope.loading = false;
 		});
 	};
 	
@@ -1259,7 +1264,17 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
+            }).success( function(data, status, headers, config){
+		if(data[0]=='error'){
+			$scope.errors=data[1];
+		}
+		else
+		{
+		$scope.files = data;
+		$scope.image = $scope.files;
+		$scope.loading = false;
+		}
+		});
 
     });
    }
@@ -1412,7 +1427,7 @@ app.controller('UserController', function($scope, $http) {
             $scope.errors=false;
 			$scope.loading=true;
             $scope.success_flash=false;
-			$scope.getProfileImage(user_data);
+		//$scope.getProfileImage(user_data);
            $http.post('user/update', {
 			role:user_data.role,
 			fname: user_data.fname,
@@ -1435,7 +1450,7 @@ app.controller('UserController', function($scope, $http) {
 			address:user_data.address,
 			id: user_data.userid,
 			status: user_data.status,
-			profile_image: $scope.profileImage,
+			profile_image: $scope.files,
 			store_name: user_data.store_name,
 			store_link: user_data.store_link,
 			store_address: user_data.store_address,
@@ -2597,7 +2612,10 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
+<<<<<<< HEAD
 
+=======
+>>>>>>> e7feec98562c444c4c2bf8afe096c9a9580adddd
 			$scope.options = data['options'];
 			$scope.product={};
 			 $scope.optval = [];
@@ -2782,14 +2800,21 @@ app.controller('CountryController', function($scope, $http) {
      $scope.loading = true;
      $scope.page='index';
      $scope.plans=false;
+     $scope.plan='';
      $scope.success_flash=false;
-     $scope.init = function() {	
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
+     $scope.init = function() {
+	
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
 		$http.get('plan/all').
 		success(function(data, status, headers, config) {
-			$scope.products = data['products'];
+			$scope.plans = data;
+			console.log($scope.plans);
 		        $scope.loading = false;
 		});
 	};
@@ -2827,7 +2852,7 @@ app.controller('CountryController', function($scope, $http) {
                                 $scope.errors=false;
                                 $scope.files=data;
 				console.log($scope.files);
-				$scope.plansimage = $scope.files;
+				$scope.plan.plan_image = $scope.files;
 				console.log($scope.plansimage);
                                 $scope.loading = false;
 			}
@@ -2859,5 +2884,49 @@ app.controller('CountryController', function($scope, $http) {
  
          });
       };
-     
+      
+      $scope.editplan = function(plan) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('plan/edit/' + plan.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.plan = data['plan'];
+			$scope.loading = false;
+		});
+	};
+	
+	$scope.update=function(plan)
+	{
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.page='edit';
+		$http.post('plan/update',{
+			plan_id:plan.id,
+			plan_name:plan.plan_name,
+			plan_duration:plan.plan_duration,
+			plan_price:plan.plan_price,
+			description:plan.description,
+			image:$scope.files,
+			plan_status:plan.plan_status
+			}).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+		});
+	}
+	$scope.delfiles = function()
+	{
+		$scope.plan.plan_image='';
+	}
+     $scope.init();
   });

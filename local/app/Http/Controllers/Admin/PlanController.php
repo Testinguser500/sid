@@ -17,8 +17,8 @@ class PlanController extends Controller
 
         }
 	public function index(){ 
-              
-             return view('admin/plan')->with('title','Subscription Plan')->with('subtitle','List');
+              $data = DB::table('plans')->where('is_delete', '=','0')->get(); 
+             return view('admin/plan')->with('plans_data',$data)->with('title','Subscription Plan')->with('subtitle','List');
 		
 	}
         public function all(){ 
@@ -65,21 +65,22 @@ class PlanController extends Controller
         
 	 public function edit($id){
 	
-	 $cate= DB::table('categorys')->where('id', '=',$id)->first();  
-         $category = DB::table('categorys')->where('is_delete', '=','0')->get();  
-         $return['category']=$cate;
-         $return['all_cat']=$category;
+	 $cate= DB::table('plans')->where('id', '=',$id)->first();  
+         $category = DB::table('plans')->where('is_delete', '=','0')->get();  
+         $return['plan']=$cate;
+         $return['all_plan']=$category;
 	 return $return;
 	     
 	}
          public function update(){
 	
+	//print_r(Request::all());
 	  $validator = Validator::make(Request::all(), [
-            'category_name' => 'required|soft_unique_single:categorys,category_name,'.Request::input('id'),	    
-            'description'=>'required',        
-            'meta_title'=>'required',
-            'meta_description'=>'required',
-            'meta_keyword'=>'required',
+            'plan_name' => 'required',
+	    'plan_duration'=>'required|numeric',
+	    'plan_price'=>'required|numeric',
+            'description'=>'required'            
+            
         ]);
          
         if ($validator->fails()) {
@@ -88,24 +89,16 @@ class PlanController extends Controller
 			      $list[]=$msg;
 			      return $list;
         }
-//	 if(Input::file('image')!=''){	 
-//         $destinationPath = 'uploads'; // upload path
-//         $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
-//         $fileName = rand(11111,99999).'.'.$extension; // renameing image
-//         Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
-//         }
-//         echo Input::file('image');echo'hello';
-         $cat = Category::find(Request::input('id'));
-         $cat->category_name = Request::input('category_name');
+
+         $cat = Plan::find(Request::input('plan_id'));
+         $cat->plan_name = Request::input('plan_name');
          if((Request::input('image'))){
-	 $cat->image = 'category/'.Request::input('image');
+	 $cat->plan_image = Request::input('image');
          }
 	 $cat->description =Request::input('description');
-	 $cat->parent_id=Request::input('parent_id');
-         $cat->status=Request::input('status');
-         $cat->meta_title=Request::input('meta_title');
-         $cat->meta_description=Request::input('meta_description');
-         $cat->meta_keyword=Request::input('meta_keyword');
+	 $cat->plan_duration=Request::input('plan_duration');
+         $cat->plan_status=Request::input('plan_status');
+         $cat->plan_price=Request::input('plan_price');
          $cat->save(); 
 		  
         $list[]='success';
