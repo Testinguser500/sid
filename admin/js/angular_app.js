@@ -2472,6 +2472,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
      $scope.product.pro_category_id={};
+     //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
      $scope.tab = 1;
     $scope.showMeimg=true;
@@ -2554,7 +2555,8 @@ app.controller('CountryController', function($scope, $http) {
     }
     $scope.removeData=function(index)
 	{
-	   $scope.optval.splice(index,1);
+	   $scope.optval.splice(index,1);console.log($scope.product);
+	  // $scope.product.pro_opt_values_id.splice(pr_op,1);
 	}
 	
 	
@@ -2571,7 +2573,7 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.datatyps = data['datatyps'];
 			$scope.options = data['options'];
 			$scope.product={};
-			 $scope.optval = [];
+			$scope.optval = [];
 			$scope.pr_imgs = [];
 			$scope.all_category = data['all_category'];
 
@@ -2622,9 +2624,15 @@ app.controller('CountryController', function($scope, $http) {
 	   
 	     $scope.pr_imgs[index]['def']=0;
 	}
-	$scope.removeimgs=function(index)
-	{
-	   $scope.pr_imgs.splice(index,1);
+	$scope.removeimgs=function(img_nam,index)  //console.log(img_nam);
+	{  $scope.errors=false;
+           $scope.success_flash=false; 
+	$http.post('product/image_delete',{
+		image: img_nam
+		}).success( function(data, status, headers, config){
+	          $scope.pr_imgs.splice(index,1);
+	});   
+	   
 	}
      
 	   
@@ -2699,18 +2707,24 @@ app.controller('CountryController', function($scope, $http) {
                 $scope.success_flash=false;
                 $scope.page='edit';
 		$http.get('product/edit/' + product.id, {			
-		}).success(function(data, status, headers, config) {
-			$scope.product = data['product'];
+		}).success(function(data, status, headers, config) { console.log(data);
+			$scope.product = data['product']; 
 			$scope.sellers = data['sellers'];
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
+			$scope.datatyps = data['datatyps'];
+			$scope.options = data['options'];
+			$scope.all_category = data['all_category'];
+			$scope.pr_imgs = data['product_img'];
+			$scope.optval = data['all'];
+			//$scope.all = data['all'];console.log($scope.optval); console.log($scope.all);
 		        $scope.loading = false;
 		});
 	};
 
-        $scope.update = function(product) { 
+        $scope.update = function(product,images) { 
             $scope.errors=false;
-            $scope.success_flash=false; //console.log(product);
+            $scope.success_flash=false; console.log(product); console.log(images);
            $http.post('product/update', { 
 			id: product.id,
 			pro_name: product.pro_name,
@@ -2718,15 +2732,27 @@ app.controller('CountryController', function($scope, $http) {
 			pro_short_des: product.pro_short_des,
 			pro_feature_des: product.pro_feature_des,
 			seller_id: product.seller_id,
-			pro_category_id: product.pro_category_id,
+			//pro_category_id: product.pro_category_id,
 			brand_id: product.brand_id,
 			product_tags: product.product_tags,
 			price: product.price,
+			sale_price: product.sale_price,
 			no_stock: product.no_stock,
+			pro_datatype_id: product.pro_datatype_id,
+			pro_opt_values_id: product.pro_opt_values_id,
+			sku: product.sku,
+			date_from: product.date_from,
+			date_to: product.date_to,
+			video: product.video,
+			weight: product.weight,
+			length: product.length,
+			width: product.width,
+			height: product.height,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
-                        status: product.status 
+                        status: product.status,
+			images: images
 		}).success(function(data, status, headers, config) {
                  
                 if(data[0]=='error'){

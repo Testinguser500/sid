@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Validator;
 use Session;
 use Request;
+use File;
 class ProductController extends Controller
 {      
             public function __construct()
@@ -33,7 +34,6 @@ class ProductController extends Controller
 	     $categories = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get(); 
 	     $all_category = self::getcataegorywithSub();
-	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get();
 	     $datatyps   = DB::table('product_data_type')->get();
 	     $options    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get(); 
 	//     foreach($products as $kk => $vv){
@@ -145,13 +145,16 @@ class ProductController extends Controller
 		$insertedId = $prod->id;
 		$ovids= Request::input('pro_opt_values_id');  
 			
-			foreach($ovids as $kop => $vop){ 
-			$newopvarr = implode(",",$vop);
-			 ProductAttribute::create(['option_name_id' => $kop,
-						   'option_value_ids'=> $newopvarr,
-						   'product_id' => $insertedId,
-						  ]);
+			if($ovids){
+				    foreach($ovids as $kop => $vop){ 
+				    $newopvarr = implode(",",$vop);
+				     ProductAttribute::create(['option_name_id' => $kop,
+							       'option_value_ids'=> $newopvarr,
+							       'product_id' => $insertedId,
+							      ]);
+				    }	    
 			}
+			
 		if($insertedId > 0){
 			$images = Request::input('images'); //print_r($images);
 			 foreach($images as $imgvvv){
@@ -180,17 +183,40 @@ class ProductController extends Controller
 	/*******edit the data*****/
 	 public function edit($id){
 	 $product= DB::table('product')->where('id', '=',$id)->first();
+	 $product_img = DB::table('product_images')->select('image as img', 'def as def')->where('product_id', '=',$id)->get();
+	 $product_attr  = DB::table('product_attribute')->where('product_id', '=',$id)->get(); //print_r($product_attr);
+	 $all = array();
+	 
+	 foreach($product_attr as $kk => $vv){
+	  $pr_optid = $vv->option_name_id;
+	  $proids = explode(",",$vv->option_value_ids);
+	  $pr_all   = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$pr_optid)->where('status', '=','Active')->get();
+          $optionname   = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',0)->where('id', '=',$pr_optid)->where('status', '=','Active')->get();
+	  $all[]= array('optid'=>$pr_optid,
+			'all'=>$pr_all,
+			'parent_name'=> $optionname,
+			'opt_ids'=>$proids
+			);
+	 }
 	 $sellers    = DB::table('users')->where('status','=','Active')->where('is_delete','=',0)->where('role','=',5)->get();
 	 $categories = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
-	 $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get(); 
+	 $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get();
+	 $all_category = self::getcataegorywithSub();
+	 $datatyps   = DB::table('product_data_type')->get();
+	 $options    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get();
          $return['sellers']    = $sellers;
          $return['categories'] = $categories;
 	 $return['brands']     = $brands;
 	 $return['product']    =$product;
+	 $return['datatyps']   = $datatyps;
+	 $return['options']   = $options;
+         $return['all_category'] = $all_category;
+	 $return['product_img'] = $product_img;
+	 $return['all'] = $all;
          return $return;
 	}
 	/*******update the data*****/
-         public function update(){
+         public function update(){// print_r(Request::all());
            $regex = "/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/";
            $validator = Validator::make(Request::all(),[
             'pro_name' => 'required',
@@ -198,11 +224,15 @@ class ProductController extends Controller
 	    'pro_short_des' => 'required',
 	    'pro_feature_des' => 'required',
 	    'seller_id' => 'required',
-	    'pro_category_id' => 'required',
+	    //'pro_category_id' => 'required',
 	    'brand_id' => 'required',
 	    'product_tags' => 'required',
 	    'price' => ['required','regex:'.$regex],
+	    'sale_price' => ['required','regex:'.$regex],
 	    'no_stock' => 'required|integer|min:0',
+	    'length' => 'required_with:width,height|check_demension_value',
+	    'width' => 'required_with:length,height|check_demension_value',
+	    'height' => 'required_with:length,width|check_demension_value',
 	    'meta_title' => 'required',
 	    'meta_description' => 'required',
 	    'meta_keywords' => 'required'                    
@@ -213,10 +243,11 @@ class ProductController extends Controller
 			'pro_short_des' => 'Product Short Description',
 			'pro_feature_des' => 'Product Feature Description',
 			'seller_id' => 'Seller',
-			'pro_category_id' => 'Product Category',
+			//'pro_category_id' => 'Product Category',
 			'brand_id' => 'Brand',
 			'product_tags' => 'Product Tags',
 			'price' => 'Price',
+			'sale_price' => 'Sale Price',
 			'no_stock' => 'No. of Stock',
 			'meta_title' => 'Meta Title',
 			'meta_description' => 'Meta Description',
@@ -236,20 +267,80 @@ class ProductController extends Controller
 	 $pro->pro_short_des=Request::input('pro_short_des');
          $pro->pro_feature_des=Request::input('pro_feature_des');
          $pro->seller_id=Request::input('seller_id');
-         $pro->pro_category_id=Request::input('pro_category_id');
+        // $pro->pro_category_id=Request::input('pro_category_id');
          $pro->brand_id=Request::input('brand_id');
 	 $pro->product_tags=Request::input('product_tags');
 	 $pro->price=Request::input('price');
+	 $pro->sale_price=Request::input('sale_price');
 	 $pro->no_stock=Request::input('no_stock');
          $pro->meta_title=Request::input('meta_title');
          $pro->meta_description=Request::input('meta_description');
          $pro->meta_keywords=Request::input('meta_keywords');
 	 $pro->status=Request::input('status');
          $pro->save(); 
-		  
+	 $product_img = DB::table('product_images')->where('product_id', '=',Request::input('id'))->get(); 
+	 $product_attr  = DB::table('product_attribute')->where('product_id', '=',Request::input('id'))->get();
+	 $images = Request::input('images'); 
+	    if($product_img){
+	    foreach($images as $imgvvv){
+		foreach($product_img as $kim => $vim){
+			if(in_array($vim->image,$imgvvv)){
+				DB::table('product_images')->where('id', '=', $vim->id)->delete();   
+			}
+		  }
+	    ProductImage::create(['image' => $imgvvv['img'],
+	    'product_id' => Request::input('id'),
+	    'def' => $imgvvv['def']]);
+	    }
+	    }
+	    else{
+	    foreach($images as $imgvvv){
+	    ProductImage::create(['image' => $imgvvv['img'],
+	    'product_id' => Request::input('id'),
+	    'def' => $imgvvv['def']]);
+	    }
+	    }
+	 
+            $ovids= Request::input('pro_opt_values_id');
+	    
+	    if($product_attr){
+			foreach($product_attr as $kattr => $vattr){
+			DB::table('product_attribute')->where('id', '=', $vattr->id)->delete();	    
+			}
+			
+			if($ovids){
+			foreach($ovids as $kop => $vop){ 
+			$newopvarr = implode(",",$vop);
+			ProductAttribute::create(['option_name_id' => $kop,
+			'option_value_ids'=> $newopvarr,
+			'product_id' => Request::input('id'),
+			]);
+			}
+			}
+	    }
+	    else{
+			if($ovids){
+			foreach($ovids as $kop => $vop){ 
+			$newopvarr = implode(",",$vop);
+			ProductAttribute::create(['option_name_id' => $kop,
+			'option_value_ids'=> $newopvarr,
+			'product_id' => Request::input('id'),
+			]);
+			}	    
+			}
+	    }
         $list[]='success';
         $list[]='Record is updated successfully.';	 
 	return $list;
+	 }
+	 
+	 
+	 public function image_delete(){
+	    $image = Request::input('image');
+	    File::delete('uploads/'.str_replace('product/','product/thumb_',$image));
+	    File::delete('uploads/'.str_replace('product/','product/mid_',$image));
+	    File::delete('uploads/'.$image);
+	    DB::table('product_images')->where('image', '=', $image)->delete(); 
 	 }
     
 	public function getcataegorywithSub($pid=0)
