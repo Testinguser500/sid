@@ -598,7 +598,7 @@
 			     <a class="ms_ov" href="javascript:void(0);" ng-if="$index != values.length - 1" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1" ng-show="tr_dis[$index]==1" >
 				 <i class="fa fa-check" title="Set default" ng-show="val.def==0"  ng-click="setdefault($index)"></i>
 				 <i class="fa fa-check grr_ic"  title="Unset default"  ng-show="val.def==1"  ng-click="unsetdefault($index)"></i>
-				 <i class="fa fa-trash" title="Delete"  ng-click="removeimgs($index)" ></i>
+				 <i class="fa fa-trash" title="Delete"  ng-click="removeimgs(val.img,$index)" ></i>
 			     </a>
 			 </div>
 			 <div style="clear:both"></div>
@@ -937,7 +937,7 @@
 			 <span title="Click to toggle" class="handlediv" ng-click="myFunc()"><i class="fa fa-caret-down custom"></i></span>
 			 <div class="form-chk" ng-show="showMe">
 			 <input type="text" placeholder="Filter Categories" ng-model="test"><br>
-			 <div class="frm-cat">
+			 <div class="frm-cat"> <% product.pro_category_id %> 
 			     <script type="text/ng-template" id="categoryTree">
   
    <input type="checkbox" ng-model="product.pro_category_id[category.id]" ng-selected="" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
@@ -945,10 +945,10 @@
        <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
        </li>
    </ul>
-</script>
-<!--<ul class="ul-cat">
+</script><% all_category %>
+<ul class="ul-cat">
    <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree'"></li>
-</ul>--> 
+</ul>
 			 <!--<span ng-repeat="cat1 in categories | filter : test">
 			      <input type="checkbox" ng-model="product.pro_category_id[cat1.id]" name="pro_category_id[]" > <%cat1.category_name%><br>
 			  </span>-->

@@ -260,6 +260,15 @@ class ProductController extends Controller
 			      $list[]=$msg;
 			      return $list;
         }
+	
+	$catids= Request::input('pro_category_id'); print_r($catids);
+	$newcatarr= array();
+	foreach($catids as $ck => $cv){ 
+	    if($cv == '1'){ 
+		$newcatarr[] = $ck;	
+	    }
+	}
+	$newproids = implode(",", $newcatarr);
  
          $pro = Product::find(Request::input('id')); 
          $pro->pro_name = Request::input('pro_name');
