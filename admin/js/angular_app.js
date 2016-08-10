@@ -155,6 +155,9 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/plan', {
       templateUrl: 'plan', controller: 'PlanController'
    }).
+   when('/permission', {
+      templateUrl: 'permission', controller: 'PermissionController'
+   }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -2511,6 +2514,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
      $scope.product.pro_category_id={};
+     //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
      $scope.tab = 1;
      $scope.showMeimg=true;     
@@ -2544,6 +2548,7 @@ app.controller('CountryController', function($scope, $http) {
     $scope.changeState=function(param){
        
     }
+<<<<<<< HEAD
     
    $scope.group_pros = [
        {"status": 'All', "items": ""},
@@ -2552,6 +2557,9 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Pending', "items": ""}
   ];
     $scope.select_group_pros='All';
+=======
+$scope.fruits = ["8", "9", "10", "7"];
+>>>>>>> 0e8da0d4b37ca1fd6bcf46c893b6e3fec9c5e201
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2639,7 +2647,8 @@ app.controller('CountryController', function($scope, $http) {
     }
     $scope.removeData=function(index)
 	{
-	   $scope.optval.splice(index,1);
+	   $scope.optval.splice(index,1);console.log($scope.product);
+	  // $scope.product.pro_opt_values_id.splice(pr_op,1);
 	}
 	
 	
@@ -2654,9 +2663,13 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0e8da0d4b37ca1fd6bcf46c893b6e3fec9c5e201
 			$scope.options = data['options'];
 			$scope.product={};
-			 $scope.optval = [];
+			$scope.optval = [];
 			$scope.pr_imgs = [];
 			$scope.all_category = data['all_category'];
 
@@ -2708,9 +2721,15 @@ app.controller('CountryController', function($scope, $http) {
 	   
 	     $scope.pr_imgs[index]['def']=0;
 	}
-	$scope.removeimgs=function(index)
-	{
-	   $scope.pr_imgs.splice(index,1);
+	$scope.removeimgs=function(img_nam,index)  //console.log(img_nam);
+	{  $scope.errors=false;
+           $scope.success_flash=false; 
+	$http.post('product/image_delete',{
+		image: img_nam
+		}).success( function(data, status, headers, config){
+	          $scope.pr_imgs.splice(index,1);
+	});   
+	   
 	}
      
 	   
@@ -2785,18 +2804,24 @@ app.controller('CountryController', function($scope, $http) {
                 $scope.success_flash=false;
                 $scope.page='edit';
 		$http.get('product/edit/' + product.id, {			
-		}).success(function(data, status, headers, config) {
-			$scope.product = data['product'];
+		}).success(function(data, status, headers, config) { //console.log(data);
+			$scope.product = data['product']; 
 			$scope.sellers = data['sellers'];
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
+			$scope.datatyps = data['datatyps'];
+			$scope.options = data['options'];
+			$scope.all_category = data['all_category'];
+			$scope.pr_imgs = data['product_img'];
+			$scope.optval = data['all'];
+			//$scope.all = data['all'];console.log($scope.optval); console.log($scope.all);
 		        $scope.loading = false;
 		});
 	};
 
-        $scope.update = function(product) { 
+        $scope.update = function(product,images) { 
             $scope.errors=false;
-            $scope.success_flash=false; //console.log(product);
+            $scope.success_flash=false; console.log(product); console.log(images);
            $http.post('product/update', { 
 			id: product.id,
 			pro_name: product.pro_name,
@@ -2804,15 +2829,27 @@ app.controller('CountryController', function($scope, $http) {
 			pro_short_des: product.pro_short_des,
 			pro_feature_des: product.pro_feature_des,
 			seller_id: product.seller_id,
-			pro_category_id: product.pro_category_id,
+			//pro_category_id: product.pro_category_id,
 			brand_id: product.brand_id,
 			product_tags: product.product_tags,
 			price: product.price,
+			sale_price: product.sale_price,
 			no_stock: product.no_stock,
+			pro_datatype_id: product.pro_datatype_id,
+			pro_opt_values_id: product.pro_opt_values_id,
+			sku: product.sku,
+			date_from: product.date_from,
+			date_to: product.date_to,
+			video: product.video,
+			weight: product.weight,
+			length: product.length,
+			width: product.width,
+			height: product.height,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
-                        status: product.status 
+                        status: product.status,
+			images: images
 		}).success(function(data, status, headers, config) {
                  
                 if(data[0]=='error'){
@@ -2839,13 +2876,15 @@ app.controller('CountryController', function($scope, $http) {
      $scope.page='index';
      $scope.plans=false;
      $scope.plan='';
+     $scope.plan.plan_image='';
      $scope.success_flash=false;
      $scope.sort = function(keyname){
 		$scope.sortKey = keyname;   //set the sortKey to the param passed
 		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	}
      $scope.init = function() {
-	
+	$scope.image = '';
+		$scope.plan.plan_image = '';
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
@@ -2869,6 +2908,7 @@ app.controller('CountryController', function($scope, $http) {
 		});
 	};
 	$scope.uploadedFile = function(element) {
+		$scope.loading = true;
            $scope.$apply(function($scope) {
             
            var fd = new FormData();
@@ -2884,14 +2924,16 @@ app.controller('CountryController', function($scope, $http) {
             }).success( function(data, status, headers, config){ 
                         if(data[0]=='error'){
 				$scope.errors=data[1];
+				$scope.loading = true;
 			}
 			else
 			{
                                 $scope.errors=false;
                                 $scope.files=data;
 				console.log($scope.files);
+				$scope.image = $scope.files;
 				$scope.plan.plan_image = $scope.files;
-				console.log($scope.plansimage);
+				console.log($scope.plan.plan_image);
                                 $scope.loading = false;
 			}
         });
@@ -2909,6 +2951,117 @@ app.controller('CountryController', function($scope, $http) {
 			description:product.description,
 			image:$scope.files,
 			status:product.status
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      
+      $scope.editplan = function(plan) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('plan/edit/' + plan.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.plan = data['plan'];
+			$scope.loading = false;
+		});
+	};
+	
+	$scope.update=function(plan)
+	{
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.page='edit';
+		$http.post('plan/update',{
+			plan_id:plan.id,
+			plan_name:plan.plan_name,
+			plan_duration:plan.plan_duration,
+			plan_price:plan.plan_price,
+			description:plan.description,
+			image:$scope.files,
+			plan_status:plan.plan_status
+			}).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+		});
+	}
+	$scope.delfiles = function()
+	{
+		$scope.plan.plan_image='';
+	}
+     $scope.init();
+  });
+//Role Permission
+  app.controller('PermissionController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.files='';
+     $scope.loading = true;
+     $scope.page='index';
+     $scope.setting={};
+     $scope.plan='';
+     $scope.plan.plan_image='';
+     $scope.success_flash=false;
+     $scope.tab = 1;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
+	$scope.setTab = function(newTab){
+	$scope.tab = newTab;
+	};
+
+	$scope.isSet = function(tabNum){
+	  return $scope.tab === tabNum;
+	};
+     $scope.init = function() {
+	$scope.image = '';
+		$scope.plan.plan_image = '';
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('permission/all').
+		success(function(data, status, headers, config) {
+			$scope.roles = data['roles'];
+			$scope.setting = data['setting'];
+			//console.log($scope.plans);
+		        $scope.loading = false;
+		});
+	};
+	
+	
+	$scope.store = function(product) { 
+           $scope.errors=false;
+           $scope.success_flash=false;   
+           console.log(product);
+           $http.post('permission/store', {
+			site_login_setting:product.site_login_setting,
+			admin_login_setting:product.admin_login_setting,
+			create_setting:product.create_setting,
+			edit_own_setting:product.edit_own_setting,
+			//edit_state_setting:product.edit_state_setting,
+			edit_setting:product.edit_setting,
+			delete_setting:product.delete_setting
+			
+			
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){

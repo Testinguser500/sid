@@ -87,3 +87,15 @@
     top: -27px;
     width: 20px;
 }
+.btn.btn-primary.pln-file {
+    display: table;
+    margin: 11% auto 2% 28%;
+}
+.form-group.col-xs-12.show-pln {
+    border: 5px dashed rgb(204, 204, 204);
+    height: 305px;
+    padding: 31px 331px;
+}
+.pln-del img {
+    margin: 11% 0;
+}
