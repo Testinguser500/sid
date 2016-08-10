@@ -638,7 +638,7 @@
           <div class="box box-primary" ng-if="page=='edit'">
 	   
             <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-edit"></i> Edit Option</h3>
+                <h3 class="box-title"><i class="fa fa-edit"></i> Edit Product</h3>
                  <div class="pull-right"> <a href="javascript:void(0)" ng-click="init()" class="btn btn-default">Back</a></div>
             </div>
             <!-- /.box-header -->
@@ -937,15 +937,15 @@
 			 <span title="Click to toggle" class="handlediv" ng-click="myFunc()"><i class="fa fa-caret-down custom"></i></span>
 			 <div class="form-chk" ng-show="showMe">
 			 <input type="text" placeholder="Filter Categories" ng-model="test"><br>
-			 <div class="frm-cat"> <% product.pro_category_id %> 
+			 <div class="frm-cat"> <% fruits %> 
 			     <script type="text/ng-template" id="categoryTree">
-  
-   <input type="checkbox" ng-model="product.pro_category_id[category.id]" ng-selected="" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
+  <% category.id %> 
+   <input type="checkbox" ng-model="product.pro_category_id[category.id]" ng-checked="product.pro_category_id.indexOf(category.id)!==-1" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
    <ul ng-if="category.all_category">
        <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
        </li>
    </ul>
-</script><% all_category %>
+</script>
 <ul class="ul-cat">
    <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree'"></li>
 </ul>
