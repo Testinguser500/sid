@@ -24,19 +24,33 @@
             <!-- /.box-header -->
             
             <div class="box-body">
+              <div class="row">
+                <div class="form-group col-md-3 pull-right">
+		  
+		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
+		</div>
+              </div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Enquiry Name</th>
-                  <th>Enquiry E-mail</th>
-                  <th>Enquiry Subject</th>
+                  <th ng-click="sort('id')" style="cursor:pointer">#
+                   <span class="glyphicon sort-icon"  ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('name')" style="cursor:pointer">Enquiry Name
+                   <span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('email')" style="cursor:pointer">Enquiry E-mail
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('subject')" style="cursor:pointer">Enquiry Subject
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='subject'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
                   <th> </th>                 
                 </tr>
                 </thead>
                 <tbody>
                 
-                <tr ng-repeat="val in enquirys">
+                <tr dir-paginate="val in enquirys|orderBy:sortKey:reverse|itemsPerPage:10|filter:search">
                   <td><% val.id %></td>
                   <td><% val.name %></td>
                   <td><% val.email %></td>
@@ -81,6 +95,11 @@
                 </tr>
                 </tfoot>
               </table>
+                 <dir-pagination-controls
+					max-size="10"
+					direction-links="true"
+					boundary-links="true" >
+		</dir-pagination-controls>
             </div>
             <!-- /.box-body -->
           </div>

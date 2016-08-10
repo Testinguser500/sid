@@ -18,7 +18,7 @@
           <div class="box" ng-if="page=='index'">
             <div class="box-header">
               <h3 class="box-title"><i class="fa fa-list"></i> Faq List</h3>
-              <div class="pull-right"> <a href="javascript:void(0)" ng-click="add();"class="btn btn-primary"><i class="fa fa-plus"></i> Add</a></div>
+              <div class="pull-right"> <a href="javascript:void(0)" ng-click="add();"class="btn btn-primary"><i class="fa fa-plus"></i> Add Faq Question</a></div>
             </div>
             <!-- /.box-header -->
             
@@ -26,15 +26,21 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Faq Question</th>
-                  <th>Faq Status</th>
+                  <th  ng-click="sort('id')" style="cursor:pointer">#
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th  ng-click="sort('quest')" style="cursor:pointer">Faq Question
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='quest'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th  ng-click="sort('status')" style="cursor:pointer">Faq Status
+                  <span class="glyphicon sort-icon"  ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
                   <th> </th>                 
                 </tr>
                 </thead>
                 <tbody>
                 
-                <tr ng-repeat="val in faqs"> 
+                <tr dir-paginate="val in faqs|orderBy:sortKey:reverse|itemsPerPage:10|filter:search"> 
                   <td><% val.id %></td>
                   <td><% val.quest %></td>
                   <td><% val.status %></td>
@@ -75,6 +81,11 @@
                 </tr>
                 </tfoot>
               </table>
+                <dir-pagination-controls
+					max-size="10"
+					direction-links="true"
+					boundary-links="true" >
+		</dir-pagination-controls>
             </div>
             <!-- /.box-body -->
           </div>

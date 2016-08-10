@@ -1,4 +1,4 @@
-var app = angular.module('admins', ['ngRoute','textAngular'], function($interpolateProvider) {
+var app = angular.module('admins', ['ngRoute','textAngular','angularUtils.directives.dirPagination'], function($interpolateProvider) {
 	$interpolateProvider.startSymbol('<%');
 	$interpolateProvider.endSymbol('%>');
       
@@ -66,9 +66,9 @@ app.directive("passwordStrength", function(){
         restrict: 'A',
         link: function(scope, element, attrs){                    
             scope.$watch(attrs.passwordStrength, function(value) {
-                console.log(value);
+                //console.log(value);
 				
-                if(angular.isDefined(value)){
+                if(angular.isDefined(value)&& value!=''){
 					var numbers = /^[0-9]+$/; 
 					var chars = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 					
@@ -260,13 +260,16 @@ app.controller('HomeController', function($scope, $http) {
     
      $scope.errors=false;
 
-     $scope.files='';
-
+     $scope.files='';     
      $scope.loading = true;
      $scope.categories=false;
      $scope.page='index';
      $scope.category={};
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.files='';
@@ -426,6 +429,10 @@ app.controller('HomeController', function($scope, $http) {
      $scope.page='index';
      $scope.faq=false;
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -504,6 +511,10 @@ app.controller('HomeController', function($scope, $http) {
      $scope.page='index';
      $scope.faq=false;
      $scope.success_flash=false;
+       $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -610,6 +621,10 @@ app.controller('TemplateController', function($scope, $http) {
      $scope.temp=false;
      $scope.page='index';     
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -917,6 +932,10 @@ app.controller('UserController', function($scope, $http) {
 	 $scope.banner=false;
      $scope.page='index';
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
@@ -1174,8 +1193,9 @@ app.controller('UserController', function($scope, $http) {
 			$scope.user_ddata = data['user'];
 			$scope.all_user = data['all_user'];
 			$scope.roles = data['roles'];
-			$scope.loading = false;
+			
  console.log($scope.user_ddata);
+ $scope.user_ddata.password='';
  $scope.getState($scope.user_ddata.country,'user');
  $scope.getCity($scope.user_ddata.state,'user');
  $scope.getState($scope.user_ddata.store_country,'store');
@@ -1184,6 +1204,7 @@ app.controller('UserController', function($scope, $http) {
  $scope.getCity($scope.user_ddata.ship_state,'shipp');
  $scope.category = data['category'];
  $scope.inputs = $scope.user_ddata.affiliate;
+ $scope.loading = false;
 		});
 	};
 	
@@ -1243,7 +1264,17 @@ app.controller('UserController', function($scope, $http) {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
-            }).success( function(data, status, headers, config){ $scope.files=data;$scope.loading = false;});
+            }).success( function(data, status, headers, config){
+		if(data[0]=='error'){
+			$scope.errors=data[1];
+		}
+		else
+		{
+		$scope.files = data;
+		$scope.image = $scope.files;
+		$scope.loading = false;
+		}
+		});
 
     });
    }
@@ -1392,11 +1423,11 @@ app.controller('UserController', function($scope, $http) {
 		   $scope.user.promotional_banner = false;
 		   
 	   }
-        $scope.update = function(user_data) { //console.log($scope.bannerfiles);
+        $scope.update = function(user_data) { //console.log(user_data);
             $scope.errors=false;
 			$scope.loading=true;
             $scope.success_flash=false;
-			getProfileImage(user_data);
+		//$scope.getProfileImage(user_data);
            $http.post('user/update', {
 			role:user_data.role,
 			fname: user_data.fname,
@@ -1410,8 +1441,8 @@ app.controller('UserController', function($scope, $http) {
 			home_number: user_data.home_number,
 			website: user_data.website,
 			bio: user_data.bio,
-			password: user_data.pass,
-			//confirm_password:user_data.repassword,
+			password: user_data.password,
+			confirm_password:user_data.repassword,
 			nationality: user_data.nationality,
 			country: user_data.country,
 			state:user_data.state,
@@ -1419,7 +1450,7 @@ app.controller('UserController', function($scope, $http) {
 			address:user_data.address,
 			id: user_data.userid,
 			status: user_data.status,
-			profile_image: $scope.profileImage,
+			profile_image: $scope.files,
 			store_name: user_data.store_name,
 			store_link: user_data.store_link,
 			store_address: user_data.store_address,
@@ -1748,6 +1779,10 @@ app.controller('BrandsController', function($scope, $http) {
      $scope.brand={};
      $scope.page='index';
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
@@ -2348,6 +2383,10 @@ app.controller('CountryController', function($scope, $http) {
      $scope.option={};
      $scope.values={};
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2475,7 +2514,11 @@ app.controller('CountryController', function($scope, $http) {
      //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
      $scope.tab = 1;
-    $scope.showMeimg=true;
+     $scope.showMeimg=true;     
+      $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
     $scope.setTab = function(newTab){
       $scope.tab = newTab;
     };
@@ -2571,11 +2614,13 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
+
 			$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];
 			$scope.pr_imgs = [];
 			$scope.all_category = data['all_category'];
+
 
 		        $scope.loading = false;
  
@@ -2778,14 +2823,23 @@ app.controller('CountryController', function($scope, $http) {
      $scope.loading = true;
      $scope.page='index';
      $scope.plans=false;
+     $scope.plan='';
+     $scope.plan.plan_image='';
      $scope.success_flash=false;
-     $scope.init = function() {	
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
+     $scope.init = function() {
+	$scope.image = '';
+		$scope.plan.plan_image = '';
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
-		$http.get('paln/all').
+		$http.get('plan/all').
 		success(function(data, status, headers, config) {
-			$scope.products = data['products'];
+			$scope.plans = data;
+			console.log($scope.plans);
 		        $scope.loading = false;
 		});
 	};
@@ -2802,6 +2856,7 @@ app.controller('CountryController', function($scope, $http) {
 		});
 	};
 	$scope.uploadedFile = function(element) {
+		$scope.loading = true;
            $scope.$apply(function($scope) {
             
            var fd = new FormData();
@@ -2817,14 +2872,16 @@ app.controller('CountryController', function($scope, $http) {
             }).success( function(data, status, headers, config){ 
                         if(data[0]=='error'){
 				$scope.errors=data[1];
+				$scope.loading = true;
 			}
 			else
 			{
                                 $scope.errors=false;
                                 $scope.files=data;
 				console.log($scope.files);
-				$scope.plansimage = $scope.files;
-				console.log($scope.plansimage);
+				$scope.image = $scope.files;
+				$scope.plan.plan_image = $scope.files;
+				console.log($scope.plan.plan_image);
                                 $scope.loading = false;
 			}
         });
@@ -2855,5 +2912,49 @@ app.controller('CountryController', function($scope, $http) {
  
          });
       };
-     
+      
+      $scope.editplan = function(plan) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('plan/edit/' + plan.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.plan = data['plan'];
+			$scope.loading = false;
+		});
+	};
+	
+	$scope.update=function(plan)
+	{
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.page='edit';
+		$http.post('plan/update',{
+			plan_id:plan.id,
+			plan_name:plan.plan_name,
+			plan_duration:plan.plan_duration,
+			plan_price:plan.plan_price,
+			description:plan.description,
+			image:$scope.files,
+			plan_status:plan.plan_status
+			}).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+		});
+	}
+	$scope.delfiles = function()
+	{
+		$scope.plan.plan_image='';
+	}
+     $scope.init();
   });

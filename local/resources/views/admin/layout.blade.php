@@ -637,7 +637,7 @@
 <script src="{{URL::asset('admin/dist/textAngular-rangy.min.js')}}" type="text/javascript"></script>
 <script src="{{URL::asset('admin/dist/textAngular-sanitize.min.js')}}" type="text/javascript"></script>
 <script src="{{URL::asset('admin/dist/textAngular.min.js')}}" type="text/javascript"></script>
-
+<script src="{{URL::asset('admin/js/dirPagination.js')}}"></script>
 <script src="{{URL::asset('admin/js/angular_app.js')}}"></script>
 
 

@@ -33,12 +33,12 @@ class UserController extends Controller
 	 $role = Request::input('role');
 		if($role)
 		{
-			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('users.role','=',$role)->where('is_delete','=','0')->get();
+			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('users.role','=',$role)->where('is_delete','=','0')->orderBy('users.id', 'desc')->get();
 			//print_r($user);
 		}
 		else
 		{
-			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->get();
+			$user = DB::table('users')->select('role.name as role_name', 'users.*')->join('role', 'users.role', '=', 'role.id')->where('is_delete','=','0')->orderBy('users.id', 'desc')->get();
 			//print_r($user);
 		}
 			$country = DB::table('country')->where('is_delete','=','0')->where('pid','=','0')->get();
@@ -187,12 +187,13 @@ class UserController extends Controller
         $password = Request::input('password');
         $user = User::create(['image' =>Request::input('profile_image'),'fname' =>Request::input('fname'),'lname' =>Request::input('lname'),'username' =>Request::input('username'),'email' =>Request::input('email'),'password'=>bcrypt($password),'gender'=>Request::input('gender'),'website' =>Request::input('website'),'mobile' =>Request::input('mobile'),'home_number' =>Request::input('home_number'),'address'=>Request::input('address'),'nationality' =>Request::input('nationality'),'country' =>Request::input('country'),'state' =>Request::input('state'),'city' =>Request::input('city'),'bio' =>Request::input('bio'),'status' =>Request::input('status'),'role'=>Request::input('role')]);  
 		$insert_id = $user->id;
-		if(Request::input('role')==3)
-		{
+		//if(Request::input('role')==3)
+		//{
 			Shipping::create(['user_id'=>$insert_id,'ship_fname'=>Request::input('ship_fname'),'ship_lname'=>Request::input('ship_lname'),'ship_mobile'=>Request::input('ship_mobile'),'ship_address'=>Request::input('ship_address'),'ship_country'=>Request::input('ship_country'),'ship_state'=>Request::input('ship_state'),'ship_city'=>Request::input('ship_city')]);
-		}
-		elseif(Request::input('role')==5)
+		//}
+		if(Request::input('role')==5)
 		{
+			
 			$store = Store::create(['user_id'=>$insert_id,
 			'store_name'=>Request::input('store_name'),
 			'store_link'=>Request::input('store_link'),
@@ -324,13 +325,13 @@ class UserController extends Controller
 		$user->affiliate = $afiliate;
 		}
 		}
-		elseif($data->role=='3')
-		{
-		$user = DB::table('shipp_address')->select('*','id as shipp_id')->where('user_id', '=',$id)->where('ship_status','=','Active')->first();
-		}
+		//elseif($data->role=='3')
+		//{
+		$user1 = DB::table('shipp_address')->select('*','id as shipp_id')->where('user_id', '=',$id)->where('ship_status','=','Active')->first();
+		//}
 		$category = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 		//print_r($user);
-		 $return['user']=(object) array_merge((array)$data,(array) $user);
+		 $return['user']=(object) array_merge((array)$data,(array) $user,(array)$user1);
 		 //print_r($return['user']);
          $return['all_user']=$user;
 		 $return['roles']=$role;
@@ -340,6 +341,7 @@ class UserController extends Controller
 	}
          public function update(){
 	//print_r(Request::all());
+	
 	 $validation1=array();
 	$validation = array(
 			'role'=>'required',
@@ -348,20 +350,25 @@ class UserController extends Controller
 			'email'=>'required|email|unique_with:users,role,'.Request::input('id'),
 			'password'=>'min:6',
 			'confirm_password'=>'same:password',
+			'ship_fname'=>'required',
+			'ship_mobile'=>'required',
+			'ship_address'=>'required',
+			'ship_country'=>'required',
+			'ship_state'=>'required',
+			'ship_city'=>'required',
 			
 	
 	);
-	if(Request::input('role')==3)
-	{
-		$validation1 = array('ship_fname'=>'required',
-		'ship_mobile'=>'required',
-		'ship_address'=>'required',
-		'ship_country'=>'required',
-		'ship_state'=>'required',
-		'ship_city'=>'required',
-		);
-	}
-	elseif(Request::input('role')==5)
+	if(Request::input('password'))
+	   {
+	    $validation['password']='required|min:6';
+	    $validation['confirm_password']='required|same:password';
+	   }
+	//if(Request::input('role')==3)
+	//{
+		//$validation1 = array(		);
+	//}
+	if(Request::input('role')==5)
 	{
 		$validation1 = array(
 		
@@ -382,11 +389,12 @@ class UserController extends Controller
 				  return $list;
         }
 		 
-          if(Request::input('image')){	 
+          if(Request::input('profile_image')){	 
          
-         $fileName = Request::input('profile_image'); // renameing image
+         $fileName = asset('uploads/user/').'/'.Request::input('profile_image'); // renameing image
          
          }
+	 $user_id = Request::input('id');
          $cat = User::find(Request::input('id'));
          $cat->fname = Request::input('fname');
 		 $cat->lname = Request::input('lname');
@@ -410,10 +418,10 @@ class UserController extends Controller
 		 $cat->bio =Request::input('bio');
 		 $cat->status =Request::input('status');
 		 $cat->role=Request::input('role');
-         $cat->save(); 
+			$cat->save(); 
 		  
-		 if(Request::input('role')==3)
-		 {
+		 //if(Request::input('role')==3)
+		 //{
 			$shipp = Shipping::find(Request::input('shipp_id'));
 			$shipp->ship_fname=Request::input('ship_fname');
 			$shipp->ship_lname=Request::input('ship_lname');
@@ -424,9 +432,12 @@ class UserController extends Controller
 			$shipp->ship_city=Request::input('ship_city');
 			$shipp->save();
 			
-		 }
-		 elseif(Request::input('role')==5)
+		 //}
+		 if(Request::input('role')==5)
 		 {
+			$store_data = DB::table('store')->where('user_id','=',$user_id)->first();
+			if($store_data)
+			{
 			$store = Store::find(Request::input('store_id'));
 			$store->store_name = Request::input('store_name');
 			if(Request::input('banner'))
@@ -452,8 +463,36 @@ class UserController extends Controller
 			$store->featured = Request::input('featured');
 			$store->verified = Request::input('verified');
 			$store->promotinoal_link = Request::input('promotinoal_link');
-			$store->promotion_banner = Request::input('promotion');
+			$store->promotional_banner = Request::input('promotion');
 			$store->save();
+			}
+			else
+			{
+			$store = Store::create(['user_id'=>$user_id,
+			'store_name'=>Request::input('store_name'),
+			'store_link'=>Request::input('store_link'),
+			'store_address'=>Request::input('store_address'),
+			'store_country'=>Request::input('store_country'),
+			'store_state'=>Request::input('store_state'),
+			'store_city'=>Request::input('store_city'),
+			'phone'=>Request::input('store_phone'),
+			'banner'=>Request::input('banner'),
+			'facebook_link'=>Request::input('facebook_link'),
+			'google_link'=>Request::input('google_plus_link'),
+			'twitter_link'=>Request::input('twitter_link'),
+			'linkedin_link'=>Request::input('linkedin_link'),
+			'youtube_link'=>Request::input('youtube_link'),
+			'instagram_link'=>Request::input('instagram_link'),
+			'flickr_link'=>Request::input('flickr_link'),'store_status'=>'Inactive',
+			'selling'=>Request::input('selling'),
+			'publishing'=>Request::input('publishing'),
+			'commission'=>Request::input('commission'),
+			'featured'=>Request::input('featured'),
+			'verified'=>Request::input('verified'),
+			'promotinoal_link'=>Request::input('promotinoal_link'),
+			'promotional_banner'=>Request::input('promotion'),
+			'logo'=>Request::input('logo')]);
+			}
 			
 			if(Request::input('affiliatefees'))
 			{
@@ -501,7 +540,7 @@ class UserController extends Controller
 			//echo public_path($inPublic);
 			//echo $localPath = str_replace('local\public','',(public_path()));
 			//echo storage_path();
-			echo $path = asset('local/storage/app/');
+			 $path = asset('local/storage/app/');
 			\Storage::put('uploads/'.$fileName, $img->encode());
 			return "<a ><img src='".$path."/uploads/".$fileName."'  width='128' height='128></a>";
 		}
