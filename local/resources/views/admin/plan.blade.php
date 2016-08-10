@@ -104,7 +104,7 @@
                   <span class="btn btn-primary btn-file" ng-hide="plan.plan_image">
 		   Upload <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
 		  </span>
-		<em>Upload a category image for your store. Image size is(310x210) and not  more than 1 mb.</em>
+		<em>Image size is(310x210) and not  more than 1 mb.</em>
 		<a ng-show="display_cross==1" ng-mouseover="display_cross=1" ng-mouseleave="display_cross=0" class="bnr-del " title="Delete" ng-click="delfiles();display_cross=0" href="javascript:void(0);">
                     <img src="{{URL::asset('admin/img/del.png')}}">
                 </a>

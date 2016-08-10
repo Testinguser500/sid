@@ -2612,10 +2612,7 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
-<<<<<<< HEAD
 
-=======
->>>>>>> e7feec98562c444c4c2bf8afe096c9a9580adddd
 			$scope.options = data['options'];
 			$scope.product={};
 			 $scope.optval = [];
@@ -2808,7 +2805,8 @@ app.controller('CountryController', function($scope, $http) {
 		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	}
      $scope.init = function() {
-	
+	$scope.image = '';
+		$scope.plan.plan_image = '';
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
