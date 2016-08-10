@@ -155,6 +155,9 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/plan', {
       templateUrl: 'plan', controller: 'PlanController'
    }).
+   when('/permission', {
+      templateUrl: 'permission', controller: 'PermissionController'
+   }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -2873,6 +2876,117 @@ app.controller('CountryController', function($scope, $http) {
 			description:product.description,
 			image:$scope.files,
 			status:product.status
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      
+      $scope.editplan = function(plan) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('plan/edit/' + plan.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.plan = data['plan'];
+			$scope.loading = false;
+		});
+	};
+	
+	$scope.update=function(plan)
+	{
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.page='edit';
+		$http.post('plan/update',{
+			plan_id:plan.id,
+			plan_name:plan.plan_name,
+			plan_duration:plan.plan_duration,
+			plan_price:plan.plan_price,
+			description:plan.description,
+			image:$scope.files,
+			plan_status:plan.plan_status
+			}).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+		});
+	}
+	$scope.delfiles = function()
+	{
+		$scope.plan.plan_image='';
+	}
+     $scope.init();
+  });
+//Role Permission
+  app.controller('PermissionController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.files='';
+     $scope.loading = true;
+     $scope.page='index';
+     $scope.setting={};
+     $scope.plan='';
+     $scope.plan.plan_image='';
+     $scope.success_flash=false;
+     $scope.tab = 1;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
+	$scope.setTab = function(newTab){
+	$scope.tab = newTab;
+	};
+
+	$scope.isSet = function(tabNum){
+	  return $scope.tab === tabNum;
+	};
+     $scope.init = function() {
+	$scope.image = '';
+		$scope.plan.plan_image = '';
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('permission/all').
+		success(function(data, status, headers, config) {
+			$scope.roles = data['roles'];
+			$scope.setting = data['setting'];
+			//console.log($scope.plans);
+		        $scope.loading = false;
+		});
+	};
+	
+	
+	$scope.store = function(product) { 
+           $scope.errors=false;
+           $scope.success_flash=false;   
+           console.log(product);
+           $http.post('permission/store', {
+			site_login_setting:product.site_login_setting,
+			admin_login_setting:product.admin_login_setting,
+			create_setting:product.create_setting,
+			edit_own_setting:product.edit_own_setting,
+			//edit_state_setting:product.edit_state_setting,
+			edit_setting:product.edit_setting,
+			delete_setting:product.delete_setting
+			
+			
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){

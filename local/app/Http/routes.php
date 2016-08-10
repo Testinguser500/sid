@@ -154,7 +154,9 @@ Route::post('admins/plan/store', 'Admin\PlanController@store');
 Route::get('admins/plan/edit/{id}', 'Admin\PlanController@edit');
 Route::post('admins/plan/update', 'Admin\PlanController@update');
 
-
+Route::get('admins/permission', 'Admin\PermissionController@index');
+Route::get('admins/permission/all', 'Admin\PermissionController@all');
+Route::post('admins/permission/store', 'Admin\PermissionController@store');
 
 //Seller Panel
 Route::get('seller/login', 'Seller\HomeController@index');
