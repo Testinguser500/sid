@@ -65,6 +65,9 @@
 .subsubsub li {
     display: inline;
 }
+.subsubsub li.active a {
+    color:#000;
+}
 .ul-cat {
     margin-right: 0;
     padding-left: 10px;
