@@ -2548,7 +2548,7 @@ app.controller('CountryController', function($scope, $http) {
     $scope.changeState=function(param){
        
     }
-
+$scope.fruits = ["8", "9", "10", "7"];
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2755,7 +2755,7 @@ app.controller('CountryController', function($scope, $http) {
                 $scope.success_flash=false;
                 $scope.page='edit';
 		$http.get('product/edit/' + product.id, {			
-		}).success(function(data, status, headers, config) { console.log(data);
+		}).success(function(data, status, headers, config) { //console.log(data);
 			$scope.product = data['product']; 
 			$scope.sellers = data['sellers'];
 			$scope.categories = data['categories'];

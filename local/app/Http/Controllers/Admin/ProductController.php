@@ -182,7 +182,7 @@ class ProductController extends Controller
         
 	/*******edit the data*****/
 	 public function edit($id){
-	 $product= DB::table('product')->where('id', '=',$id)->first();
+	 $product= DB::table('product')->where('id', '=',$id)->first(); //print_r($product);
 	 $product_img = DB::table('product_images')->select('image as img', 'def as def')->where('product_id', '=',$id)->get();
 	 $product_attr  = DB::table('product_attribute')->where('product_id', '=',$id)->get(); //print_r($product_attr);
 	 $all = array();
@@ -204,6 +204,7 @@ class ProductController extends Controller
 	 $all_category = self::getcataegorywithSub();
 	 $datatyps   = DB::table('product_data_type')->get();
 	 $options    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get();
+	 $product->pro_category_id = explode(',',$product->pro_category_id);	 
          $return['sellers']    = $sellers;
          $return['categories'] = $categories;
 	 $return['brands']     = $brands;
