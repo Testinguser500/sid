@@ -2510,7 +2510,7 @@ app.controller('CountryController', function($scope, $http) {
 });
  
  /*****Products*****/
-  app.controller('ProductController', function($scope, $http) {
+  app.controller('ProductController', function($scope, $http, filterFilter) {
      $scope.errors=false;
      $scope.files='';
      $scope.loading = true;
@@ -2540,6 +2540,8 @@ app.controller('CountryController', function($scope, $http) {
     $scope.showMe = true;
     $scope.showMe1 = true;
     $scope.showMe3 = true;
+    $scope.showMe4 = false;
+    $scope.showMe5 = false;
     $scope.myFunc = function() {
         $scope.showMe = !$scope.showMe;
     }
@@ -2549,13 +2551,30 @@ app.controller('CountryController', function($scope, $http) {
     $scope.myFunc3 = function() {
         $scope.showMe3 = !$scope.showMe3;
     }
+    $scope.myFunc4 = function() {
+        $scope.showMe4 = !$scope.showMe4;
+    }
+    $scope.myFunc5 = function() {
+        $scope.showMe5 = !$scope.showMe5;
+    }
     $scope.myFuncimg = function() {
         $scope.showMeimg = !$scope.showMeimg;
     }
     $scope.changeState=function(param){
        
     }
+<<<<<<< HEAD
 
+=======
+   $scope.group_pros = [
+       {"status": 'All', "items": ""},
+       {"status": 'Active', "items": ""},
+       {"status": 'Inactive', "items": ""},
+       {"status": 'Pending', "items": ""}
+  ];
+    $scope.select_group_pros='All';
+$scope.fruits = ["8", "9", "10", "7"];
+>>>>>>> afefaa9a99c8f425cf493c42c32c54fef7a02a55
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2563,9 +2582,44 @@ app.controller('CountryController', function($scope, $http) {
 		$http.get('product/all').
 		success(function(data, status, headers, config) {
 			$scope.products = data['products'];
-		        $scope.loading = false;
+                        $scope.group_all_pros = data['products'];
+		        $scope.loading = false;                
+                        angular.forEach($scope.group_pros, function (item,key) {                            
+                                 if( $scope.group_pros[key].status=="All"){
+                                     var st='';
+                                      $scope.group_pros[key].items = $scope.group_all_pros;
+                                 }else{
+                                      var st=$scope.group_pros[key].status;
+                                       $scope.group_pros[key].items = filterFilter($scope.group_all_pros, {status:st},true);
+                                 }
+                               
+                                  if(key==$scope.select_group_pros)
+                                  {
+                                        $scope.products =  $scope.group_pros[key].items; 
+                                 }
+                           
+                        });
+                       
 		});
 	}
+        $scope.set_group_pros = function(val){
+            $scope.select_group_pros=val;
+            angular.forEach($scope.group_pros, function (item,key) {                            
+                                 if( $scope.group_pros[key].status=="All"){
+                                     var st='';
+                                      $scope.group_pros[key].items = filterFilter($scope.group_all_pros, {status:st});
+                                 }else{
+                                      var st=$scope.group_pros[key].status;
+                                       $scope.group_pros[key].items = filterFilter($scope.group_all_pros, {status:st},true);
+                                 }
+                               
+                                  if($scope.group_pros[key].status==$scope.select_group_pros)
+                                  {
+                                        $scope.products =  $scope.group_pros[key].items; 
+                                 }
+                           
+                        });
+        }
 	$scope.GetSelectedOptions = function(optionid) { console.log($scope.optionvalues);
 	
 	$http.post('product/getoptionvalue',{
@@ -2624,7 +2678,6 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
-
 			$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];
