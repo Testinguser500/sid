@@ -38,7 +38,7 @@
                     <button class="btn btn-default" data-toggle="modal" data-target="#screen_opt_modal">Screen Options</button>
 		    </div>
 		<div class="form-group col-md-10 ">		  
-		    <span class="pull-right"><a href="{{ URL('admins/product/export') }}" class="btn btn-primary"><i class="fa fa-plus"></i>Export To Excel</a></span>
+		    <span class="pull-right"><a href="{{ URL('admins/product/export') }}" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Export To Excel</a></span>
 		    </div>
                       <!-- Modal -->
                <div class="modal fade" id="screen_opt_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -622,24 +622,23 @@
 			 <!-- Default box -->
 		    <div class="box">
 		      <div class="box-header with-border">
-			<h3 class="box-title">Publish</h3>
+			<h3 class="box-title">Status</h3>
 			<div class="box-tools pull-right">
 			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
 			    <i class="fa fa-minus"></i></button>
 			</div>
 		      </div>
 		      <div class="box-body">
-			 <button  type="submit" class="btn btn-default">Save Draft</button>
 			<p class="text-muted">
 			 <div class="misc-pub-section misc-pub-post-status"><label>Status:</label>
-			 <span id="status-display"><label for="exampleInputEmail1">Draft</label></span>
+			 <span id="status-display"><label for="exampleInputEmail1">Inactive</label></span>
 			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc4()"><span aria-hidden="true">Edit</span></a>
 			 
 			 <div id="status-select" class="" ng-show="showMe4">
-			 <input name="hidden_status" id="hidden_status" value="draft" type="hidden">
+			 <input name="hidden_status" id="hidden_status" value="Inactive" type="hidden">
 			 <select name="status" id="status">
 			 <option value="pending">Pending Review</option>
-			 <option selected="selected" value="draft">Draft</option>
+			 <option selected="selected" value="draft">Inactive</option>
 			 </select>
 			  <a href="#post_status" class="btn btn-default new-btn">OK</a>
 			  <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
@@ -648,20 +647,10 @@
 			 <div class="checkbox">
 			 <input type="checkbox"><b> Featured this Product</b>
 			 </div>
-			 
-			 <div class="publish">Published on: 25th Jul 2016
-			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc5()"><span aria-hidden="true">Edit</span></a>
-			      <div class="" ng-show="showMe5">
-			      Time
-			      <a href="#post_status" class="btn btn-default new-btn">OK</a>
-			      <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
-			      </div>
-			 </div>
 			</p>
 		      </div>
 		      <div class="box-footer">
-			 <div class="pull-left"><a href="javascript:void(0);">Move to Trash</a></div>
-		        <div class="pull-right"><button  type="submit" class="btn btn-primary">Publish</button></div>
+		        <div class="pull-right"><button class="btn btn-primary">Save</button></div>
 		       </div>
 		    </div>
 		    </div>
@@ -739,7 +728,7 @@
 				   </div>
 			           <div style="clear:both"></div>
 				   <div class="btn btn-primary btn-file" ng-show="pr_imgs.length < 8">
-				   <i class="fa fa-plus"></i> <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+				   <i class="fa fa-plus"></i> <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" class="image-file">
 				   </div>
 			      </div>
 			 </div>
@@ -1134,24 +1123,23 @@
 			 <!-- Default box -->
 		    <div class="box">
 		      <div class="box-header with-border">
-			<h3 class="box-title">Publish</h3>
+			<h3 class="box-title">Status</h3>
 			<div class="box-tools pull-right">
 			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
 			    <i class="fa fa-minus"></i></button>
 			</div>
 		      </div>
 		      <div class="box-body">
-			 <button  type="submit" class="btn btn-default">Save Draft</button>
 			<p class="text-muted">
 			 <div class="misc-pub-section misc-pub-post-status"><label>Status:</label>
-			 <span id="status-display"><label for="exampleInputEmail1">Draft</label></span>
+			 <span id="status-display"><label for="exampleInputEmail1">Inactive</label></span>
 			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc4()"><span aria-hidden="true">Edit</span></a>
 			 
 			 <div id="status-select" class="" ng-show="showMe4">
 			 <input name="hidden_status" id="hidden_status" value="draft" type="hidden">
 			 <select name="status" id="status">
 			 <option value="pending">Pending Review</option>
-			 <option selected="selected" value="draft">Draft</option>
+			 <option selected="selected" value="draft">Inactive</option>
 			 </select>
 			  <a href="#post_status" class="btn btn-default new-btn">OK</a>
 			  <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
@@ -1160,20 +1148,10 @@
 			 <div class="checkbox">
 			 <input type="checkbox"><b> Featured this Product</b>
 			 </div>
-			 
-			 <div class="publish">Published on: 25th Jul 2016
-			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc5()"><span aria-hidden="true">Edit</span></a>
-			      <div class="" ng-show="showMe5">
-			      Time
-			      <a href="#post_status" class="btn btn-default new-btn">OK</a>
-			      <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
-			      </div>
-			 </div>
 			</p>
 		      </div>
 		      <div class="box-footer">
-			 <div class="pull-left"><a href="javascript:void(0);">Move to Trash</a></div>
-		        <div class="pull-right"><button  type="submit" class="btn btn-primary">Publish</button></div>
+		        <div class="pull-right"><button class="btn btn-primary">Save</button></div>
 		       </div>
 		    </div>
 		    </div>
@@ -1254,7 +1232,7 @@
 			      </div>
 			      <div style="clear:both"></div>
 			      <div class="btn btn-primary btn-file" ng-show="pr_imgs.length < 8">
-			      <i class="fa fa-plus"></i> <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+			      <i class="fa fa-plus"></i> <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" class="image-file">
 			      </div>
 			 </div>
 			 </div>
