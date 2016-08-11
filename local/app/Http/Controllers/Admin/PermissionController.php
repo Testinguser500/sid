@@ -23,8 +23,11 @@ class PermissionController extends Controller
 	}
         public function all(){ 
              $category = DB::table('role')->get();
+	     $setting= array();
 	     foreach($category as $val)
 	     {
+			if($val->param)
+			{
 			$val->setting = json_decode($val->param);
 			$setting['site_login_setting'][$val->id]= $val->setting->site_login_setting;
 			$setting['admin_login_setting'][$val->id]= $val->setting->admin_login_setting;
@@ -32,6 +35,7 @@ class PermissionController extends Controller
 			$setting['edit_own_setting'][$val->id]= $val->setting->edit_own_setting;
 			$setting['edit_setting'][$val->id]= $val->setting->edit_setting;
 			$setting['delete_setting'][$val->id]= $val->setting->delete_setting;
+			}
 			
 	     }
 	     //print_r($setting);exit;

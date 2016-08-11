@@ -2503,7 +2503,7 @@ app.controller('CountryController', function($scope, $http) {
 });
  
  /*****Products*****/
-  app.controller('ProductController', function($scope, $http) {
+  app.controller('ProductController', function($scope, $http, filterFilter) {
      $scope.errors=false;
      $scope.files='';
      $scope.loading = true;
@@ -2548,7 +2548,18 @@ app.controller('CountryController', function($scope, $http) {
     $scope.changeState=function(param){
        
     }
+<<<<<<< HEAD
+    
+   $scope.group_pros = [
+       {"status": 'All', "items": ""},
+       {"status": 'Active', "items": ""},
+       {"status": 'Inactive', "items": ""},
+       {"status": 'Pending', "items": ""}
+  ];
+    $scope.select_group_pros='All';
+=======
 $scope.fruits = ["8", "9", "10", "7"];
+>>>>>>> 0e8da0d4b37ca1fd6bcf46c893b6e3fec9c5e201
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2556,9 +2567,44 @@ $scope.fruits = ["8", "9", "10", "7"];
 		$http.get('product/all').
 		success(function(data, status, headers, config) {
 			$scope.products = data['products'];
-		        $scope.loading = false;
+                        $scope.group_all_pros = data['products'];
+		        $scope.loading = false;                
+                        angular.forEach($scope.group_pros, function (item,key) {                            
+                                 if( $scope.group_pros[key].status=="All"){
+                                     var st='';
+                                      $scope.group_pros[key].items = $scope.group_all_pros;
+                                 }else{
+                                      var st=$scope.group_pros[key].status;
+                                       $scope.group_pros[key].items = filterFilter($scope.group_all_pros, {status:st},true);
+                                 }
+                               
+                                  if(key==$scope.select_group_pros)
+                                  {
+                                        $scope.products =  $scope.group_pros[key].items; 
+                                 }
+                           
+                        });
+                       
 		});
 	}
+        $scope.set_group_pros = function(val){
+            $scope.select_group_pros=val;
+            angular.forEach($scope.group_pros, function (item,key) {                            
+                                 if( $scope.group_pros[key].status=="All"){
+                                     var st='';
+                                      $scope.group_pros[key].items = filterFilter($scope.group_all_pros, {status:st});
+                                 }else{
+                                      var st=$scope.group_pros[key].status;
+                                       $scope.group_pros[key].items = filterFilter($scope.group_all_pros, {status:st},true);
+                                 }
+                               
+                                  if($scope.group_pros[key].status==$scope.select_group_pros)
+                                  {
+                                        $scope.products =  $scope.group_pros[key].items; 
+                                 }
+                           
+                        });
+        }
 	$scope.GetSelectedOptions = function(optionid) { console.log($scope.optionvalues);
 	
 	$http.post('product/getoptionvalue',{
@@ -2617,7 +2663,10 @@ $scope.fruits = ["8", "9", "10", "7"];
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
+<<<<<<< HEAD
+=======
 
+>>>>>>> 0e8da0d4b37ca1fd6bcf46c893b6e3fec9c5e201
 			$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];

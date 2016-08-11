@@ -23,6 +23,16 @@
             <!-- /.box-header -->
             
             <div class="box-body">  
+                <div class="row">
+                    <div class="col-md-12 ">
+                    <ul class="subsubsub" ng-if="group_pros" >
+                        <li ng-repeat="(key, value) in group_pros"  ng-click ="set_group_pros( value.status )" ng-class="{ active: value.status==select_group_pros}">
+                            <a href="javascript:void(0);"> <% value.status %>(<% value.items.length %>)</a>
+                            <span ng-if="$index!=(group_pros.length-1)"> | </span>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
               <div class="row">
                 <div class="form-group col-md-2 ">		  
                     <button class="btn btn-default" data-toggle="modal" data-target="#screen_opt_modal">Screen Options</button>
