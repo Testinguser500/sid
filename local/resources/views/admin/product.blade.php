@@ -937,9 +937,9 @@
 			 <span title="Click to toggle" class="handlediv" ng-click="myFunc()"><i class="fa fa-caret-down custom"></i></span>
 			 <div class="form-chk" ng-show="showMe">
 			 <input type="text" placeholder="Filter Categories" ng-model="test"><br>
-			 <div class="frm-cat"> <% fruits %> 
+			 <div class="frm-cat"> <% product.pro_category_id %> 
 			     <script type="text/ng-template" id="categoryTree">
-  <% category.id %> 
+  <% product.pro_category_id.indexOf(category.id) %> 
    <input type="checkbox" ng-model="product.pro_category_id[category.id]" ng-checked="product.pro_category_id.indexOf(category.id)!==-1" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
    <ul ng-if="category.all_category">
        <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           

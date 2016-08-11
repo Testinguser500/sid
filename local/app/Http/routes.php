@@ -159,6 +159,14 @@ Route::get('admins/permission', 'Admin\PermissionController@index');
 Route::get('admins/permission/all', 'Admin\PermissionController@all');
 Route::post('admins/permission/store', 'Admin\PermissionController@store');
 
+Route::get('admins/coupon', 'Admin\CouponController@index');
+Route::get('admins/coupon/all', 'Admin\CouponController@all');
+Route::post('admins/coupon/store', 'Admin\CouponController@store');
+Route::get('admins/coupon/edit/{id}', 'Admin\CouponController@edit');
+Route::post('admins/coupon/update', 'Admin\CouponController@update');
+Route::post('admins/coupon/delete', 'Admin\CouponController@deletecoupon');
+Route::post('admins/coupon/changeStatus', 'Admin\CouponController@changeStatus');
+
 //Seller Panel
 Route::get('seller/login', 'Seller\HomeController@index');
 Route::post('seller/log_user', 'Seller\HomeController@log_user');
