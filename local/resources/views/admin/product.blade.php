@@ -26,6 +26,10 @@
               <div class="row">
                 <div class="form-group col-md-2 ">		  
                     <button class="btn btn-default" data-toggle="modal" data-target="#screen_opt_modal">Screen Options</button>
+		    </div>
+		<div class="form-group col-md-10 ">		  
+		    <span class="pull-right"><a href="{{ URL('admins/product/export') }}" class="btn btn-primary"><i class="fa fa-plus"></i>Export To Excel</a></span>
+		    </div>
                       <!-- Modal -->
                <div class="modal fade" id="screen_opt_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
