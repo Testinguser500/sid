@@ -2533,6 +2533,8 @@ app.controller('CountryController', function($scope, $http) {
     $scope.showMe = true;
     $scope.showMe1 = true;
     $scope.showMe3 = true;
+    $scope.showMe4 = false;
+    $scope.showMe5 = false;
     $scope.myFunc = function() {
         $scope.showMe = !$scope.showMe;
     }
@@ -2542,14 +2544,18 @@ app.controller('CountryController', function($scope, $http) {
     $scope.myFunc3 = function() {
         $scope.showMe3 = !$scope.showMe3;
     }
+    $scope.myFunc4 = function() {
+        $scope.showMe4 = !$scope.showMe4;
+    }
+    $scope.myFunc5 = function() {
+        $scope.showMe5 = !$scope.showMe5;
+    }
     $scope.myFuncimg = function() {
         $scope.showMeimg = !$scope.showMeimg;
     }
     $scope.changeState=function(param){
        
     }
-<<<<<<< HEAD
-    
    $scope.group_pros = [
        {"status": 'All', "items": ""},
        {"status": 'Active', "items": ""},
@@ -2557,9 +2563,7 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Pending', "items": ""}
   ];
     $scope.select_group_pros='All';
-=======
 $scope.fruits = ["8", "9", "10", "7"];
->>>>>>> 0e8da0d4b37ca1fd6bcf46c893b6e3fec9c5e201
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2663,10 +2667,6 @@ $scope.fruits = ["8", "9", "10", "7"];
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
-<<<<<<< HEAD
-=======
-
->>>>>>> 0e8da0d4b37ca1fd6bcf46c893b6e3fec9c5e201
 			$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];
