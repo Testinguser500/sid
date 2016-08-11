@@ -36,6 +36,10 @@
               <div class="row">
                 <div class="form-group col-md-2 ">		  
                     <button class="btn btn-default" data-toggle="modal" data-target="#screen_opt_modal">Screen Options</button>
+		    </div>
+		<div class="form-group col-md-10 ">		  
+		    <span class="pull-right"><a href="{{ URL('admins/product/export') }}" class="btn btn-primary"><i class="fa fa-plus"></i>Export To Excel</a></span>
+		    </div>
                       <!-- Modal -->
                <div class="modal fade" id="screen_opt_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
@@ -297,68 +301,35 @@
 		      <input type="text" class="form-control" id="" name="pro_name" placeholder="Product Name" ng-model="product.pro_name">
 		      <div class="help-block"></div>
 		    </div>
-		    <div class="form-group">
-		      <label for="exampleInputEmail1">Product Description</label>
-		      <div text-angular ng-model="product.pro_des" name="pro_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
-		      <div class="help-block"></div>
+		     <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Product Description</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+			<div class="form-group">
+			 <label for="exampleInputEmail1">Product Description</label>
+			     <div text-angular ng-model="product.pro_des" name="pro_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
+			     <div class="help-block"></div>
+			</div>
+		      </div>
 		    </div>
-		    <div class="form-group">
-		      <label for="exampleInputEmail1">Product Short Description</label>
-		      <div text-angular ng-model="product.pro_short_des" name="pro_short_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
-		      <div class="help-block"></div>
-		    </div>
-		    <div class="form-group">
-		      <label for="exampleInputEmail1">Product Feature Description</label>
-		      <div text-angular ng-model="product.pro_feature_des" name="pro_feature_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
-		      <div class="help-block"></div>
-		    </div>
-		    <div class="form-group">
-		      <label for="exampleInputEmail1">Sellers</label>
-		       <select class="form-control" id="" name="seller_id" placeholder="Sellers" ng-model="product.seller_id">
-			<option value="">Select Seller</option>
-			<option ng-repeat="ss in sellers" ng-value="ss.id" ng-selected="ss.id==product.seller_id"><%ss.fname%></option> 
-		       </select>
-		      <div class="help-block"></div>
-		    </div>
-		    <!--<div class="form-group">
-		      <label for="exampleInputEmail1">Product Category</label>
-		       <select class="form-control" id="" name="pro_category_id" placeholder="Product Category" ng-model="product.pro_category_id">
-			<option value="">Select Product Category</option>
-			<option ng-repeat="cat in categories" ng-value="cat.id" ng-selected="cat.id==product.pro_category_id"><%cat.category_name%></option> 
-		       </select>
-		      <div class="help-block"></div>
-		    </div>-->
-		    <!--<div class="form-group">
-		      <label for="exampleInputEmail1">Product Brand</label>
-		       <select class="form-control" id="" name="brand_id" placeholder="Product Brand" ng-model="product.brand_id">
-			<option value="">Select Product Brand</option>
-			<option ng-repeat="br in brands" ng-value="br.id" ng-selected="br.id==product.brand_id"><%br.brand_name%></option> 
-		       </select>
-		      <div class="help-block"></div>
-		    </div>-->
-		    <div class="form-group">
-		      <label for="exampleInputEmail1">Product Tags</label>
-		      <input type="text" class="form-control" id="" name="product_tags" placeholder="Product Tags" ng-model="product.product_tags">
-		      <div class="help-block"></div>
-		    </div>
-		    <!--<div class="form-group">
-		      <label for="exampleInputEmail1">Price</label>
-		      <input type="text" class="form-control" id="" name="price" placeholder="Price" ng-model="product.price">
-		      <div class="help-block"></div>
-		    </div>-->
-		    <div class="form-group">
-		      <label for="exampleInputEmail1">No. of Stocks</label>
-		      <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
-		      <div class="help-block"></div>
-		    </div>
-		    <!--<div class="form-group">
-		      <label for="exampleInputEmail1">Image</label>
-		      <!--<img class='' src="{{URL::asset('uploads')}}/<% category.image %>" width="100">-->
-		      <!--onchange="angular.element(this).scope().uploadedFile(this)"-->
-		      <!--<input type="file"  name="image" ng-model="images.image" accept="image/*" onchange="angular.element(this).scope().uploadedMultipleFile(this)">
-		      <div class="help-block"></div>
-		    </div>-->
-		    <div class="form-group">
+                   <!-- /.box -->
+		    <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Meta Title and Description</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+			<div class="form-group">
 		      <label for="exampleInputEmail1">Meta Title</label>
 		      <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="product.meta_title">
 		      <div class="help-block"></div>
@@ -373,21 +344,30 @@
 		      <input type="text" class="form-control" id="" name="meta_keywords" placeholder="Meta Keywords" ng-model="product.meta_keywords">
 		      <div class="help-block"></div>
 		    </div>
+		      </div>
+		    </div>
+                   <!-- /.box -->
 		    <div class="form-group">
-		      <label for="exampleInputEmail1" ng-init="product.status='Active'" >Status </label>
-		      <input type="radio" ng-model="product.status" ng-checked="product.status" id="" name="status"  value="Active">Active <input ng-model="product.status" type="radio" id="" name="status" value="Inactive" checked>Inactive 
+		      <label for="exampleInputEmail1">Product Short Description</label>
+		      <div text-angular ng-model="product.pro_short_des" name="pro_short_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
 		      <div class="help-block"></div>
-		    </div> 
-		    
-		    <div class="main-form-pro row">
-		    <label for="exampleInputEmail1">Product Data-</label>
+		    </div>
+		     <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Product Data-</h3>
 			<select name="pro_data_type" ng-model="product.pro_datatype_id" ng-init="product.pro_datatype_id=1">
 			 <optgroup label="Product Type">
 			 <option ng-repeat="dt in datatyps" ng-value="dt.id" ng-selected="dt.id==product.pro_datatype_id" value="<%dt.id%>"><%dt.data_type%></option> 
 			 </optgroup>
 			</select>   
-		    <span title="Click to toggle" class="handlediv" ng-click="myFunc3()"><i class="fa fa-caret-down custom"></i></span>
-			 <div class="col-xs-12 main--tab" ng-show="showMe3">
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+			 <div class="col-xs-12 main--tab">
 			     <div class="col-md-2">
 				   <div class="first-box" ng-if="product.pro_datatype_id == '1'">
 					<ul class="nav nav-pills nav-stacked">
@@ -579,80 +559,212 @@
 				    </div>
 			     </div>
 			 </div>
+		      </div>
 		    </div>
+                   <!-- /.box -->
+		   <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Sellers</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+			<div class="form-group">
+		      <label for="exampleInputEmail1">Sellers</label>
+		       <select class="form-control" id="" name="seller_id" placeholder="Sellers" ng-model="product.seller_id">
+			<option value="">Select Seller</option>
+			<option ng-repeat="ss in sellers" ng-value="ss.id" ng-selected="ss.id==product.seller_id"><%ss.fname%></option> 
+		       </select>
+		      <div class="help-block"></div>
+		    </div>
+		      </div>
+		    </div>
+                   <!-- /.box -->
+		   <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Product Feature Description</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+		      <div class="form-group">
+		      <label for="exampleInputEmail1">Product Feature Description</label>
+		      <div text-angular ng-model="product.pro_feature_des" name="pro_feature_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
+		      <div class="help-block"></div>
+		    </div>
+		      </div>
+		    </div>
+                   <!-- /.box -->
+		    <div class="form-group">
+		      <label for="exampleInputEmail1">No. of Stocks</label>
+		      <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
+		      <div class="help-block"></div>
+		    </div>
+		    
+		    <div class="form-group">
+		      <label for="exampleInputEmail1" ng-init="product.status='Active'" >Status </label>
+		      <input type="radio" ng-model="product.status" ng-checked="product.status" id="" name="status"  value="Active">Active <input ng-model="product.status" type="radio" id="" name="status" value="Inactive" checked>Inactive 
+		      <div class="help-block"></div>
+		    </div> 
 	       </div>
 	       <div class="col-xs-3">
 		    <div class="row">
-		    <div>
-		    <!--<script type="text/ng-template" id="categoryTree">
-   <% category.name %>
-   <ul ng-if="category.all_category">
-       <li ng-repeat="category in category.all_category" ng-include="'categoryTree'">           
-       </li>
-   </ul>
-</script>
-<ul>
-   <li ng-repeat="category in all_category" ng-include="'categoryTree'"></li>
-</ul> -->
-		    </div>
 		      <div class="col-xs-12">
-			 <div class="main-form-chk">
-			 <label for="exampleInputEmail1">Product Categories</label>
-			 <span title="Click to toggle" class="handlediv" ng-click="myFunc()"><i class="fa fa-caret-down custom"></i></span>
-			 <div class="form-chk" ng-show="showMe">
-			 <input type="text" placeholder="Filter Categories" ng-model="test"><br>
-			 <div class="frm-cat">
-			     <script type="text/ng-template" id="categoryTree">
-  
-   <input type="checkbox" ng-model="product.pro_category_id[category.id]" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
-   <ul ng-if="category.all_category">
-       <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
-       </li>
-   </ul>
-</script>
-<ul class="ul-cat">
-   <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree'"></li>
-</ul> 
-			 <!--<span ng-repeat="cat1 in categories | filter : test">
-			      <input type="checkbox" ng-model="product.pro_category_id[cat1.id]" name="pro_category_id[]" > <%cat1.category_name%><br>
-			  </span>-->
-			 </div>
-			 </div>
-			 </div>
-		      </div>
-		      <div class="col-xs-12">
-		      <div class="main-form-chk">
-		      <label for="exampleInputEmail1">Images</label>
-		      <span title="Click to toggle" class="handlediv" ng-click="myFuncimg()"><i class="fa fa-caret-down custom" ></i></span>
-		      <div class="form-img-chk" ng-show="showMeimg">
-			<div class="imgs_ro" ng-repeat="val in pr_imgs">               
-			    <img src="{{URL::asset('uploads')}}/<% val.img %>"  alt="" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1"/>
-			     <a class="ms_ov" href="javascript:void(0);" ng-if="$index != values.length - 1" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1" ng-show="tr_dis[$index]==1" >
-				 <i class="fa fa-check" title="Set default" ng-show="val.def==0"  ng-click="setdefault($index)"></i>
-				 <i class="fa fa-check grr_ic"  title="Unset default"  ng-show="val.def==1"  ng-click="unsetdefault($index)"></i>
-				 <i class="fa fa-trash" title="Delete"  ng-click="removeimgs(val.img,$index)" ></i>
-			     </a>
-			 </div>
-			 <div style="clear:both"></div>
-			<div class="btn btn-primary btn-file" ng-show="pr_imgs.length < 8">
-			    <i class="fa fa-plus"></i> <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+			 <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Publish</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
 			</div>
 		      </div>
+		      <div class="box-body">
+			 <button  type="submit" class="btn btn-default">Save Draft</button>
+			<p class="text-muted">
+			 <div class="misc-pub-section misc-pub-post-status"><label>Status:</label>
+			 <span id="status-display"><label for="exampleInputEmail1">Draft</label></span>
+			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc4()"><span aria-hidden="true">Edit</span></a>
+			 
+			 <div id="status-select" class="" ng-show="showMe4">
+			 <input name="hidden_status" id="hidden_status" value="draft" type="hidden">
+			 <select name="status" id="status">
+			 <option value="pending">Pending Review</option>
+			 <option selected="selected" value="draft">Draft</option>
+			 </select>
+			  <a href="#post_status" class="btn btn-default new-btn">OK</a>
+			  <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
+			 </div>
+			 
+			 <div class="checkbox">
+			 <input type="checkbox"><b> Featured this Product</b>
+			 </div>
+			 
+			 <div class="publish">Published on: 25th Jul 2016
+			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc5()"><span aria-hidden="true">Edit</span></a>
+			      <div class="" ng-show="showMe5">
+			      Time
+			      <a href="#post_status" class="btn btn-default new-btn">OK</a>
+			      <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
+			      </div>
+			 </div>
+			</p>
 		      </div>
+		      <div class="box-footer">
+			 <div class="pull-left"><a href="javascript:void(0);">Move to Trash</a></div>
+		        <div class="pull-right"><button  type="submit" class="btn btn-primary">Publish</button></div>
+		       </div>
+		    </div>
+		    </div>
+                   <!-- /.box -->
+		      </div>
+		    <div class="col-xs-12">
+			 <!-- Default box -->
+			 <div class="box">
+			 <div class="box-header with-border">
+			 <h3 class="box-title">Product Tags</h3>
+			 <div class="box-tools pull-right">
+			 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			 <i class="fa fa-minus"></i></button>
+			 </div>
+			 </div>
+			 <div class="box-body">
+			 <div class="form-group">
+			 <input type="text" class="form-control" id="" name="product_tags" placeholder="Product Tags" ng-model="product.product_tags">
+			 <div class="help-block"></div>
+			 </div>
+			 </div>
+			 </div>
+			 <!-- /.box -->
+		    </div>
+		      <div class="col-xs-12">
+			 <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Product Categories</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		         <div class="box-body">
+			      <label for="exampleInputEmail1">Product Categories</label>
+			      <div class="form-group">
+			      <input type="text" placeholder="Filter Categories" class="form-control" ng-model="test">
+			      </div>
+			      <div class="frm-cat">
+			      <script type="text/ng-template" id="categoryTree">
+			      <input type="checkbox" ng-model="product.pro_category_id[category.id]" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
+			      <ul ng-if="category.all_category">
+			      <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
+			      </li>
+			      </ul>
+			      </script>
+			      <ul class="ul-cat">
+			      <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree'"></li>
+			      </ul> 
+			      </div>
+			 </div>
+		      </div>
+                   <!-- /.box -->
 		      </div>
 		      <div class="col-xs-12">
-		      <div class="main-form-chk">
-		      <label for="exampleInputEmail1">Product Brands</label>
-		      <span title="Click to toggle" class="handlediv" ng-click="myFunc1()"><i class="fa fa-caret-down custom" ></i></span>
-		      <div class="form-chk" ng-show="showMe1">
-			 <input type="text" placeholder="Filter Brands" ng-model="brd"><br>
+			 <!-- Default box -->
+			 <div class="box">
+			 <div class="box-header with-border">
+			 <h3 class="box-title">Images</h3>
+			 <div class="box-tools pull-right">
+			 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			 <i class="fa fa-minus"></i></button>
+			 </div>
+			 </div>
+			 <div class="box-body">
+			      <div class="form-img-chk">
+				   <div class="imgs_ro" ng-repeat="val in pr_imgs">               
+				   <img src="{{URL::asset('uploads')}}/<% val.img %>"  alt="" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1"/>
+				   <a class="ms_ov" href="javascript:void(0);" ng-if="$index != values.length - 1" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1" ng-show="tr_dis[$index]==1" >
+				   <i class="fa fa-check" title="Set default" ng-show="val.def==0"  ng-click="setdefault($index)"></i>
+				   <i class="fa fa-check grr_ic"  title="Unset default"  ng-show="val.def==1"  ng-click="unsetdefault($index)"></i>
+				   <i class="fa fa-trash" title="Delete"  ng-click="removeimgs(val.img,$index)" ></i>
+				   </a>
+				   </div>
+			           <div style="clear:both"></div>
+				   <div class="btn btn-primary btn-file" ng-show="pr_imgs.length < 8">
+				   <i class="fa fa-plus"></i> <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+				   </div>
+			      </div>
+			 </div>
+			 </div>
+			 <!-- /.box -->
+		      </div>
+		      <div class="col-xs-12">
+			 <!-- Default box -->
+			 <div class="box">
+			 <div class="box-header with-border">
+			 <h3 class="box-title">Product Brands</h3>
+			 <div class="box-tools pull-right">
+			 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			 <i class="fa fa-minus"></i></button>
+			 </div>
+			 </div>
+			 <div class="box-body">
+			      <div class="form-group">
+			      <input type="text" placeholder="Filter Brands" class="form-control" ng-model="brd">
+			      </div>
 			 <div class="frm-cat">
 			      <span class="form-brd" ng-repeat="br in brands | filter : brd">
 			       <input type="radio" id="" name="brand_id" ng-model="product.brand_id" ng-value="br.id"><%br.brand_name%><br>
 			    </span>
 			 </div>
-		      </div>
-		      </div>
+			 </div>
+			 </div>
+			 <!-- /.box --> 
 		      </div>
 		    </div> 
 	       </div>
@@ -683,91 +795,86 @@
                   <input type="text" class="form-control" id="" name="pro_name" placeholder="Product Name" ng-model="product.pro_name">
 		  <div class="help-block"></div>
                 </div>
-		<div class="form-group">
+		<!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Product Description</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+			<div class="form-group">
+			 <label for="exampleInputEmail1">Product Description</label>
+			     <div text-angular ng-model="product.pro_des" name="pro_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
+			     <div class="help-block"></div>
+			</div>
+		      </div>
+		    </div>
+                   <!-- /.box -->
+		   
+		   <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Meta Title and Description</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+			<div class="form-group">
+		      <label for="exampleInputEmail1">Meta Title</label>
+		      <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="product.meta_title">
+		      <div class="help-block"></div>
+		    </div>
+		    <div class="form-group">
+		      <label for="exampleInputEmail1">Meta Description</label>
+		      <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="product.meta_description">
+		      <div class="help-block"></div>
+		    </div>
+		    <div class="form-group">
+		      <label for="exampleInputEmail1">Meta Keywords</label>
+		      <input type="text" class="form-control" id="" name="meta_keywords" placeholder="Meta Keywords" ng-model="product.meta_keywords">
+		      <div class="help-block"></div>
+		    </div>
+		      </div>
+		    </div>
+                   <!-- /.box -->
+		<!--<div class="form-group">
                   <label for="exampleInputEmail1">Product Description</label>
                   <div text-angular ng-model="product.pro_des" name="pro_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
 		  <div class="help-block"></div>
-                </div>
+                </div>-->
 		<div class="form-group">
                   <label for="exampleInputEmail1">Product Short Description</label>
                   <div text-angular ng-model="product.pro_short_des" name="pro_short_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
 		  <div class="help-block"></div>
                 </div>
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Product Feature Description</label>
-                  <div text-angular ng-model="product.pro_feature_des" name="pro_feature_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
-		  <div class="help-block"></div>
-                </div>
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Sellers</label>
-                   <select class="form-control" id="" name="seller_id" placeholder="Sellers" ng-model="product.seller_id">
-		    <option value="">Select Seller</option>
-		    <option ng-repeat="ss in sellers" ng-value="ss.id" ng-selected="ss.id==product.seller_id"><%ss.fname%></option> 
-		   </select>
-		  <div class="help-block"></div>
-                </div>
-		<!--<div class="form-group">
-                  <label for="exampleInputEmail1">Product Category</label>
-                   <select class="form-control" id="" name="pro_category_id" placeholder="Product Category" ng-model="product.pro_category_id">
-		    <option value="">Select Product Category</option>
-		    <option ng-repeat="cat in categories" ng-value="cat.id" value="cat.id" ng-selected="cat.id==product.pro_category_id"><%cat.category_name%></option> 
-		   </select>
-		  <div class="help-block"></div>
-                </div>
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Product Brand</label>
-                   <select class="form-control" id="" name="brand_id" placeholder="Product Brand" ng-model="product.brand_id">
-		    <option value="">Select Product Brand</option>
-		    <option ng-repeat="br in brands" ng-value="br.id" ng-selected="br.id==product.brand_id"><%br.brand_name%></option> 
-		   </select>
-		  <div class="help-block"></div>
-                </div>-->
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Product Tags</label>
-                  <input type="text" class="form-control" id="" name="product_tags" placeholder="Product Tags" ng-model="product.product_tags">
-		  <div class="help-block"></div>
-                </div>
-		<!--<div class="form-group">
-                  <label for="exampleInputEmail1">Price</label>
-                  <input type="text" class="form-control" id="" name="price" placeholder="Price" ng-model="product.price">
-		  <div class="help-block"></div>
-                </div>-->
-		<div class="form-group">
-                  <label for="exampleInputEmail1">No. of Stocks</label>
-                  <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
-		  <div class="help-block"></div>
-                </div>
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Meta Title</label>
-                  <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="product.meta_title">
-		  <div class="help-block"></div>
-                </div>
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Meta Description</label>
-                  <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="product.meta_description">
-		  <div class="help-block"></div>
-                </div>
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Meta Keywords</label>
-                  <input type="text" class="form-control" id="" name="meta_keywords" placeholder="Meta Keywords" ng-model="product.meta_keywords">
-		  <div class="help-block"></div>
-                </div>
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Status</label>
-                  <input type="radio"  id="" name="status"  ng-model="product.status" ng-checked="product.status=='Active'" value="Active" >Active
-		  <input type="radio" id="" name="status"  ng-model="product.status" ng-checked="product.status=='Inactive'"  value="Inactive">Inactive 
-		  <div class="help-block"></div>
-                </div>
-		
-		<div class="main-form-pro row">
-		    <label for="exampleInputEmail1">Product Data-</label>
+		<!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Product Data-</h3>
 			<select name="pro_data_type" ng-model="product.pro_datatype_id" ng-init="product.pro_datatype_id=1">
 			 <optgroup label="Product Type">
 			 <option ng-repeat="dt in datatyps" ng-value="dt.id" ng-selected="dt.id==product.pro_datatype_id" value="<%dt.id%>"><%dt.data_type%></option> 
 			 </optgroup>
-			</select>   
-		    <span title="Click to toggle" class="handlediv" ng-click="myFunc3()"><i class="fa fa-caret-down custom"></i></span>
-			 <div class="col-xs-12 main--tab" ng-show="showMe3">
+			</select> 
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+			<!--<label for="exampleInputEmail1">Product Data-</label>
+			<select name="pro_data_type" ng-model="product.pro_datatype_id" ng-init="product.pro_datatype_id=1">
+			 <optgroup label="Product Type">
+			 <option ng-repeat="dt in datatyps" ng-value="dt.id" ng-selected="dt.id==product.pro_datatype_id" value="<%dt.id%>"><%dt.data_type%></option> 
+			 </optgroup>
+			</select>-->   
+		    <!--<span title="Click to toggle" class="handlediv" ng-click="myFunc3()"><i class="fa fa-caret-down custom"></i></span>-->
+			 <div class="col-xs-12 main--tab">
 			     <div class="col-md-2">
 				   <div class="first-box" ng-if="product.pro_datatype_id == '1'">
 					<ul class="nav nav-pills nav-stacked">
@@ -856,7 +963,6 @@
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Regular Price (Rs.)</label>
-					     <!--<input type="text" placeholder="" value="" id="regular_price" name="regular_price">-->
 					     <input type="text" class="form-control" id="" name="price" placeholder="Price" ng-model="product.price">
 					     </div>
 					     <div class="form-group">
@@ -958,69 +1064,219 @@
 				    </div>
 			     </div>
 			 </div>
+		      </div>
 		    </div>
+                   <!-- /.box -->
+		   
+		   <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Sellers</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+			<div class="form-group">
+		      <label for="exampleInputEmail1">Sellers</label>
+		       <select class="form-control" id="" name="seller_id" placeholder="Sellers" ng-model="product.seller_id">
+			<option value="">Select Seller</option>
+			<option ng-repeat="ss in sellers" ng-value="ss.id" ng-selected="ss.id==product.seller_id"><%ss.fname%></option> 
+		       </select>
+		      <div class="help-block"></div>
+		    </div>
+		      </div>
+		    </div>
+                   <!-- /.box -->
+		
+		<!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Product Feature Description</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+		      <div class="form-group">
+		      <label for="exampleInputEmail1">Product Feature Description</label>
+		      <div text-angular ng-model="product.pro_feature_des" name="pro_feature_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
+		      <div class="help-block"></div>
+		    </div>
+		      </div>
+		    </div>
+                   <!-- /.box -->
+		
+		<div class="form-group">
+                  <label for="exampleInputEmail1">No. of Stocks</label>
+                  <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
+		  <div class="help-block"></div>
+                </div>
+		<div class="form-group">
+                  <label for="exampleInputEmail1">Status</label>
+                  <input type="radio"  id="" name="status"  ng-model="product.status" ng-checked="product.status=='Active'" value="Active" >Active
+		  <input type="radio" id="" name="status"  ng-model="product.status" ng-checked="product.status=='Inactive'"  value="Inactive">Inactive 
+		  <div class="help-block"></div>
+                </div>
                   
 	      </div>
 	      <div class="col-xs-3">
 		    <div class="row">
-		      <div class="col-xs-12">
-			 <div class="main-form-chk">
-			 <label for="exampleInputEmail1">Product Categories</label>
-			 <span title="Click to toggle" class="handlediv" ng-click="myFunc()"><i class="fa fa-caret-down custom"></i></span>
-			 <div class="form-chk" ng-show="showMe">
-			 <input type="text" placeholder="Filter Categories" ng-model="test"><br>
-			 <div class="frm-cat"> <% fruits %> 
-			     <script type="text/ng-template" id="categoryTree">
-  <% category.id %> 
-   <input type="checkbox" ng-model="product.pro_category_id[category.id]" ng-checked="product.pro_category_id.indexOf(category.id)!==-1" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
-   <ul ng-if="category.all_category">
-       <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
-       </li>
-   </ul>
-</script>
-<ul class="ul-cat">
-   <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree'"></li>
-</ul>
-			 <!--<span ng-repeat="cat1 in categories | filter : test">
-			      <input type="checkbox" ng-model="product.pro_category_id[cat1.id]" name="pro_category_id[]" > <%cat1.category_name%><br>
-			  </span>-->
-			 </div>
-			 </div>
-			 </div>
-		      </div>
-		      <div class="col-xs-12">
-		      <div class="main-form-chk">
-		      <label for="exampleInputEmail1">Images</label>
-		      <span title="Click to toggle" class="handlediv" ng-click="myFuncimg()"><i class="fa fa-caret-down custom" ></i></span>
-		      <div class="form-img-chk" ng-show="showMeimg">
-			<div class="imgs_ro" ng-repeat="val in pr_imgs">               
-			    <img src="{{URL::asset('uploads')}}/<% val.img %>"  alt="" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1"/>
-			     <a class="ms_ov" href="javascript:void(0);" ng-if="$index != values.length - 1" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1" ng-show="tr_dis[$index]==1" >
-				 <i class="fa fa-check" title="Set default" ng-show="val.def==0"  ng-click="setdefault($index)"></i>
-				 <i class="fa fa-check grr_ic"  title="Unset default"  ng-show="val.def==1"  ng-click="unsetdefault($index)"></i>
-				 <i class="fa fa-trash" title="Delete"  ng-click="removeimgs(val.img,$index)" ></i>
-			     </a>
-			 </div>
-			 <div style="clear:both"></div>
-			<div class="btn btn-primary btn-file" ng-show="pr_imgs.length < 8">
-			    <i class="fa fa-plus"></i> <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+			<div class="col-xs-12">
+			 <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Publish</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
 			</div>
 		      </div>
+		      <div class="box-body">
+			 <button  type="submit" class="btn btn-default">Save Draft</button>
+			<p class="text-muted">
+			 <div class="misc-pub-section misc-pub-post-status"><label>Status:</label>
+			 <span id="status-display"><label for="exampleInputEmail1">Draft</label></span>
+			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc4()"><span aria-hidden="true">Edit</span></a>
+			 
+			 <div id="status-select" class="" ng-show="showMe4">
+			 <input name="hidden_status" id="hidden_status" value="draft" type="hidden">
+			 <select name="status" id="status">
+			 <option value="pending">Pending Review</option>
+			 <option selected="selected" value="draft">Draft</option>
+			 </select>
+			  <a href="#post_status" class="btn btn-default new-btn">OK</a>
+			  <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
+			 </div>
+			 
+			 <div class="checkbox">
+			 <input type="checkbox"><b> Featured this Product</b>
+			 </div>
+			 
+			 <div class="publish">Published on: 25th Jul 2016
+			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc5()"><span aria-hidden="true">Edit</span></a>
+			      <div class="" ng-show="showMe5">
+			      Time
+			      <a href="#post_status" class="btn btn-default new-btn">OK</a>
+			      <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
+			      </div>
+			 </div>
+			</p>
 		      </div>
+		      <div class="box-footer">
+			 <div class="pull-left"><a href="javascript:void(0);">Move to Trash</a></div>
+		        <div class="pull-right"><button  type="submit" class="btn btn-primary">Publish</button></div>
+		       </div>
+		    </div>
+		    </div>
+                   <!-- /.box -->
+		      </div>
+		    <div class="col-xs-12">
+			 <!-- Default box -->
+			 <div class="box">
+			 <div class="box-header with-border">
+			 <h3 class="box-title">Product Tags</h3>
+			 <div class="box-tools pull-right">
+			 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			 <i class="fa fa-minus"></i></button>
+			 </div>
+			 </div>
+			 <div class="box-body">
+			 <div class="form-group">
+			 <input type="text" class="form-control" id="" name="product_tags" placeholder="Product Tags" ng-model="product.product_tags">
+			 <div class="help-block"></div>
+			 </div>
+			 </div>
+			 </div>
+			 <!-- /.box -->
+		    </div> 
+		      <div class="col-xs-12">
+			 
+			 <!-- Default box -->
+			 <div class="box">
+			 <div class="box-header with-border">
+			 <h3 class="box-title">Product Categories</h3>
+			 <div class="box-tools pull-right">
+			 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			 <i class="fa fa-minus"></i></button>
+			 </div>
+			 </div>
+			 <div class="box-body">
+			 <div class="form-group">
+			 <input type="text" placeholder="Filter Categories" class="form-control" ng-model="test">
+			 </div>
+			      <div class="frm-cat"> <% fruits %> 
+			      <script type="text/ng-template" id="categoryTree">
+			      <% category.id %> 
+			      <input type="checkbox" ng-model="product.pro_category_id[category.id]" ng-checked="product.pro_category_id.indexOf(category.id)!==-1" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
+			      <ul ng-if="category.all_category">
+			      <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
+			      </li>
+			      </ul>
+			      </script>
+			      <ul class="ul-cat">
+			      <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree'"></li>
+			      </ul>
+			      
+			      </div>
+			 </div>
+			 </div>
+			 <!-- /.box -->
 		      </div>
 		      <div class="col-xs-12">
-		      <div class="main-form-chk">
-		      <label for="exampleInputEmail1">Product Brands</label>
-		      <span title="Click to toggle" class="handlediv" ng-click="myFunc1()"><i class="fa fa-caret-down custom" ></i></span>
-		      <div class="form-chk" ng-show="showMe1">
-			 <input type="text" placeholder="Filter Brands" ng-model="brd"><br>
+			 
+			 <!-- Default box -->
+			 <div class="box">
+			 <div class="box-header with-border">
+			 <h3 class="box-title">Images</h3>
+			 <div class="box-tools pull-right">
+			 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			 <i class="fa fa-minus"></i></button>
+			 </div>
+			 </div>
+			 <div class="box-body">
+			      <div class="form-img-chk">
+			      <div class="imgs_ro" ng-repeat="val in pr_imgs">               
+			      <img src="{{URL::asset('uploads')}}/<% val.img %>"  alt="" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1"/>
+			      <a class="ms_ov" href="javascript:void(0);" ng-if="$index != values.length - 1" ng-mouseleave="tr_dis[$index]=0" ng-mouseover="tr_dis[$index]=1" ng-show="tr_dis[$index]==1" >
+			      <i class="fa fa-check" title="Set default" ng-show="val.def==0"  ng-click="setdefault($index)"></i>
+			      <i class="fa fa-check grr_ic"  title="Unset default"  ng-show="val.def==1"  ng-click="unsetdefault($index)"></i>
+			      <i class="fa fa-trash" title="Delete"  ng-click="removeimgs(val.img,$index)" ></i>
+			      </a>
+			      </div>
+			      <div style="clear:both"></div>
+			      <div class="btn btn-primary btn-file" ng-show="pr_imgs.length < 8">
+			      <i class="fa fa-plus"></i> <input type="file" onchange="angular.element(this).scope().uploadedFile(this)" >
+			      </div>
+			 </div>
+			 </div>
+			 </div>
+			 <!-- /.box -->
+		      </div>
+		      <div class="col-xs-12">
+			<!-- Default box -->
+			 <div class="box">
+			 <div class="box-header with-border">
+			 <h3 class="box-title">Product Brands</h3>
+			 <div class="box-tools pull-right">
+			 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			 <i class="fa fa-minus"></i></button>
+			 </div>
+			 </div>
+			 <div class="box-body">
+			      <div class="form-group">
+			      <input type="text" placeholder="Filter Brands" class="form-control" ng-model="brd">
+			      </div>
 			 <div class="frm-cat">
 			      <span class="form-brd" ng-repeat="br in brands | filter : brd">
-			       <input type="radio" id="" name="brand_id" ng-model="product.brand_id" ng-value="br.id" ng-selected="product.brand_id==br.id"><%br.brand_name%><br>
+			       <input type="radio" id="" name="brand_id" ng-model="product.brand_id" ng-value="br.id"><%br.brand_name%><br>
 			    </span>
 			 </div>
-		      </div>
-		      </div>
+			 </div>
+			 </div>
+			 <!-- /.box --> 
 		      </div>
 		    </div>
 	      </div>
@@ -1030,10 +1286,7 @@
               <div class="box-footer">
                 <button ng-click="update(product,pr_imgs)" type="submit" class="btn btn-primary">Submit</button>
               </div>
-           
           </div>
-
-
 
           <!-- Form Element sizes -->
     </section>

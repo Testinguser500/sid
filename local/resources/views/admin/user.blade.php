@@ -93,7 +93,7 @@
 				  <td><% val.role_name %></td>
 				  <td>0</td>
 				  <td><a href="javascript:void(0);" ng-click="changeStatus(val);"><span class="label <% (val.status=='Active')?'label-success':'label-danger'%>">
-				  <% val.status %></a>
+				  <% val.status %></span></a>
 				  </td>
                   <td><i ng-click="edituser(val)" class="fa fa-edit" style="cursor:pointer"></i>
 		    <i ng-if="val.status=='Active'" class="fa fa-ban" ng-click="val.status='Block';changeStatus(val);" title="Block" style="cursor:pointer"></i>
@@ -129,10 +129,13 @@
                 </tbody>
                 <tfoot>
                  <tr>
+		    <th></th>
                   <th>#</th>
                   <th>User Name</th>
                   <th>Email</th>
-                  <th> </th>                 
+                  <th>Role </th>
+		  <th>Post</th>
+		  <th>Status</th>
                 </tr>
                 </tfoot>
               </table>

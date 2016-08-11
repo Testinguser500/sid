@@ -15,6 +15,7 @@ use Validator;
 use Session;
 use Request;
 use File;
+use Response;
 class ProductController extends Controller
 {      
             public function __construct()
@@ -159,7 +160,7 @@ class ProductController extends Controller
 		$ovids= Request::input('pro_opt_values_id');  
 			
 			if($ovids){
-				    foreach($ovids as $kop => $vop){ 
+				    foreach((array)$ovids as $kop => $vop){ 
 				    $newopvarr = implode(",",$vop);
 				     ProductAttribute::create(['option_name_id' => $kop,
 							       'option_value_ids'=> $newopvarr,
@@ -388,6 +389,25 @@ class ProductController extends Controller
 		
 		return $result;
 	}
+	
+	
+	 public function export(){
+                $table = DB::table('product')->get();   
+                $filename = "products.csv";
+                $handle = fopen($filename, 'w+');
+                fputcsv($handle, array('Product Name','Product Description','Product Short Description','Product Feature Description','Seller','Product Category','Brand','Product Tags','Price','Sale Price','No. of Stock','Length','Width','Height','Meta Title','Meta Description','Meta Keywords', 'Created At', 'Updated at'), ';');
+
+                foreach($table as $row) {
+                    
+                    fputcsv($handle, array($row->pro_name, $row->pro_des, $row->pro_short_des, $row->pro_feature_des, $row->seller_id, $row->pro_category_id, $row->brand_id, $row->product_tags, $row->price, $row->sale_price, $row->no_stock, $row->length, $row->width, $row->height, $row->meta_title, $row->meta_description, $row->meta_keywords, $row->created_at, $row->updated_at), ';');
+                }
+
+                fclose($handle);
+                $headers = array(
+                    'Content-Type' => 'text/csv',
+                );
+               return Response::download($filename, 'products.csv', $headers); 
+           }
  }
  
 ?>
