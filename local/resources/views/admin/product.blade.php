@@ -631,7 +631,7 @@
 		      <div class="box-body">
 			<p class="text-muted">
 			 <div class="misc-pub-section misc-pub-post-status"><label>Status:</label>
-			 <span id="status-display"><label for="exampleInputEmail1">Inactive</label></span>
+			 <span id="status-display"><label for="exampleInputEmail1">Active</label></span>
 			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc4()"><span aria-hidden="true">Edit</span></a>
 			 
 			 <div id="status-select" class="" ng-show="showMe4">
@@ -1132,7 +1132,7 @@
 		      <div class="box-body">
 			<p class="text-muted">
 			 <div class="misc-pub-section misc-pub-post-status"><label>Status:</label>
-			 <span id="status-display"><label for="exampleInputEmail1">Inactive</label></span>
+			 <span id="status-display"><label for="exampleInputEmail1">Active</label></span>
 			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc4()"><span aria-hidden="true">Edit</span></a>
 			 
 			 <div id="status-select" class="" ng-show="showMe4">
