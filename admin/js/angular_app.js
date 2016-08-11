@@ -158,6 +158,9 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/permission', {
       templateUrl: 'permission', controller: 'PermissionController'
    }).
+   when('/coupon', {
+      templateUrl: 'coupon', controller: 'CouponController'
+   }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -1940,6 +1943,10 @@ app.controller('BannerController', function($scope, $http) {
 	 $scope.itemSelected = false;
      $scope.page='index';
      $scope.success_flash=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;
@@ -3119,5 +3126,161 @@ $scope.fruits = ["8", "9", "10", "7"];
 	{
 		$scope.plan.plan_image='';
 	}
+     $scope.init();
+  });
+  //Coupon
+  app.controller('CouponController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.files='';
+     $scope.loading = true;
+     $scope.page='index';
+     $scope.coupon='';
+	$scope.success_flash=false;
+     $scope.tab = 1;
+     $scope.coupon_datas=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
+	$scope.setTab = function(newTab){
+	$scope.tab = newTab;
+	};
+
+	$scope.isSet = function(tabNum){
+	  return $scope.tab === tabNum;
+	};
+     $scope.init = function() {
+	$scope.image = '';
+		
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('coupon/all').
+		success(function(data, status, headers, config) {
+			$scope.coupons = data;
+			
+			//console.log($scope.plans);
+		        $scope.loading = false;
+		});
+	};
+	
+	$scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $scope.product=false;
+		$http.get('coupon/all').
+		success(function(data, status, headers, config) {
+			$scope.loading = false;
+ 
+		});
+	};
+	
+	$scope.store = function(coupon) { 
+           $scope.errors=false;
+           $scope.success_flash=false;   
+           
+           $http.post('coupon/store', {
+		coupon_name:coupon.coupon_name,
+		discount_type:coupon.discount_type,
+		discount_value:coupon.discount_value,
+		description:coupon.description,
+		usage_limit:coupon.usage_limit,
+		expire_date:coupon.expire_date,
+		exclude_sale:coupon.exclude_sale,
+		min_amount:coupon.min_amount,
+		coupon_status:coupon.status
+			
+			
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      
+      $scope.editcoupon = function(couponData) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('coupon/edit/' + couponData.id, {			
+		}).success(function(data, status, headers, config) {
+			$scope.coupon_datas = data['coupon'];
+			console.log($scope.coupon_data);
+			$scope.loading = false;
+		});
+	};
+	
+	$scope.update=function(couponData)
+	{
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.page='edit';
+		$http.post('coupon/update',{
+			coupon_id:couponData.id,
+		coupon_name:couponData.coupon_name,
+		discount_type:couponData.discount_type,
+		discount_value:couponData.discount_value,
+		description:couponData.description,
+		usage_limit:couponData.usage_limit,
+		expire_date:couponData.expire_date,
+		exclude_sale:couponData.exclude_sale,
+		min_amount:couponData.min_amount,
+		coupon_status:couponData.status
+			}).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+		});
+	}
+	$scope.deletecoupon = function(index)
+	{
+		$scope.loading = true;
+
+		var coupon = $scope.coupons[index];
+              
+                $http.post('coupon/delete',{            
+                    del_id:coupon.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.coupons.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+	}
+	
+	$scope.changeStatus=function(userData)
+	   {
+		
+		   $scope.loading = true;
+	   $http.post('coupon/changeStatus',{
+		   id:userData.id,
+		   status:userData.coupon_status
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		                             
+			$scope.loading = false
+			$scope.success_flash=data[1];
+			$scope.init();
+			});
+	   }
+	
      $scope.init();
   });

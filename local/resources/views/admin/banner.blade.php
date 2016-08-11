@@ -25,18 +25,31 @@
             <!-- /.box-header -->
             
             <div class="box-body">
+		<div class="row">
+                <div class="form-group col-md-2 pull-left">		  
+		    <select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
+                        <option value="5" ng-selected="tb_pag==5">5</option>
+                        <option value="10" ng-selected="tb_pag==10">10</option>
+                        <option value="100" ng-selected="tb_pag==100">100</option>
+                        <option value="1000" ng-selected="tb_pag==1000">1000</option>
+                    </select>
+		</div>
+                <div class="form-group col-md-3 pull-right">		  
+		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
+		</div>
+              </div>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Title</th>
+                  <th ng-click="sort('id')" style="cursor:pointer">#<span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                  <th ng-click="sort('title')" style="cursor:pointer">Title<span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                  
                   <th>Action </th>                 
                 </tr>
                 </thead>
                 <tbody>
                 
-                <tr ng-repeat="val in banners">
+                <tr dir-paginate="val in banners|orderBy:sortKey:reverse|itemsPerPage:tb_pag|filter:search">
                   <td><% val.id %></td>
                   <td><% val.title %></td>
                   
@@ -70,8 +83,21 @@
                 </tr>
                 
                 </tbody>
-                
+                <tfoot>
+                 <tr>
+                  <th>#</th>
+                  <th>Title</th>
+		  <th>Action</th>
+		  
+                              
+                </tr>
+                </tfoot>
               </table>
+	      <dir-pagination-controls
+					max-size="tb_pag"
+					direction-links="true"
+					boundary-links="true" >
+		</dir-pagination-controls>
             </div>
             
             <!-- /.box-body -->

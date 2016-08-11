@@ -1067,12 +1067,6 @@
 		      </div>
 		    </div>
                    <!-- /.box -->
-		   
-		<!--<div class="form-group">
-                  <label for="exampleInputEmail1">Product Short Description</label>
-                  <div text-angular ng-model="product.pro_short_des" name="pro_short_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
-		  <div class="help-block"></div>
-                </div>-->
 		
 		<!-- Default box -->
 		    <div class="box">
@@ -1093,44 +1087,11 @@
 		    </div>
                    <!-- /.box -->
 		
-		<!--<div class="form-group">
-                  <label for="exampleInputEmail1">Product Feature Description</label>
-                  <div text-angular ng-model="product.pro_feature_des" name="pro_feature_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
-		  <div class="help-block"></div>
-                </div>-->
-		<!--<div class="form-group">
-                  <label for="exampleInputEmail1">Sellers</label>
-                   <select class="form-control" id="" name="seller_id" placeholder="Sellers" ng-model="product.seller_id">
-		    <option value="">Select Seller</option>
-		    <option ng-repeat="ss in sellers" ng-value="ss.id" ng-selected="ss.id==product.seller_id"><%ss.fname%></option> 
-		   </select>
-		  <div class="help-block"></div>
-                </div>-->
-		<!--<div class="form-group">
-                  <label for="exampleInputEmail1">Product Tags</label>
-                  <input type="text" class="form-control" id="" name="product_tags" placeholder="Product Tags" ng-model="product.product_tags">
-		  <div class="help-block"></div>
-                </div>-->
 		<div class="form-group">
                   <label for="exampleInputEmail1">No. of Stocks</label>
                   <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
 		  <div class="help-block"></div>
                 </div>
-		<!--<div class="form-group">
-                  <label for="exampleInputEmail1">Meta Title</label>
-                  <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="product.meta_title">
-		  <div class="help-block"></div>
-                </div>
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Meta Description</label>
-                  <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="product.meta_description">
-		  <div class="help-block"></div>
-                </div>
-		<div class="form-group">
-                  <label for="exampleInputEmail1">Meta Keywords</label>
-                  <input type="text" class="form-control" id="" name="meta_keywords" placeholder="Meta Keywords" ng-model="product.meta_keywords">
-		  <div class="help-block"></div>
-                </div>-->
 		<div class="form-group">
                   <label for="exampleInputEmail1">Status</label>
                   <input type="radio"  id="" name="status"  ng-model="product.status" ng-checked="product.status=='Active'" value="Active" >Active

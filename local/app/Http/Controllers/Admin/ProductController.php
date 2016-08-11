@@ -147,7 +147,7 @@ class ProductController extends Controller
 		$ovids= Request::input('pro_opt_values_id');  
 			
 			if($ovids){
-				    foreach($ovids as $kop => $vop){ 
+				    foreach((array)$ovids as $kop => $vop){ 
 				    $newopvarr = implode(",",$vop);
 				     ProductAttribute::create(['option_name_id' => $kop,
 							       'option_value_ids'=> $newopvarr,
