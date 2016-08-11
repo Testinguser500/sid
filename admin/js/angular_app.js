@@ -2548,7 +2548,7 @@ app.controller('CountryController', function($scope, $http) {
     $scope.changeState=function(param){
        
     }
-<<<<<<< HEAD
+
     
    $scope.group_pros = [
        {"status": 'All', "items": ""},
@@ -2556,10 +2556,9 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Inactive', "items": ""},
        {"status": 'Pending', "items": ""}
   ];
-    $scope.select_group_pros='All';
-=======
-$scope.fruits = ["8", "9", "10", "7"];
->>>>>>> 0e8da0d4b37ca1fd6bcf46c893b6e3fec9c5e201
+  $scope.select_group_pros='All';
+  $scope.fruits = ["8", "9", "10", "7"];
+
         $scope.init = function() {	
                 $scope.page='index';
                 $scope.errors=false;               
@@ -2663,10 +2662,7 @@ $scope.fruits = ["8", "9", "10", "7"];
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
-<<<<<<< HEAD
-=======
 
->>>>>>> 0e8da0d4b37ca1fd6bcf46c893b6e3fec9c5e201
 			$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];

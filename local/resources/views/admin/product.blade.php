@@ -107,6 +107,16 @@
                                         <input type="checkbox"  ng-model="screen_opt.height"> Height
                                    </div>
                                  </div>
+                                   <div class="col-md-4">
+                                   <div class="form-group">
+                                        <input type="checkbox" ng-model="screen_opt.stock_status"> Stock Status
+                                   </div>
+                                </div>
+                                 <div class="col-md-4">
+                                   <div class="form-group">
+                                        <input type="checkbox"  ng-model="screen_opt.no_stock"> Number of Stock
+                                   </div>
+                                 </div>
                               </div>
                           </div>
                           <div class="modal-footer">
@@ -174,6 +184,12 @@
                   <th ng-if="screen_opt.height"  ng-click="sort('height')" style="cursor:pointer"> Height   
                    <span class="glyphicon sort-icon"  ng-show="sortKey=='height'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
+                    <th ng-if="screen_opt.stock_status" ng-click="sort('stock_status')" style="cursor:pointer" > Stock Status 
+                    <span class="glyphicon sort-icon"  ng-show="sortKey=='stock_status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                   <th ng-if="screen_opt.no_stock" ng-click="sort('no_stock')" style="cursor:pointer"> Number of Stock  
+                   <span class="glyphicon sort-icon"  ng-show="sortKey=='no_stock'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
                   <th> </th>                 
                 </tr>
                 </thead>
@@ -192,6 +208,8 @@
                   <td ng-if="screen_opt.length"><% val.length %></td>
 		  <td ng-if="screen_opt.width"><% val.width %></td>
                   <td ng-if="screen_opt.height"><% val.height %></td>
+                  <td ng-if="screen_opt.stock_status"><% val.stock_status %></td>
+                  <td ng-if="screen_opt.no_stock"><% val.no_stock %></td>
                   <td><a href="javascript:void(0);" ng-click="editproduct(val)"><i class="fa fa-edit" title="Edit"></i></a>
 		  <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
                  
@@ -241,11 +259,15 @@
                    </th>
                   <th ng-if="screen_opt.meta_keywords"  > Meta Keywords
                    </th>
-                  <th ng-if="screen_opt.length" > Length
+                  <th ng-if="screen_opt.length" > Length 
                    </th>                  
 		  <th ng-if="screen_opt.width" > Width
                   </th>
-                  <th ng-if="screen_opt.height" > Height   
+                  <th ng-if="screen_opt.height" > Height  
+                  </th>
+                  <th ng-if="screen_opt.stock_status" > Stock Status  
+                  </th>
+                   <th ng-if="screen_opt.no_stock" > Number of Stock  
                   </th>
                   <th> </th>                 
                 </tr>

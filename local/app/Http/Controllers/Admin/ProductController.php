@@ -29,7 +29,20 @@ class ProductController extends Controller
 		
 	}
         public function all(){ 
-	     $products   = DB::table('product')->select('categorys.category_name as category_name', 'product.*')->join('categorys', 'product.pro_category_id', '=', 'categorys.id')->where('product.is_delete','=','0')->get();
+	     $products   = DB::table('product')->select('*')->where('product.is_delete','=','0')->get();
+             foreach($products as $key=>$value){
+                $category_ids=explode(',',$value->pro_category_id);
+                $category_name='';
+                $all_cats = DB::table('categorys')->select('*')->whereIn('id',$category_ids)->where('is_delete','=','0')->get();
+                foreach($all_cats as $k=>$v){
+                 $category_name.=$v->category_name;
+                 if($k < (count($all_cats)-1)){
+                    $category_name.=','; 
+                 }
+                }
+               $products[$key]->category_name=$category_name;
+             }
+            
              $sellers    = DB::table('users')->where('status','=','Active')->where('is_delete','=',0)->where('role','=',5)->get();
 	     $categories = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get(); 
