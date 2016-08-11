@@ -2744,7 +2744,7 @@ $scope.fruits = ["8", "9", "10", "7"];
 	 $scope.store = function(product,images) {
 		
            $scope.errors=false;
-           $scope.success_flash=false;   
+           $scope.success_flash=false;
            console.log(product);
            $http.post('product/store', {
 			pro_name: product.pro_name,

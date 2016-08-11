@@ -309,18 +309,21 @@
 		      <div class="box-body">
 			<div class="form-group">
 		      <label for="exampleInputEmail1">Meta Title</label>
-		      <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="product.meta_title">
+		      <input type="text" class="form-control" id="" name="meta_title" maxlength="100" placeholder="Meta Title" ng-model="product.meta_title">
 		      <div class="help-block"></div>
+                     <span>Characters left: <% 100 - product.meta_title.length %></span>
 		    </div>
 		    <div class="form-group">
 		      <label for="exampleInputEmail1">Meta Description</label>
-		      <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="product.meta_description">
+		      <input type="text" class="form-control" id="" name="meta_description" maxlength="200" placeholder="Meta Description" ng-model="product.meta_description">
 		      <div class="help-block"></div>
+		      <span>Characters left: <% 200 - product.meta_description.length %></span>
 		    </div>
 		    <div class="form-group">
 		      <label for="exampleInputEmail1">Meta Keywords</label>
-		      <input type="text" class="form-control" id="" name="meta_keywords" placeholder="Meta Keywords" ng-model="product.meta_keywords">
+		      <input type="text" class="form-control" id="" name="meta_keywords" maxlength="30" placeholder="Meta Keywords" ng-model="product.meta_keywords">
 		      <div class="help-block"></div>
+		      <span>Characters left: <% 30 - product.meta_keywords.length %></span>
 		    </div>
 		      </div>
 		    </div>
@@ -804,18 +807,21 @@
 		      <div class="box-body">
 			<div class="form-group">
 		      <label for="exampleInputEmail1">Meta Title</label>
-		      <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="product.meta_title">
+		      <input type="text" class="form-control" id="" name="meta_title" maxlength="100" placeholder="Meta Title" ng-model="product.meta_title">
 		      <div class="help-block"></div>
+                     <span>Characters left: <% 100 - product.meta_title.length %></span>
 		    </div>
 		    <div class="form-group">
 		      <label for="exampleInputEmail1">Meta Description</label>
-		      <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="product.meta_description">
+		      <input type="text" class="form-control" id="" name="meta_description" maxlength="200" placeholder="Meta Description" ng-model="product.meta_description">
 		      <div class="help-block"></div>
+		      <span>Characters left: <% 200 - product.meta_description.length %></span>
 		    </div>
 		    <div class="form-group">
 		      <label for="exampleInputEmail1">Meta Keywords</label>
-		      <input type="text" class="form-control" id="" name="meta_keywords" placeholder="Meta Keywords" ng-model="product.meta_keywords">
+		      <input type="text" class="form-control" id="" name="meta_keywords" maxlength="30" placeholder="Meta Keywords" ng-model="product.meta_keywords">
 		      <div class="help-block"></div>
+		      <span>Characters left: <% 30 - product.meta_keywords.length %></span>
 		    </div>
 		      </div>
 		    </div>
