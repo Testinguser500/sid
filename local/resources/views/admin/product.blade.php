@@ -483,21 +483,21 @@
 					     </div>
 					 </div>
 					 <div ng-show="isSet(2)">
-					 <div class="form-group">
+					<!-- <div class="form-group">
 					     <label for="exampleInputEmail1">Manage stock?</label>
 					     <input type="checkbox" name=""> Enable stock management at product level
-					     </div>
+					     </div>-->
 					 <div class="form-group">
-					     <label for="exampleInputEmail1">Stock status</label>
-					     <select class="form-control">
-						  <option value="in_stock">In stock</option>
-						  <option value="out_stock">Out stock</option>
+					     <label for="exampleInputEmail1">Stock status</label> 
+					     <select class="form-control" ng-model="product.stock_status">
+						  <option value="In Stock" ng-selected="product.stock_status=='In Stock'">In stock</option>
+						  <option value="Out of Stock" ng-selected="product.stock_status=='Out of Stock'">Out of stock</option>
 					     </select>
 					     </div>
-					 <div class="form-group">
+					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Sold Individually</label>
 					     <input type="checkbox" name=""> Enable this to only allow one of this item to be bought in a single order
-					     </div>
+					     </div>-->
 					 </div>
 					 <div ng-show="isSet(3)">
 					 <div class="form-group">
@@ -510,12 +510,12 @@
 					     <input type="text" placeholder="Width" name="width" class="form-control" ng-model="product.width">
 					     <input type="text" placeholder="Height" name="height" class="form-control" ng-model="product.height">
 					     </div>
-					 <div class="form-group">
+					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Shipping class</label>
 					     <select class="form-control">
 						  <option value="no_shipping">No shipping class</option>
 					     </select>
-					     </div>
+					     </div>-->
 					 </div>
 					 <div ng-show="isSet(4)">
 					 <h1>Messages4</h1>
@@ -547,14 +547,14 @@
 					  </div>-->
 					 </div>
 					 <div ng-show="isSet(6)">
-					 <div class="form-group">
+					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Purchase Note</label>
 					     <textarea cols="20" rows="2" placeholder="" id="" name="" class="form-control"></textarea>
 					  </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Menu Order</label>
 					     <input type="number" class="form-control" step="1" placeholder="" value="0" id="menu_order" name="menu_order" style="" class="short">
-					 </div>
+					 </div>-->
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Enable reviews</label>
 					     <input type="checkbox" name="">
@@ -986,21 +986,21 @@
 					     </div>
 					 </div>
 					 <div ng-show="isSet(2)">
-					 <div class="form-group">
+					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Manage stock?</label>
 					     <input type="checkbox" name=""> Enable stock management at product level
-					     </div>
+					     </div>-->
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Stock status</label>
-					     <select class="form-control">
-						  <option value="in_stock">In stock</option>
-						  <option value="out_stock">Out stock</option>
+					     <select class="form-control" ng-model="product.stock_status">
+						  <option value="In Stock" ng-selected="product.stock_status=='In Stock'">In stock</option>
+						  <option value="Out of Stock" ng-selected="product.stock_status=='Out of Stock'">Out of stock</option>
 					     </select>
 					     </div>
-					 <div class="form-group">
+					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Sold Individually</label>
 					     <input type="checkbox" name=""> Enable this to only allow one of this item to be bought in a single order
-					     </div>
+					     </div>-->
 					 </div>
 					 <div ng-show="isSet(3)">
 					 <div class="form-group">
@@ -1013,12 +1013,12 @@
 					     <input type="text" placeholder="Width" name="width" class="form-control" ng-model="product.width">
 					     <input type="text" placeholder="Height" name="height" class="form-control" ng-model="product.height">
 					     </div>
-					 <div class="form-group">
+					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Shipping class</label>
 					     <select class="form-control">
 						  <option value="no_shipping">No shipping class</option>
 					     </select>
-					     </div>
+					     </div>-->
 					 </div>
 					 <div ng-show="isSet(4)">
 					 <h1>Messages4</h1>
@@ -1050,14 +1050,14 @@
 					  </div>-->
 					 </div>
 					 <div ng-show="isSet(6)">
-					 <div class="form-group">
+					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Purchase Note</label>
 					     <textarea cols="20" rows="2" placeholder="" id="" name="" class="form-control"></textarea>
 					  </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Menu Order</label>
 					     <input type="number" class="form-control" step="1" placeholder="" value="0" id="menu_order" name="menu_order" style="" class="short">
-					 </div>
+					 </div>-->
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Enable reviews</label>
 					     <input type="checkbox" name="">

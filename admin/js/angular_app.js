@@ -2764,7 +2764,7 @@ app.controller('CountryController', function($scope, $http) {
 		
            $scope.errors=false;
            $scope.success_flash=false;
-           console.log(product);
+           //console.log(product);
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -2791,7 +2791,8 @@ app.controller('CountryController', function($scope, $http) {
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
-                        status: product.status,
+                        stock_status: product.stock_status,
+			status: product.status,
 			images: images,
 			tags : tags
 		} ).success(function(data, status, headers, config) {

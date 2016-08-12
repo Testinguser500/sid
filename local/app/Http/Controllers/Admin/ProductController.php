@@ -159,6 +159,7 @@ class ProductController extends Controller
 			 'meta_title' =>Request::input('meta_title'),
 			 'meta_description' =>Request::input('meta_description'),
 			 'meta_keywords' =>Request::input('meta_keywords'),
+			 'stock_status' =>Request::input('stock_status'),
 			 'status' =>Request::input('status')]);
 	 
 		$insertedId = $prod->id;
