@@ -23,265 +23,264 @@
             <!-- /.box-header -->
             
             <div class="box-body">  
-                <div class="row">
-                    <div class="col-md-12 ">
-                    <ul class="subsubsub" ng-if="group_pros" >
-                        <li ng-repeat="(key, value) in group_pros"  ng-click ="set_group_pros( value.status )" ng-class="{ active: value.status==select_group_pros}">
-                            <a href="javascript:void(0);"> <% value.status %>(<% value.items.length %>)</a>
-                            <span ng-if="$index!=(group_pros.length-1)"> | </span>
-                        </li>
-                    </ul>
-                    </div>
-                </div>
-              <div class="row">
-                <div class="form-group col-md-2 ">		  
-                    <button class="btn btn-default" data-toggle="modal" data-target="#screen_opt_modal">Screen Options</button>
+		    <div class="row">
+			<div class="col-md-12 ">
+			<ul class="subsubsub" ng-if="group_pros" >
+			    <li ng-repeat="(key, value) in group_pros"  ng-click ="set_group_pros( value.status )" ng-class="{ active: value.status==select_group_pros}">
+				<a href="javascript:void(0);"> <% value.status %>(<% value.items.length %>)</a>
+				<span ng-if="$index!=(group_pros.length-1)"> | </span>
+			    </li>
+			</ul>
+			</div>
 		    </div>
-		<div class="form-group col-md-10 ">		  
-		    <span class="pull-right"><a href="{{ URL('admins/product/export') }}" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Export To Excel</a></span>
+		    <div class="row">
+		    <div class="form-group col-md-2 ">		  
+			<button class="btn btn-default" data-toggle="modal" data-target="#screen_opt_modal">Screen Options</button>
+			</div>
+		    <div class="form-group col-md-10 ">		  
+			<span class="pull-right"><a href="{{ URL('admins/product/export') }}" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Export To Excel</a></span>
+			</div>
+			  <!-- Modal -->
+		    <div class="modal fade" id="screen_opt_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Screen Options</h4>                            
+			      </div>
+			      <div class="modal-body">
+				  <div class="row" ng-init='screen_opt={"pro_name":true,"category_name":true,"status":true}'>
+				      
+				    <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt.pro_name"> Product Name
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt.category_name"> Category Name
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt.status"> Status
+				       </div>
+				     </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt.pro_des"> Product Description
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt.pro_short_des"> Product Short Description
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt.pro_feature_des"> Product Feature Description
+				       </div>
+				     </div>
+					<div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt.meta_title"> Meta Title
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt.meta_description"> Meta Description
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt.meta_keywords"> Meta Keyword
+				       </div>
+				     </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt.length"> Length
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt.width"> Width
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt.height"> Height
+				       </div>
+				     </div>
+				       <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt.stock_status"> Stock Status
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt.no_stock"> Number of Stock
+				       </div>
+				     </div>
+				  </div>
+			      </div>
+			      <div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>                         
+			      </div>
+			    </div>
+			  </div>
 		    </div>
-                      <!-- Modal -->
-               <div class="modal fade" id="screen_opt_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Screen Options</h4>                            
-                          </div>
-                          <div class="modal-body">
-                              <div class="row" ng-init='screen_opt={"pro_name":true,"category_name":true,"status":true}'>
-                                  
-                                <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox" ng-model="screen_opt.pro_name"> Product Name
-                                   </div>
-                                </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox" ng-model="screen_opt.category_name"> Category Name
-                                   </div>
-                                </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox"  ng-model="screen_opt.status"> Status
-                                   </div>
-                                 </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox" ng-model="screen_opt.pro_des"> Product Description
-                                   </div>
-                                </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox" ng-model="screen_opt.pro_short_des"> Product Short Description
-                                   </div>
-                                </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox"  ng-model="screen_opt.pro_feature_des"> Product Feature Description
-                                   </div>
-                                 </div>
-                                    <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox" ng-model="screen_opt.meta_title"> Meta Title
-                                   </div>
-                                </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox" ng-model="screen_opt.meta_description"> Meta Description
-                                   </div>
-                                </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox"  ng-model="screen_opt.meta_keywords"> Meta Keyword
-                                   </div>
-                                 </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox" ng-model="screen_opt.length"> Length
-                                   </div>
-                                </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox" ng-model="screen_opt.width"> Width
-                                   </div>
-                                </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox"  ng-model="screen_opt.height"> Height
-                                   </div>
-                                 </div>
-                                   <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox" ng-model="screen_opt.stock_status"> Stock Status
-                                   </div>
-                                </div>
-                                 <div class="col-md-4">
-                                   <div class="form-group">
-                                        <input type="checkbox"  ng-model="screen_opt.no_stock"> Number of Stock
-                                   </div>
-                                 </div>
-                              </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>                         
-                                                     
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+		    </div>
+		    
+		    <div class="row">
+		    <div class="form-group col-md-2 pull-left">		  
+			<select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
+			    <option value="5" ng-selected="tb_pag==5">5</option>
+			    <option value="10" ng-selected="tb_pag==10">10</option>
+			    <option value="100" ng-selected="tb_pag==100">100</option>
+			    <option value="1000" ng-selected="tb_pag==1000">1000</option>
+			</select>
+		    </div>
+		    <div class="form-group col-md-3 pull-right">		  
+		      <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
+		    </div>
+		    </div>
+		    <table id="example1" class="table table-bordered table-striped">
+		    <thead>
+		    <tr>
+		      <th ng-click="sort('id')" style="cursor:pointer">#
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		      <th ng-if="screen_opt.pro_name" ng-click="sort('pro_name')" style="cursor:pointer">Product Name
+			<span class="glyphicon sort-icon"  ng-show="sortKey=='pro_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>                  
+		      <th ng-if="screen_opt.category_name" ng-click="sort('category_name')" style="cursor:pointer">Category Name
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='category_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		      <th ng-if="screen_opt.status"  ng-click="sort('status')" style="cursor:pointer">Status
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		      <th ng-if="screen_opt.pro_des" ng-click="sort('pro_des')" style="cursor:pointer">Product Description 
+			<span class="glyphicon sort-icon"  ng-show="sortKey=='pro_des'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>                  
+		      <th ng-if="screen_opt.pro_short_des" ng-click="sort('pro_short_des')" style="cursor:pointer">Product Short Description 
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='pro_short_des'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		      <th ng-if="screen_opt.pro_feature_des"  ng-click="sort('pro_feature_des')" style="cursor:pointer"> Product Feature Description   
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='pro_feature_des'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		       <th ng-if="screen_opt.meta_title" ng-click="sort('meta_title')" style="cursor:pointer"> Meta Title
+			<span class="glyphicon sort-icon"  ng-show="sortKey=='meta_title'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>                  
+		      <th ng-if="screen_opt.meta_description" ng-click="sort('meta_description')" style="cursor:pointer"> Meta Description
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='meta_description'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		      <th ng-if="screen_opt.meta_keywords"  ng-click="sort('meta_keywords')" style="cursor:pointer"> Meta Keywords
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='meta_keywords'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		      <th ng-if="screen_opt.length" ng-click="sort('length')" style="cursor:pointer"> Length
+			<span class="glyphicon sort-icon"  ng-show="sortKey=='length'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>                  
+		      <th ng-if="screen_opt.width" ng-click="sort('width')" style="cursor:pointer"> Width
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='width'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		      <th ng-if="screen_opt.height"  ng-click="sort('height')" style="cursor:pointer"> Height   
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='height'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+			<th ng-if="screen_opt.stock_status" ng-click="sort('stock_status')" style="cursor:pointer" > Stock Status 
+			<span class="glyphicon sort-icon"  ng-show="sortKey=='stock_status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		       <th ng-if="screen_opt.no_stock" ng-click="sort('no_stock')" style="cursor:pointer"> Number of Stock  
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='no_stock'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		      <th> </th>                 
+		    </tr>
+		    </thead>
+		    <tbody>                
+		    <tr dir-paginate="val in products|orderBy:sortKey:reverse|itemsPerPage:tb_pag|filter:search"> 
+		      <td><% val.id %></td>
+		      <td ng-if="screen_opt.pro_name"><% val.pro_name %></td>
+		      <td ng-if="screen_opt.category_name"><% val.category_name %></td>
+		      <td ng-if="screen_opt.status"><% val.status %></td>
+		      <td ng-if="screen_opt.pro_des" ng-bind-html="val.pro_des"></td>
+		      <td ng-if="screen_opt.pro_short_des" ng-bind-html="val.pro_short_des"></td>
+		      <td ng-if="screen_opt.pro_feature_des" ng-bind-html="val.pro_feature_des"></td>
+		      <td ng-if="screen_opt.meta_title"><% val.meta_title %></td>
+		      <td ng-if="screen_opt.meta_description"><% val.meta_description %></td>
+		      <td ng-if="screen_opt.meta_keywords"><% val.meta_keywords %></td>
+		      <td ng-if="screen_opt.length"><% val.length %></td>
+		      <td ng-if="screen_opt.width"><% val.width %></td>
+		      <td ng-if="screen_opt.height"><% val.height %></td>
+		      <td ng-if="screen_opt.stock_status"><% val.stock_status %></td>
+		      <td ng-if="screen_opt.no_stock"><% val.no_stock %></td>
+		      <td><a href="javascript:void(0);" ng-click="editproduct(val)"><i class="fa fa-edit" title="Edit"></i></a>
+		      <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
+		     
+		      <!-- Modal -->
+			<div class="modal fade" id="del_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Delete</h4>
+			      </div>
+			      <div class="modal-body">
+				Are you sure you want to delete this product ? 
+			      </div>
+			      <div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+			      
+				   <input type="hidden" name="del_id" value="<% val.id %>" />
+				  <button type="submit" class="btn btn-primary" data-dismiss="modal" ng-click="deleteproduct($index)" >Delete</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		      </td>
+		      
+		    </tr>
+		    
+		    </tbody>
+		    <tfoot>
+		     <tr>
+		      <th>#</th>
+		      <th ng-if="screen_opt.pro_name">Product Name                    
+		      </th>                  
+		      <th ng-if="screen_opt.category_name" >Category Name
+		      </th>
+		      <th ng-if="screen_opt.status"  >Status
+		      </th>
+		      <th ng-if="screen_opt.pro_des">Product Description 
+		       </th>                  
+		      <th ng-if="screen_opt.pro_short_des" >Product Short Description 
+		      </th>
+		      <th ng-if="screen_opt.pro_feature_des"  > Product Feature Description   
+		      </th>
+		       <th ng-if="screen_opt.meta_title" > Meta Title
+		       </th>                  
+		      <th ng-if="screen_opt.meta_description" > Meta Description
+		       </th>
+		      <th ng-if="screen_opt.meta_keywords"  > Meta Keywords
+		       </th>
+		      <th ng-if="screen_opt.length" > Length 
+		       </th>                  
+		      <th ng-if="screen_opt.width" > Width
+		      </th>
+		      <th ng-if="screen_opt.height" > Height  
+		      </th>
+		      <th ng-if="screen_opt.stock_status" > Stock Status  
+		      </th>
+		       <th ng-if="screen_opt.no_stock" > Number of Stock  
+		      </th>
+		      <th> </th>                 
+		    </tr>
+		    </tfoot>
+		    </table>
+		    <dir-pagination-controls
+		    max-size="tb_pag"
+		    direction-links="true"
+		    boundary-links="true" >
+		    </dir-pagination-controls>
 		</div>
-              
-              </div>
-              <div class="row">
-                <div class="form-group col-md-2 pull-left">		  
-		    <select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
-                        <option value="5" ng-selected="tb_pag==5">5</option>
-                        <option value="10" ng-selected="tb_pag==10">10</option>
-                        <option value="100" ng-selected="tb_pag==100">100</option>
-                        <option value="1000" ng-selected="tb_pag==1000">1000</option>
-                    </select>
-		</div>
-                <div class="form-group col-md-3 pull-right">		  
-		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
-		</div>
-              </div>
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th ng-click="sort('id')" style="cursor:pointer">#
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th ng-if="screen_opt.pro_name" ng-click="sort('pro_name')" style="cursor:pointer">Product Name
-                    <span class="glyphicon sort-icon"  ng-show="sortKey=='pro_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>                  
-		  <th ng-if="screen_opt.category_name" ng-click="sort('category_name')" style="cursor:pointer">Category Name
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='category_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th ng-if="screen_opt.status"  ng-click="sort('status')" style="cursor:pointer">Status
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th ng-if="screen_opt.pro_des" ng-click="sort('pro_des')" style="cursor:pointer">Product Description 
-                    <span class="glyphicon sort-icon"  ng-show="sortKey=='pro_des'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>                  
-		  <th ng-if="screen_opt.pro_short_des" ng-click="sort('pro_short_des')" style="cursor:pointer">Product Short Description 
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='pro_short_des'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th ng-if="screen_opt.pro_feature_des"  ng-click="sort('pro_feature_des')" style="cursor:pointer"> Product Feature Description   
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='pro_feature_des'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                   <th ng-if="screen_opt.meta_title" ng-click="sort('meta_title')" style="cursor:pointer"> Meta Title
-                    <span class="glyphicon sort-icon"  ng-show="sortKey=='meta_title'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>                  
-		  <th ng-if="screen_opt.meta_description" ng-click="sort('meta_description')" style="cursor:pointer"> Meta Description
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='meta_description'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th ng-if="screen_opt.meta_keywords"  ng-click="sort('meta_keywords')" style="cursor:pointer"> Meta Keywords
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='meta_keywords'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th ng-if="screen_opt.length" ng-click="sort('length')" style="cursor:pointer"> Length
-                    <span class="glyphicon sort-icon"  ng-show="sortKey=='length'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>                  
-		  <th ng-if="screen_opt.width" ng-click="sort('width')" style="cursor:pointer"> Width
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='width'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th ng-if="screen_opt.height"  ng-click="sort('height')" style="cursor:pointer"> Height   
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='height'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                    <th ng-if="screen_opt.stock_status" ng-click="sort('stock_status')" style="cursor:pointer" > Stock Status 
-                    <span class="glyphicon sort-icon"  ng-show="sortKey=='stock_status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                   <th ng-if="screen_opt.no_stock" ng-click="sort('no_stock')" style="cursor:pointer"> Number of Stock  
-                   <span class="glyphicon sort-icon"  ng-show="sortKey=='no_stock'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th> </th>                 
-                </tr>
-                </thead>
-                <tbody>                
-                <tr dir-paginate="val in products|orderBy:sortKey:reverse|itemsPerPage:tb_pag|filter:search"> 
-                  <td><% val.id %></td>
-                  <td ng-if="screen_opt.pro_name"><% val.pro_name %></td>
-		  <td ng-if="screen_opt.category_name"><% val.category_name %></td>
-                  <td ng-if="screen_opt.status"><% val.status %></td>
-                  <td ng-if="screen_opt.pro_des" ng-bind-html="val.pro_des"></td>
-		  <td ng-if="screen_opt.pro_short_des" ng-bind-html="val.pro_short_des"></td>
-                  <td ng-if="screen_opt.pro_feature_des" ng-bind-html="val.pro_feature_des"></td>
-                  <td ng-if="screen_opt.meta_title"><% val.meta_title %></td>
-		  <td ng-if="screen_opt.meta_description"><% val.meta_description %></td>
-                  <td ng-if="screen_opt.meta_keywords"><% val.meta_keywords %></td>
-                  <td ng-if="screen_opt.length"><% val.length %></td>
-		  <td ng-if="screen_opt.width"><% val.width %></td>
-                  <td ng-if="screen_opt.height"><% val.height %></td>
-                  <td ng-if="screen_opt.stock_status"><% val.stock_status %></td>
-                  <td ng-if="screen_opt.no_stock"><% val.no_stock %></td>
-                  <td><a href="javascript:void(0);" ng-click="editproduct(val)"><i class="fa fa-edit" title="Edit"></i></a>
-		  <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
-                 
-                  <!-- Modal -->
-                    <div class="modal fade" id="del_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Delete</h4>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to delete this product ? 
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                          
-                               <input type="hidden" name="del_id" value="<% val.id %>" />
-                              <button type="submit" class="btn btn-primary" data-dismiss="modal" ng-click="deleteproduct($index)" >Delete</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  
-                </tr>
-              
-                </tbody>
-                <tfoot>
-                 <tr>
-                  <th>#</th>
-                  <th ng-if="screen_opt.pro_name">Product Name                    
-                  </th>                  
-		  <th ng-if="screen_opt.category_name" >Category Name
-                  </th>
-                  <th ng-if="screen_opt.status"  >Status
-                  </th>
-                  <th ng-if="screen_opt.pro_des">Product Description 
-                   </th>                  
-		  <th ng-if="screen_opt.pro_short_des" >Product Short Description 
-                  </th>
-                  <th ng-if="screen_opt.pro_feature_des"  > Product Feature Description   
-                  </th>
-                   <th ng-if="screen_opt.meta_title" > Meta Title
-                   </th>                  
-		  <th ng-if="screen_opt.meta_description" > Meta Description
-                   </th>
-                  <th ng-if="screen_opt.meta_keywords"  > Meta Keywords
-                   </th>
-                  <th ng-if="screen_opt.length" > Length 
-                   </th>                  
-		  <th ng-if="screen_opt.width" > Width
-                  </th>
-                  <th ng-if="screen_opt.height" > Height  
-                  </th>
-                  <th ng-if="screen_opt.stock_status" > Stock Status  
-                  </th>
-                   <th ng-if="screen_opt.no_stock" > Number of Stock  
-                  </th>
-                  <th> </th>                 
-                </tr>
-                </tfoot>
-              </table>
-                  <dir-pagination-controls
-					max-size="tb_pag"
-					direction-links="true"
-					boundary-links="true" >
-		</dir-pagination-controls>
             </div>
             <!-- /.box-body -->
           </div>
