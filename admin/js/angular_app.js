@@ -2565,10 +2565,7 @@ app.controller('CountryController', function($scope, $http) {
     $scope.changeState=function(param){
        
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 5f526ff5a97ea0b9b97e8eb6f3d411e73770361b
    $scope.group_pros = [
        {"status": 'All', "items": ""},
        {"status": 'Active', "items": ""},
@@ -2576,14 +2573,10 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Pending', "items": ""}
   ];
     $scope.select_group_pros='All';
-<<<<<<< HEAD
 
-        $scope.init = function() {	
-=======
     
         $scope.init = function() {
-		
->>>>>>> 5f526ff5a97ea0b9b97e8eb6f3d411e73770361b
+
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
