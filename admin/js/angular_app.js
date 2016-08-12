@@ -2520,6 +2520,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.pr_imgs = [];
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
+     $scope.tags = [];
      $scope.product.pro_category_id={};
      //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
@@ -2641,6 +2642,18 @@ $scope.fruits = ["8", "9", "10", "7"];
 		});
 	   }
 	}
+	
+	$scope.addTags=function(ptag){ 
+       $scope.tags.push({
+	tag : ptag
+	});
+	}
+	
+	$scope.removeTags=function(index)
+	{
+	   $scope.tags.splice(index,1);
+	}
+	
     $scope.check_exist=function(optid){
 	var exist_val=0;
 	angular.forEach($scope.optval, function (item,key) {
