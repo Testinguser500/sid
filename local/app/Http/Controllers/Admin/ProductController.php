@@ -7,6 +7,7 @@ use App\Brand;
 use App\ProductDataType;
 use App\Option;
 use App\ProductAttribute;
+use App\ProductTags;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -30,7 +31,20 @@ class ProductController extends Controller
 		
 	}
         public function all(){ 
-	     $products   = DB::table('product')->select('categorys.category_name as category_name', 'product.*')->join('categorys', 'product.pro_category_id', '=', 'categorys.id')->where('product.is_delete','=','0')->get();
+	     $products   = DB::table('product')->select('*')->where('product.is_delete','=','0')->get();
+             foreach($products as $key=>$value){
+                $category_ids=explode(',',$value->pro_category_id);
+                $category_name='';
+                $all_cats = DB::table('categorys')->select('*')->whereIn('id',$category_ids)->where('is_delete','=','0')->get();
+                foreach($all_cats as $k=>$v){
+                 $category_name.=$v->category_name;
+                 if($k < (count($all_cats)-1)){
+                    $category_name.=','; 
+                 }
+                }
+               $products[$key]->category_name=$category_name;
+             }
+            
              $sellers    = DB::table('users')->where('status','=','Active')->where('is_delete','=',0)->where('role','=',5)->get();
 	     $categories = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
 	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get(); 
@@ -71,11 +85,13 @@ class ProductController extends Controller
 	    'pro_short_des' => 'required',
 	    'pro_feature_des' => 'required',
 	    'seller_id' => 'required',
-	    'pro_category_id' => 'required',
+	    //'pro_category_id' => 'required',
 	    'brand_id' => 'required',
-	    'product_tags' => 'required',
+	    //'product_tags' => 'required',
 	    'price' => ['required','regex:'.$regex],
 	    'sale_price' => ['required','regex:'.$regex],
+	    'date_from'=> 'required|date|check_date_valid',
+	    'date_to'=> 'required|date|check_date_to_valid:date_from',
 	    'no_stock' => 'required|integer|min:0',
 	    'length' => 'required_with:width,height|check_demension_value',
 	    'width' => 'required_with:length,height|check_demension_value',
@@ -90,11 +106,13 @@ class ProductController extends Controller
 			'pro_short_des' => 'Product Short Description',
 			'pro_feature_des' => 'Product Feature Description',
 			'seller_id' => 'Seller',
-			'pro_category_id' => 'Product Category',
+			//'pro_category_id' => 'Product Category',
 			'brand_id' => 'Brand',
-			'product_tags' => 'Product Tags',
+			//'product_tags' => 'Product Tags',
 			'price' => 'Price',
 			'sale_price' => 'Sale Price',
+			'date_from'=> 'Date From',
+			'date_to'=> 'Date To',
 			'no_stock' => 'No. of Stock',
 			'meta_title' => 'Meta Title',
 			'meta_description' => 'Meta Description',
@@ -107,23 +125,23 @@ class ProductController extends Controller
 	      $list[]=$msg;
 	      return $list;
         }
-	$catids= Request::input('pro_category_id'); ;
-	$newcatarr= array();
-	foreach($catids as $ck => $cv){ 
-	    if($cv == '1'){ 
-		$newcatarr[] = $ck;	
-	    }
-	}
-	$newproids = implode(",", $newcatarr);
+	//$catids= Request::input('pro_category_id'); ;
+	//$newcatarr= array();
+	//foreach($catids as $ck => $cv){ 
+	//    if($cv == '1'){ 
+	//	$newcatarr[] = $ck;	
+	//    }
+	//}
+	//$newproids = implode(",", $newcatarr);
         
 	 $prod = Product::create(['pro_name' =>Request::input('pro_name'),
 			 'pro_des' =>Request::input('pro_des'),
 			 'pro_short_des' =>Request::input('pro_short_des'),
 			 'pro_feature_des' =>Request::input('pro_feature_des'),
 			 'seller_id' =>Request::input('seller_id'),
-			 'pro_category_id' =>$newproids,
+			// 'pro_category_id' =>$newproids,
 			 'brand_id' =>Request::input('brand_id'),
-			 'product_tags' =>Request::input('product_tags'),
+			 //'product_tags' =>Request::input('product_tags'),
 			 'price' =>Request::input('price'),
 			 'sale_price' =>Request::input('sale_price'),
 			 'no_stock' =>Request::input('no_stock'),
@@ -141,6 +159,7 @@ class ProductController extends Controller
 			 'meta_title' =>Request::input('meta_title'),
 			 'meta_description' =>Request::input('meta_description'),
 			 'meta_keywords' =>Request::input('meta_keywords'),
+			 'stock_status' =>Request::input('stock_status'),
 			 'status' =>Request::input('status')]);
 	 
 		$insertedId = $prod->id;
@@ -156,6 +175,14 @@ class ProductController extends Controller
 				    }	    
 			}
 			
+		$tags= Request::input('tags'); 
+		if($tags){
+			foreach($tags as $tk => $tv){
+			ProductTags::create(['pro_tags'=> $tv['tag'],
+				    'product_id' => $insertedId,
+				      ]);	    
+			}	
+		}
 		if($insertedId > 0){
 			$images = Request::input('images'); //print_r($images);
 			 foreach($images as $imgvvv){
@@ -186,6 +213,8 @@ class ProductController extends Controller
 	 $product= DB::table('product')->where('id', '=',$id)->first(); //print_r($product);
 	 $product_img = DB::table('product_images')->select('image as img', 'def as def')->where('product_id', '=',$id)->get();
 	 $product_attr  = DB::table('product_attribute')->where('product_id', '=',$id)->get(); //print_r($product_attr);
+         $product_tag  = DB::table('product_tags')->select('pro_tags as tag')->where('product_id', '=',$id)->get();
+	 
 	 $all = array();
 	 
 	 foreach($product_attr as $kk => $vv){
@@ -214,6 +243,7 @@ class ProductController extends Controller
 	 $return['options']   = $options;
          $return['all_category'] = $all_category;
 	 $return['product_img'] = $product_img;
+	 $return['product_tag'] = $product_tag;
 	 $return['all'] = $all;
          return $return;
 	}
@@ -228,9 +258,11 @@ class ProductController extends Controller
 	    'seller_id' => 'required',
 	    //'pro_category_id' => 'required',
 	    'brand_id' => 'required',
-	    'product_tags' => 'required',
+	    //'product_tags' => 'required',
 	    'price' => ['required','regex:'.$regex],
 	    'sale_price' => ['required','regex:'.$regex],
+	    'date_from'=> 'required|date|check_date_valid',
+	    'date_to'=> 'required|date|check_date_to_valid:date_from',
 	    'no_stock' => 'required|integer|min:0',
 	    'length' => 'required_with:width,height|check_demension_value',
 	    'width' => 'required_with:length,height|check_demension_value',
@@ -247,9 +279,11 @@ class ProductController extends Controller
 			'seller_id' => 'Seller',
 			//'pro_category_id' => 'Product Category',
 			'brand_id' => 'Brand',
-			'product_tags' => 'Product Tags',
+			//'product_tags' => 'Product Tags',
 			'price' => 'Price',
 			'sale_price' => 'Sale Price',
+			'date_from'=> 'Date From',
+			'date_to'=> 'Date To',
 			'no_stock' => 'No. of Stock',
 			'meta_title' => 'Meta Title',
 			'meta_description' => 'Meta Description',
@@ -280,9 +314,11 @@ class ProductController extends Controller
          $pro->seller_id=Request::input('seller_id');
         // $pro->pro_category_id=Request::input('pro_category_id');
          $pro->brand_id=Request::input('brand_id');
-	 $pro->product_tags=Request::input('product_tags');
+	 //$pro->product_tags=Request::input('product_tags');
 	 $pro->price=Request::input('price');
 	 $pro->sale_price=Request::input('sale_price');
+	 $pro->date_from=Request::input('date_from');
+	 $pro->date_to=Request::input('date_to');
 	 $pro->no_stock=Request::input('no_stock');
          $pro->meta_title=Request::input('meta_title');
          $pro->meta_description=Request::input('meta_description');
@@ -291,6 +327,8 @@ class ProductController extends Controller
          $pro->save(); 
 	 $product_img = DB::table('product_images')->where('product_id', '=',Request::input('id'))->get(); 
 	 $product_attr  = DB::table('product_attribute')->where('product_id', '=',Request::input('id'))->get();
+	 $product_tag  = DB::table('product_attribute')->where('product_id', '=',Request::input('id'))->get();
+	 
 	 $images = Request::input('images'); 
 	    if($product_img){
 	    foreach($images as $imgvvv){
@@ -340,6 +378,33 @@ class ProductController extends Controller
 			}	    
 			}
 	    }
+	    
+        $tags = Request::input('tags');
+	
+	 if($product_tag){
+			foreach($product_tag as $ktg => $vtg){
+			DB::table('product_tags')->where('id', '=', $vtg->id)->delete();	    
+			}
+			
+			if($tags){
+			foreach($tags as $tk => $tv){
+			ProductTags::create(['pro_tags'=> $tv['tag'],
+			'product_id' => $insertedId,
+			]);	    
+			}	
+			}
+	    }
+	    else{
+			if($tags){
+			foreach($tags as $tk => $tv){
+			ProductTags::create(['pro_tags'=> $tv['tag'],
+			'product_id' => $insertedId,
+			]);	    
+			}	
+			}	    
+			
+	    }
+	    
         $list[]='success';
         $list[]='Record is updated successfully.';	 
 	return $list;

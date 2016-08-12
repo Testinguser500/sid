@@ -1,4 +1,4 @@
-var app = angular.module('admins', ['ngRoute','textAngular','angularUtils.directives.dirPagination'], function($interpolateProvider) {
+var app = angular.module('admins', ['ngRoute','textAngular','angularUtils.directives.dirPagination','jkuri.datepicker'], function($interpolateProvider) {
 	$interpolateProvider.startSymbol('<%');
 	$interpolateProvider.endSymbol('%>');
       
@@ -2520,7 +2520,9 @@ app.controller('CountryController', function($scope, $http) {
      $scope.pr_imgs = [];
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
+     $scope.tags = [];
      $scope.product.pro_category_id={};
+     
      //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
      $scope.tab = 1;
@@ -2563,7 +2565,10 @@ app.controller('CountryController', function($scope, $http) {
     $scope.changeState=function(param){
        
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5f526ff5a97ea0b9b97e8eb6f3d411e73770361b
    $scope.group_pros = [
        {"status": 'All', "items": ""},
        {"status": 'Active', "items": ""},
@@ -2571,8 +2576,14 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Pending', "items": ""}
   ];
     $scope.select_group_pros='All';
+<<<<<<< HEAD
 
         $scope.init = function() {	
+=======
+    
+        $scope.init = function() {
+		
+>>>>>>> 5f526ff5a97ea0b9b97e8eb6f3d411e73770361b
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
@@ -2642,6 +2653,20 @@ app.controller('CountryController', function($scope, $http) {
 		});
 	   }
 	}
+	
+	$scope.addTags=function(ptag){ console.log(ptag);
+        if(ptag != ''){
+		$scope.tags.push({
+		tag : ptag
+		});
+	}		
+	}
+	
+	$scope.removeTags=function(index)
+	{
+	   $scope.tags.splice(index,1);
+	}
+	
     $scope.check_exist=function(optid){
 	var exist_val=0;
 	angular.forEach($scope.optval, function (item,key) {
@@ -2667,6 +2692,7 @@ app.controller('CountryController', function($scope, $http) {
 	$scope.add = function() {	
                 $scope.page='add';		
 		$scope.errors=false;
+		//angular.element('.hasDatepicker').find('input').addClass('form-control');
                 $scope.success_flash=false;
                 $scope.product=false;
 		$http.get('product/all').
@@ -2679,6 +2705,7 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.product={};
 			$scope.optval = [];
 			$scope.pr_imgs = [];
+			$scope.product.pro_tags = '';
 			$scope.all_category = data['all_category'];
 
 
@@ -2742,11 +2769,11 @@ app.controller('CountryController', function($scope, $http) {
      
 	   
 	 
-	 $scope.store = function(product,images) {
+	 $scope.store = function(product,images,tags) {
 		
            $scope.errors=false;
-           $scope.success_flash=false;   
-           console.log(product);
+           $scope.success_flash=false;
+           //console.log(product);
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -2773,8 +2800,10 @@ app.controller('CountryController', function($scope, $http) {
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
-                        status: product.status,
-			images: images
+                        stock_status: product.stock_status,
+			status: product.status,
+			images: images,
+			tags : tags
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){
@@ -2821,13 +2850,15 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.options = data['options'];
 			$scope.all_category = data['all_category'];
 			$scope.pr_imgs = data['product_img'];
+			$scope.tags = data['product_tag'];
+			$scope.product.pro_tags = '';
 			$scope.optval = data['all'];
 			//$scope.all = data['all'];console.log($scope.optval); console.log($scope.all);
 		        $scope.loading = false;
 		});
 	};
 
-        $scope.update = function(product,images) { 
+        $scope.update = function(product,images,tags) { 
             $scope.errors=false;
             $scope.success_flash=false; console.log(product); console.log(images);
            $http.post('product/update', { 
@@ -2857,7 +2888,8 @@ app.controller('CountryController', function($scope, $http) {
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
                         status: product.status,
-			images: images
+			images: images,
+			tags: tags
 		}).success(function(data, status, headers, config) {
                  
                 if(data[0]=='error'){
