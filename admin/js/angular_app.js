@@ -2834,13 +2834,14 @@ $scope.fruits = ["8", "9", "10", "7"];
 			$scope.options = data['options'];
 			$scope.all_category = data['all_category'];
 			$scope.pr_imgs = data['product_img'];
+			$scope.tags = data['product_tag'];
 			$scope.optval = data['all'];
 			//$scope.all = data['all'];console.log($scope.optval); console.log($scope.all);
 		        $scope.loading = false;
 		});
 	};
 
-        $scope.update = function(product,images) { 
+        $scope.update = function(product,images,tags) { 
             $scope.errors=false;
             $scope.success_flash=false; console.log(product); console.log(images);
            $http.post('product/update', { 
@@ -2870,7 +2871,8 @@ $scope.fruits = ["8", "9", "10", "7"];
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
                         status: product.status,
-			images: images
+			images: images,
+			tags: tags
 		}).success(function(data, status, headers, config) {
                  
                 if(data[0]=='error'){

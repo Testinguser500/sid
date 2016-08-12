@@ -208,6 +208,8 @@ class ProductController extends Controller
 	 $product= DB::table('product')->where('id', '=',$id)->first(); //print_r($product);
 	 $product_img = DB::table('product_images')->select('image as img', 'def as def')->where('product_id', '=',$id)->get();
 	 $product_attr  = DB::table('product_attribute')->where('product_id', '=',$id)->get(); //print_r($product_attr);
+         $product_tag  = DB::table('product_tags')->select('pro_tags as tag')->where('product_id', '=',$id)->get();
+	 
 	 $all = array();
 	 
 	 foreach($product_attr as $kk => $vv){
@@ -236,6 +238,7 @@ class ProductController extends Controller
 	 $return['options']   = $options;
          $return['all_category'] = $all_category;
 	 $return['product_img'] = $product_img;
+	 $return['product_tag'] = $product_tag;
 	 $return['all'] = $all;
          return $return;
 	}
@@ -250,7 +253,7 @@ class ProductController extends Controller
 	    'seller_id' => 'required',
 	    //'pro_category_id' => 'required',
 	    'brand_id' => 'required',
-	    'product_tags' => 'required',
+	    //'product_tags' => 'required',
 	    'price' => ['required','regex:'.$regex],
 	    'sale_price' => ['required','regex:'.$regex],
 	    'no_stock' => 'required|integer|min:0',
@@ -269,7 +272,7 @@ class ProductController extends Controller
 			'seller_id' => 'Seller',
 			//'pro_category_id' => 'Product Category',
 			'brand_id' => 'Brand',
-			'product_tags' => 'Product Tags',
+			//'product_tags' => 'Product Tags',
 			'price' => 'Price',
 			'sale_price' => 'Sale Price',
 			'no_stock' => 'No. of Stock',
@@ -302,7 +305,7 @@ class ProductController extends Controller
          $pro->seller_id=Request::input('seller_id');
         // $pro->pro_category_id=Request::input('pro_category_id');
          $pro->brand_id=Request::input('brand_id');
-	 $pro->product_tags=Request::input('product_tags');
+	 //$pro->product_tags=Request::input('product_tags');
 	 $pro->price=Request::input('price');
 	 $pro->sale_price=Request::input('sale_price');
 	 $pro->no_stock=Request::input('no_stock');
@@ -313,6 +316,8 @@ class ProductController extends Controller
          $pro->save(); 
 	 $product_img = DB::table('product_images')->where('product_id', '=',Request::input('id'))->get(); 
 	 $product_attr  = DB::table('product_attribute')->where('product_id', '=',Request::input('id'))->get();
+	 $product_tag  = DB::table('product_attribute')->where('product_id', '=',Request::input('id'))->get();
+	 
 	 $images = Request::input('images'); 
 	    if($product_img){
 	    foreach($images as $imgvvv){
@@ -362,6 +367,33 @@ class ProductController extends Controller
 			}	    
 			}
 	    }
+	    
+        $tags = Request::input('tags');
+	
+	 if($product_tag){
+			foreach($product_tag as $ktg => $vtg){
+			DB::table('product_tags')->where('id', '=', $vtg->id)->delete();	    
+			}
+			
+			if($tags){
+			foreach($tags as $tk => $tv){
+			ProductTags::create(['pro_tags'=> $tv['tag'],
+			'product_id' => $insertedId,
+			]);	    
+			}	
+			}
+	    }
+	    else{
+			if($tags){
+			foreach($tags as $tk => $tv){
+			ProductTags::create(['pro_tags'=> $tv['tag'],
+			'product_id' => $insertedId,
+			]);	    
+			}	
+			}	    
+			
+	    }
+	    
         $list[]='success';
         $list[]='Record is updated successfully.';	 
 	return $list;

@@ -1172,8 +1172,12 @@
 			 </div>
 			 <div class="box-body">
 			 <div class="form-group">
-			 <input type="text" class="form-control" id="" name="product_tags" placeholder="Product Tags" ng-model="product.product_tags">
+			 <input type="text" class="form-control" id="" name="pro_tags" placeholder="Product Tags" ng-model="product.pro_tags">
 			 <div class="help-block"></div>
+			 </div>
+			 <input class="button tagadd" value="Add" type="button" ng-click="addTags(product.pro_tags); product.pro_tags=''"> <% tags %>
+			 <div class="tagchecklist" ng-repeat="tg in tags"> 
+			      <span><a id="product_tag-check-num-0" class="ntdelbutton" tabindex="0" ng-click="removeTags($index);"><i class="fa fa-times-circle"></i></a><% tg.tag %></span>
 			 </div>
 			 </div>
 			 </div>
@@ -1271,7 +1275,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button ng-click="update(product,pr_imgs)" type="submit" class="btn btn-primary">Submit</button>
+                <button ng-click="update(product,pr_imgs,tags)" type="submit" class="btn btn-primary">Submit</button>
               </div>
           </div>
 
