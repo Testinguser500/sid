@@ -2754,7 +2754,7 @@ $scope.fruits = ["8", "9", "10", "7"];
      
 	   
 	 
-	 $scope.store = function(product,images) {
+	 $scope.store = function(product,images,tags) {
 		
            $scope.errors=false;
            $scope.success_flash=false;
@@ -2786,7 +2786,8 @@ $scope.fruits = ["8", "9", "10", "7"];
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
                         status: product.status,
-			images: images
+			images: images,
+			tags : tags
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){

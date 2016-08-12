@@ -7,6 +7,7 @@ use App\Brand;
 use App\ProductDataType;
 use App\Option;
 use App\ProductAttribute;
+use App\ProductTags;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -84,9 +85,9 @@ class ProductController extends Controller
 	    'pro_short_des' => 'required',
 	    'pro_feature_des' => 'required',
 	    'seller_id' => 'required',
-	    'pro_category_id' => 'required',
+	    //'pro_category_id' => 'required',
 	    'brand_id' => 'required',
-	    'product_tags' => 'required',
+	    //'product_tags' => 'required',
 	    'price' => ['required','regex:'.$regex],
 	    'sale_price' => ['required','regex:'.$regex],
 	    'no_stock' => 'required|integer|min:0',
@@ -103,9 +104,9 @@ class ProductController extends Controller
 			'pro_short_des' => 'Product Short Description',
 			'pro_feature_des' => 'Product Feature Description',
 			'seller_id' => 'Seller',
-			'pro_category_id' => 'Product Category',
+			//'pro_category_id' => 'Product Category',
 			'brand_id' => 'Brand',
-			'product_tags' => 'Product Tags',
+			//'product_tags' => 'Product Tags',
 			'price' => 'Price',
 			'sale_price' => 'Sale Price',
 			'no_stock' => 'No. of Stock',
@@ -120,23 +121,23 @@ class ProductController extends Controller
 	      $list[]=$msg;
 	      return $list;
         }
-	$catids= Request::input('pro_category_id'); ;
-	$newcatarr= array();
-	foreach($catids as $ck => $cv){ 
-	    if($cv == '1'){ 
-		$newcatarr[] = $ck;	
-	    }
-	}
-	$newproids = implode(",", $newcatarr);
+	//$catids= Request::input('pro_category_id'); ;
+	//$newcatarr= array();
+	//foreach($catids as $ck => $cv){ 
+	//    if($cv == '1'){ 
+	//	$newcatarr[] = $ck;	
+	//    }
+	//}
+	//$newproids = implode(",", $newcatarr);
         
 	 $prod = Product::create(['pro_name' =>Request::input('pro_name'),
 			 'pro_des' =>Request::input('pro_des'),
 			 'pro_short_des' =>Request::input('pro_short_des'),
 			 'pro_feature_des' =>Request::input('pro_feature_des'),
 			 'seller_id' =>Request::input('seller_id'),
-			 'pro_category_id' =>$newproids,
+			// 'pro_category_id' =>$newproids,
 			 'brand_id' =>Request::input('brand_id'),
-			 'product_tags' =>Request::input('product_tags'),
+			 //'product_tags' =>Request::input('product_tags'),
 			 'price' =>Request::input('price'),
 			 'sale_price' =>Request::input('sale_price'),
 			 'no_stock' =>Request::input('no_stock'),
@@ -169,6 +170,14 @@ class ProductController extends Controller
 				    }	    
 			}
 			
+		$tags= Request::input('tags'); 
+		if($tags){
+			foreach($tags as $tk => $tv){
+			ProductTags::create(['pro_tags'=> $tv['tag'],
+				    'product_id' => $insertedId,
+				      ]);	    
+			}	
+		}
 		if($insertedId > 0){
 			$images = Request::input('images'); //print_r($images);
 			 foreach($images as $imgvvv){

@@ -767,7 +767,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button ng-click="store(product,pr_imgs)" type="submit" class="btn btn-primary">Submit</button>
+                <button ng-click="store(product,pr_imgs,tags)" type="submit" class="btn btn-primary">Submit</button>
               </div>
             
           </div>
