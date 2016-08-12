@@ -90,6 +90,8 @@ class ProductController extends Controller
 	    //'product_tags' => 'required',
 	    'price' => ['required','regex:'.$regex],
 	    'sale_price' => ['required','regex:'.$regex],
+	    'date_from'=> 'required|date|check_date_valid',
+	    'date_to'=> 'required|date|check_date_to_valid:date_from',
 	    'no_stock' => 'required|integer|min:0',
 	    'length' => 'required_with:width,height|check_demension_value',
 	    'width' => 'required_with:length,height|check_demension_value',
@@ -109,6 +111,8 @@ class ProductController extends Controller
 			//'product_tags' => 'Product Tags',
 			'price' => 'Price',
 			'sale_price' => 'Sale Price',
+			'date_from'=> 'Date From',
+			'date_to'=> 'Date To',
 			'no_stock' => 'No. of Stock',
 			'meta_title' => 'Meta Title',
 			'meta_description' => 'Meta Description',
@@ -256,6 +260,8 @@ class ProductController extends Controller
 	    //'product_tags' => 'required',
 	    'price' => ['required','regex:'.$regex],
 	    'sale_price' => ['required','regex:'.$regex],
+	    'date_from'=> 'required|date|check_date_valid',
+	    'date_to'=> 'required|date|check_date_to_valid:date_from',
 	    'no_stock' => 'required|integer|min:0',
 	    'length' => 'required_with:width,height|check_demension_value',
 	    'width' => 'required_with:length,height|check_demension_value',
@@ -275,6 +281,8 @@ class ProductController extends Controller
 			//'product_tags' => 'Product Tags',
 			'price' => 'Price',
 			'sale_price' => 'Sale Price',
+			'date_from'=> 'Date From',
+			'date_to'=> 'Date To',
 			'no_stock' => 'No. of Stock',
 			'meta_title' => 'Meta Title',
 			'meta_description' => 'Meta Description',
@@ -308,6 +316,8 @@ class ProductController extends Controller
 	 //$pro->product_tags=Request::input('product_tags');
 	 $pro->price=Request::input('price');
 	 $pro->sale_price=Request::input('sale_price');
+	 $pro->date_from=Request::input('date_from');
+	 $pro->date_to=Request::input('date_to');
 	 $pro->no_stock=Request::input('no_stock');
          $pro->meta_title=Request::input('meta_title');
          $pro->meta_description=Request::input('meta_description');

@@ -1,4 +1,4 @@
-var app = angular.module('admins', ['ngRoute','textAngular','angularUtils.directives.dirPagination'], function($interpolateProvider) {
+var app = angular.module('admins', ['ngRoute','textAngular','angularUtils.directives.dirPagination','jkuri.datepicker'], function($interpolateProvider) {
 	$interpolateProvider.startSymbol('<%');
 	$interpolateProvider.endSymbol('%>');
       
@@ -2522,6 +2522,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.optval = [];
      $scope.tags = [];
      $scope.product.pro_category_id={};
+     
      //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
      $scope.tab = 1;
@@ -2571,8 +2572,9 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Pending', "items": ""}
   ];
     $scope.select_group_pros='All';
-$scope.fruits = ["8", "9", "10", "7"];
-        $scope.init = function() {	
+    
+        $scope.init = function() {
+		
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
@@ -2643,10 +2645,12 @@ $scope.fruits = ["8", "9", "10", "7"];
 	   }
 	}
 	
-	$scope.addTags=function(ptag){ 
-       $scope.tags.push({
-	tag : ptag
-	});
+	$scope.addTags=function(ptag){ console.log(ptag);
+        if(ptag != ''){
+		$scope.tags.push({
+		tag : ptag
+		});
+	}		
 	}
 	
 	$scope.removeTags=function(index)
@@ -2679,6 +2683,7 @@ $scope.fruits = ["8", "9", "10", "7"];
 	$scope.add = function() {	
                 $scope.page='add';		
 		$scope.errors=false;
+		//angular.element('.hasDatepicker').find('input').addClass('form-control');
                 $scope.success_flash=false;
                 $scope.product=false;
 		$http.get('product/all').
@@ -2691,6 +2696,7 @@ $scope.fruits = ["8", "9", "10", "7"];
 			$scope.product={};
 			$scope.optval = [];
 			$scope.pr_imgs = [];
+			$scope.product.pro_tags = '';
 			$scope.all_category = data['all_category'];
 
 
@@ -2835,6 +2841,7 @@ $scope.fruits = ["8", "9", "10", "7"];
 			$scope.all_category = data['all_category'];
 			$scope.pr_imgs = data['product_img'];
 			$scope.tags = data['product_tag'];
+			$scope.product.pro_tags = '';
 			$scope.optval = data['all'];
 			//$scope.all = data['all'];console.log($scope.optval); console.log($scope.all);
 		        $scope.loading = false;

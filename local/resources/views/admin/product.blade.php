@@ -467,12 +467,15 @@
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates From</label>
-					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from"  ng-model="product.date_from">
-                                           
+					    <!-- <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from"  ng-model="product.date_from">-->
+					  <ng-datepicker  class="hasDatepicker" ng-model="product.date_from" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates To</label>
-					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">
+			<!--		     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">-->
+			                    <ng-datepicker  class="hasDatepicker"  ng-model="product.date_to" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Youtube Link</label>
@@ -670,7 +673,7 @@
 			 <input type="text" class="form-control" id="" name="pro_tags" placeholder="Product Tags" ng-model="product.pro_tags">
 			 <div class="help-block"></div>
 			 </div>
-			 <input class="button tagadd" value="Add" type="button" ng-click="addTags(product.pro_tags); product.pro_tags=''">
+			 <input class="button tagadd" ng-init="product.pro_tags=''" value="Add" type="button" ng-click="addTags(product.pro_tags); product.pro_tags=''">
 			 <div class="tagchecklist" ng-repeat="tg in tags"> 
 			      <span><a id="product_tag-check-num-0" class="ntdelbutton" tabindex="0" ng-click="removeTags($index);"><i class="fa fa-times-circle"></i></a><% tg.tag %></span>
 			 </div>
@@ -969,11 +972,13 @@
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates From</label>
-					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from" ng-model="product.date_from">
+		<!--			     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from" ng-model="product.date_from">-->             <ng-datepicker  class="hasDatepicker"  ng-model="product.date_from" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates To</label>
-					     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">
+			<!--		     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">-->               <ng-datepicker  class="hasDatepicker"  ng-model="product.date_to" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Youtube Link</label>
@@ -1175,7 +1180,7 @@
 			 <input type="text" class="form-control" id="" name="pro_tags" placeholder="Product Tags" ng-model="product.pro_tags">
 			 <div class="help-block"></div>
 			 </div>
-			 <input class="button tagadd" value="Add" type="button" ng-click="addTags(product.pro_tags); product.pro_tags=''"> <% tags %>
+			 <input class="button tagadd btn btn-default" value="Add" type="button" ng-click="addTags(product.pro_tags); product.pro_tags=''">
 			 <div class="tagchecklist" ng-repeat="tg in tags"> 
 			      <span><a id="product_tag-check-num-0" class="ntdelbutton" tabindex="0" ng-click="removeTags($index);"><i class="fa fa-times-circle"></i></a><% tg.tag %></span>
 			 </div>
