@@ -163,9 +163,10 @@
 		  <div class="help-block"></div>
                 </div>
                 <div class="form-group">
+		  
                   <label for="exampleInputEmail1">Expire Date</label>
                  <!-- <input type="text" class="form-control" id="" name="expire_date" placeholder="YYYY-MM-DD" ng-model="coupon_datas.expire_date">-->
-			<ng-datepicker  class="hasDatepicker"  ng-model="coupon_datas.expire_date" first-week-day-sunday="true" placeholder="Pick a date">
+			<ng-datepicker view-format="Do MMMM YYYY"  class="hasDatepicker"  ng-model="coupon_datas.expire_date" first-week-day-sunday="true" placeholder="Pick a date">
                                            </ng-datepicker>
 		  <div class="help-block"></div>
                 </div>
@@ -371,7 +372,8 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Expire Date</label>
-                  <input type="text" class="form-control" id="" name="expire_date" placeholder="YYYY-MM-DD" ng-model="coupons.expire_date">
+                  <ng-datepicker view-format="Do MMMM YYYY"  class="hasDatepicker"  ng-model="coupons.expire_date" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
 		  <div class="help-block"></div>
                 </div>
 		</div>
