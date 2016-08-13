@@ -31,13 +31,13 @@ class CouponController extends Controller
 	}
        
         public function store(){
-	
+	//print_r(Request::all());
 	   $validator = Validator::make(Request::all(), [
             'coupon_name' => 'required',
 	    'discount_type'=>'required',
 	    'discount_value'=>'required|numeric',
             'description'=>'required',            
-            'usage_limit'=>'required|numeric',
+            //'usage_limit'=>'required|numeric',
 	    'expire_date'=>'required',
 	    'products'=>'required',
 	    'category'=>'required',
@@ -54,7 +54,36 @@ class CouponController extends Controller
 			      $list[]=$msg;
 			      return $list;
         }
-	
+	$products_id='';
+	$exproducts_id='';
+	$category_id='';
+	$excategory_id='';
+	$userEmail = '';
+	$products = Request::input('products');
+	$exproducts = Request::input('exclude_products');
+	$category = Request::input('category');
+	$excategory = Request::input('exclude_category');
+	$user_email = Request::input('user_email');
+	foreach($products as $val)
+	{
+	    $products_id[] = $val['id'];
+	}
+	foreach($exproducts as $val)
+	{
+	    $exproducts_id[] = $val['id'];
+	}
+	foreach($category as $val)
+	{
+	    $category_id[] = $val['id'];
+	}
+	foreach($excategory as $val)
+	{
+	    $excategory_id[] = $val['id'];
+	}
+	foreach($user_email as $val)
+	{
+	    $userEmail[] = $val['email'];
+	}
 	$cat= Coupon::create(['coupon_name' => Request::input('coupon_name'),
 			      'discount_type' =>Request::input('discount_type'),
 			      'discount_value' =>Request::input('discount_value'),
@@ -67,11 +96,11 @@ class CouponController extends Controller
 			      'expire_date' =>Request::input('expire_date'),
 			      'exclude_sale' =>Request::input('exclude_sale')?Request::input('exclude_sale'):0,
 			      'individual' =>Request::input('individual'),
-			      'products' =>implode(',',Request::input('products')),
-			      'exclude_products' =>implode(',',Request::input('exclude_products')),
-			      'category' =>implode(',',Request::input('category')),
-			      'exclude_category' =>implode(',',Request::input('exclude_category')),
-			      'user_email' =>implode(',',Request::input('user_email')),
+			      'products' =>implode(',',$products_id),
+			      'exclude_products' =>implode(',',$exproducts_id),
+			      'category' =>implode(',',$category_id),
+			      'exclude_category' =>implode(',',$excategory_id),
+			      'user_email' =>implode(',',$userEmail),
 			      
 			      'coupon_status' =>Request::input('coupon_status'),
 			      'is_delete'=>'0','user_id'=>Auth::user()->id]);  
@@ -94,9 +123,23 @@ class CouponController extends Controller
 	}
         
 	 public function edit($id){
-	
-	 $cate= DB::table('coupons')->where('id', '=',$id)->first();  
-         $category = DB::table('coupons')->where('is_delete', '=','0')->get();  
+	$userEmail='';
+	 $cate= DB::table('coupons')->where('id', '=',$id)->first();
+	 $pro_id = explode(',',$cate->products);
+	 $expro_id = explode(',',$cate->exclude_products);
+	 $cat_id = explode(',',$cate->category);
+	 $excat_id = explode(',',$cate->exclude_category);
+	 $category = DB::table('coupons')->where('is_delete', '=','0')->get();
+	 $cate->product_data = DB::table('product')->whereIn('id',$pro_id)->get();
+	 $cate->exproduct_data = DB::table('product')->whereIn('id',$expro_id)->get();
+	 $cate->category_data = DB::table('categorys')->whereIn('id',$cat_id)->get();
+	 $cate->excategory_data = DB::table('categorys')->whereIn('id',$excat_id)->get();
+	 $user_email =explode(',',$cate->user_email);
+	 foreach((array)$user_email as $val)
+	 {
+	    $userEmail[]=array('email'=>$val);
+	 }
+	 $cate->user_email = $userEmail;
          $return['coupon']=$cate;
          $return['all_coupon']=$category;
 	 return $return;
@@ -110,9 +153,12 @@ class CouponController extends Controller
 	    'discount_type'=>'required',
 	    'discount_value'=>'required|numeric',
             'description'=>'required',            
-            'usage_limit'=>'required|numeric',
+            //'usage_limit'=>'required|numeric',
 	    'expire_date'=>'required',
-	    'min_amount'=>'required|numeric',          
+	    'products'=>'required',
+	    'category'=>'required',
+	    'user_email'=>'required',
+	    'min_spend'=>'required|numeric',          
             
         ]);
          
@@ -122,16 +168,57 @@ class CouponController extends Controller
 			      $list[]=$msg;
 			      return $list;
         }
+	$products_id='';
+	$exproducts_id='';
+	$category_id='';
+	$excategory_id='';
+	$userEmail = '';
+	$products = Request::input('products');
+	$exproducts = Request::input('exclude_products');
+	$category = Request::input('category');
+	$excategory = Request::input('exclude_category');
+	$user_email = Request::input('user_email');
+	foreach($products as $val)
+	{
+	    $products_id[] = $val['id'];
+	}
+	foreach($exproducts as $val)
+	{
+	    $exproducts_id[] = $val['id'];
+	}
+	foreach($category as $val)
+	{
+	    $category_id[] = $val['id'];
+	}
+	foreach($excategory as $val)
+	{
+	    $excategory_id[] = $val['id'];
+	}
+	foreach($user_email as $val)
+	{
+	    $userEmail[] = $val['email'];
+	}
 
          $cat = Coupon::find(Request::input('coupon_id'));
          $cat->coupon_name = Request::input('coupon_name');
         $cat->discount_type = Request::input('discount_type');
 	 $cat->description =Request::input('description');
 	 $cat->discount_value=Request::input('discount_value');
-         $cat->usage_limit=Request::input('usage_limit');
+	 $cat->free_shipp=Request::input('free_shipp');
+	 
+         $cat->usage_limit_coupon=Request::input('usage_limit_coupon');
+	 $cat->usage_limit_user=Request::input('usage_limit_user');
          $cat->expire_date=Request::input('expire_date');
 	 $cat->exclude_sale=Request::input('exclude_sale');
-	 $cat->min_amount=Request::input('min_amount');
+	 $cat->min_spend=Request::input('min_spend');
+	 $cat->max_spend=Request::input('max_spend');
+	 $cat->individual=Request::input('individual');
+	 $cat->products =implode(',',$products_id);
+	$cat->exclude_products =implode(',',$exproducts_id);
+	    $cat->category =implode(',',$category_id);
+	    $cat->exclude_category =implode(',',$excategory_id);
+	    $cat->user_email =implode(',',$userEmail);
+			      
 	 $cat->coupon_status=Request::input('coupon_status');
          $cat->save(); 
 		  

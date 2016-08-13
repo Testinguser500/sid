@@ -3195,7 +3195,12 @@ app.controller('CountryController', function($scope, $http) {
                 $scope.page='add';		
 		$scope.errors=false;
                 $scope.success_flash=false;
-                $scope.coupon=false;
+                $scope.coupons=false;
+		$scope.selectedUsers=[];
+		$scope.exselectedCats=[];
+		$scope.selectedCats=[];
+		$scope.exselectedItems=[];
+		$scope.selectedItems=[];
 		$http.get('coupon/all').
 		success(function(data, status, headers, config) {
 			$scope.loading = false;
@@ -3220,11 +3225,11 @@ app.controller('CountryController', function($scope, $http) {
 		min_spend:coupon.min_amount,
 		max_spend:coupon.max_amount,
 		individual:coupon.individual,
-		products:coupon.selectedItems,
-		exclude_products:coupon.exselectedItems,
-		category:coupon.selectedCats,
-		exclude_category:coupon.exselectedCats,
-		user_email:coupon.selectedUsers,
+		products:$scope.selectedItems,
+		exclude_products:$scope.exselectedItems,
+		category:$scope.selectedCats,
+		exclude_category:$scope.exselectedCats,
+		user_email:$scope.selectedUsers,
 		coupon_status:coupon.status
 			
 			
@@ -3251,7 +3256,12 @@ app.controller('CountryController', function($scope, $http) {
 		$http.get('coupon/edit/' + couponData.id, {			
 		}).success(function(data, status, headers, config) {
 			$scope.coupon_datas = data['coupon'];
-			console.log($scope.coupon_data);
+			$scope.selectedItems=$scope.coupon_datas.product_data;
+			$scope.exselectedItems=$scope.coupon_datas.exproduct_data;
+			$scope.selectedCats=$scope.coupon_datas.category_data;
+			$scope.exselectedCats=$scope.coupon_datas.excategory_data;
+			$scope.selectedUsers=$scope.coupon_datas.user_email;
+			console.log($scope.coupon_datas);
 			$scope.loading = false;
 		});
 	};
@@ -3265,14 +3275,23 @@ app.controller('CountryController', function($scope, $http) {
 		$http.post('coupon/update',{
 			coupon_id:couponData.id,
 		coupon_name:couponData.coupon_name,
+		description:couponData.description,
 		discount_type:couponData.discount_type,
 		discount_value:couponData.discount_value,
-		description:couponData.description,
-		usage_limit:couponData.usage_limit,
+		free_shipp:couponData.free_shipp,
+		usage_limit_coupon:couponData.usage_limit_coupon,
+		usage_limit_user:couponData.usage_limit_user,
 		expire_date:couponData.expire_date,
 		exclude_sale:couponData.exclude_sale,
-		min_amount:couponData.min_amount,
-		coupon_status:couponData.status
+		min_spend:couponData.min_spend,
+		max_spend:couponData.max_spend,
+		individual:couponData.individual,
+		products:$scope.selectedItems,
+		exclude_products:$scope.exselectedItems,
+		category:$scope.selectedCats,
+		exclude_category:$scope.exselectedCats,
+		user_email:$scope.selectedUsers,
+		coupon_status:couponData.coupon_status
 			}).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){
