@@ -552,7 +552,7 @@
 					     <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id[newvalue.optid]" multiple>
 						<option ng-repeat="opv in newvalue.all" ng-value="opv.id"  value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
-					     <div ng-if="product.pro_datatype_id == '2'"><% product.variation_status %><% product.pro_opt_values_id %><input type="checkbox" name="variation_status" ng-model="product.variation_status[newvalue.optid]" ng-true-value="'1'" ng-false-value="'0'"> Used for variations</div>
+					     <div ng-if="product.pro_datatype_id == '2'"><input type="checkbox" name="variation_status" ng-model="product.variation_status[newvalue.optid]" ng-true-value="'1'" ng-false-value="'0'"> Used for variations</div>
 					     <a href="" ng-click="removeData($index);">Remove</a>
 					 </div>
 					 
