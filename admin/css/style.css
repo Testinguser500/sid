@@ -112,7 +112,7 @@ a.ms_ov{text-decoration: none}
     padding-left: 8px;
     padding-top: 6px;
 }
-<<<<<<< HEAD
+.sm_att.btn{padding:0 5px}
 .attri .all_cats {
     height: 150px;
     margin: 10px 0 0;
@@ -136,6 +136,6 @@ a.ms_ov{text-decoration: none}
 .box-body > .table.all_att_rw{margin-bottom: 10px}
 .save_all_attr{margin-right: 10px}
 .error_att{color:#d9534f}
-=======
+
 .image-file{ width:30px;}
->>>>>>> 9b01c50873358eb09ef2bdf1d4e23c620c319f7a
+

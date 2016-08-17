@@ -2394,7 +2394,9 @@ app.controller('CountryController', function($scope, $http) {
      $scope.loading = true;
      $scope.options=false;
      $scope.page='index';
-     $scope.option={};       
+     $scope.option={};  
+     $scope.shw_sv_attr=1;
+     $scope.shw_sv_value=1;
      $scope.opt_grp=[{ opt_id : null }];
      $scope.values={};
      $scope.success_flash=false;
@@ -2429,7 +2431,7 @@ app.controller('CountryController', function($scope, $http) {
         $scope.duplicate_check_atr_name = function(ot_ky,ky)
         {                
              if($scope.opt_grp[ot_ky].attribute[ky].atr_name!=''){
-              var shw_sv=1;
+             $scope.shw_sv_attr=1;
               var value= $scope.opt_grp[ot_ky].attribute[ky].atr_name.toLowerCase();
               $scope.opt_grp[ot_ky].attribute[ky].error='';
                  angular.forEach($scope.opt_grp[ot_ky].attribute, function (item,key) {                     
@@ -2438,20 +2440,20 @@ app.controller('CountryController', function($scope, $http) {
                         {                           
                            $scope.opt_grp[ot_ky].attribute[ky].error="Duplicate Value is not allowed.";
                            $scope.show_save=0;
-                           shw_sv=0;
+                           $scope.shw_sv_attr=0;
                         }
                         else{
-                           shw_sv=1;
+                           $scope.shw_sv_attr=1;
                         }
                     }
                     if((item.error) && (item.error != ''))
                     {
-                        shw_sv=0;
+                        $scope.shw_sv_attr=0;
                     }
                     
                  });
              
-                 if(shw_sv==1){
+                 if(($scope.shw_sv_value==1) && ($scope.shw_sv_attr==1)){
                      $scope.show_save=1;
                  }
                }
@@ -2460,7 +2462,7 @@ app.controller('CountryController', function($scope, $http) {
          $scope.duplicate_check_atr_value = function(ot_ky,ky,ke)
         {   
              if($scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name != ''){
-              var shw_sv=1;
+              $scope.shw_sv_value=1;
               var value= $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name.toLowerCase();
               $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].error='';
                  angular.forEach($scope.opt_grp[ot_ky].attribute[ky].atr_val, function (item,key) {  
@@ -2468,20 +2470,20 @@ app.controller('CountryController', function($scope, $http) {
                         if( item.val_name.toLowerCase() == value)
                         {                           
                           $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].error="Duplicate Value is not allowed.";
-                           $scope.show_save=0;
-                            shw_sv=0;
+                          $scope.show_save=0;
+                          $scope.shw_sv_value=0;
                         }
                          else{
-                           shw_sv=1;
+                           $scope.shw_sv_value=1;
                         }
                     }
                       if((item.error) && (item.error != ''))
                     {
-                        shw_sv=0;
+                        $scope.shw_sv_value=0;
                     }
                  });
              
-                 if(shw_sv==1){
+                 if(($scope.shw_sv_value==1) && ($scope.shw_sv_attr==1)){
                      $scope.show_save=1;
                  }
                }
@@ -2502,7 +2504,7 @@ app.controller('CountryController', function($scope, $http) {
 				
 				$scope.errors=false;				
 			        $scope.success_flash=data[1];
-                              //  $scope.init();
+                                $scope.init();
 			}
 			$scope.loading = false;
  
@@ -2638,13 +2640,7 @@ app.controller('CountryController', function($scope, $http) {
                                   val_name:null
               });
 	}
-        $scope.select_change= function(ot_ky,ky){
-            if( $scope.opt_grp[ot_ky].attribute[ky].atr_type=="radio"){
-                 $scope.opt_grp[ot_ky].attribute[ky].atr_val=[{val_name:null}];
-            }else{
-                 $scope.opt_grp[ot_ky].attribute[ky].atr_val=[];
-            }
-        }
+       
 	$scope.removeInput = function (ot_ky,ky,index) {
 	    //$scope.values.splice(index, 1);
           $scope.opt_grp[ot_ky].attribute[ky].atr_val.splice(index, 1);
@@ -2716,19 +2712,12 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Inactive', "items": ""},
        {"status": 'Pending', "items": ""}
   ];
-<<<<<<< HEAD
+
 
   $scope.select_group_pros='All';
 
-
-        $scope.init = function() {	
-=======
-    $scope.select_group_pros='All';
-
-    
         $scope.init = function() {
 
->>>>>>> 9b01c50873358eb09ef2bdf1d4e23c620c319f7a
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
@@ -2846,10 +2835,7 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
-<<<<<<< HEAD
 
-=======
->>>>>>> 9b01c50873358eb09ef2bdf1d4e23c620c319f7a
 			$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];

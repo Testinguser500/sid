@@ -190,7 +190,7 @@
                     </tr>
                      <tr ng-repeat="(ky,atr) in ot.attribute"  ng-if="ot.attribute">
                          <td>
-                               <button class="btn btn-danger "  ng-click="pop_attr(ot_ky,ky);" > <i class="icon ion-minus"></i> </button>                 
+                               <button class="btn btn-danger sm_att"  ng-click="pop_attr(ot_ky,ky);" > <i class="icon ion-minus"></i> </button>                 
                          </td>
                          <td>
                              <div class="form-group">
@@ -200,9 +200,9 @@
                          </td>
                          <td>
                               <div class="form-group">
-                                  <select class="form-control" ng-model="opt_grp[ot_ky].attribute[ky].atr_type" ng-change="select_change(ot_ky,ky)">
+                                  <select class="form-control" ng-model="opt_grp[ot_ky].attribute[ky].atr_type" >
+                                      <option value="select">select</option>
                                       <option value="radio">radio</option>
-                                      <option value="yes/no">yes/no</option>
                                   </select> 
                                
                               </div>                   
@@ -212,10 +212,10 @@
                                 <input type="text" class="form-control" id="" ng-blur="duplicate_check_atr_value(ot_ky,ky,ke)" ng-focus="remove_show_save();"  ng-model="opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name" name="option_name" placeholder="Option" >
                                 <p ng-show="opt_grp[ot_ky].attribute[ky].atr_val[ke].error!=''" class="error_att" ><% opt_grp[ot_ky].attribute[ky].atr_val[ke].error %></p>
                                 <div class="help-block"></div>
-                                <button class="btn btn-success button button-small button-balanced" ng-if="$index == atr.atr_val.length - 1" ng-click="addInput(ot_ky,ky)">
+                                <button class="btn btn-success button button-small sm_att" ng-if="$index == atr.atr_val.length - 1" ng-click="addInput(ot_ky,ky)">
                                   <i class="icon ion-plus"></i>
                                 </button>
-                                  <button class="btn btn-danger button button-small button-assertive" ng-if="$index != atr.atr_val.length - 1" ng-click="removeInput(ot_ky,ky,ke)">
+                                  <button class="btn btn-danger button button-small sm_att" ng-if="$index != atr.atr_val.length - 1" ng-click="removeInput(ot_ky,ky,ke)">
                                   <i class="icon ion-minus"></i>
                                   </button>
                              </div>                

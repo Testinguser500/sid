@@ -38,18 +38,21 @@ class OptionController extends Controller
                 if($v1['opt_id'] != ''){
                    foreach($v1['attribute'] as $k2 => $v2){
                        $vald['values.'.$k1.'.attribute.'.$k2.'.atr_name']='required|soft_composite_unique:pro_option,option_name,parent_id='.$v1['opt_id'] ;
-                       //$set_val['values.'.$k1.'.attribute.'.$k2.'.atr_name']='attribute '.$k2+1;
-                      
+                       $k2plus=$k2+1;
+                       $name=$v1['opt_name'].' attribute '.$k2plus;
+                       $set_val['values.'.$k1.'.attribute.'.$k2.'.atr_name']=$name;                      
                           foreach($v2['atr_val'] as $k3 => $v3){
-                              $vald['values.'.$k1.'.attribute.'.$k2.'.atr_name.'.$k3.'.opt_name']='required' ;
-                           //   $set_val['values.'.$k1.'.attribute.'.$k2.'.atr_name.'.$k3.'.opt_name']='option '.$k3+1;  
+                              $vald['values.'.$k1.'.attribute.'.$k2.'.atr_val.'.$k3.'.val_name']='required' ;
+                              $k3plus=$k3+1;
+                              $name=$v1['opt_name'].' attribute '.$k2plus.' option '.$k3plus;
+                              $set_val['values.'.$k1.'.attribute.'.$k2.'.atr_val.'.$k3.'.val_name']=$name;  
                           } 
                       
                    }  
                 }
             }
              $validator = Validator::make(Request::all(), $vald);
-            // $validator->setAttributeNames($set_val);
+             $validator->setAttributeNames($set_val);
              if ($validator->fails()) {
               $list[]='error';
               $msg=$validator->errors()->all();
@@ -59,16 +62,18 @@ class OptionController extends Controller
             foreach($val as $k1 => $v1){
                 if($v1['opt_id'] != ''){
                    foreach($v1['attribute'] as $k2 => $v2){
-                       $opts = Option::create(['option_name' =>$v2['atr_name'],'user_id'=>Auth::user()->id,'status' =>'Active','parent_id' => $v1['opt_id'] ]);  
+                       $opts = Option::create(['option_name' =>$v2['atr_name'],'user_id'=>Auth::user()->id,'type'=>$v2['atr_type'],'status' =>'Active','parent_id' => $v1['opt_id'] ]);  
                       
                           foreach($v2['atr_val'] as $k3 => $v3){
-                              $vald['values.'.$k1.'.attribute.'.$k2.'.atr_name.'.$k3.'.opt_name']='required' ;
-                           //   $set_val['values.'.$k1.'.attribute.'.$k2.'.atr_name.'.$k3.'.opt_name']='option '.$k3+1;  
+                           $option_val = Option::create(['option_name' =>$v3['val_name'],'user_id'=>Auth::user()->id,'status' =>'Active','parent_id' => $opts->id ]);  
                           } 
                       
                    }  
                 }
-            }         
+            }   
+           $list[]='success';
+           $list[]='Record is added successfully.';	 
+	   return $list;	
         }
         public function store(){ 
 	   $validator = Validator::make(Request::all(), [
