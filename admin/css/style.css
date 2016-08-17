@@ -113,3 +113,9 @@ a.ms_ov{text-decoration: none}
     padding-top: 6px;
 }
 .image-file{ width:30px;}
+.tagchecklist > span {
+    background: #eeeeee none repeat scroll 0 0;
+    border-radius: 2px;
+    float: left;
+    margin: 1px;
+}

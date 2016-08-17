@@ -13,7 +13,7 @@ class ProductAttribute extends Model
      * @var array
      */
     protected $fillable = [
-        'option_name_id','option_value_ids','product_id'
+        'option_name_id','option_value_ids','product_id','variation_status'
     ];
 
    

@@ -2521,6 +2521,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
      $scope.tags = [];
+     $scope.variations = [];
      $scope.product.pro_category_id={};
      
      //$scope.product.pro_opt_values_id=[];
@@ -2544,6 +2545,7 @@ app.controller('CountryController', function($scope, $http) {
     $scope.showMe3 = true;
     $scope.showMe4 = false;
     $scope.showMe5 = false;
+    $scope.showMeExpand = false;
     $scope.myFunc = function() {
         $scope.showMe = !$scope.showMe;
     }
@@ -2561,6 +2563,9 @@ app.controller('CountryController', function($scope, $http) {
     }
     $scope.myFuncimg = function() {
         $scope.showMeimg = !$scope.showMeimg;
+    }
+    $scope.myExpand = function() {
+        $scope.showMeExpand = !$scope.showMeExpand;
     }
     $scope.changeState=function(param){
        
@@ -2647,18 +2652,36 @@ app.controller('CountryController', function($scope, $http) {
 	   }
 	}
 	
-	$scope.addTags=function(ptag){ console.log(ptag);
+	$scope.addTags=function(ptag){ //console.log(ptag);
         if(ptag != ''){
 		$scope.tags.push({
 		tag : ptag
 		});
 	}		
 	}
-	
 	$scope.removeTags=function(index)
 	{
 	   $scope.tags.splice(index,1);
 	}
+	
+	$scope.addVariation=function(vari_status,opt_val_idss){ console.log(vari_status); console.log(opt_val_idss);
+		$http.post('product/getvariation',{
+			vari_status: vari_status,
+			option_ids: opt_val_idss
+		}).success(function(data, status, headers, config) {
+				$scope.variations.push({
+					variations : data['variations']
+					});
+				$scope.loading = false;
+			});
+				
+	}
+	 
+	$scope.removeVariation=function(index)
+	{
+	   $scope.variations.splice(index,1);
+	}
+	
 	
     $scope.check_exist=function(optid){
 	var exist_val=0;
@@ -2782,6 +2805,7 @@ app.controller('CountryController', function($scope, $http) {
 			pro_datatype_id: product.pro_datatype_id,
 			//pro_opt_name_id: product.pro_opt_name_id,
 			pro_opt_values_id: product.pro_opt_values_id,
+			variation_status: product.variation_status,
 			sku: product.sku,
 			date_from: product.date_from,
 			date_to: product.date_to,
@@ -2790,6 +2814,8 @@ app.controller('CountryController', function($scope, $http) {
 			length: product.length,
 			width: product.width,
 			height: product.height,
+			warranty: product.warranty,
+			return_policy: product.return_policy,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
@@ -2877,6 +2903,8 @@ app.controller('CountryController', function($scope, $http) {
 			length: product.length,
 			width: product.width,
 			height: product.height,
+			warranty: product.warranty,
+			return_policy: product.return_policy,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
