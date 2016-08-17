@@ -454,7 +454,7 @@
 			     <div class="col-md-8">
 				   <div class="jumbotron">
 					 <div ng-show="isSet(1)">
-					     <div class="form-group" ng-if="product. b != '2'">
+					     <div class="form-group" ng-if="product.pro_datatype_id != '2'">
 					     <label for="exampleInputEmail1">SKU</label>
 					     <input type="text" placeholder="" class="form-control" value="" id="sku" name="sku" ng-model="product.sku">
 					     </div>
@@ -552,7 +552,7 @@
 					     <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id[newvalue.optid]" multiple>
 						<option ng-repeat="opv in newvalue.all" ng-value="opv.id"  value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
-					     <div ng-if="product.pro_datatype_id == '2'"><input type="checkbox" name="variation_status" ng-model="product.variation_status[newvalue.optid]" ng-true-value="'1'" ng-false-value="'0'"> Used for variations</div>
+					     <div ng-if="product.pro_datatype_id == '2'"><input type="checkbox" name="variation_status" ng-model="product.variation_status[newvalue.optid]" ng-true-value="'1'" ng-false-value="'0'"  ng-click="getMainCat(product.variation_status,product.pro_opt_values_id)"> Used for variations</div>
 					     <a href="" ng-click="removeData($index);">Remove</a>
 					 </div>
 					 
@@ -579,10 +579,11 @@
 					
 				         <div ng-show="isSet(7)">
 					     <div class="form-group">
-						  <select class="form-control">
-						       <option>Add Variation</option>
+						  <select class="form-control" name="add_variation" ng-model="product.add_variation">
+						       <option ng-repeat="mop in main_option" value="<% mop.main.id %>" ng-value="<% mop.main.id %>" ng-selected="mop.main.id==product.add_variation"><% mop.main.name %></option>
+						       <option value="all_vari" ng-selected="'all_vari'==product.add_variation">Create Variations all Attributes</option>
 						  </select>
-						  <button class="btn btn-default" ng-click="addVariation(product.variation_status,product.pro_opt_values_id)">Go</button>
+						  <button class="btn btn-default" ng-click="addVariation(product.variation_status,product.pro_opt_values_id,product.add_variation)">Go</button>
 					     </div>
 					     
 						<div ng-repeat="vari in variations">
@@ -595,7 +596,7 @@
 						       <!-- Default box -->
 					     <div class="box">
 					       <div class="box-header with-border">
-						 <h3 class="box-title">Title</h3>
+						 <h3 class="box-title">Expand</h3>
 				       
 						 <div class="box-tools pull-right">
 						   <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">Expand</button>
@@ -834,6 +835,46 @@
 			 </div>
 			 </div>
 			 <!-- /.box --> 
+		      </div>
+		      
+		      <div class="col-xs-12" ng-if="product.pro_datatype_id == '2'">
+			 <!-- Default box -->
+			 <div class="box">
+			 <div class="box-header with-border">
+			 <h3 class="box-title">Bulk Variation Input</h3>
+			 
+			 <div class="box-tools pull-right">
+			 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			 <i class="fa fa-minus"></i></button>
+			 </div>
+			 </div>
+			 <div class="box-body">
+			      <div class="form-group">
+				  <label for="exampleInputEmail1">View:</label>
+				  <select>
+				   <option>Disabled</option>
+				   <option>Enabled</option>
+				  </select>
+			      </div>
+			      <div class="form-group">
+				  <label for="exampleInputEmail1">Columns:</label>
+				  <select>
+				   <option>Select Variations Attribute</option>
+				   <option>fgf</option>
+				  </select>
+			      </div>
+			      <div class="form-group">
+				  <label for="exampleInputEmail1">Rows:</label>
+				  <select>
+				   <option>Select Variations Attribute</option>
+				   <option>fgt</option>
+				  </select>
+			      </div>
+				  
+			 </div> 
+			 <!-- /.box-body -->
+			 </div>
+			 <!-- /.box -->
 		      </div>
 		    </div> 
 	       </div>

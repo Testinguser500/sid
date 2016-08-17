@@ -2802,10 +2802,11 @@ app.controller('CountryController', function($scope, $http) {
 	   $scope.tags.splice(index,1);
 	}
 	
-	$scope.addVariation=function(vari_status,opt_val_idss){ console.log(vari_status); console.log(opt_val_idss);
+	$scope.addVariation=function(vari_status,opt_val_idss,current_val){ console.log(vari_status); console.log(opt_val_idss);
 		$http.post('product/getvariation',{
 			vari_status: vari_status,
-			option_ids: opt_val_idss
+			option_ids: opt_val_idss,
+			current_val: current_val
 		}).success(function(data, status, headers, config) {
 				$scope.variations.push({
 					variations : data['variations']
@@ -2820,6 +2821,16 @@ app.controller('CountryController', function($scope, $http) {
 	   $scope.variations.splice(index,1);
 	}
 	
+	$scope.getMainCat=function(vari_status,opt_idss){  //console.log(vari_status); 
+		$http.post('product/getMainCat',{
+			vari_status: vari_status,
+			option_ids: opt_idss
+		}).success(function(data, status, headers, config) { //console.log(data); 
+				$scope.main_option = data['main_option']
+				$scope.loading = false;
+			});
+		
+	}
 	
     $scope.check_exist=function(optid){
 	var exist_val=0;

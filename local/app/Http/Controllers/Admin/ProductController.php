@@ -456,7 +456,9 @@ class ProductController extends Controller
 	 public function getvariation(){
 	    $vari_status = Request::input('vari_status');
 	    $option_ids = Request::input('option_ids');
-	    $newArr = array();
+	    $current_val = Request::input('current_val');
+	    if($current_val == 'all_vari'){
+		 $newArr = array();
 	    foreach($vari_status as $vsk => $vsv){
 			if($vsv == 1){
 			$newArr[] = $vsk;    
@@ -481,8 +483,50 @@ class ProductController extends Controller
 	    
 	    $return['variations'] = $variations;
 	    return $return;
+	    }
+	    else{
+		$variations = array();
+		$cat_data = DB::table('pro_option')->where('is_delete', '=','0')->where('id','=',$current_val)->first();
+			  $subcat_data = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id',$current_val)->get();
+			  $main['main'] = array('name'=>$cat_data->option_name,'id'=>$current_val);
+			  //print_r($subcat_data);
+			  $main['sub'] = $subcat_data;
+			  $variations[] = $main;
+			  
+	    $return['variations'] = $variations;
+	    return $return;
+	    }
+	    
 	 }
 	 
+	 public function getMainCat(){
+	    
+	    $vari_status = Request::input('vari_status');
+	    $option_ids = Request::input('option_ids');
+	    
+	    $newArr = array();
+	    foreach($vari_status as $vsk => $vsv){
+			if($vsv == 1){
+			$newArr[] = $vsk;    
+			}
+			
+	    }
+	    $main_option = array();
+	    foreach($option_ids as $ke => $va){
+		if($va){	
+			if(in_array($ke,$newArr)){
+				     
+			  $cat_data = DB::table('pro_option')->where('is_delete', '=','0')->where('id','=',$ke)->first();
+			  $main['main'] = array('name'=>$cat_data->option_name,'id'=>$ke);
+			  $main_option[] = $main;
+			}
+		}
+	    } //print_r($main_option);
+	    
+	    $return['main_option'] = $main_option;
+	    return $return;
+	    
+	 }
 	 public function image_delete(){
 	    $image = Request::input('image');
 	    File::delete('uploads/'.str_replace('product/','product/thumb_',$image));
