@@ -13,7 +13,7 @@ class Option extends Model
      * @var array
      */
     protected $fillable = [
-        'option_name','user_id','is_delete','parent_id','status'
+        'option_name','user_id','is_delete','parent_id','status','categorys_id','type'
     ];
 
    

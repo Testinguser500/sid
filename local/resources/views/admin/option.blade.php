@@ -17,8 +17,8 @@
          
           <div class="box" ng-if="page=='index'">
             <div class="box-header">
-              <h3 class="box-title"><i class="fa fa-list"></i> Option List</h3>
-              <div class="pull-right"> <a href="javascript:void(0)" ng-click="add();"class="btn btn-primary"><i class="fa fa-plus"></i> Add Option</a></div>
+              <h3 class="box-title"><i class="fa fa-list"></i> Attribute List</h3>
+              <div class="pull-right"> <a href="javascript:void(0)" ng-click="add();"class="btn btn-primary"><i class="fa fa-plus"></i> Add Attribute Group</a></div>
             </div>
             <!-- /.box-header -->
             
@@ -99,30 +99,143 @@
         <!-- general form elements -->
           <div class="box box-primary" ng-if="page=='add'">
             <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-plus"></i> Create Option Name</h3>
+                <h3 class="box-title"><i class="fa fa-plus"></i> Create Attribute</h3>                             
                 <div class="pull-right"> <a href="javascript:void(0);" ng-click="init();" class="btn btn-default">Back</a></div>
+                 <div class="pull-right save_all_attr" ng-show="opt_grp.length > 1">
+                         <button class="btn btn-primary pull-right" ng-show="show_save" ng-click="save_attr(opt_grp);" >Save Attributes</button>
+                 </div> 
             </div>
             <!-- /.box-header -->
             <!-- form start -->
            
-              <div class="box-body">
-			 
+              <div class="box-body attri">
+                <div class="row">
+                     <div class="col-md-3">
+                          <label for="Category">Category</label>
+                    </div>
+                      <div class="col-md-9">
+                          <div class="col-md-3">
+                               <div class="sel_cat">
+                                  <input type="radio"  ng-model="cat_select" ng-value="true" value="true" name="selectcat"  > All     
+                                  <input type="radio"  ng-model="cat_select" ng-value="false"  value="false" name="selectcat" > Selected
+			      </div>
+                              <div>
+                                  <input type="text" placeholder="Filter Categories" class="form-control" ng-model="test">
+			      </div>
+			      <div class="all_cats">
+			      <script type="text/ng-template" id="categoryTree">
+			      <input ng-if="cat_select==true" type="checkbox" ng-init="option.category_id[category.id]=true" ng-model="option.category_id[category.id]" value="<%category.id%>" name="pro_category_id[]" ng-checked="cat_select==true" > 
+                               <input ng-if="cat_select==false" type="checkbox" ng-init="option.category_id[category.id]=false" ng-model="option.category_id[category.id]" value="<%category.id%>" name="pro_category_id[]"  > 
+                              <% category.category_name %>
+			      <ul ng-if="category.all_category">
+			      <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
+			      </li>
+			      </ul>
+			      </script>
+			      <ul class="ul-cat">
+			      <li class="cat-tree" ng-repeat="category in all_cats | filter:test" ng-include="'categoryTree'"></li>
+                              </ul>                             
+                              </div>
+                              <p ng-show="cat_select_error && cat_select_error != false && cat_select_error!=''" class="error_att" ng-bind="cat_select_error"></p>
+                          </div>
+                         
+                    </div>
+                </div>
+           <div class="row add_gr">
+              <div class="col-md-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Option Name</label>
+                  <label for="exampleInputEmail1">Attribute Group</label>
                   <input type="text" class="form-control" id="" name="option_name" placeholder="Option Name" ng-model="option.option_name">
 		  <div class="help-block"></div>
                 </div> 
-                <div class="form-group">
-                  <label for="exampleInputEmail1" ng-init="option.status='Active'" >Status </label>
-                  <input type="radio" ng-model="option.status" ng-checked="option.status" id="" name="status"  value="Active">Active <input ng-model="option.status" type="radio" id="" name="status" value="Inactive" checked>Inactive 
-		  <div class="help-block"></div>
-                </div> 
-             </div>
-              <!-- /.box-body -->
-
-              <div class="box-footer">
-                <button ng-click="store(option)" type="submit" class="btn btn-primary">Submit</button>
               </div>
+               
+           </div>
+           <div class="row add_gr">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1" ng-init="option.status='Active'" >Status </label>
+                    <input type="radio" ng-model="option.status" ng-checked="option.status" id="" name="status"  value="Active">Active <input ng-model="option.status" type="radio" id="" name="status" value="Inactive" checked>Inactive 
+                    <div class="help-block"></div>
+                  </div>
+                </div>
+                <div class="col-md-9">
+                 <div class="form-group">
+                     <button class="btn btn-default" ng-click="store(option)">Add Attribute Group</button>
+                 </div> 
+               </div>
+             </div>
+             
+              <table class="table table-bordered all_att_rw"  ng-repeat="(ot_ky,ot) in opt_grp" ng-if="ot.opt_id">
+                  <tr> 
+                      <td>                  
+                         <label ><% ot.opt_name %> </label>                        
+                      </td>            
+                 </tr>
+                 <tr><td>
+                   <table class="table table-bordered all_att_rw" >
+                    <tr ng-if="ot.attribute">
+                        <td>
+                                            
+                         </td>
+                         <td>
+                           Attribute                 
+                         </td>
+                         <td>
+                           Type                 
+                         </td>
+                         <td>
+                           Options                 
+                         </td>
+                    </tr>
+                     <tr ng-repeat="(ky,atr) in ot.attribute"  ng-if="ot.attribute">
+                         <td>
+                               <button class="btn btn-danger "  ng-click="pop_attr(ot_ky,ky);" > <i class="icon ion-minus"></i> </button>                 
+                         </td>
+                         <td>
+                             <div class="form-group">
+                                 <input ng-blur="duplicate_check_atr_name(ot_ky,ky)" type="text" class="form-control" ng-focus="remove_show_save();" Placeholder="Attribute" ng-model="opt_grp[ot_ky].attribute[ky].atr_name"> 
+                                 <p ng-show="opt_grp[ot_ky].attribute[ky].error!=''" class="error_att" ><% opt_grp[ot_ky].attribute[ky].error %></p>
+                              </div>           
+                         </td>
+                         <td>
+                              <div class="form-group">
+                                  <select class="form-control" ng-model="opt_grp[ot_ky].attribute[ky].atr_type" ng-change="select_change(ot_ky,ky)">
+                                      <option value="radio">radio</option>
+                                      <option value="yes/no">yes/no</option>
+                                  </select> 
+                               
+                              </div>                   
+                         </td>
+                         <td>
+                            <div class="form-group" ng-repeat="(ke,val) in atr.atr_val" ng-if="atr.atr_val.length > 0">
+                                <input type="text" class="form-control" id="" ng-blur="duplicate_check_atr_value(ot_ky,ky,ke)" ng-focus="remove_show_save();"  ng-model="opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name" name="option_name" placeholder="Option" >
+                                <p ng-show="opt_grp[ot_ky].attribute[ky].atr_val[ke].error!=''" class="error_att" ><% opt_grp[ot_ky].attribute[ky].atr_val[ke].error %></p>
+                                <div class="help-block"></div>
+                                <button class="btn btn-success button button-small button-balanced" ng-if="$index == atr.atr_val.length - 1" ng-click="addInput(ot_ky,ky)">
+                                  <i class="icon ion-plus"></i>
+                                </button>
+                                  <button class="btn btn-danger button button-small button-assertive" ng-if="$index != atr.atr_val.length - 1" ng-click="removeInput(ot_ky,ky,ke)">
+                                  <i class="icon ion-minus"></i>
+                                  </button>
+                             </div>                
+                         </td>
+                    </tr>
+                    <tr >
+                        <td colspan="4">                            
+                           <button class="btn btn-primary pull-right"  ng-click="push_attr(ot_ky);" >Add Attribute Rows </button>                    
+                        </td>
+                   </tr>
+                   </table>                      
+                 </td></tr>
+             </table> 
+             
+          </div>
+              <!-- /.box-body -->
+           
+<!--              <div class="box-footer">
+                <button ng-click="store(option)" type="submit" class="btn btn-primary">Submit</button>
+              </div>-->
             
           </div>
         

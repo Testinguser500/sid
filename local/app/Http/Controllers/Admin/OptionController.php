@@ -25,23 +25,78 @@ class OptionController extends Controller
              $options = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->get();  
              return $options ;
 	}
-       
-        public function store(){
+        public function add(){ 
+             $category  = self::getcataegorywithSub();
+             return  $category;
+	}
+        public function attribues(){
+           // print_r(Request::all());
+            $vald = array();
+            $set_val = array();
+            $val=Request::input('values');
+            foreach($val as $k1 => $v1){
+                if($v1['opt_id'] != ''){
+                   foreach($v1['attribute'] as $k2 => $v2){
+                       $vald['values.'.$k1.'.attribute.'.$k2.'.atr_name']='required|soft_composite_unique:pro_option,option_name,parent_id='.$v1['opt_id'] ;
+                       //$set_val['values.'.$k1.'.attribute.'.$k2.'.atr_name']='attribute '.$k2+1;
+                      
+                          foreach($v2['atr_val'] as $k3 => $v3){
+                              $vald['values.'.$k1.'.attribute.'.$k2.'.atr_name.'.$k3.'.opt_name']='required' ;
+                           //   $set_val['values.'.$k1.'.attribute.'.$k2.'.atr_name.'.$k3.'.opt_name']='option '.$k3+1;  
+                          } 
+                      
+                   }  
+                }
+            }
+             $validator = Validator::make(Request::all(), $vald);
+            // $validator->setAttributeNames($set_val);
+             if ($validator->fails()) {
+              $list[]='error';
+              $msg=$validator->errors()->all();
+	      $list[]=$msg;
+	      return $list;
+            }
+            foreach($val as $k1 => $v1){
+                if($v1['opt_id'] != ''){
+                   foreach($v1['attribute'] as $k2 => $v2){
+                       $opts = Option::create(['option_name' =>$v2['atr_name'],'user_id'=>Auth::user()->id,'status' =>'Active','parent_id' => $v1['opt_id'] ]);  
+                      
+                          foreach($v2['atr_val'] as $k3 => $v3){
+                              $vald['values.'.$k1.'.attribute.'.$k2.'.atr_name.'.$k3.'.opt_name']='required' ;
+                           //   $set_val['values.'.$k1.'.attribute.'.$k2.'.atr_name.'.$k3.'.opt_name']='option '.$k3+1;  
+                          } 
+                      
+                   }  
+                }
+            }         
+        }
+        public function store(){ 
 	   $validator = Validator::make(Request::all(), [
-            'option_name' => 'required|soft_unique:pro_option,option_name'                   
+            'option_name' => 'required|soft_unique:pro_option,option_name'  ,
+            'category'  =>   'min:1' 
         ]);
-         
+          
         if ($validator->fails()) {
               $list[]='error';
               $msg=$validator->errors()->all();
 	      $list[]=$msg;
 	      return $list;
         }
-	       
-	 Option::create(['option_name' =>Request::input('option_name'),'user_id'=>Auth::user()->id,'status' =>Request::input('status')]);  
+        $cat_ids='';
+	foreach(Request::input('category') as $ky => $ve){
+             if($ve != '')
+             {
+                if($cat_ids != '')
+                {
+                    $cat_ids .= ',';
+                }                    
+               $cat_ids .= $ky;
+             }
+         }      
+	 $opts = Option::create(['option_name' =>Request::input('option_name'),'user_id'=>Auth::user()->id,'status' =>Request::input('status'),'categorys_id' =>$cat_ids]);  
 		  
          $list[]='success';
-         $list[]='Record is added successfully.';	 
+         $list[]=$opts;	 
 	 return $list;
 	   
 	}
@@ -129,6 +184,23 @@ class OptionController extends Controller
 	    $list[]='success';
 	    $list[]='Record is updated successfully.';	 
 	    return $list;    
+	}
+        public function getcataegorywithSub($pid=0)
+	{
+		$categories = array();
+		$result = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$pid)->get();
+		foreach((array)$result as $key=>$mainCategory)
+		{
+			$category = array();
+			 $category['id'] = $mainCategory->id;
+			$category['name'] = $mainCategory->category_name;
+			$category['parent_id'] = $mainCategory->parent_id;
+			$mainCategory->all_category = self::getcataegorywithSub($category['id']);
+			$categories[$mainCategory->id] = $category;		
+			
+		}
+		
+		return $result;
 	}
        
  }

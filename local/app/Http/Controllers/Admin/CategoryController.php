@@ -22,7 +22,8 @@ class CategoryController extends Controller
 		
 	}
         public function all(){ 
-             $category = DB::table('categorys')->where('is_delete', '=','0')->get();               
+            // $category = DB::table('categorys')->where('is_delete', '=','0')->get(); 
+              $category  = self::getcataegorywithSub();
              return  $category;
 		
 	}
@@ -115,7 +116,24 @@ class CategoryController extends Controller
 	     
 	}
 	
-	
+	public function getcataegorywithSub($pid=0)
+	{
+		$categories = array();
+		$result = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$pid)->get();
+		foreach((array)$result as $key=>$mainCategory)
+		{
+			$category = array();
+			 $category['id'] = $mainCategory->id;
+			$category['name'] = $mainCategory->category_name;
+			$category['parent_id'] = $mainCategory->parent_id;
+			$mainCategory->all_category = self::getcataegorywithSub($category['id']);
+			$categories[$mainCategory->id] = $category;
+			
+			
+		}
+		
+		return $result;
+	}
 	
        
  }

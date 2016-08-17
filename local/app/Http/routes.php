@@ -135,6 +135,8 @@ Route::post('admins/country/getCity', 'Admin\CountryController@getCity');
 
 Route::get('admins/option', 'Admin\OptionController@index');
 Route::get('admins/option/all', 'Admin\OptionController@all');
+Route::get('admins/option/add', 'Admin\OptionController@add');
+Route::post('admins/option/attribues', 'Admin\OptionController@attribues');
 Route::post('admins/option/store', 'Admin\OptionController@store');
 Route::post('admins/option/delete', 'Admin\OptionController@delete');
 Route::get('admins/option/edit/{id}', 'Admin\OptionController@edit');
