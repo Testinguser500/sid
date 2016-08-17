@@ -146,6 +146,7 @@
 		</dir-pagination-controls>
             </div>
             <!-- /.box-body -->
+	    
           </div>
        
           <!-- /.box -->

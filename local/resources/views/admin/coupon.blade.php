@@ -120,58 +120,192 @@
               <div class="box-body">
                 
 		<div class="form-group">
-		  <div class="form-group">
                   <label for="exampleInputEmail1">Coupon Name</label>
                   <input type="text" class="form-control" id="" name="name" placeholder="Coupon Name" ng-model="coupon_datas.coupon_name">
 		  <div class="help-block"></div>
                 </div>
+		<div class="form-group">
+                  <label for="exampleInputEmail1">Description</label>
+                  <textarea ng-model="coupon_datas.description" class="form-control" name="demo-editor"></textarea>
+                  <div class="help-block"></div>
+                </div> 
+		<div class="col-xs-12 main--tab" >
+		<div class="col-md-2">
+			 <ul class="nav nav-pills nav-stacked">
+			     <li ng-class="{ active: isSet(1) }" data-toggle="pill"><a href ng-click="setTab(1)" >General</a></li>
+			     <li ng-class="{ active: isSet(2) }" data-toggle="pill"><a href ng-click="setTab(2)" >Usage Restriction</a></li>
+			     <li ng-class="{ active: isSet(3) }" data-toggle="pill"><a href ng-click="setTab(3)" >Usage Limits</a></li>
+			     
+			 </ul>
+		  </div>
+		<div class="col-md-8">
+		  <div class="jumbotron">
+		<div ng-show="isSet(1)">	
+		<div class="form-group">
                   <label for="exampleInputEmail1">Discount Type</label>
-                  <select class="form-control" id="" name="discount_type" ng-model="coupon_datas.discount_type">
-			
-		  <option ng-value="fixed" ng-selected="coupon_datas.discount_type=='fixed'">Fixed</option>
-		  <option ng-value="percentage" ng-selected="coupon_datas.discount_type=='percentage'">Percentage</option>
+                  <select class="form-control" id="" name="plan_duration" ng-model="coupon_datas.discount_type">
+		  <option ng-value="fixed_cart" ng-selected="coupon_datas.discount_type=='fixed_cart'">Cart Discount</option>
+		  <option ng-value="percent" ng-selected="coupon_datas.discount_type=='percent'">Cart % Discount</option>
+		  <option ng-value="fixed_product" ng-selected="coupon_datas.discount_type=='fixed_product'">Product Discount</option>
+		  <option ng-value="percent_product" ng-selected="coupon_datas.discount_type=='percent_product'">Product % Discount</option>
 		  </select>
 		  <div class="help-block"></div>
                 </div>
 		<div class="form-group">
                   <label for="exampleInputEmail1">Discount Value</label>
-                  <input type="text" class="form-control" id="" name="discount_value" placeholder="Discount Value" ng-model="coupon_datas.discount_value">
+                  <input type="text" class="form-control" id=""  name="discount_value" placeholder="Discount Value" ng-model="coupon_datas.discount_value">
 		  <div class="help-block"></div>
                 </div>
-                
+		<div class="form-group">
+                  <label for="exampleInputEmail1">Allow free shipping</label>
+                  </br>
+		  <input type="checkbox" class="" id="" name="free_shipp" ng-checked="coupon_datas.free_shipp=='1'" ng-model="coupon_datas.free_shipp" value="1">Check this box if the coupon grants free shipping. The free shipping method must be enabled and be set to require "a valid free shipping coupon" (see the "Free Shipping Requires" setting).
+		  <div class="help-block"></div>
+                </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Description</label>
-                  <textarea ng-model="coupon_datas.description" class="form-control"></textarea>
-                  <div class="help-block"></div>
-                </div> 
-		  <div class="form-group">
-                  <label for="exampleInputEmail1">Usage Limit</label>
-                  <input type="text" class="form-control" id="" name="usage_limit" placeholder="Usage Limit" ng-model="coupon_datas.usage_limit">
+		  
+                  <label for="exampleInputEmail1">Expire Date</label>
+                 <!-- <input type="text" class="form-control" id="" name="expire_date" placeholder="YYYY-MM-DD" ng-model="coupon_datas.expire_date">-->
+			<ng-datepicker view-format="Do MMMM YYYY"  class="hasDatepicker"  ng-model="coupon_datas.expire_date" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
 		  <div class="help-block"></div>
                 </div>
+		</div>
+		
+                
 		  
+		  
+		  <div ng-show="isSet(2)">
+		  
+	    
 		  <div class="form-group">
-                  <label for="exampleInputEmail1">Expire Date</label>
-                  <input type="text" class="form-control" id="" name="expire_date" placeholder="YYYY-MM-DD" ng-model="coupon_datas.expire_date">
+                  <label for="exampleInputEmail1">Minimum Spend</label>
+                  <input type="text" class="form-control" id="" name="min_amount" placeholder="No Minimum" ng-model="coupon_datas.min_spend">
 		  <div class="help-block"></div>
+                </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Maximum Spend</label>
+                  <input type="text" class="form-control" id="" name="max_amount" placeholder="No Maximum" ng-model="coupon_datas.max_spend">
+		  <div class="help-block"></div>
+                </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Individual use only</label>
+                  </br>
+		  <input type="checkbox" class="" id="" name="exclude_sale" ng-checked="coupon_datas.individual==1" ng-model="coupon_datas.individual" value="1">Check this box if the coupon cannot be used in conjunction with other coupons.
+<!--<em>Per-item coupons will only work if the item is not on sale. Per-cart coupons will only work if there are no sale items in the cart.</em>
+-->		  <div class="help-block"></div>
                 </div>
 		  <div class="form-group">
                   <label for="exampleInputEmail1">Exclude Sale</label>
                   </br>
-		  <input type="checkbox" class="" id="" name="exclude_sale" ng-model="coupon_datas.exclude_sale" ng-checked="coupon_datas.exclude_sale==1" value="1"> Check this box if the coupon should not apply to items on sale.
+		  <input type="checkbox" class="" id="" name="exclude_sale" ng-checked="coupon_datas.exclude_sale==1" ng-model="coupon_datas.exclude_sale" value="1"> Check this box if the coupon should not apply to items on sale.
 <!--<em>Per-item coupons will only work if the item is not on sale. Per-cart coupons will only work if there are no sale items in the cart.</em>
 -->		  <div class="help-block"></div>
                 </div>
-	    
-	    <div class="form-group">
-                  <label for="exampleInputEmail1">Min Amount</label>
-                  <input type="text" class="form-control" id="" name="min_amount" placeholder="Min Amount" ng-model="coupon_datas.min_amount">
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Products</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.product" name="products" placeholder="Search" ng-keyup="getProduct(coupons.product);">
+			<ul class="pro-ul" ng-show="err"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="products">
+			      <li ng-repeat="pro in products" ng-click="selectedItem(pro);"><%pro.pro_name%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			<ul class="select2-selection__rendered">
+			      <li class="select2-selection__choice" ng-repeat="item in selectedItems"><%item.pro_name%> <span ng-click="removeItem($index)" style="cursor:pointer">x</span></li>
+			</ul>
+			</span>
+		  </span></span>
+			
+		  </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Exclude Products</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.exproduct" name="exproducts" placeholder="Search" ng-keyup="getexProduct(coupons.exproduct);">
+			<ul class="pro-ul" ng-show="exerr"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="exproducts">
+			      <li ng-repeat="expro in exproducts" ng-click="exselectedItem(expro);"><%expro.pro_name%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			<ul class="select2-selection__rendered">
+			      <li class="select2-selection__choice" ng-repeat="exitem in exselectedItems"><%exitem.pro_name%> <span ng-click="exremoveItem($index)" style="cursor:pointer">x</span></li>
+			</ul>
+			</span>
+		  </span></span>
+			
+		  </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Product Category</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.category" name="category" placeholder="Search Category" ng-focus="getCategory(coupons.category);" ng-keyup="getCategory(coupons.category);">
+			<ul class="pro-ul" ng-show="cerr"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="categories">
+			      <li ng-repeat="cat in categories" ng-click="selectedCat(cat);"><%cat.category_name%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;">
+			<span class="selection">
+			      <span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			      <ul class="select2-selection__rendered">
+				    <li class="select2-selection__choice" ng-repeat="cats in selectedCats"><%cats.category_name%> <span ng-click="removeCat($index)" style="cursor:pointer">x</span></li>
+			      </ul>
+			      </span>
+			</span>
+		  </span>
+			
+		  </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Exclude Category</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.excategory" name="excategory" placeholder="Search Category" ng-focus="getexCategory(coupons.excategory);" ng-keyup="getexCategory(coupons.excategory);">
+			<ul class="pro-ul" ng-show="excerr"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="excategories">
+			      <li ng-repeat="cat in excategories" ng-click="exselectedCat(cat);"><%cat.category_name%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;">
+			<span class="selection">
+			      <span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			      <ul class="select2-selection__rendered">
+				    <li class="select2-selection__choice" ng-repeat="cats in exselectedCats"><%cats.category_name%> <span ng-click="exremoveCat($index)" style="cursor:pointer">x</span></li>
+			      </ul>
+			      </span>
+			</span>
+		  </span>
+			
+		  </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Email restrictions</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.user" name="user" placeholder="Search" ng-focus="getUser(coupons.user);" ng-keyup="getUser(coupons.user);">
+			<ul class="pro-ul" ng-show="cerr"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="users">
+			      <li ng-repeat="u in users" ng-click="selectedUser(u);"><%u.email%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;">
+			<span class="selection">
+			      <span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			      <ul class="select2-selection__rendered">
+				    <li class="select2-selection__choice" ng-repeat="u in selectedUsers"><%u.email%> <span ng-click="removeUser($index)" style="cursor:pointer">x</span></li>
+			      </ul>
+			      </span>
+			</span>
+		  </span>
+			
+		  </div>
+                </div>
+		  
+		  <div ng-show="isSet(3)">
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Usage limit per Coupon</label>
+                  <input type="text" class="form-control" id="" name="usage_limit_coupon" placeholder="Usage Limit" ng-model="coupon_datas.usage_limit_coupon">
 		  <div class="help-block"></div>
                 </div>
-	    
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Usage limit per user</label>
+                  <input type="text" class="form-control" id="" name="usage_limit_user" placeholder="Usage Limit" ng-model="coupon_datas.usage_limit_user">
+		  <div class="help-block"></div>
+                </div>
+		  </div>
+                 </div>  
+             </div>
+		</div>
                   <div class="form-group">
                   <label for="exampleInputEmail1">Status </label>
-                   <input type="radio"  id="" name="status" ng-model="coupon_datas.status" ng-checked="coupon_datas.coupon_status=='Active'"  value="Active" >Active <input type="radio" id="" name="status" value="Inactive" ng-checked="coupon_datas.coupon_status=='Inactive'" ng-model="coupon_datas.status"   >Inactive 
+                   <input type="radio"  id="" name="status" ng-model="coupon_datas.coupon_status" ng-checked="coupon_datas.coupon_status=='Active'"  value="Active" >Active <input type="radio" id="" name="status" value="Inactive" ng-checked="coupon_datas.coupon_status=='Inactive'" ng-model="coupon_datas.coupon_status"   >Inactive 
 		  <div class="help-block"></div>
                 </div> 
              </div>
@@ -199,10 +333,29 @@
 		  <div class="help-block"></div>
                 </div>
 		<div class="form-group">
+                  <label for="exampleInputEmail1">Description</label>
+                  <textarea ng-model="coupons.description" class="form-control" name="demo-editor"></textarea>
+                  <div class="help-block"></div>
+                </div> 
+		<div class="col-xs-12 main--tab" >
+		<div class="col-md-2">
+			 <ul class="nav nav-pills nav-stacked">
+			     <li ng-class="{ active: isSet(1) }" data-toggle="pill"><a href ng-click="setTab(1)" >General</a></li>
+			     <li ng-class="{ active: isSet(2) }" data-toggle="pill"><a href ng-click="setTab(2)" >Usage Restriction</a></li>
+			     <li ng-class="{ active: isSet(3) }" data-toggle="pill"><a href ng-click="setTab(3)" >Usage Limits</a></li>
+			     
+			 </ul>
+		  </div>
+		<div class="col-md-8">
+		  <div class="jumbotron">
+		<div ng-show="isSet(1)">	
+		<div class="form-group">
                   <label for="exampleInputEmail1">Discount Type</label>
                   <select class="form-control" id="" name="plan_duration" ng-model="coupons.discount_type">
-		  <option ng-value="fixed">Fixed</option>
-		  <option ng-value="percentage">Percentage</option>
+		  <option value="fixed_cart" selected="selected">Cart Discount</option>
+		  <option ng-value="percent">Cart % Discount</option>
+		  <option ng-value="fixed_product">Product Discount</option>
+		  <option ng-value="percent_product">Product % Discount</option>
 		  </select>
 		  <div class="help-block"></div>
                 </div>
@@ -211,22 +364,42 @@
                   <input type="text" class="form-control" id="" name="discount_value" placeholder="Discount Value" ng-model="coupons.discount_value">
 		  <div class="help-block"></div>
                 </div>
-                
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Description</label>
-                  <div text-angular ng-model="coupons.description" name="demo-editor" ta-text-editor-class="border-around" ta-html-editor-class="border-around">			</div> 
-                  <div class="help-block"></div>
-                </div> 
-		  <div class="form-group">
-                  <label for="exampleInputEmail1">Usage Limit</label>
-                  <input type="text" class="form-control" id="" name="usage_limit" placeholder="Usage Limit" ng-model="coupons.usage_limit">
+		<div class="form-group">
+                  <label for="exampleInputEmail1">Allow free shipping</label>
+                  </br>
+		  <input type="checkbox" class="" id="" name="free_shipp" ng-model="coupons.free_shipp" value="1">Check this box if the coupon grants free shipping. The free shipping method must be enabled and be set to require "a valid free shipping coupon" (see the "Free Shipping Requires" setting).
 		  <div class="help-block"></div>
                 </div>
-		  
-		  <div class="form-group">
+                <div class="form-group">
                   <label for="exampleInputEmail1">Expire Date</label>
-                  <input type="text" class="form-control" id="" name="expire_date" placeholder="YYYY-MM-DD" ng-model="coupons.expire_date">
+                  <ng-datepicker view-format="Do MMMM YYYY"  class="hasDatepicker"  ng-model="coupons.expire_date" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
 		  <div class="help-block"></div>
+                </div>
+		</div>
+		
+                
+		  
+		  
+		  <div ng-show="isSet(2)">
+		  
+	    
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Minimum Spend</label>
+                  <input type="text" class="form-control" id="" name="min_amount" placeholder="No Minimum" ng-model="coupons.min_amount">
+		  <div class="help-block"></div>
+                </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Maximum Spend</label>
+                  <input type="text" class="form-control" id="" name="max_amount" placeholder="No Maximum" ng-model="coupons.max_amount">
+		  <div class="help-block"></div>
+                </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Individual use only</label>
+                  </br>
+		  <input type="checkbox" class="" id="" name="exclude_sale" ng-model="coupons.individual" value="1">Check this box if the coupon cannot be used in conjunction with other coupons.
+<!--<em>Per-item coupons will only work if the item is not on sale. Per-cart coupons will only work if there are no sale items in the cart.</em>
+-->		  <div class="help-block"></div>
                 </div>
 		  <div class="form-group">
                   <label for="exampleInputEmail1">Exclude Sale</label>
@@ -235,26 +408,121 @@
 <!--<em>Per-item coupons will only work if the item is not on sale. Per-cart coupons will only work if there are no sale items in the cart.</em>
 -->		  <div class="help-block"></div>
                 </div>
-	    
-	    <div class="form-group">
-                  <label for="exampleInputEmail1">Min Amount</label>
-                  <input type="text" class="form-control" id="" name="min_amount" placeholder="Min Amount" ng-model="coupons.min_amount">
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Products</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.product" name="products" placeholder="Search" ng-keyup="getProduct(coupons.product);">
+			<ul class="pro-ul" ng-show="err"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="products">
+			      <li ng-repeat="pro in products" ng-click="selectedItem(pro);"><%pro.pro_name%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			<ul class="select2-selection__rendered">
+			      <li class="select2-selection__choice" ng-repeat="item in selectedItems | filter:{selected:true}"><%item.pro_name%> <span ng-click="removeItem($index)" style="cursor:pointer">x</span></li>
+			</ul>
+			</span>
+		  </span></span>
+			
+		  </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Exclude Products</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.exproduct" name="exproducts" placeholder="Search" ng-keyup="getexProduct(coupons.exproduct);">
+			<ul class="pro-ul" ng-show="exerr"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="exproducts">
+			      <li ng-repeat="expro in exproducts" ng-click="exselectedItem(expro);"><%expro.pro_name%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			<ul class="select2-selection__rendered">
+			      <li class="select2-selection__choice" ng-repeat="exitem in exselectedItems | filter:{selected:true}"><%exitem.pro_name%> <span ng-click="exremoveItem($index)" style="cursor:pointer">x</span></li>
+			</ul>
+			</span>
+		  </span></span>
+			
+		  </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Product Category</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.category" name="category" placeholder="Search Category" ng-focus="getCategory(coupons.category);" ng-keyup="getCategory(coupons.category);">
+			<ul class="pro-ul" ng-show="cerr"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="categories">
+			      <li ng-repeat="cat in categories" ng-click="selectedCat(cat);"><%cat.category_name%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;">
+			<span class="selection">
+			      <span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			      <ul class="select2-selection__rendered">
+				    <li class="select2-selection__choice" ng-repeat="cats in selectedCats | filter:{selected:true}"><%cats.category_name%> <span ng-click="removeCat($index)" style="cursor:pointer">x</span></li>
+			      </ul>
+			      </span>
+			</span>
+		  </span>
+			
+		  </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Exclude Category</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.excategory" name="excategory" placeholder="Search Category" ng-focus="getexCategory(coupons.excategory);" ng-keyup="getexCategory(coupons.excategory);">
+			<ul class="pro-ul" ng-show="excerr"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="excategories">
+			      <li ng-repeat="cat in excategories" ng-click="exselectedCat(cat);"><%cat.category_name%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;">
+			<span class="selection">
+			      <span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			      <ul class="select2-selection__rendered">
+				    <li class="select2-selection__choice" ng-repeat="cats in exselectedCats | filter:{selected:true}"><%cats.category_name%> <span ng-click="exremoveCat($index)" style="cursor:pointer">x</span></li>
+			      </ul>
+			      </span>
+			</span>
+		  </span>
+			
+		  </div>
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Email restrictions</label>
+                  <input type="text" class="form-control" id="" ng-model="coupons.user" name="category" placeholder="Search" ng-focus="getUser(coupons.user);" ng-keyup="getUser(coupons.user);">
+			<ul class="pro-ul" ng-show="cerr"><li><%msg%></li></ul>
+			<ul class="pro-ul" ng-show="users">
+			      <li ng-repeat="u in users" ng-click="selectedUser(u);"><%u.email%></li>
+			</ul>
+		  <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;">
+			<span class="selection">
+			      <span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+			      <ul class="select2-selection__rendered">
+				    <li class="select2-selection__choice" ng-repeat="u in selectedUsers | filter:{selected:true}"><%u.email%> <span ng-click="removeUser($index)" style="cursor:pointer">x</span></li>
+			      </ul>
+			      </span>
+			</span>
+		  </span>
+			
+		  </div>
+                </div>
+		  
+		  <div ng-show="isSet(3)">
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Usage limit per Coupon</label>
+                  <input type="text" class="form-control" id="" name="usage_limit_coupon" placeholder="Usage Limit" ng-model="coupons.usage_limit_coupon">
 		  <div class="help-block"></div>
                 </div>
-	    
-                  <div class="form-group">
+		  <div class="form-group">
+                  <label for="exampleInputEmail1">Usage limit per user</label>
+                  <input type="text" class="form-control" id="" name="usage_limit_user" placeholder="Usage Limit" ng-model="coupons.usage_limit_user">
+		  <div class="help-block"></div>
+                </div>
+		  </div>
+                 </div>  
+             </div>
+		</div>
+		
+              <!-- /.box-body -->
+		  <div class="form-group">
                   <label for="exampleInputEmail1">Status </label>
                    <input type="radio"  id="" name="status" ng-model="coupons.status"  value="Active" ng-init="coupons.status='Active'"  >Active <input type="radio" id="" name="status" value="Inactive" ng-model="coupons.status"   >Inactive 
 		  <div class="help-block"></div>
-                </div> 
-             </div>
-              <!-- /.box-body -->
-
+                </div>
               <div class="box-footer">
                 <button ng-hide="loading" ng-click="store(coupons);" class="btn btn-primary">Submit</button>
 		<button ng-show='loading'  class="btn btn-primary">Loading</button>
               </div>
-          
+		
+	      </div>
+	  
           </div>
           <!-- /.box -->
         <!-- Button trigger modal -->

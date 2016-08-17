@@ -123,7 +123,32 @@ class AppServiceProvider extends ServiceProvider
         }
         
      },'This value :attribute should be greater than zero.');
+     
+     Validator::extend('check_date_valid', function ($attribute, $value, $parameters, $validator) {
+        $date = date('Y-m-d');
+        if($value >= $date)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+     },'This value :attribute should be equal to or greater than today Date.');
+     
 
+    Validator::extend('check_date_to_valid', function ($attribute, $value, $parameters, $validator) {
+        //print_r($parameters); //echo $value ;
+        $date_from = array_get($validator->getData(), $parameters[0], null); 
+        if($value >= $date_from)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+     },'This value :attribute should be equal to or greater than Date From.');
     }
 
 

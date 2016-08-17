@@ -169,6 +169,9 @@ Route::get('admins/coupon/edit/{id}', 'Admin\CouponController@edit');
 Route::post('admins/coupon/update', 'Admin\CouponController@update');
 Route::post('admins/coupon/delete', 'Admin\CouponController@deletecoupon');
 Route::post('admins/coupon/changeStatus', 'Admin\CouponController@changeStatus');
+Route::post('admins/coupon/getProduct', 'Admin\CouponController@getProduct');
+Route::post('admins/coupon/getCategory', 'Admin\CouponController@getCategory');
+Route::post('admins/coupon/getUser', 'Admin\CouponController@getUser');
 
 //Seller Panel
 Route::get('seller/login', 'Seller\HomeController@index');

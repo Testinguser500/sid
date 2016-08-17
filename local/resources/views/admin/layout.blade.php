@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="{{URL::asset('admin/iCheck/all.css')}}">
   <!-- Morris chart -->
   <link rel="stylesheet" href="{{URL::asset('admin/morris/morris.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('admin/css/select2.min.css')}}">
   <!-- jvectormap -->
   <link rel="stylesheet" href="{{URL::asset('admin/jvectormap/jquery-jvectormap-1.2.2.css')}}">
   <!-- Date Picker -->
@@ -638,6 +639,8 @@
 <script src="{{URL::asset('admin/dist/textAngular-sanitize.min.js')}}" type="text/javascript"></script>
 <script src="{{URL::asset('admin/dist/textAngular.min.js')}}" type="text/javascript"></script>
 <script src="{{URL::asset('admin/js/dirPagination.js')}}"></script>
+<link rel="stylesheet" href="{{URL::asset('admin/css/ngDatepicker.css')}}" type="text/css">
+<script src="{{URL::asset('admin/js/ngDatepicker.js')}}" type="text/javascript"></script>
 <script src="{{URL::asset('admin/js/angular_app.js')}}"></script>
 
 

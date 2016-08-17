@@ -1,4 +1,4 @@
-var app = angular.module('admins', ['ngRoute','textAngular','angularUtils.directives.dirPagination'], function($interpolateProvider) {
+var app = angular.module('admins', ['ngRoute','textAngular','angularUtils.directives.dirPagination','jkuri.datepicker'], function($interpolateProvider) {
 	$interpolateProvider.startSymbol('<%');
 	$interpolateProvider.endSymbol('%>');
       
@@ -2664,7 +2664,9 @@ app.controller('CountryController', function($scope, $http) {
      $scope.pr_imgs = [];
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
+     $scope.tags = [];
      $scope.product.pro_category_id={};
+     
      //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
      $scope.tab = 1;
@@ -2714,11 +2716,19 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Inactive', "items": ""},
        {"status": 'Pending', "items": ""}
   ];
+<<<<<<< HEAD
 
   $scope.select_group_pros='All';
 
 
         $scope.init = function() {	
+=======
+    $scope.select_group_pros='All';
+
+    
+        $scope.init = function() {
+
+>>>>>>> 9b01c50873358eb09ef2bdf1d4e23c620c319f7a
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
@@ -2788,6 +2798,20 @@ app.controller('CountryController', function($scope, $http) {
 		});
 	   }
 	}
+	
+	$scope.addTags=function(ptag){ console.log(ptag);
+        if(ptag != ''){
+		$scope.tags.push({
+		tag : ptag
+		});
+	}		
+	}
+	
+	$scope.removeTags=function(index)
+	{
+	   $scope.tags.splice(index,1);
+	}
+	
     $scope.check_exist=function(optid){
 	var exist_val=0;
 	angular.forEach($scope.optval, function (item,key) {
@@ -2813,6 +2837,7 @@ app.controller('CountryController', function($scope, $http) {
 	$scope.add = function() {	
                 $scope.page='add';		
 		$scope.errors=false;
+		//angular.element('.hasDatepicker').find('input').addClass('form-control');
                 $scope.success_flash=false;
                 $scope.product=false;
 		$http.get('product/all').
@@ -2821,11 +2846,15 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9b01c50873358eb09ef2bdf1d4e23c620c319f7a
 			$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];
 			$scope.pr_imgs = [];
+			$scope.product.pro_tags = '';
 			$scope.all_category = data['all_category'];
 
 
@@ -2889,11 +2918,11 @@ app.controller('CountryController', function($scope, $http) {
      
 	   
 	 
-	 $scope.store = function(product,images) {
+	 $scope.store = function(product,images,tags) {
 		
            $scope.errors=false;
-           $scope.success_flash=false;   
-           console.log(product);
+           $scope.success_flash=false;
+           //console.log(product);
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -2920,8 +2949,10 @@ app.controller('CountryController', function($scope, $http) {
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
-                        status: product.status,
-			images: images
+                        stock_status: product.stock_status,
+			status: product.status,
+			images: images,
+			tags : tags
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){
@@ -2968,13 +2999,15 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.options = data['options'];
 			$scope.all_category = data['all_category'];
 			$scope.pr_imgs = data['product_img'];
+			$scope.tags = data['product_tag'];
+			$scope.product.pro_tags = '';
 			$scope.optval = data['all'];
 			//$scope.all = data['all'];console.log($scope.optval); console.log($scope.all);
 		        $scope.loading = false;
 		});
 	};
 
-        $scope.update = function(product,images) { 
+        $scope.update = function(product,images,tags) { 
             $scope.errors=false;
             $scope.success_flash=false; console.log(product); console.log(images);
            $http.post('product/update', { 
@@ -3004,7 +3037,8 @@ app.controller('CountryController', function($scope, $http) {
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
                         status: product.status,
-			images: images
+			images: images,
+			tags: tags
 		}).success(function(data, status, headers, config) {
                  
                 if(data[0]=='error'){
@@ -3305,7 +3339,8 @@ app.controller('CountryController', function($scope, $http) {
 		$scope.loading = true;
 		$http.get('coupon/all').
 		success(function(data, status, headers, config) {
-			$scope.coupons = data;
+			$scope.coupons = data['coupon'];
+			$scope.category = data['category'];
 			
 			//console.log($scope.plans);
 		        $scope.loading = false;
@@ -3316,7 +3351,12 @@ app.controller('CountryController', function($scope, $http) {
                 $scope.page='add';		
 		$scope.errors=false;
                 $scope.success_flash=false;
-                $scope.product=false;
+                $scope.coupons=false;
+		$scope.selectedUsers=[];
+		$scope.exselectedCats=[];
+		$scope.selectedCats=[];
+		$scope.exselectedItems=[];
+		$scope.selectedItems=[];
 		$http.get('coupon/all').
 		success(function(data, status, headers, config) {
 			$scope.loading = false;
@@ -3327,16 +3367,25 @@ app.controller('CountryController', function($scope, $http) {
 	$scope.store = function(coupon) { 
            $scope.errors=false;
            $scope.success_flash=false;   
-           
+           console.log(coupon);
            $http.post('coupon/store', {
 		coupon_name:coupon.coupon_name,
+		description:coupon.description,
 		discount_type:coupon.discount_type,
 		discount_value:coupon.discount_value,
-		description:coupon.description,
-		usage_limit:coupon.usage_limit,
+		free_shipp:coupon.free_shipp,
+		usage_limit_coupon:coupon.usage_limit_coupon,
+		usage_limit_user:coupon.usage_limit_user,
 		expire_date:coupon.expire_date,
 		exclude_sale:coupon.exclude_sale,
-		min_amount:coupon.min_amount,
+		min_spend:coupon.min_amount,
+		max_spend:coupon.max_amount,
+		individual:coupon.individual,
+		products:$scope.selectedItems,
+		exclude_products:$scope.exselectedItems,
+		category:$scope.selectedCats,
+		exclude_category:$scope.exselectedCats,
+		user_email:$scope.selectedUsers,
 		coupon_status:coupon.status
 			
 			
@@ -3363,7 +3412,12 @@ app.controller('CountryController', function($scope, $http) {
 		$http.get('coupon/edit/' + couponData.id, {			
 		}).success(function(data, status, headers, config) {
 			$scope.coupon_datas = data['coupon'];
-			console.log($scope.coupon_data);
+			$scope.selectedItems=$scope.coupon_datas.product_data;
+			$scope.exselectedItems=$scope.coupon_datas.exproduct_data;
+			$scope.selectedCats=$scope.coupon_datas.category_data;
+			$scope.exselectedCats=$scope.coupon_datas.excategory_data;
+			$scope.selectedUsers=$scope.coupon_datas.user_email;
+			console.log($scope.coupon_datas);
 			$scope.loading = false;
 		});
 	};
@@ -3377,14 +3431,23 @@ app.controller('CountryController', function($scope, $http) {
 		$http.post('coupon/update',{
 			coupon_id:couponData.id,
 		coupon_name:couponData.coupon_name,
+		description:couponData.description,
 		discount_type:couponData.discount_type,
 		discount_value:couponData.discount_value,
-		description:couponData.description,
-		usage_limit:couponData.usage_limit,
+		free_shipp:couponData.free_shipp,
+		usage_limit_coupon:couponData.usage_limit_coupon,
+		usage_limit_user:couponData.usage_limit_user,
 		expire_date:couponData.expire_date,
 		exclude_sale:couponData.exclude_sale,
-		min_amount:couponData.min_amount,
-		coupon_status:couponData.status
+		min_spend:couponData.min_spend,
+		max_spend:couponData.max_spend,
+		individual:couponData.individual,
+		products:$scope.selectedItems,
+		exclude_products:$scope.exselectedItems,
+		category:$scope.selectedCats,
+		exclude_category:$scope.exselectedCats,
+		user_email:$scope.selectedUsers,
+		coupon_status:couponData.coupon_status
 			}).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){
@@ -3429,6 +3492,265 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.init();
 			});
 	   }
+	   
+	$scope.getProduct = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getProduct',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.err=true;
+				$scope.msg = data[1];
+				$scope.products = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.products = data;
+			$scope.err=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedItems=[];
+	$scope.selectedItem = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.selectedItems, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedItems.push(item);
+		$scope.products='';
+		$scope.coupons.product='';
+		console.log($scope.selectedItems);
+	  }
+	}
 	
+	$scope.removeItem=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedItems.splice(index, 1);
+		
+	}
+	//explode product
+	
+	$scope.getexProduct = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getProduct',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.exerr=true;
+				$scope.msg = data[1];
+				$scope.exproducts = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.exproducts = data;
+			console.log($scope.exproducts);
+			$scope.exerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.exselectedItems=[];
+	$scope.exselectedItem = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.exselectedItems, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.exselectedItems.push(item);
+		$scope.exproducts='';
+		$scope.coupons.exproduct='';
+		console.log($scope.exselectedItems);
+	  }
+	}
+	
+	$scope.exremoveItem=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.exselectedItems.splice(index, 1);
+		
+	}
+	//category
+	$scope.getCategory = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getCategory',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.cerr=true;
+				$scope.msg = data[1];
+				$scope.categories = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.categories = data;
+			$scope.cerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedCats=[];
+	$scope.selectedCat = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.selectedCats, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedCats.push(item);
+		$scope.categories='';
+		$scope.coupons.category='';
+		console.log($scope.selectedCats);
+	  }
+	}
+	$scope.removeCat=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedCats.splice(index, 1);
+		
+	}
+	//exclude category
+	$scope.getexCategory = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getCategory',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.excerr=true;
+				$scope.msg = data[1];
+				$scope.excategories = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.excategories = data;
+			$scope.excerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.exselectedCats=[];
+	$scope.exselectedCat = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.exselectedCats, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.exselectedCats.push(item);
+		$scope.excategories='';
+		$scope.coupons.excategory='';
+		console.log($scope.exselectedCats);
+	  }
+	}
+	$scope.exremoveCat=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.exselectedCats.splice(index, 1);
+		
+	}
+	
+	$scope.getUser = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getUser',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.uerr=true;
+				$scope.msg = data[1];
+				$scope.users = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.users = data;
+			$scope.uerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedUsers=[];
+	$scope.selectedUser = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.selectedUsers, function(eachmovie){ //For loop
+          if(item.email == eachmovie.email){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedUsers.push(item);
+		$scope.users='';
+		$scope.coupons.user='';
+		console.log($scope.selectedUsers);
+	  }
+	}
+	
+	$scope.removeUser=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedUsers.splice(index, 1);
+		
+	}
      $scope.init();
   });
