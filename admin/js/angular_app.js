@@ -2685,7 +2685,6 @@ app.controller('CountryController', function($scope, $http) {
     $scope.showMe3 = true;
     $scope.showMe4 = false;
     $scope.showMe5 = false;
-    $scope.showMeExpand = false;
     $scope.myFunc = function() {
         $scope.showMe = !$scope.showMe;
     }
@@ -2704,9 +2703,7 @@ app.controller('CountryController', function($scope, $http) {
     $scope.myFuncimg = function() {
         $scope.showMeimg = !$scope.showMeimg;
     }
-    $scope.myExpand = function() {
-        $scope.showMeExpand = !$scope.showMeExpand;
-    }
+  
     $scope.changeState=function(param){
        
     }

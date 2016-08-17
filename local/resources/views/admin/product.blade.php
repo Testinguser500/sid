@@ -584,13 +584,25 @@
 						  </select>
 						  <button class="btn btn-default" ng-click="addVariation(product.variation_status,product.pro_opt_values_id)">Go</button>
 					     </div>
+					     
 						<div ng-repeat="vari in variations">
 						       <select name="vari_name" ng-repeat="varr in vari.variations"> 
 							    <option><% varr.main.name %></option>
 							    <option ng-repeat="subcat in varr.sub"><% subcat.option_name %></option>
 						       </select>
-						       <a href="javascript:void(0);" class="expand" ng-click="myExpand()"><span aria-hidden="true">Expand</span></a>
-						       <div class="variation-field" ng-show="showMeExpand">
+				
+						       
+						       <!-- Default box -->
+					     <div class="box">
+					       <div class="box-header with-border">
+						 <h3 class="box-title">Title</h3>
+				       
+						 <div class="box-tools pull-right">
+						   <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">Expand</button>
+						 </div>
+					       </div>
+					       <div class="box-body">
+						 <div class="variation-field">
 							   <div class="form-group">
 								 <label for="exampleInputEmail1">Sku</label>
 								 <input type="text" class="form-control" id="" name="sku" placeholder="SKU">
@@ -612,6 +624,10 @@
 								 <div class="help-block"></div>
 							   </div> 
 						       </div>
+					       </div>
+					     </div>
+					     <!-- /.box -->
+						  
 						       <a ng-click="removeVariation($index);">Remove</a>
 						  </div>
 						
