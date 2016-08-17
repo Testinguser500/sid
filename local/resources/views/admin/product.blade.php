@@ -370,9 +370,9 @@
 		      </div>
 		      <div class="box-body">
 			 <div class="col-xs-12 main--tab">
-			     <div class="col-md-2">
+			     <div class="col-md-4">
 				   <div class="first-box" ng-if="product.pro_datatype_id == '1'">
-					<ul class="nav nav-pills nav-stacked">
+					<ul class="nav nav-pills nav-stacked tabb">
 					<li ng-class="{ active: isSet(1) }">
 					<a href ng-click="setTab(1)"><i class="fa fa-bars" aria-hidden="true"></i>General</a>
 					</li>
@@ -426,7 +426,7 @@
 					</ul>
 				   </div>-->
 				   <div class="third-box" ng-if="product.pro_datatype_id == '2'">
-					<ul class="nav nav-pills nav-stacked">
+					<ul class="nav nav-pills nav-stacked tabb">
 					<li ng-class="{ active: isSet(1) }">
 					<a href ng-click="setTab(1)"><i class="fa fa-bars" aria-hidden="true"></i>General</a>
 					</li>
