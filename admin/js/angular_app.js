@@ -2384,13 +2384,20 @@ app.controller('CountryController', function($scope, $http) {
  app.controller('OptionController', function($scope, $http) {
      $scope.values = [{
         option_name: null
-     }];
+     }];     
+     $scope.show_save=1;
+     $scope.all_cats={};
      $scope.errors=false;
+     $scope.cat_select=false;
+     $scope.cat_select_error=false;
      $scope.files='';
      $scope.loading = true;
      $scope.options=false;
      $scope.page='index';
-     $scope.option={};
+     $scope.option={};  
+     $scope.shw_sv_attr=1;
+     $scope.shw_sv_value=1;
+     $scope.opt_grp=[{ opt_id : null }];
      $scope.values={};
      $scope.success_flash=false;
      $scope.sort = function(keyname){
@@ -2408,13 +2415,103 @@ app.controller('CountryController', function($scope, $http) {
  
 		});
 	}
-        $scope.add = function() {	
-                $scope.page='add';		
-		$scope.errors=false;
+        $scope.add = function() {
+                $scope.loading = true; 
+                $scope.page='add';
+                $scope.errors=false;
                 $scope.success_flash=false;
                 $scope.option=false;
-	}
-        $scope.editoption = function(option) {
+                $http.get('option/add').
+		success(function(data, status, headers, config) {
+			$scope.all_cats=data;  //categories
+		        $scope.loading = false;
+ 
+		});
+	} ;
+        $scope.duplicate_check_atr_name = function(ot_ky,ky)
+        {                
+             if($scope.opt_grp[ot_ky].attribute[ky].atr_name!=''){
+             $scope.shw_sv_attr=1;
+              var value= $scope.opt_grp[ot_ky].attribute[ky].atr_name.toLowerCase();
+              $scope.opt_grp[ot_ky].attribute[ky].error='';
+                 angular.forEach($scope.opt_grp[ot_ky].attribute, function (item,key) {                     
+                    if((ky != key) && (item.atr_name)){
+                        if( item.atr_name.toLowerCase() == value)
+                        {                           
+                           $scope.opt_grp[ot_ky].attribute[ky].error="Duplicate Value is not allowed.";
+                           $scope.show_save=0;
+                           $scope.shw_sv_attr=0;
+                        }
+                        else{
+                           $scope.shw_sv_attr=1;
+                        }
+                    }
+                    if((item.error) && (item.error != ''))
+                    {
+                        $scope.shw_sv_attr=0;
+                    }
+                    
+                 });
+             
+                 if(($scope.shw_sv_value==1) && ($scope.shw_sv_attr==1)){
+                     $scope.show_save=1;
+                 }
+               }
+                 
+        }
+         $scope.duplicate_check_atr_value = function(ot_ky,ky,ke)
+        {   
+             if($scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name != ''){
+              $scope.shw_sv_value=1;
+              var value= $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name.toLowerCase();
+              $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].error='';
+                 angular.forEach($scope.opt_grp[ot_ky].attribute[ky].atr_val, function (item,key) {  
+                    if((ke != key) && (item.val_name)){
+                        if( item.val_name.toLowerCase() == value)
+                        {                           
+                          $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].error="Duplicate Value is not allowed.";
+                          $scope.show_save=0;
+                          $scope.shw_sv_value=0;
+                        }
+                         else{
+                           $scope.shw_sv_value=1;
+                        }
+                    }
+                      if((item.error) && (item.error != ''))
+                    {
+                        $scope.shw_sv_value=0;
+                    }
+                 });
+             
+                 if(($scope.shw_sv_value==1) && ($scope.shw_sv_attr==1)){
+                     $scope.show_save=1;
+                 }
+               }
+                 
+        }
+         $scope.remove_show_save = function(){
+                    $scope.show_save=0;
+         }
+        $scope.save_attr = function(all_values){
+            console.log(all_values);
+              $http.post('option/attribues', {
+			values: all_values,
+		}).success(function(data, status, headers, config) {
+                 
+                if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;				
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+                
+        }
+         $scope.editoption = function(option) {
               
 		$scope.loading = true;
                 $scope.errors=false;
@@ -2462,24 +2559,63 @@ app.controller('CountryController', function($scope, $http) {
 
       $scope.store = function(option) { 
            $scope.errors=false;
-           $scope.success_flash=false;   
-
+           $scope.success_flash=false;
+           var check_cats=0;
+           angular.forEach(option.category_id, function (item,key) { 
+               if(item)
+               {
+                   check_cats=1;
+               }
+           });
+           if(check_cats==1){
+           $scope.cat_select_error=false;
            $http.post('option/store', {
 			option_name: option.option_name,
-                        status: option.status 
+                        status: option.status,
+                        category:option.category_id
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
-				$scope.errors=false;
-				$scope.success_flash=data[1];				
-				$scope.init();
+				$scope.errors=false; 
+                                $scope.option={};
+                                option.option_name='';
+				//$scope.success_flash=data[1];	
+                                $scope.opt_grp.push({
+                                    opt_id : data[1].id,
+                                    opt_name:data[1].option_name
+                                });
+				//$scope.init();
 			}
 			$scope.loading = false;
  
          });
+        }else{
+            $scope.cat_select_error="Please select atleast one category";
+        }
       };
+      $scope.push_attr = function(index)
+      {
+          if(!$scope.opt_grp[index].attribute){
+          $scope.opt_grp[index].attribute=[{
+                  atr_name:null,
+                  atr_type:"radio", 
+                  atr_val:[{val_name:null}],
+          }];
+         }else{
+            $scope.opt_grp[index].attribute.push({
+                                    atr_name:null,
+                                    atr_type:"radio", 
+                                    atr_val:[{val_name:null}],
+              });
+         }
+      }
+       $scope.pop_attr = function(ot_ky,ky)
+      {
+          $scope.opt_grp[ot_ky].attribute.splice(ky,1);
+          
+      }
       $scope.deleteoption = function(index) {
 		$scope.loading = true;
 
@@ -2495,15 +2631,19 @@ app.controller('CountryController', function($scope, $http) {
                                 });
         };	
 	
-	$scope.addInput = function () {
+	$scope.addInput = function (ot_ky,ky) {
 	   
-	    $scope.values.push({
-		option_name: null
-	    });
+//	    $scope.values.push({
+//		option_name: null
+//	    });
+         $scope.opt_grp[ot_ky].attribute[ky].atr_val.push({                                   
+                                  val_name:null
+              });
 	}
-    
-	$scope.removeInput = function (index) {
-	    $scope.values.splice(index, 1);
+       
+	$scope.removeInput = function (ot_ky,ky,index) {
+	    //$scope.values.splice(index, 1);
+          $scope.opt_grp[ot_ky].attribute[ky].atr_val.splice(index, 1);
 	}
 
          $scope.init();
@@ -2577,9 +2717,10 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Inactive', "items": ""},
        {"status": 'Pending', "items": ""}
   ];
-    $scope.select_group_pros='All';
 
-    
+
+  $scope.select_group_pros='All';
+
         $scope.init = function() {
 
                 $scope.page='index';
@@ -2717,6 +2858,7 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
+
 			$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];
@@ -3223,7 +3365,12 @@ app.controller('CountryController', function($scope, $http) {
                 $scope.page='add';		
 		$scope.errors=false;
                 $scope.success_flash=false;
-                $scope.coupon=false;
+                $scope.coupons=false;
+		$scope.selectedUsers=[];
+		$scope.exselectedCats=[];
+		$scope.selectedCats=[];
+		$scope.exselectedItems=[];
+		$scope.selectedItems=[];
 		$http.get('coupon/all').
 		success(function(data, status, headers, config) {
 			$scope.loading = false;
@@ -3248,11 +3395,11 @@ app.controller('CountryController', function($scope, $http) {
 		min_spend:coupon.min_amount,
 		max_spend:coupon.max_amount,
 		individual:coupon.individual,
-		products:coupon.selectedItems,
-		exclude_products:coupon.exselectedItems,
-		category:coupon.selectedCats,
-		exclude_category:coupon.exselectedCats,
-		user_email:coupon.selectedUsers,
+		products:$scope.selectedItems,
+		exclude_products:$scope.exselectedItems,
+		category:$scope.selectedCats,
+		exclude_category:$scope.exselectedCats,
+		user_email:$scope.selectedUsers,
 		coupon_status:coupon.status
 			
 			
@@ -3279,7 +3426,12 @@ app.controller('CountryController', function($scope, $http) {
 		$http.get('coupon/edit/' + couponData.id, {			
 		}).success(function(data, status, headers, config) {
 			$scope.coupon_datas = data['coupon'];
-			console.log($scope.coupon_data);
+			$scope.selectedItems=$scope.coupon_datas.product_data;
+			$scope.exselectedItems=$scope.coupon_datas.exproduct_data;
+			$scope.selectedCats=$scope.coupon_datas.category_data;
+			$scope.exselectedCats=$scope.coupon_datas.excategory_data;
+			$scope.selectedUsers=$scope.coupon_datas.user_email;
+			console.log($scope.coupon_datas);
 			$scope.loading = false;
 		});
 	};
@@ -3293,14 +3445,23 @@ app.controller('CountryController', function($scope, $http) {
 		$http.post('coupon/update',{
 			coupon_id:couponData.id,
 		coupon_name:couponData.coupon_name,
+		description:couponData.description,
 		discount_type:couponData.discount_type,
 		discount_value:couponData.discount_value,
-		description:couponData.description,
-		usage_limit:couponData.usage_limit,
+		free_shipp:couponData.free_shipp,
+		usage_limit_coupon:couponData.usage_limit_coupon,
+		usage_limit_user:couponData.usage_limit_user,
 		expire_date:couponData.expire_date,
 		exclude_sale:couponData.exclude_sale,
-		min_amount:couponData.min_amount,
-		coupon_status:couponData.status
+		min_spend:couponData.min_spend,
+		max_spend:couponData.max_spend,
+		individual:couponData.individual,
+		products:$scope.selectedItems,
+		exclude_products:$scope.exselectedItems,
+		category:$scope.selectedCats,
+		exclude_category:$scope.exselectedCats,
+		user_email:$scope.selectedUsers,
+		coupon_status:couponData.coupon_status
 			}).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){

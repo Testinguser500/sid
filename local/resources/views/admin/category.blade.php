@@ -23,9 +23,16 @@
             <!-- /.box-header -->
 
             <div class="box-body">
-              <div class="row">
-                <div class="form-group col-md-3 pull-right">
-		  
+            <div class="row">
+                <div class="form-group col-md-2 pull-left">		  
+		    <select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
+                        <option value="5" ng-selected="tb_pag==5">5</option>
+                        <option value="10" ng-selected="tb_pag==10">10</option>
+                        <option value="100" ng-selected="tb_pag==100">100</option>
+                        <option value="1000" ng-selected="tb_pag==1000">1000</option>
+                    </select>
+		</div>
+                <div class="form-group col-md-3 pull-right">		  
 		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
 		</div>
               </div>
