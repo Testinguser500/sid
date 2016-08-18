@@ -578,18 +578,21 @@
 					 </div>
 					
 				         <div ng-show="isSet(7)">
-					     <div class="form-group">
+					     <div class="form-group" ng-show="product.variation_status;product.pro_opt_values_id">
 						  <select class="form-control" name="add_variation" ng-model="product.add_variation">
 						       <option ng-repeat="mop in main_option" value="<% mop.main.id %>" ng-value="<% mop.main.id %>" ng-selected="mop.main.id==product.add_variation"><% mop.main.name %></option>
 						       <option value="all_vari" ng-selected="'all_vari'==product.add_variation">Create Variations all Attributes</option>
 						  </select>
 						  <button class="btn btn-default" ng-click="addVariation(product.variation_status,product.pro_opt_values_id,product.add_variation)">Go</button>
 					     </div>
-					     
-						<div ng-repeat="vari in variations">
-						       <select name="vari_name" ng-repeat="varr in vari.variations"> 
-							    <option><% varr.main.name %></option>
-							    <option ng-repeat="subcat in varr.sub"><% subcat.option_name %></option>
+						<div ng-repeat="vari in variations" ng-init="idd=$index"> <% product.vari_name %> 
+						       <select name="vari_name[]" ng-repeat="varr in vari.variations" ng-model="product.vari_name[idd][varr.main.id]">
+							    
+							   <!-- <option value="<% varr.main.id %>"><% varr.main.name %></option>-->
+							   <optgroup label="<% varr.main.name %>">
+							    <option ng-repeat="subcat in varr.sub" value="<% subcat.id %>"><% subcat.option_name %></option>
+							   </optgroup>
+							    
 						       </select>
 				
 						       
@@ -603,25 +606,25 @@
 						 </div>
 					       </div>
 					       <div class="box-body">
-						 <div class="variation-field">
+						 <div class="variation-field"><% product.vari_sku %> <% product.vari_price %>
 							   <div class="form-group">
 								 <label for="exampleInputEmail1">Sku</label>
-								 <input type="text" class="form-control" id="" name="sku" placeholder="SKU">
+								 <input type="text" class="form-control" id="" name="vari_sku" placeholder="SKU" ng-model="product.vari_sku[idd]">
 								 <div class="help-block"></div>
 							   </div>
 							   <div class="form-group">
 								 <label for="exampleInputEmail1">Price</label>
-								 <input type="text" class="form-control" id="" name="price" placeholder="Price">
+								 <input type="text" class="form-control" id="" name="vari_price" placeholder="Price" ng-model="product.vari_price[idd]">
 								 <div class="help-block"></div>
 							   </div>
 							   <div class="form-group">
 								 <label for="exampleInputEmail1">Sale Price</label>
-								 <input type="text" class="form-control" id="" name="sale_price" placeholder="Sale Price">
+								 <input type="text" class="form-control" id="" name="vari_sale_price" placeholder="Sale Price" ng-model="product.vari_sale_price[idd]">
 								 <div class="help-block"></div>
 							   </div>
 							   <div class="form-group">
 								 <label for="exampleInputEmail1">No Of Stock</label>
-								 <input type="text" class="form-control" id="" name="stock" placeholder="Stock">
+								 <input type="text" class="form-control" id="" name="vari_stock" placeholder="Stock" ng-model="product.vari_stock[idd]">
 								 <div class="help-block"></div>
 							   </div> 
 						       </div>

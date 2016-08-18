@@ -2939,7 +2939,7 @@ app.controller('CountryController', function($scope, $http) {
 		
            $scope.errors=false;
            $scope.success_flash=false;
-           //console.log(product);
+           console.log(product);
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -2972,7 +2972,12 @@ app.controller('CountryController', function($scope, $http) {
                         stock_status: product.stock_status,
 			status: product.status,
 			images: images,
-			tags : tags
+			tags : tags,
+			vari_name: product.vari_name,
+			vari_sku: product.vari_sku,
+			vari_price: product.vari_price,
+			vari_sale_price: product.vari_sale_price,
+			vari_stock: product.vari_stock
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){

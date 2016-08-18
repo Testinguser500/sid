@@ -8,6 +8,7 @@ use App\ProductDataType;
 use App\Option;
 use App\ProductAttribute;
 use App\ProductTags;
+use App\ProductVariation;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -76,7 +77,7 @@ class ProductController extends Controller
 	}
 	
        /*******insert the data*****/
-        public function store(){
+        public function store(){ //print_r(Request::all());
 	    $catids= array();
 	    $regex = "/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/";
 	   $validator = Validator::make(Request::all(), [
@@ -178,7 +179,7 @@ class ProductController extends Controller
 			 'pro_datatype_id'=>Request::input('pro_datatype_id'),
 			 //'pro_opt_name_id'=>Request::input('pro_opt_name_id'),
 			 //'pro_opt_values_id'=>$newovids,
-			 'sku'=>Request::input('sku'),
+			 'sku'=>Request::input('sku') ? Request::input('sku') : '',
 			 'date_from'=>Request::input('date_from')? Request::input('date_from') : date('Y-m-d'),
 			 'date_to'=>Request::input('date_to') ? Request::input('date_to') : 0000-00-00,
 			 'video'=>Request::input('video'),
@@ -225,6 +226,33 @@ class ProductController extends Controller
 			 'def' => $imgvvv['def']]);
 			} 
 		}
+	    $data_type_id = Request::input('pro_datatype_id');
+	    if($data_type_id == 2){
+		$vari_name = Request::input('vari_name');
+		$vari_sku = Request::input('vari_sku');
+		$vari_price = Request::input('vari_price');
+		$vari_sale_price = Request::input('vari_sale_price');
+		$vari_stock = Request::input('vari_stock');
+		
+		$newVariArr = array();
+		foreach($vari_name as $vnk => $vnv){
+			foreach($vnv as $kk => $vv){
+			$newVariArr[] = $vv;	    
+			}
+			$combination_set = implode(',',$newVariArr);
+			ProductVariation::create(['vari_comb_value_ids',
+						  'product_id',
+						  'vari_sku',
+						  'vari_price',
+						  'vari_sale_price',
+						  'vari_stock',
+						  'product_id' => $insertedId
+			                        ]);
+			$vari_sku[$vnk];
+			
+		}
+	    }
+		
          $list[]='success';
          $list[]='Record is added successfully.';	 
 	 return $list;
