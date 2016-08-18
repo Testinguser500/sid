@@ -276,15 +276,34 @@ app.controller('HomeController', function($scope, $http) {
 		$scope.sortKey = keyname;   //set the sortKey to the param passed
 		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	}
+	//$scope.screen_opt=[{"category_name":true},{"status":true}];
+	$scope.setScreenOpt=function(opt,screen,kk){
+		console.log(opt);
+		//console.log(screen);
+		//console.log(opt[1].category_name);
+		//oldmovies='';
+		angular.forEach(opt, function(value,key){ //For loop
+			//console.log(value);
+			//console.log(key);
+          if(value.category_name==false)
+	  {
+		opt.splice(key,1);
+	  }
+		});
+		console.log(opt);
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.files='';
                 $scope.category={};
                 $scope.errors=false;               
 		$scope.loading = true;
+		//$scope.condition = true;
 		$http.get('category/all').
 		success(function(data, status, headers, config) {
-			$scope.categories = data;
+			$scope.categories = data['category'];
+			$scope.all_category = data['all_category'];
+			console.log($scope.all_category);
 		        $scope.loading = false;
  
 		});
@@ -295,7 +314,8 @@ app.controller('HomeController', function($scope, $http) {
                 $scope.success_flash=false;
                 $http.get('category/all').
 		success(function(data, status, headers, config) {
-			$scope.all_cat = data;
+			$scope.all_cat = data['category'];
+			$scope.all_category = data['all_category'];
 		        $scope.loading = false;
  
 		});

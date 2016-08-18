@@ -22,8 +22,11 @@ class CategoryController extends Controller
 		
 	}
         public function all(){ 
-             $category = DB::table('categorys')->where('is_delete', '=','0')->get();               
-             return  $category;
+             $category = DB::table('categorys')->where('is_delete', '=','0')->get();
+	     $all_category = app('App\Http\Controllers\Admin\ProductController')->getcataegorywithSub();
+	     $return['category']=$category;
+	     $return['all_category']=$all_category;
+             return  $return;
 		
 	}
        

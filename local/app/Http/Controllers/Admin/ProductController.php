@@ -423,12 +423,18 @@ class ProductController extends Controller
 	{
 		$categories = array();
 		$result = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$pid)->get();
+		
 		foreach((array)$result as $key=>$mainCategory)
 		{
+			$product=DB::table('product')->whereRaw('FIND_IN_SET("'.$mainCategory->id.'",pro_category_id)')->get();
+			//print_r($product);
 			$category = array();
+			$condition = 'condition';
 			 $category['id'] = $mainCategory->id;
 			$category['name'] = $mainCategory->category_name;
 			$category['parent_id'] = $mainCategory->parent_id;
+			$mainCategory->pro_count = count($product);
+			$mainCategory->$condition = true;
 			$mainCategory->all_category = self::getcataegorywithSub($category['id']);
 			$categories[$mainCategory->id] = $category;
 			//$sub = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$val->id)->get();
