@@ -370,9 +370,9 @@
 		      </div>
 		      <div class="box-body">
 			 <div class="col-xs-12 main--tab">
-			     <div class="col-md-2">
+			     <div class="col-md-4">
 				   <div class="first-box" ng-if="product.pro_datatype_id == '1'">
-					<ul class="nav nav-pills nav-stacked">
+					<ul class="nav nav-pills nav-stacked tabb">
 					<li ng-class="{ active: isSet(1) }">
 					<a href ng-click="setTab(1)"><i class="fa fa-bars" aria-hidden="true"></i>General</a>
 					</li>
@@ -393,7 +393,7 @@
 					</li>
 					</ul>
 				   </div>
-				   <div class="second-box" ng-if="product.pro_datatype_id == '2'">
+				  <!-- <div class="second-box" ng-if="product.pro_datatype_id == '2'">
 					<ul class="nav nav-pills nav-stacked">
 					<li ng-class="{ active: isSet(2) }">
 					<a href ng-click="setTab(2)"><i class="fa fa-line-chart" aria-hidden="true"></i>Inventory</a>
@@ -424,16 +424,15 @@
 					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
 					</li>
 					</ul>
-				   </div>
-				   
-				   <div class="third-box" ng-if="product.pro_datatype_id == '4'">
-					<ul class="nav nav-pills nav-stacked">
+				   </div>-->
+				   <div class="third-box" ng-if="product.pro_datatype_id == '2'">
+					<ul class="nav nav-pills nav-stacked tabb">
 					<li ng-class="{ active: isSet(1) }">
 					<a href ng-click="setTab(1)"><i class="fa fa-bars" aria-hidden="true"></i>General</a>
 					</li>
-					<li ng-class="{ active: isSet(2) }">
+					<!--<li ng-class="{ active: isSet(2) }">
 					<a href ng-click="setTab(2)"><i class="fa fa-line-chart" aria-hidden="true"></i>Inventory</a>
-					</li>
+					</li>-->
 					<li ng-class="{ active: isSet(3) }">
 					<a href ng-click="setTab(3)"><i class="fa fa-bus" aria-hidden="true"></i>Shipping</a>
 					</li>
@@ -446,36 +445,47 @@
 					<li ng-class="{ active: isSet(6) }">
 					<a href ng-click="setTab(6)"><i class="fa fa-cog" aria-hidden="true"></i>Advanced</a>
 					</li>
+					<li ng-class="{ active: isSet(7) }">
+					<a href ng-click="setTab(7)"><i class="fa fa-minus-square-o" aria-hidden="true"></i>Variations</a>
+					</li>
 					</ul>
 				   </div>
 			     </div>
 			     <div class="col-md-8">
 				   <div class="jumbotron">
 					 <div ng-show="isSet(1)">
-					     <div class="form-group">
+					     <div class="form-group" ng-if="product.pro_datatype_id != '2'">
 					     <label for="exampleInputEmail1">SKU</label>
 					     <input type="text" placeholder="" class="form-control" value="" id="sku" name="sku" ng-model="product.sku">
 					     </div>
-					     <div class="form-group">
+					     <div class="form-group" ng-if="product.pro_datatype_id != '2'">
 					     <label for="exampleInputEmail1">Regular Price (Rs.)</label>
 					     <!--<input type="text" placeholder="" value="" id="regular_price" name="regular_price">-->
 					     <input type="text" class="form-control" id="" name="price" placeholder="Price" ng-model="product.price">
 					     </div>
-					     <div class="form-group">
+					     <div class="form-group" ng-if="product.pro_datatype_id != '2'">
 					     <label for="exampleInputEmail1">Sale Price (Rs.)</label>
 					     <input type="text" placeholder="" class="form-control" value="" id="sale_price" name="sale_price" ng-model="product.sale_price">
 					     </div>
-					     <div class="form-group">
+					     <div class="form-group" ng-if="product.pro_datatype_id != '2'">
 					     <label for="exampleInputEmail1">Sale Price Dates From</label>
 					    <!-- <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from"  ng-model="product.date_from">-->
-					  <ng-datepicker  class="hasDatepicker" ng-model="product.date_from" first-week-day-sunday="true" placeholder="Pick a date">
+					  <ng-datepicker  class="hasDatepicker" view-format="Do MMMM YYYY" ng-model="product.date_from" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
+					     </div>
+					     <div class="form-group" ng-if="product.pro_datatype_id != '2'">
+					     <label for="exampleInputEmail1">Sale Price Dates To</label>
+			<!--		     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">-->
+			                    <ng-datepicker  class="hasDatepicker" view-format="Do MMMM YYYY" ng-model="product.date_to" first-week-day-sunday="true" placeholder="Pick a date">
                                            </ng-datepicker>
 					     </div>
 					     <div class="form-group">
-					     <label for="exampleInputEmail1">Sale Price Dates To</label>
-			<!--		     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">-->
-			                    <ng-datepicker  class="hasDatepicker"  ng-model="product.date_to" first-week-day-sunday="true" placeholder="Pick a date">
-                                           </ng-datepicker>
+					     <label for="exampleInputEmail1">Warranty</label>
+					     <input type="text" placeholder="" class="form-control" value="" id="warranty" name="warranty" ng-model="product.warranty">
+					     </div>
+					     <div class="form-group">
+					     <label for="exampleInputEmail1">Return Policy</label>
+					     <textarea cols="20" rows="2" class="form-control" placeholder="Return Policy" id="" name="return_policy" ng-model="product.return_policy"></textarea>
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Youtube Link</label>
@@ -494,6 +504,11 @@
 						  <option value="Out of Stock" ng-selected="product.stock_status=='Out of Stock'">Out of stock</option>
 					     </select>
 					     </div>
+					   <div class="form-group">
+					     <label for="exampleInputEmail1">No. of Stocks</label>
+					     <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
+					     <div class="help-block"></div>
+					   </div>
 					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Sold Individually</label>
 					     <input type="checkbox" name=""> Enable this to only allow one of this item to be bought in a single order
@@ -537,6 +552,7 @@
 					     <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id[newvalue.optid]" multiple>
 						<option ng-repeat="opv in newvalue.all" ng-value="opv.id"  value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
+					     <div ng-if="product.pro_datatype_id == '2'"><input type="checkbox" name="variation_status" ng-model="product.variation_status[newvalue.optid]" ng-true-value="'1'" ng-false-value="'0'"  ng-click="getMainCat(product.variation_status,product.pro_opt_values_id)"> Used for variations</div>
 					     <a href="" ng-click="removeData($index);">Remove</a>
 					 </div>
 					 
@@ -561,7 +577,66 @@
 					 </div>
 					 </div>
 					
-				    </div>
+				         <div ng-show="isSet(7)">
+					     <div class="form-group" ng-show="product.variation_status;product.pro_opt_values_id">
+						  <select class="form-control" name="add_variation" ng-model="product.add_variation">
+						       <option ng-repeat="mop in main_option" value="<% mop.main.id %>" ng-value="<% mop.main.id %>" ng-selected="mop.main.id==product.add_variation"><% mop.main.name %></option>
+						       <option value="all_vari" ng-selected="'all_vari'==product.add_variation">Create Variations all Attributes</option>
+						  </select>
+						  <button class="btn btn-default" ng-click="addVariation(product.variation_status,product.pro_opt_values_id,product.add_variation)">Go</button>
+					     </div>
+						<div ng-repeat="vari in variations" ng-init="idd=$index"> <% product.vari_name %> 
+						       <select name="vari_name[]" ng-repeat="varr in vari.variations" ng-model="product.vari_name[idd][varr.main.id]">
+							    
+							   <!-- <option value="<% varr.main.id %>"><% varr.main.name %></option>-->
+							   <optgroup label="<% varr.main.name %>">
+							    <option ng-repeat="subcat in varr.sub" value="<% subcat.id %>"><% subcat.option_name %></option>
+							   </optgroup>
+							    
+						       </select>
+				
+						       
+						       <!-- Default box -->
+					     <div class="box">
+					       <div class="box-header with-border">
+						 <h3 class="box-title">Expand</h3>
+				       
+						 <div class="box-tools pull-right">
+						   <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">Expand</button>
+						 </div>
+					       </div>
+					       <div class="box-body">
+						 <div class="variation-field"><% product.vari_sku %> <% product.vari_price %>
+							   <div class="form-group">
+								 <label for="exampleInputEmail1">Sku</label>
+								 <input type="text" class="form-control" id="" name="vari_sku" placeholder="SKU" ng-model="product.vari_sku[idd]">
+								 <div class="help-block"></div>
+							   </div>
+							   <div class="form-group">
+								 <label for="exampleInputEmail1">Price</label>
+								 <input type="text" class="form-control" id="" name="vari_price" placeholder="Price" ng-model="product.vari_price[idd]">
+								 <div class="help-block"></div>
+							   </div>
+							   <div class="form-group">
+								 <label for="exampleInputEmail1">Sale Price</label>
+								 <input type="text" class="form-control" id="" name="vari_sale_price" placeholder="Sale Price" ng-model="product.vari_sale_price[idd]">
+								 <div class="help-block"></div>
+							   </div>
+							   <div class="form-group">
+								 <label for="exampleInputEmail1">No Of Stock</label>
+								 <input type="text" class="form-control" id="" name="vari_stock" placeholder="Stock" ng-model="product.vari_stock[idd]">
+								 <div class="help-block"></div>
+							   </div> 
+						       </div>
+					       </div>
+					     </div>
+					     <!-- /.box -->
+						  
+						       <a ng-click="removeVariation($index);">Remove</a>
+						  </div>
+						
+					 </div>
+				   </div>
 			     </div>
 			 </div>
 		      </div>
@@ -606,11 +681,11 @@
 		      </div>
 		    </div>
                    <!-- /.box -->
-		    <div class="form-group">
+		    <!--<div class="form-group">
 		      <label for="exampleInputEmail1">No. of Stocks</label>
 		      <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
 		      <div class="help-block"></div>
-		    </div>
+		    </div>-->
 		    
 		    <div class="form-group">
 		      <label for="exampleInputEmail1" ng-init="product.status='Active'" >Status </label>
@@ -763,6 +838,46 @@
 			 </div>
 			 </div>
 			 <!-- /.box --> 
+		      </div>
+		      
+		      <div class="col-xs-12" ng-if="product.pro_datatype_id == '2'">
+			 <!-- Default box -->
+			 <div class="box">
+			 <div class="box-header with-border">
+			 <h3 class="box-title">Bulk Variation Input</h3>
+			 
+			 <div class="box-tools pull-right">
+			 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			 <i class="fa fa-minus"></i></button>
+			 </div>
+			 </div>
+			 <div class="box-body">
+			      <div class="form-group">
+				  <label for="exampleInputEmail1">View:</label>
+				  <select>
+				   <option>Disabled</option>
+				   <option>Enabled</option>
+				  </select>
+			      </div>
+			      <div class="form-group">
+				  <label for="exampleInputEmail1">Columns:</label>
+				  <select>
+				   <option>Select Variations Attribute</option>
+				   <option>fgf</option>
+				  </select>
+			      </div>
+			      <div class="form-group">
+				  <label for="exampleInputEmail1">Rows:</label>
+				  <select>
+				   <option>Select Variations Attribute</option>
+				   <option>fgt</option>
+				  </select>
+			      </div>
+				  
+			 </div> 
+			 <!-- /.box-body -->
+			 </div>
+			 <!-- /.box -->
 		      </div>
 		    </div> 
 	       </div>
@@ -972,12 +1087,12 @@
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates From</label>
-		<!--			     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from" ng-model="product.date_from">-->             <ng-datepicker  class="hasDatepicker"  ng-model="product.date_from" first-week-day-sunday="true" placeholder="Pick a date">
+		<!--			     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_from" name="date_from" ng-model="product.date_from">-->             <ng-datepicker  class="hasDatepicker" view-format="Do MMMM YYYY"  ng-model="product.date_from" first-week-day-sunday="true" placeholder="Pick a date">
                                            </ng-datepicker>
 					     </div>
 					     <div class="form-group">
 					     <label for="exampleInputEmail1">Sale Price Dates To</label>
-			<!--		     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">-->               <ng-datepicker  class="hasDatepicker"  ng-model="product.date_to" first-week-day-sunday="true" placeholder="Pick a date">
+			<!--		     <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="date_to" name="date_to" ng-model="product.date_to">-->               <ng-datepicker  class="hasDatepicker" view-format="Do MMMM YYYY"  ng-model="product.date_to" first-week-day-sunday="true" placeholder="Pick a date">
                                            </ng-datepicker>
 					     </div>
 					     <div class="form-group">
@@ -997,6 +1112,12 @@
 						  <option value="Out of Stock" ng-selected="product.stock_status=='Out of Stock'">Out of stock</option>
 					     </select>
 					     </div>
+					 
+					  <div class="form-group">
+					     <label for="exampleInputEmail1">No. of Stocks</label>
+					     <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
+					     <div class="help-block"></div>
+					   </div>
 					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Sold Individually</label>
 					     <input type="checkbox" name=""> Enable this to only allow one of this item to be bought in a single order
@@ -1112,11 +1233,11 @@
 		    </div>
                    <!-- /.box -->
 		
-		<div class="form-group">
+		<!--<div class="form-group">
                   <label for="exampleInputEmail1">No. of Stocks</label>
                   <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
 		  <div class="help-block"></div>
-                </div>
+                </div>-->
 		<div class="form-group">
                   <label for="exampleInputEmail1">Status</label>
                   <input type="radio"  id="" name="status"  ng-model="product.status" ng-checked="product.status=='Active'" value="Active" >Active
@@ -1205,8 +1326,7 @@
 			 </div>
 			      <div class="frm-cat"> <% fruits %> 
 			      <script type="text/ng-template" id="categoryTree">
-			      <% category.id %> 
-			      <input type="checkbox" ng-model="product.pro_category_id[category.id]" ng-checked="product.pro_category_id.indexOf(category.id)!==-1" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
+			      <input type="checkbox" ng-model="product.pro_category_id[category.id]" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
 			      <ul ng-if="category.all_category">
 			      <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
 			      </li>

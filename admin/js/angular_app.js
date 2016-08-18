@@ -2404,13 +2404,20 @@ app.controller('CountryController', function($scope, $http) {
  app.controller('OptionController', function($scope, $http) {
      $scope.values = [{
         option_name: null
-     }];
+     }];     
+     $scope.show_save=1;
+     $scope.all_cats={};
      $scope.errors=false;
+     $scope.cat_select=false;
+     $scope.cat_select_error=false;
      $scope.files='';
      $scope.loading = true;
      $scope.options=false;
      $scope.page='index';
-     $scope.option={};
+     $scope.option={};  
+     $scope.shw_sv_attr=1;
+     $scope.shw_sv_value=1;
+     $scope.opt_grp=[{ opt_id : null }];
      $scope.values={};
      $scope.success_flash=false;
      $scope.sort = function(keyname){
@@ -2428,13 +2435,103 @@ app.controller('CountryController', function($scope, $http) {
  
 		});
 	}
-        $scope.add = function() {	
-                $scope.page='add';		
-		$scope.errors=false;
+        $scope.add = function() {
+                $scope.loading = true; 
+                $scope.page='add';
+                $scope.errors=false;
                 $scope.success_flash=false;
                 $scope.option=false;
-	}
-        $scope.editoption = function(option) {
+                $http.get('option/add').
+		success(function(data, status, headers, config) {
+			$scope.all_cats=data;  //categories
+		        $scope.loading = false;
+ 
+		});
+	} ;
+        $scope.duplicate_check_atr_name = function(ot_ky,ky)
+        {                
+             if($scope.opt_grp[ot_ky].attribute[ky].atr_name!=''){
+             $scope.shw_sv_attr=1;
+              var value= $scope.opt_grp[ot_ky].attribute[ky].atr_name.toLowerCase();
+              $scope.opt_grp[ot_ky].attribute[ky].error='';
+                 angular.forEach($scope.opt_grp[ot_ky].attribute, function (item,key) {                     
+                    if((ky != key) && (item.atr_name)){
+                        if( item.atr_name.toLowerCase() == value)
+                        {                           
+                           $scope.opt_grp[ot_ky].attribute[ky].error="Duplicate Value is not allowed.";
+                           $scope.show_save=0;
+                           $scope.shw_sv_attr=0;
+                        }
+                        else{
+                           $scope.shw_sv_attr=1;
+                        }
+                    }
+                    if((item.error) && (item.error != ''))
+                    {
+                        $scope.shw_sv_attr=0;
+                    }
+                    
+                 });
+             
+                 if(($scope.shw_sv_value==1) && ($scope.shw_sv_attr==1)){
+                     $scope.show_save=1;
+                 }
+               }
+                 
+        }
+         $scope.duplicate_check_atr_value = function(ot_ky,ky,ke)
+        {   
+             if($scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name != ''){
+              $scope.shw_sv_value=1;
+              var value= $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name.toLowerCase();
+              $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].error='';
+                 angular.forEach($scope.opt_grp[ot_ky].attribute[ky].atr_val, function (item,key) {  
+                    if((ke != key) && (item.val_name)){
+                        if( item.val_name.toLowerCase() == value)
+                        {                           
+                          $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].error="Duplicate Value is not allowed.";
+                          $scope.show_save=0;
+                          $scope.shw_sv_value=0;
+                        }
+                         else{
+                           $scope.shw_sv_value=1;
+                        }
+                    }
+                      if((item.error) && (item.error != ''))
+                    {
+                        $scope.shw_sv_value=0;
+                    }
+                 });
+             
+                 if(($scope.shw_sv_value==1) && ($scope.shw_sv_attr==1)){
+                     $scope.show_save=1;
+                 }
+               }
+                 
+        }
+         $scope.remove_show_save = function(){
+                    $scope.show_save=0;
+         }
+        $scope.save_attr = function(all_values){
+            console.log(all_values);
+              $http.post('option/attribues', {
+			values: all_values,
+		}).success(function(data, status, headers, config) {
+                 
+                if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;				
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+                
+        }
+         $scope.editoption = function(option) {
               
 		$scope.loading = true;
                 $scope.errors=false;
@@ -2482,24 +2579,63 @@ app.controller('CountryController', function($scope, $http) {
 
       $scope.store = function(option) { 
            $scope.errors=false;
-           $scope.success_flash=false;   
-
+           $scope.success_flash=false;
+           var check_cats=0;
+           angular.forEach(option.category_id, function (item,key) { 
+               if(item)
+               {
+                   check_cats=1;
+               }
+           });
+           if(check_cats==1){
+           $scope.cat_select_error=false;
            $http.post('option/store', {
 			option_name: option.option_name,
-                        status: option.status 
+                        status: option.status,
+                        category:option.category_id
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){
 				$scope.errors=data[1];
 			}else{
-				$scope.errors=false;
-				$scope.success_flash=data[1];				
-				$scope.init();
+				$scope.errors=false; 
+                                $scope.option={};
+                                option.option_name='';
+				//$scope.success_flash=data[1];	
+                                $scope.opt_grp.push({
+                                    opt_id : data[1].id,
+                                    opt_name:data[1].option_name
+                                });
+				//$scope.init();
 			}
 			$scope.loading = false;
  
          });
+        }else{
+            $scope.cat_select_error="Please select atleast one category";
+        }
       };
+      $scope.push_attr = function(index)
+      {
+          if(!$scope.opt_grp[index].attribute){
+          $scope.opt_grp[index].attribute=[{
+                  atr_name:null,
+                  atr_type:"radio", 
+                  atr_val:[{val_name:null}],
+          }];
+         }else{
+            $scope.opt_grp[index].attribute.push({
+                                    atr_name:null,
+                                    atr_type:"radio", 
+                                    atr_val:[{val_name:null}],
+              });
+         }
+      }
+       $scope.pop_attr = function(ot_ky,ky)
+      {
+          $scope.opt_grp[ot_ky].attribute.splice(ky,1);
+          
+      }
       $scope.deleteoption = function(index) {
 		$scope.loading = true;
 
@@ -2515,15 +2651,19 @@ app.controller('CountryController', function($scope, $http) {
                                 });
         };	
 	
-	$scope.addInput = function () {
+	$scope.addInput = function (ot_ky,ky) {
 	   
-	    $scope.values.push({
-		option_name: null
-	    });
+//	    $scope.values.push({
+//		option_name: null
+//	    });
+         $scope.opt_grp[ot_ky].attribute[ky].atr_val.push({                                   
+                                  val_name:null
+              });
 	}
-    
-	$scope.removeInput = function (index) {
-	    $scope.values.splice(index, 1);
+       
+	$scope.removeInput = function (ot_ky,ky,index) {
+	    //$scope.values.splice(index, 1);
+          $scope.opt_grp[ot_ky].attribute[ky].atr_val.splice(index, 1);
 	}
 
          $scope.init();
@@ -2541,6 +2681,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
      $scope.tags = [];
+     $scope.variations = [];
      $scope.product.pro_category_id={};
      
      //$scope.product.pro_opt_values_id=[];
@@ -2582,6 +2723,7 @@ app.controller('CountryController', function($scope, $http) {
     $scope.myFuncimg = function() {
         $scope.showMeimg = !$scope.showMeimg;
     }
+  
     $scope.changeState=function(param){
        
     }
@@ -2592,9 +2734,10 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Inactive', "items": ""},
        {"status": 'Pending', "items": ""}
   ];
-    $scope.select_group_pros='All';
 
-    
+
+  $scope.select_group_pros='All';
+
         $scope.init = function() {
 
                 $scope.page='index';
@@ -2667,17 +2810,46 @@ app.controller('CountryController', function($scope, $http) {
 	   }
 	}
 	
-	$scope.addTags=function(ptag){ console.log(ptag);
+	$scope.addTags=function(ptag){ //console.log(ptag);
         if(ptag != ''){
 		$scope.tags.push({
 		tag : ptag
 		});
 	}		
 	}
-	
 	$scope.removeTags=function(index)
 	{
 	   $scope.tags.splice(index,1);
+	}
+	
+	$scope.addVariation=function(vari_status,opt_val_idss,current_val){ console.log(vari_status); console.log(opt_val_idss);
+		$http.post('product/getvariation',{
+			vari_status: vari_status,
+			option_ids: opt_val_idss,
+			current_val: current_val
+		}).success(function(data, status, headers, config) {
+				$scope.variations.push({
+					variations : data['variations']
+					});
+				$scope.loading = false;
+			});
+				
+	}
+	 
+	$scope.removeVariation=function(index)
+	{
+	   $scope.variations.splice(index,1);
+	}
+	
+	$scope.getMainCat=function(vari_status,opt_idss){  //console.log(vari_status); 
+		$http.post('product/getMainCat',{
+			vari_status: vari_status,
+			option_ids: opt_idss
+		}).success(function(data, status, headers, config) { //console.log(data); 
+				$scope.main_option = data['main_option']
+				$scope.loading = false;
+			});
+		
 	}
 	
     $scope.check_exist=function(optid){
@@ -2714,6 +2886,7 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.categories = data['categories'];
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
+
 			$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];
@@ -2786,7 +2959,7 @@ app.controller('CountryController', function($scope, $http) {
 		
            $scope.errors=false;
            $scope.success_flash=false;
-           //console.log(product);
+           console.log(product);
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -2802,6 +2975,7 @@ app.controller('CountryController', function($scope, $http) {
 			pro_datatype_id: product.pro_datatype_id,
 			//pro_opt_name_id: product.pro_opt_name_id,
 			pro_opt_values_id: product.pro_opt_values_id,
+			variation_status: product.variation_status,
 			sku: product.sku,
 			date_from: product.date_from,
 			date_to: product.date_to,
@@ -2810,13 +2984,20 @@ app.controller('CountryController', function($scope, $http) {
 			length: product.length,
 			width: product.width,
 			height: product.height,
+			warranty: product.warranty,
+			return_policy: product.return_policy,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
                         stock_status: product.stock_status,
 			status: product.status,
 			images: images,
-			tags : tags
+			tags : tags,
+			vari_name: product.vari_name,
+			vari_sku: product.vari_sku,
+			vari_price: product.vari_price,
+			vari_sale_price: product.vari_sale_price,
+			vari_stock: product.vari_stock
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){
@@ -2897,6 +3078,8 @@ app.controller('CountryController', function($scope, $http) {
 			length: product.length,
 			width: product.width,
 			height: product.height,
+			warranty: product.warranty,
+			return_policy: product.return_policy,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,

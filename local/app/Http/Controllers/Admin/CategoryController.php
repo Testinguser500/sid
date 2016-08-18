@@ -22,11 +22,17 @@ class CategoryController extends Controller
 		
 	}
         public function all(){ 
+<<<<<<< HEAD
              $category = DB::table('categorys')->where('is_delete', '=','0')->get();
 	     $all_category = app('App\Http\Controllers\Admin\ProductController')->getcataegorywithSub();
 	     $return['category']=$category;
 	     $return['all_category']=$all_category;
              return  $return;
+=======
+            // $category = DB::table('categorys')->where('is_delete', '=','0')->get(); 
+              $category  = self::getcataegorywithSub();
+             return  $category;
+>>>>>>> 12ed3eb99f6aa96c40e2c0883beacb2d0f97a811
 		
 	}
        
@@ -118,7 +124,24 @@ class CategoryController extends Controller
 	     
 	}
 	
-	
+	public function getcataegorywithSub($pid=0)
+	{
+		$categories = array();
+		$result = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$pid)->get();
+		foreach((array)$result as $key=>$mainCategory)
+		{
+			$category = array();
+			 $category['id'] = $mainCategory->id;
+			$category['name'] = $mainCategory->category_name;
+			$category['parent_id'] = $mainCategory->parent_id;
+			$mainCategory->all_category = self::getcataegorywithSub($category['id']);
+			$categories[$mainCategory->id] = $category;
+			
+			
+		}
+		
+		return $result;
+	}
 	
        
  }

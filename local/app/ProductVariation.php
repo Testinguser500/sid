@@ -4,16 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Option extends Model
+class ProductVariation extends Model
 {
-    protected $table = 'pro_option';
+    protected $table = 'product_variation';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'option_name','user_id','is_delete','parent_id','status','categorys_id','type'
+        'vari_comb_value_ids','product_id','vari_sku','vari_price','vari_sale_price','vari_stock'
     ];
 
    
