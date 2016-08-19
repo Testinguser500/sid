@@ -22,8 +22,35 @@ class OptionController extends Controller
 		
 	}
         public function all(){ 
-             $options = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->get();  
-             return $options ;
+             $attr_gr = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->get(); 
+             foreach($attr_gr as $key=>$val)
+             {
+                 $cats_name='';
+                 if($val->categorys_id != ''){
+                     $cats_id=explode(',',$val->categorys_id);
+                     foreach($cats_id as $ct)
+                     {
+                          $cats_res = DB::table('categorys')->where('is_delete', '=','0')->where('id', '=',$ct)->first();
+                          if($cats_name != ''){
+                              $cats_name .=',';
+                          }
+                          $cats_name .= $cats_res->category_name;
+                     }
+                     $attr_gr[$key]->category_name = $cats_name;  
+                 }
+                $attr = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$val->id)->get(); 
+                $attr_gr[$key]->attribute = $attr;
+                if( count($attr_gr[$key]->attribute) > 0 ){
+                    foreach($attr_gr[$key]->attribute as $key1=>$val1)
+                    {
+                      $opt = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$val1->id)->get();  
+                      $attr_gr[$key]->attribute[$key1]->options = $opt;
+                    }
+                }
+             }
+             $return['category']  = self::getcataegorywithSub();
+             $return['attr_gr']=$attr_gr;
+             return $return ;
 	}
         public function add(){ 
              $category  = self::getcataegorywithSub();
@@ -106,22 +133,35 @@ class OptionController extends Controller
 	   
 	}
         public function delete(){
-	   $chk_id=Request::input('del_id');
-	   $data = Option::find($chk_id);
-           $data->is_delete = '1';
-           $data->save(); 
-	   $option_records= DB::table('pro_option')->where('parent_id', '=',$chk_id)->where('is_delete', '=','0')->get();
-	   if($option_records){
-	      foreach($option_records as $k => $v)
-	      {
-		$subdata = Option::find($v->id);
-		$subdata->is_delete = '1';
-		$subdata->save(); 
-	      }
-	   }	   		 
-           $list[]='success';
-           $list[]='Record is deleted successfully.';	 
-	   return $list;	 
+            $ids=Request::input('del_ids');            
+            $filtered_ary=array_filter($ids);
+            foreach($filtered_ary as $key => $val){
+                $data = Option::find($key);
+                $data->is_delete = '1';
+                $data->save(); 
+                $option_records= DB::table('pro_option')->where('parent_id', '=',$key)->where('is_delete', '=','0')->get();
+                if(count($option_records)>0){
+                    foreach($option_records as $k => $v)
+                    {                      
+                       $subdata = Option::find($v->id);
+                       $subdata->is_delete = '1';
+                       $subdata->save(); 
+                       $option_val = DB::table('pro_option')->where('parent_id', '=',$v->id)->where('is_delete', '=','0')->get();
+                       if(count($option_val)>0) 
+                       foreach($option_val as $k1 => $v1)
+                       {  
+                            $subdata1 = Option::find($v1->id);
+                            $subdata1->is_delete = '1';
+                            $subdata1->save(); 
+                       
+                       }
+                    }
+                 }
+            }
+            $list[]='success';
+            $list[]='Record is deleted successfully.';	 
+	    return $list;
+	 
 	}
         
 	 public function edit($id){
@@ -133,59 +173,98 @@ class OptionController extends Controller
 	     
 	}
          public function update(){
-	  $chk_id=Request::input('id');
-          $variba=Request::input('option_value');
-          $validation['option_name'] ='required|soft_unique:pro_option,option_name,'.Request::input('id');
-           foreach($variba as $key=>$value)
-	  {
-	       if($value['option_name']!=''){
-			if (array_key_exists('id',$value))
-			 {
-	                   $validation['option_value.'.$key.'.option_name'] = 'required|soft_composite_unique:pro_option,option_name,parent_id='.Request::input('id').','.$value['id'];                         
-	                          
-			 }
-			else
-			{
-                          $validation['option_value.'.$key.'.option_name'] ='required|soft_composite_unique:pro_option,option_name,parent_id='.Request::input('id');      
-      
-			}
-	       }
-	    
-	  }
-	  $validator = Validator::make(Request::all(), $validation);
-	    if ($validator->fails()) {
-                   $list[]='error';
-                   $msg=$validator->errors()->all();
-                   $list[]=$msg;
-                   //print_r($list);
-                  return $list;
+        //  print_r(Request::input('update_values'));
+          $upd_val= Request::input('update_values');
+          $validation['update_values.option_name'] ='required|soft_unique:pro_option,option_name,'.$upd_val['id'];
+          $set_val['update_values.option_name']="Attribute Group";
+          
+          $validation['update_values.categorys_id'] ='required';
+          $set_val['update_values.categorys_id']="Categorys";
+         
+          if(count($upd_val['attribute'])>0){
+              foreach($upd_val['attribute'] as $key => $val)
+              {    
+                   if(array_key_exists('id',$val)){
+                   $validation['update_values.attribute.'.$key.'.option_name'] ='required|soft_composite_unique:pro_option,option_name,parent_id='.$upd_val['id'].','.$val['id'];
+                   }else{
+                   $validation['update_values.attribute.'.$key.'.option_name'] ='required|soft_composite_unique:pro_option,option_name,parent_id='.$upd_val['id'];    
+                   }
+                   $keyplus=$key+1;
+                   $name=$upd_val['option_name'].' attribute '.$keyplus;
+                   $set_val['update_values.attribute.'.$key.'.option_name']=$name;
+                   if(count($val['options'])>0){
+                       foreach($val['options'] as $key1 => $val1)
+                       {
+                        if(array_key_exists('id',$val1)){
+                        $validation['update_values.attribute.'.$key.'.options.'.$key1.'.option_name'] ='required|soft_composite_unique:pro_option,option_name,parent_id='.$val['id'].','.$val1['id'];
+                        }else{
+                        $validation['update_values.attribute.'.$key.'.options.'.$key1.'.option_name'] ='required|soft_composite_unique:pro_option,option_name,parent_id='.$val['id'];    
+                        }
+                        $key1plus=$key1+1;
+                        $name=$upd_val['option_name'].' attribute '.$keyplus.' option '.$key1plus;
+                        $set_val['update_values.attribute.'.$key.'.options.'.$key1.'.option_name']=$name;  
+                       }
+                   }
+              }
+          }
+             $validator = Validator::make(Request::all(), $validation);
+             $validator->setAttributeNames($set_val);
+             if ($validator->fails()) {
+              $list[]='error';
+              $msg=$validator->errors()->all();
+	      $list[]=$msg;
+	      return $list;
              }
-             
-          $option_values= DB::table('pro_option')->where('parent_id', '=',Request::input('id'))->where('is_delete', '=','0')->get();
-	    foreach($option_values as $ky => $ve){
-	      $optionData = Option::find($ve->id);	    
-	      $optionData->is_delete='1';
-	      $optionData->save(); 
-	    }
-	 
-	  foreach($variba as $key=>$value)
-	  {
-	       if($value['option_name']!=''){
-			if (array_key_exists('id',$value))
-			 {
-	                     $optionData = Option::find($value['id']);
-			     $optionData->option_name=$value['option_name'];
-			     $optionData->is_delete='0';
-			     $optionData->save(); 
-			 }
-			else
-			{
-                               
-			    Option::create(['option_name' =>$value['option_name'],'parent_id'=>Request::input('id'),'user_id'=>Auth::user()->id,'status' =>'Active']);  
-			}
-	       }
-	    
-	  }
+            $attr_grp = Option::find($upd_val['id']);	    
+            $attr_grp->option_name=$upd_val['option_name'];  
+            $attr_grp->categorys_id=$upd_val['categorys_id']; 
+            $attr_grp->status=$upd_val['status']; 
+            $attr_grp->save(); 
+            $all_attri=DB::table('pro_option')->where('parent_id', '=',$upd_val['id'])->where('is_delete', '=','0')->get();
+            foreach($all_attri as $atr_val)
+            {
+                 $attrData = Option::find($atr_val->id);	    
+	         $attrData->is_delete='1';   
+                 $attrData->save(); 
+                 $all_opts=DB::table('pro_option')->where('parent_id', '=',$atr_val->id)->where('is_delete', '=','0')->get();
+                 foreach($all_opts as $opt_val)
+                 {
+                         $optData = Option::find($opt_val->id);	    
+                         $optData->is_delete='1';   
+                         $optData->save();                         
+
+                 }
+            }
+            if(count($upd_val['attribute'])>0){
+              foreach($upd_val['attribute'] as $key => $val)
+              {    
+                   if(array_key_exists('id',$val)){
+                        $attr = Option::find($val['id']);	    
+                        $attr->option_name=$val['option_name'];  
+                        $attr->type=$val['type']; 
+                        $attr->is_delete=0; 
+                        $attr->save(); 
+                   }else{
+                        $attr = Option::create(['option_name' =>$val['option_name'],'user_id'=>Auth::user()->id,'type'=>$val['type'],'status' =>'Active','parent_id' => $upd_val['id'] ]); 
+                        
+                   }                  
+                   if(count($val['options'])>0){
+                       foreach($val['options'] as $key1 => $val1)
+                       {
+                        if(array_key_exists('id',$val1)){
+                            $opt = Option::find($val1['id']);	    
+                            $opt->option_name=$val1['option_name'];                             
+                            $opt->is_delete=0; 
+                            $opt->save(); 
+                        }else{
+                            $opt = Option::create(['option_name' =>$val1['option_name'],'user_id'=>Auth::user()->id,'status' =>'Active','parent_id' => $attr->id ]);    
+                        }
+                          
+                       }
+                   }
+              }
+          }
+
 	    $list[]='success';
 	    $list[]='Record is updated successfully.';	 
 	    return $list;    

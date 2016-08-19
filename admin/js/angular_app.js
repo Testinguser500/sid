@@ -2388,38 +2388,88 @@ app.controller('CountryController', function($scope, $http) {
      $scope.show_save=1;
      $scope.all_cats={};
      $scope.errors=false;
+     $scope.errors_pop=false;
      $scope.cat_select=false;
      $scope.cat_select_error=false;
      $scope.files='';
      $scope.loading = true;
-     $scope.options=false;
+     $scope.options={};
      $scope.page='index';
+     $scope.selectedAll=false;
+     $scope.selected_attr=[];
      $scope.option={};  
+     $scope.edit_field=''; 
+     $scope.edit_values={};
      $scope.shw_sv_attr=1;
      $scope.shw_sv_value=1;
      $scope.opt_grp=[{ opt_id : null }];
      $scope.values={};
      $scope.success_flash=false;
+     $scope.success_flash_pop=false;
      $scope.sort = function(keyname){
 		$scope.sortKey = keyname;   //set the sortKey to the param passed
 		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	}
      $scope.init = function() {	
-                $scope.page='index';
-                $scope.errors=false;               
-		$scope.loading = true;
-		$http.get('option/all').
-		success(function(data, status, headers, config) {
-			$scope.options = data;
+               $scope.page='index';
+               $scope.errors=false; 
+               $scope.errors_pop=false;
+               $scope.success_flash=false;
+               $scope.success_flash_pop=false;
+	       $scope.loading = true;
+	       $http.get('option/all').
+	       success(function(data, status, headers, config) {
+			$scope.options = data['attr_gr'];
+                        $scope.all_cats = data['category'];
 		        $scope.loading = false;
  
 		});
 	}
+        $scope.del_attr_gr=function(var_sel){
+              $scope.errors=false;
+              $http.post('option/delete', {
+			del_ids: var_sel,
+		}).
+	       success(function(data, status, headers, config) {                         
+			  $scope.success_flash=data[1];		        
+                          $scope.init();                              
+		});
+        }
+        $scope.checkAll = function () {	
+        if (!$scope.selectedAll) {
+            $scope.selectedAll = true;
+        } else {
+            $scope.selectedAll = false;
+        }	
+        angular.forEach($scope.options, function (item) {  
+            
+			if($scope.selectedAll)
+			{
+			$scope.selected_attr[item.id]=true;
+                        }else
+			{
+		         $scope.selected_attr[item.id]=false;
+			}
+                      
+        });
+	
+      };
+        $scope.edit_modal=function(edit_field,edit_values){
+            $scope.errors=false;
+            $scope.success_flash=false;
+            $scope.errors_pop=false;          
+            $scope.success_flash_pop=false;
+            $scope.edit_field=edit_field ;
+            $scope.edit_values=edit_values;
+            if(edit_field=='')
+        }
         $scope.add = function() {
                 $scope.loading = true; 
                 $scope.page='add';
-                $scope.errors=false;
+                $scope.errors=false; 
+                $scope.errors_pop=false;
                 $scope.success_flash=false;
+                $scope.success_flash_pop=false;
                 $scope.option=false;
                 $http.get('option/add').
 		success(function(data, status, headers, config) {
@@ -2493,7 +2543,7 @@ app.controller('CountryController', function($scope, $http) {
                     $scope.show_save=0;
          }
         $scope.save_attr = function(all_values){
-            console.log(all_values);
+            
               $http.post('option/attribues', {
 			values: all_values,
 		}).success(function(data, status, headers, config) {
@@ -2504,6 +2554,7 @@ app.controller('CountryController', function($scope, $http) {
 				
 				$scope.errors=false;				
 			        $scope.success_flash=data[1];
+                                all_values={};
                                 $scope.init();
 			}
 			$scope.loading = false;
@@ -2531,26 +2582,25 @@ app.controller('CountryController', function($scope, $http) {
 	};
         
 
-        $scope.update = function(option,values) { 
-            $scope.errors=false;
-            $scope.success_flash=false;
-         
+        $scope.update = function(update_values) {  
+           $scope.loading = true;
+           $scope.errors=false;
+           $scope.errors_pop=false;
+           $scope.success_flash=false;  
+           $scope.success_flash_pop=false;
            $http.post('option/update', {
-			option_name: option.option_name,			
-                        status: option.status,
-                        id:option.id,
-			option_value:values
+			update_values: update_values,       
 		}).success(function(data, status, headers, config) {
                  
-                if(data[0]=='error'){
-				$scope.errors=data[1];
+                        if(data[0]=='error'){
+				$scope.errors_pop=data[1];
 			}else{
-				
-				$scope.errors=false;
-				$scope.option={};
-                                $scope.values={};
-			        $scope.success_flash=data[1];
-                                $scope.init();
+				$scope.success_flash_pop=data[1];
+//				$scope.errors=false;
+//				$scope.option={};
+//                              $scope.values={};
+//			        $scope.success_flash=data[1];
+//                              $scope.init();
 			}
 			$scope.loading = false;
  
@@ -2631,12 +2681,9 @@ app.controller('CountryController', function($scope, $http) {
                                 });
         };	
 	
-	$scope.addInput = function (ot_ky,ky) {
-	   
-//	    $scope.values.push({
-//		option_name: null
-//	    });
-         $scope.opt_grp[ot_ky].attribute[ky].atr_val.push({                                   
+	$scope.addInput = function (ot_ky,ky) {	   
+
+             $scope.opt_grp[ot_ky].attribute[ky].atr_val.push({                                   
                                   val_name:null
               });
 	}
