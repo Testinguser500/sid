@@ -573,12 +573,10 @@ class ProductController extends Controller
 			$product=DB::table('product')->whereRaw('FIND_IN_SET("'.$mainCategory->id.'",pro_category_id)')->get();
 			//print_r($product);
 			$category = array();
-<<<<<<< HEAD
+
 			$condition = 'condition';
 			 $category['id'] = $mainCategory->id;
-=======
-			$category['id'] = $mainCategory->id;
->>>>>>> 12ed3eb99f6aa96c40e2c0883beacb2d0f97a811
+
 			$category['name'] = $mainCategory->category_name;
 			$category['parent_id'] = $mainCategory->parent_id;
 			$mainCategory->pro_count = count($product);

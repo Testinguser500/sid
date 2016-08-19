@@ -308,6 +308,21 @@ app.controller('HomeController', function($scope, $http) {
  
 		});
 	}
+	$scope.changeStatus=function(userData)
+	   {
+		
+		   $scope.loading = true;
+	   $http.post('category/changeStatus',{
+		   id:userData.id,
+		   status:userData.status
+		   
+	   }).success(function(data, status, headers, config) {
+		   	                    
+			$scope.loading = false
+			$scope.success_flash=data[1];
+			$scope.init();
+			});
+	   }
         $scope.add = function() {	
                 $scope.page='add';		
 		$scope.errors=false;

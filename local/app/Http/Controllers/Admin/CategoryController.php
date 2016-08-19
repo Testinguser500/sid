@@ -22,18 +22,38 @@ class CategoryController extends Controller
 		
 	}
         public function all(){ 
-<<<<<<< HEAD
+
              $category = DB::table('categorys')->where('is_delete', '=','0')->get();
 	     $all_category = app('App\Http\Controllers\Admin\ProductController')->getcataegorywithSub();
 	     $return['category']=$category;
 	     $return['all_category']=$all_category;
              return  $return;
-=======
-            // $category = DB::table('categorys')->where('is_delete', '=','0')->get(); 
-              $category  = self::getcataegorywithSub();
-             return  $category;
->>>>>>> 12ed3eb99f6aa96c40e2c0883beacb2d0f97a811
+
 		
+	}
+	
+	public function changeStatus()
+	{
+		$id = Request::input('id');
+		$action = Request::input('status');
+		if($action=='Active'){
+			$status ='Inactive';
+		}
+		else if($action=='Inactive')
+		{
+			$status = 'Active';
+		}
+		else if($action=='Block')
+		{
+			$status = 'Block';
+		}
+		
+	    $cat = Category::find($id);
+	    $cat->status = $status;
+	    $cat->save(); 	   		 
+	    $list[]='success';
+	    $list[]='Category status has been changed successfully.';	 
+	    return $list;
 	}
        
         public function store(){

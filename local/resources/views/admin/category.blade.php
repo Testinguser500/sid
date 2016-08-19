@@ -23,11 +23,11 @@
             <!-- /.box-header -->
 
             <div class="box-body">
-<<<<<<< HEAD
+
               <!--<div class="row">
                 <div class="form-group col-md-3 pull-right">
 		  
-=======
+
             <div class="row">
                 <div class="form-group col-md-2 pull-left">		  
 		    <select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
@@ -38,7 +38,7 @@
                     </select>
 		</div>
                 <div class="form-group col-md-3 pull-right">		  
->>>>>>> 12ed3eb99f6aa96c40e2c0883beacb2d0f97a811
+
 		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
 		</div>
               </div>-->
@@ -193,7 +193,7 @@
 		  <div ng-if="screen_opt[5].meta_description" class="col-xs-12 col-md-2"><%category.meta_description%></div>
 		  <div ng-if="screen_opt[6].meta_keywords" class="col-xs-12 col-md-2"><%category.meta_keyword%></div>
 		  <div ng-if="screen_opt[7].image" class="col-xs-12 col-md-2"><img src="{{URL::asset('uploads/category')}}/<% category.image %>" width="100" height="100"></div>
-		  <div ng-if="screen_opt[2].status" class="col-xs-12 col-md-2"><span class="label <% (category.status=='Active')?'label-success':'label-danger'%>"><% category.status %></span></div>
+		  <div ng-if="screen_opt[2].status" class="col-xs-12 col-md-2"><a href="javascript:void(0);" ng-click="changeStatus(category);"><span class="label <% (category.status=='Active')?'label-success':'label-danger'%>"><% category.status %></span></a></div>
 		  <div class="col-xs-12 col-md-2"><% category.pro_count %></div>
 		  <div class="col-xs-12 col-md-2"><i class="fa fa-edit" title="Edit" ng-click="editcategory(category)" style="cursor:pointer" ></i> <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% category.id %>"></i>
                  
