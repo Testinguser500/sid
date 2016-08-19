@@ -98,82 +98,85 @@
 			    </div>
 			  </div>
 		    </div>
+		    <!--Quick Edit Model-->
+		    <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="init();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Edit</h4>                            
+			      </div>
+			     <div class="modal-body">
+                                    <div class="alert alert-success" ng-if="success_flash_pop">
+                                        <p>
+                                        <% success_flash_pop %>
+                                        </p>
+                                    </div>
+                                    <div class="alert alert-danger"  ng-if="errors_pop">
+                                        <ul>
+                                            <li ng-repeat ="er in errors_pop"><% er %></li>         
+                                        </ul>
+                                    </div>
+				    
+				    <div class="row" ng-if="edit_field=='category_name'">
+					<div class="form-group" ng-if="edit_values.parent_id">
+					  <label for="exampleInputEmail1">Parent Category</label>
+					  <select class="form-control" name="parent_cat"  ng-model="edit_values.parent_id">
+					      <option value="0">Please select</option>                      
+					      <option ng-repeat="cat in categories" ng-if="cat.id !=  category.id" ng-selected="edit_values.parent_id==cat.id" value="<% cat.id %>" ng-value="cat.id"><% cat.category_name %></option>                      
+					  </select>
+					  <div class="help-block"></div>
+					</div>   
+                                    <div class="form-group" >
+                                        <label for="exampleInputEmail1">Category Name</label>
+                                        <input type="text" class="form-control" id="" name="category_name" placeholder="Category Name" ng-model="edit_values.category_name">
+                                        <div class="help-block"></div>
+                                    </div>
+				    </div>
+                                    <div class="row" ng-if="edit_field=='meta_title'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">Meta Title</label>
+                                        <input type="text" class="form-control" id="" name="meta_title" placeholder="Meta Title" ng-model="edit_values.meta_title">
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
+				    <div class="row" ng-if="edit_field=='meta_keyword'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">Meta Keyword</label>
+                                        <input type="text" class="form-control" id="" name="meta_keyword" placeholder="Meta Keyword" ng-model="edit_values.meta_keyword">
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
+				    <div class="row" ng-if="edit_field=='meta_description'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">Meta Description</label>
+                                        <input type="text" class="form-control" id="" name="meta_description" placeholder="Meta Description" ng-model="edit_values.meta_description">
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
+				    <div class="row" ng-if="edit_field=='image'">
+					<div class="form-group col-xs-4">
+				    <label for="exampleInputEmail1">Image</label>
+				    <span class="btn btn-primary btn-file">
+				    Upload<input class="up-image" type="file" name="image" ng-model="edit_values.image" onchange="angular.element(this).scope().uploadedFile(this)">
+				    </span>
+				    <div class="help-block"></div>
+				  </div>
+				    <div class="form-group col-xs-4" ng-show="files">
+				     <img class="" src="{{URL::asset('uploads/category')}}/<% files %>" width="100" height="100"> 
+				    </div> 
+				    </div>
+			      </div>
+			      <div class="modal-footer">
+				  <button type="button" class="btn btn-default pull-left" ng-click="init();" data-dismiss="modal">Close</button>			      
+				  <button class="btn btn-primary" ng-click="Quickupdate(edit_values)" >Update</button>                         
+			      </div>
+			    </div>
+			  </div>
+		  </div>
 		    </div>
 	      
-              <!--<table    id="example1"   class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th ng-click="sort('id')" style="cursor:pointer">#<span class="glyphicon sort-icon" ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-							</th>
-                  <th ng-click="sort('category_name')" style="cursor:pointer">Category Name
-                  <span class="glyphicon sort-icon"  ng-show="sortKey=='category_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th ng-click="sort('status')" style="cursor:pointer">Category Status
-                  <span class="glyphicon sort-icon"   ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>
-                  <th> </th>                 
-                </tr>
-                </thead>
-		
-		<script type="text/ng-template" id="categoryTree">
-			      
-			      
-                
-             
-                <tr class="accordion-toggle collapsed"  data-toggle="collapse" data-target="#collapse<%category.id%>" aria-expanded="false">
-                  <td><% $index+1 %></td>
-                  <td><% category.category_name %></td>
-                  <td><% category.status %></td>
-                  <td>
-                      <i class="fa fa-edit" title="Edit" ng-click="editcategory(category)" style="cursor:pointer" ></i> <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% category.id %>"></i>
-                 
-                  
-               <div class="modal fade" id="del_modal<% category.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Delete</h4>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to delete this category ? 
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>                           
-                                
-                               <input type="hidden" name="del_id" value="<% category.id %>" />
-                               <button ng-click="deleteCategory($index)" class="btn btn-primary" data-dismiss="modal" >Delete</button>
-                           
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  
-                </tr>
-               
-<tr id="collapse<%category.parent_id%>" ng-repeat="category in category.all_category" ng-include="'categoryTree'"  class="accordion-toggle collapse"  data-toggle="collapse" data-target="#collapse<%category.id%>" aria-expanded="false">
-</tr>
               
-      </script>
-		
-		  <tbody ng-repeat="category in all_category" ng-include="'categoryTree'"  >
-		  
-		</tbody>
-                <tfoot>
-                 <tr>
-                  <th>#</th>
-                  <th>Category Name</th>
-                  <th>Category Status</th>
-                  <th> </th>                 
-                </tr>
-                </tfoot>
-              </table>-->
-                <!--<dir-pagination-controls
-					max-size="10"
-					direction-links="true"
-					boundary-links="true" >
-		</dir-pagination-controls>-->
 		<div class="row cat-p">
 		  <div class="col-xs-12 col-md-2">#</div>
 		  <div ng-if="screen_opt[1].category_name" class="col-xs-12 col-md-2">Category Name</div>
@@ -188,11 +191,11 @@
 		
 		<script type="text/ng-template" id="categoryTree1">
 		  <div class="col-xs-12 col-md-2"><a class="open" ng-class="{'closed' : category.condition}" ng-click="category.condition=!category.condition;" style="cursor:pointer" data-toggle="collapse" data-target="#collapsee<%category.id%>"><span class="plus_ico" ng-show="category.condition">+</span><span class="minus_ico" ng-show="!category.condition">-</span></a></div>
-		  <div ng-if="screen_opt[1].category_name" class="col-xs-12 col-md-2"><% category.category_name %></div>
-		  <div ng-if="screen_opt[4].meta_title" class="col-xs-12 col-md-2"><%category.meta_title%></div>
-		  <div ng-if="screen_opt[5].meta_description" class="col-xs-12 col-md-2"><%category.meta_description%></div>
-		  <div ng-if="screen_opt[6].meta_keywords" class="col-xs-12 col-md-2"><%category.meta_keyword%></div>
-		  <div ng-if="screen_opt[7].image" class="col-xs-12 col-md-2"><img src="{{URL::asset('uploads/category')}}/<% category.image %>" width="100" height="100"></div>
+		  <div ng-if="screen_opt[1].category_name" class="col-xs-12 col-md-2" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('category_name',category)"><% category.category_name %></div>
+		  <div ng-if="screen_opt[4].meta_title" class="col-xs-12 col-md-2" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('meta_title',category)"><%category.meta_title%></div>
+		  <div ng-if="screen_opt[5].meta_description" class="col-xs-12 col-md-2" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('meta_description',category)"><%category.meta_description%></div>
+		  <div ng-if="screen_opt[6].meta_keywords" class="col-xs-12 col-md-2" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('meta_keyword',category)"><%category.meta_keyword%></div>
+		  <div ng-if="screen_opt[7].image" class="col-xs-12 col-md-2" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('image',category)"><img src="{{URL::asset('uploads/category')}}/<% category.image %>" width="100" height="100"></div>
 		  <div ng-if="screen_opt[2].status" class="col-xs-12 col-md-2"><a href="javascript:void(0);" ng-click="changeStatus(category);"><span class="label <% (category.status=='Active')?'label-success':'label-danger'%>"><% category.status %></span></a></div>
 		  <div class="col-xs-12 col-md-2"><% category.pro_count %></div>
 		  <div class="col-xs-12 col-md-2"><i class="fa fa-edit" title="Edit" ng-click="editcategory(category)" style="cursor:pointer" ></i> <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% category.id %>"></i>

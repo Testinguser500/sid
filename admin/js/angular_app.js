@@ -303,7 +303,7 @@ app.controller('HomeController', function($scope, $http) {
 		success(function(data, status, headers, config) {
 			$scope.categories = data['category'];
 			$scope.all_category = data['all_category'];
-			console.log($scope.all_category);
+			//console.log($scope.all_category);
 		        $scope.loading = false;
  
 		});
@@ -323,6 +323,16 @@ app.controller('HomeController', function($scope, $http) {
 			$scope.init();
 			});
 	   }
+	   
+	   $scope.edit_modal=function(edit_field,edit_values){
+            $scope.errors=false;
+            $scope.success_flash=false;
+            $scope.errors_pop=false;          
+            $scope.success_flash_pop=false;
+            $scope.edit_field=edit_field ;
+            $scope.edit_values=edit_values;
+            console.log($scope.edit_values);
+		}
         $scope.add = function() {	
                 $scope.page='add';		
 		$scope.errors=false;
@@ -382,6 +392,36 @@ app.controller('HomeController', function($scope, $http) {
         $scope.delcatefiles=function(file) {
                 $scope.files='';
         }
+	
+	$scope.Quickupdate = function(category) { 
+            $scope.errors_pop=false;
+            $scope.success_flash_pop=false;
+         
+           $http.post('category/update', {
+			category_name: category.category_name,
+			description: category.description,
+                        id: category.id,
+                        status: category.status,
+                        parent_id: category.parent_id,
+                        image: $scope.files,
+                        meta_title: category.meta_title,
+                        meta_description: category.meta_description,
+                        meta_keyword: category.meta_keyword
+                   
+		}).success(function(data, status, headers, config) {
+                 $scope.files='';
+                if(data[0]=='error'){
+				$scope.errors_pop=data[1];
+			}else{
+				
+				$scope.errors_pop=false;
+			        $scope.success_flash_pop=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
 
         $scope.update = function(category) { 
             $scope.errors=false;
@@ -2496,7 +2536,7 @@ app.controller('CountryController', function($scope, $http) {
             $scope.success_flash_pop=false;
             $scope.edit_field=edit_field ;
             $scope.edit_values=edit_values;
-            if(edit_field=='')
+            
         }
         $scope.add = function() {
                 $scope.loading = true; 

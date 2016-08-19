@@ -74,7 +74,7 @@ class CategoryController extends Controller
 			      return $list;
         }
 	
-	$cat= Category::create(['image' => 'category/'.Request::input('image'),'meta_title' =>Request::input('meta_title'),'meta_description' =>Request::input('meta_description'),'meta_keyword' =>Request::input('meta_keyword'),'category_name' =>Request::input('category_name'),'description' =>Request::input('description'),'status' =>Request::input('status'),'parent_id'=>Request::input('parent_id'),'is_delete'=>'0','user_id'=>Auth::user()->id]);  
+	$cat= Category::create(['image' => Request::input('image'),'meta_title' =>Request::input('meta_title'),'meta_description' =>Request::input('meta_description'),'meta_keyword' =>Request::input('meta_keyword'),'category_name' =>Request::input('category_name'),'description' =>Request::input('description'),'status' =>Request::input('status'),'parent_id'=>Request::input('parent_id'),'is_delete'=>'0','user_id'=>Auth::user()->id]);  
 	  
             $list[]='success';
             $list[]='Record is added successfully.';	 
@@ -128,7 +128,7 @@ class CategoryController extends Controller
          $cat = Category::find(Request::input('id'));
          $cat->category_name = Request::input('category_name');
          if((Request::input('image'))){
-	 $cat->image = 'category/'.Request::input('image');
+	 $cat->image = Request::input('image');
          }
 	 $cat->description =Request::input('description');
 	 $cat->parent_id=Request::input('parent_id');
