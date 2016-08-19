@@ -149,6 +149,47 @@ class AppServiceProvider extends ServiceProvider
         }
         
      },'This value :attribute should be equal to or greater than Date From.');
+    
+    
+    Validator::extend('check_product_data_type', function ($attribute, $value, $parameters, $validator) {
+       // print_r($parameters);
+       //echo $value ;
+        
+        if($value == 1){
+            if($parameters)
+            {
+              $price = array_get($validator->getData(), $parameters[0]);
+              $sale_price = array_get($validator->getData(), $parameters[1]);
+              $date_from = array_get($validator->getData(), $parameters[2]);
+              $date_to = array_get($validator->getData(), $parameters[3]);
+              if($price && $sale_price && $date_from && $date_to){
+                return true;
+              }
+              else{
+                return false;
+              }
+            }
+        }
+          
+     },'These values : Price, Sale Price, Date From and Date To are required.');
+    
+     Validator::extend('check_variable_product_data_type', function ($attribute, $value, $parameters, $validator) {
+        //print_r($parameters);
+        if($value == 2){
+            if($parameters)
+            {
+              $var_status = array_get($validator->getData(), $parameters[0]);
+              
+              if($var_status){
+                return true;
+              }
+              else{
+                return false;
+              }
+            }
+        }
+          
+     },'This variable product has no active variations. Add or enable variations to allow this product to be purchased.');
     }
 
 

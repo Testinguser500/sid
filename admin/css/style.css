@@ -112,6 +112,15 @@ a.ms_ov{text-decoration: none}
     padding-left: 8px;
     padding-top: 6px;
 }
+
+.image-file{ width:30px;}
+.tagchecklist > span {
+    background: #eeeeee none repeat scroll 0 0;
+    border-radius: 2px;
+    float: left;
+    margin: 1px;
+}
+
 .sm_att.btn{padding:0 5px}
 .attri .all_cats {
     height: 150px;
@@ -138,4 +147,7 @@ a.ms_ov{text-decoration: none}
 .error_att{color:#d9534f}
 
 .image-file{ width:30px;}
+.tabb {
+    border: 1px solid #eee;
+}
 

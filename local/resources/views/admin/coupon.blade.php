@@ -42,7 +42,7 @@
                   <th ng-click="sort('id')" style="cursor:pointer">#</th>
                   <th ng-click="sort('coupon_name')" style="cursor:pointer">Coupon Name<span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
 		  <th ng-click="sort('expired_date')" style="cursor:pointer">Expired Date<span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-		  <th ng-click="sort('min_amount')" style="cursor:pointer">Min Amount<span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+		  <th ng-click="sort('min_spend')" style="cursor:pointer">Min Amount<span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                   <th ng-click="sort('coupon_status')" style="cursor:pointer">Status<span class="glyphicon sort-icon"  ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                   <th> </th>                 
                 </tr>
@@ -53,7 +53,7 @@
                   <td><% val.id %></td>
                   <td><% val.coupon_name %></td>
 		  <td><% val.expire_date %></td>
-		  <td><% val.min_amount %></td>
+		  <td><% val.min_spend %></td>
                   <td><a href="javascript:void(0);" ng-click="changeStatus(val);"><span class="label <% (val.coupon_status=='Active')?'label-success':'label-danger'%>"><% val.coupon_status %></span></a></td>
                   <td>
                       <i class="fa fa-edit" title="Edit" ng-click="editcoupon(val)" style="cursor:pointer" ></i>

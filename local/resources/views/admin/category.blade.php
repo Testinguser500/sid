@@ -23,6 +23,11 @@
             <!-- /.box-header -->
 
             <div class="box-body">
+<<<<<<< HEAD
+              <!--<div class="row">
+                <div class="form-group col-md-3 pull-right">
+		  
+=======
             <div class="row">
                 <div class="form-group col-md-2 pull-left">		  
 		    <select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
@@ -33,10 +38,69 @@
                     </select>
 		</div>
                 <div class="form-group col-md-3 pull-right">		  
+>>>>>>> 12ed3eb99f6aa96c40e2c0883beacb2d0f97a811
 		  <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
 		</div>
-              </div>
-              <table    id="example1"   class="table table-bordered table-striped">
+              </div>-->
+	      <div class="row">
+		    <div class="form-group col-md-2 ">		  
+			<button class="btn btn-default" data-toggle="modal" data-target="#screen_opt_modal">Screen Options</button>
+			</div>
+		   
+			  <!-- Modal -->
+		    <div class="modal fade" id="screen_opt_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Screen Options</h4>                            
+			      </div>
+			      <div class="modal-body">
+				  <div class="row" ng-init='screen_opt=[{"sr_no":true},{"category_name":true},{"status":true},{"action":true},{"meta_title":false},{"meta_description":false},{"meta_keywords":false},{"image":false},{"product":false}]'>
+				      
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt[1].category_name" > Category Name
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt[2].status"> Status
+				       </div>
+				     </div>
+				     
+					<div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt[4].meta_title"> Meta Title
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox" ng-model="screen_opt[5].meta_description"> Meta Description
+				       </div>
+				    </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt[6].meta_keywords"> Meta Keyword
+				       </div>
+				     </div>
+				     
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt[7].image"> Image Thumbnail
+				       </div>
+				     </div>
+				  </div>
+			      </div>
+			      <div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>                         
+			      </div>
+			    </div>
+			  </div>
+		    </div>
+		    </div>
+	      
+              <!--<table    id="example1"   class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th ng-click="sort('id')" style="cursor:pointer">#<span class="glyphicon sort-icon" ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
@@ -50,17 +114,21 @@
                   <th> </th>                 
                 </tr>
                 </thead>
-                <tbody>
-               
-                <tr dir-paginate="val in categories|orderBy:sortKey:reverse|itemsPerPage:10|filter:search">
-                  <td><% val.id %></td>
-                  <td><% val.category_name %></td>
-                  <td><% val.status %></td>
+		
+		<script type="text/ng-template" id="categoryTree">
+			      
+			      
+                
+             
+                <tr class="accordion-toggle collapsed"  data-toggle="collapse" data-target="#collapse<%category.id%>" aria-expanded="false">
+                  <td><% $index+1 %></td>
+                  <td><% category.category_name %></td>
+                  <td><% category.status %></td>
                   <td>
-                      <i class="fa fa-edit" title="Edit" ng-click="editcategory(val)" style="cursor:pointer" ></i> <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
+                      <i class="fa fa-edit" title="Edit" ng-click="editcategory(category)" style="cursor:pointer" ></i> <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% category.id %>"></i>
                  
-                  <!-- Modal -->
-               <div class="modal fade" id="del_modal<% val.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  
+               <div class="modal fade" id="del_modal<% category.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -73,7 +141,7 @@
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>                           
                                 
-                               <input type="hidden" name="del_id" value="<% val.id %>" />
+                               <input type="hidden" name="del_id" value="<% category.id %>" />
                                <button ng-click="deleteCategory($index)" class="btn btn-primary" data-dismiss="modal" >Delete</button>
                            
                           </div>
@@ -84,7 +152,14 @@
                   
                 </tr>
                
-                </tbody>
+<tr id="collapse<%category.parent_id%>" ng-repeat="category in category.all_category" ng-include="'categoryTree'"  class="accordion-toggle collapse"  data-toggle="collapse" data-target="#collapse<%category.id%>" aria-expanded="false">
+</tr>
+              
+      </script>
+		
+		  <tbody ng-repeat="category in all_category" ng-include="'categoryTree'"  >
+		  
+		</tbody>
                 <tfoot>
                  <tr>
                   <th>#</th>
@@ -93,12 +168,64 @@
                   <th> </th>                 
                 </tr>
                 </tfoot>
-              </table>
-                <dir-pagination-controls
+              </table>-->
+                <!--<dir-pagination-controls
 					max-size="10"
 					direction-links="true"
 					boundary-links="true" >
-		</dir-pagination-controls>
+		</dir-pagination-controls>-->
+		<div class="row cat-p">
+		  <div class="col-xs-12 col-md-2">#</div>
+		  <div ng-if="screen_opt[1].category_name" class="col-xs-12 col-md-2">Category Name</div>
+		  <div ng-if="screen_opt[4].meta_title" class="col-xs-12 col-md-2">Meta Title</div>
+		  <div ng-if="screen_opt[5].meta_description" class="col-xs-12 col-md-2">Meta Description</div>
+		  <div ng-if="screen_opt[6].meta_keywords" class="col-xs-12 col-md-2">Meta Keywords</div>
+		  <div ng-if="screen_opt[7].image" class="col-xs-12 col-md-2">Thumbnail</div>
+		  <div ng-if="screen_opt[2].status" class="col-xs-12 col-md-2">Category Status</div>
+		  <div class="col-xs-12 col-md-2">Products</div>
+		  <div class="col-xs-12 col-md-2">Action</div>
+		  </div>
+		
+		<script type="text/ng-template" id="categoryTree1">
+		  <div class="col-xs-12 col-md-2"><a class="open" ng-class="{'closed' : category.condition}" ng-click="category.condition=!category.condition;" style="cursor:pointer" data-toggle="collapse" data-target="#collapsee<%category.id%>"><span class="plus_ico" ng-show="category.condition">+</span><span class="minus_ico" ng-show="!category.condition">-</span></a></div>
+		  <div ng-if="screen_opt[1].category_name" class="col-xs-12 col-md-2"><% category.category_name %></div>
+		  <div ng-if="screen_opt[4].meta_title" class="col-xs-12 col-md-2"><%category.meta_title%></div>
+		  <div ng-if="screen_opt[5].meta_description" class="col-xs-12 col-md-2"><%category.meta_description%></div>
+		  <div ng-if="screen_opt[6].meta_keywords" class="col-xs-12 col-md-2"><%category.meta_keyword%></div>
+		  <div ng-if="screen_opt[7].image" class="col-xs-12 col-md-2"><img src="{{URL::asset('uploads/category')}}/<% category.image %>" width="100" height="100"></div>
+		  <div ng-if="screen_opt[2].status" class="col-xs-12 col-md-2"><span class="label <% (category.status=='Active')?'label-success':'label-danger'%>"><% category.status %></span></div>
+		  <div class="col-xs-12 col-md-2"><% category.pro_count %></div>
+		  <div class="col-xs-12 col-md-2"><i class="fa fa-edit" title="Edit" ng-click="editcategory(category)" style="cursor:pointer" ></i> <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% category.id %>"></i>
+                 
+                  <!-- Modal -->
+               <div class="modal fade" id="del_modal<% category.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Delete</h4>
+                          </div>
+                          <div class="modal-body">
+                            Are you sure you want to delete this category ? 
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>                           
+                                
+                               <input type="hidden" name="del_id" value="<% category.id %>" />
+                               <button ng-click="deleteCategory($index)" class="btn btn-primary" data-dismiss="modal" >Delete</button>
+                           
+                          </div>
+                        </div>
+                      </div>
+                    </div></div>
+		    
+		  <div  id="collapsee<%category.parent_id%>" ng-repeat="category in category.all_category" ng-include="'categoryTree1'"  class="col-xs-12 accordion-toggle collapse"   aria-expanded="false" ng-class="{'closed' : condition}">
+		  
+		</div>
+		</script>
+		<div class="row cat-r" ng-repeat="category in all_category" ng-include="'categoryTree1'">
+		  
+		</div>
             </div>
             <!-- /.box-body -->
           

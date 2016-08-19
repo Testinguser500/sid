@@ -8,6 +8,7 @@ use App\ProductDataType;
 use App\Option;
 use App\ProductAttribute;
 use App\ProductTags;
+use App\ProductVariation;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -76,7 +77,7 @@ class ProductController extends Controller
 	}
 	
        /*******insert the data*****/
-        public function store(){
+        public function store(){ //print_r(Request::all());
 	    $catids= array();
 	    $regex = "/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/";
 	   $validator = Validator::make(Request::all(), [
@@ -85,14 +86,15 @@ class ProductController extends Controller
 	    'pro_short_des' => 'required',
 	    'pro_feature_des' => 'required',
 	    'seller_id' => 'required',
-	    //'pro_category_id' => 'required',
+	    'pro_category_id' => 'required',
 	    'brand_id' => 'required',
+	    //'pro_datatype_id'=> 'check_product_data_type:price,sale_price,date_from,date_to|check_variable_product_data_type:variation_status',
 	    //'product_tags' => 'required',
-	    'price' => ['required','regex:'.$regex],
-	    'sale_price' => ['required','regex:'.$regex],
-	    'date_from'=> 'required|date|check_date_valid',
-	    'date_to'=> 'required|date|check_date_to_valid:date_from',
-	    'no_stock' => 'required|integer|min:0',
+	    'price' => ['regex:'.$regex],
+	    'sale_price' => ['regex:'.$regex],
+	    'date_from'=> 'date|check_date_valid',
+	    'date_to'=> 'date|check_date_to_valid:date_from',
+	    'no_stock' => 'integer|min:0',
 	    'length' => 'required_with:width,height|check_demension_value',
 	    'width' => 'required_with:length,height|check_demension_value',
 	    'height' => 'required_with:length,width|check_demension_value',
@@ -100,13 +102,25 @@ class ProductController extends Controller
 	    'meta_description' => 'required',
 	    'meta_keywords' => 'required'                    
         ]);
+	  $pro_datatype_id= Request::input('pro_datatype_id');
+	   if($pro_datatype_id =='1'){ 
+	    $validator1 = Validator::make(Request::all(), [
+	    'pro_datatype_id'=> 'check_product_data_type:price,sale_price,date_from,date_to',
+							 ]);
+	   }
+	   elseif($pro_datatype_id == '2'){
+	    $validator1 = Validator::make(Request::all(), [
+	    'pro_datatype_id'=> 'check_variable_product_data_type:variation_status',
+							 ]);
+	   }
+	   
 	   $friendly_names = array(
 			'pro_name' => 'Product Name',
 			'pro_des' => 'Product Description',
 			'pro_short_des' => 'Product Short Description',
 			'pro_feature_des' => 'Product Feature Description',
 			'seller_id' => 'Seller',
-			//'pro_category_id' => 'Product Category',
+			'pro_category_id' => 'Product Category',
 			'brand_id' => 'Brand',
 			//'product_tags' => 'Product Tags',
 			'price' => 'Price',
@@ -122,57 +136,78 @@ class ProductController extends Controller
         if ($validator->fails()) {
               $list[]='error';
               $msg=$validator->errors()->all();
-	      $list[]=$msg;
-	      return $list;
+	      //$list[]=$msg;
+	   //   return $list;
         }
-	//$catids= Request::input('pro_category_id'); ;
-	//$newcatarr= array();
-	//foreach($catids as $ck => $cv){ 
-	//    if($cv == '1'){ 
-	//	$newcatarr[] = $ck;	
-	//    }
-	//}
-	//$newproids = implode(",", $newcatarr);
+	//$msg1 = array();
+	if ($validator1->fails()) {
+              //$list[]='error';
+              $msg1=$validator1->errors()->all();
+	    array_push($msg,$msg1[0]);
+	
+	     // $list[]=$msg;
+	     //return $list;
+        }
+	if ($validator->fails() || $validator1->fails()){
+	    $list[]=$msg;
+	  return $list;  
+	}
+	
+	$catids= Request::input('pro_category_id');
+	if($catids){
+	    $newcatarr= array();
+	foreach($catids as $ck => $cv){ 
+	    if($cv == '1'){ 
+		$newcatarr[] = $ck;	
+	    }
+	}
+	$newproids = implode(",", $newcatarr);
+	}
+	
         
 	 $prod = Product::create(['pro_name' =>Request::input('pro_name'),
 			 'pro_des' =>Request::input('pro_des'),
 			 'pro_short_des' =>Request::input('pro_short_des'),
 			 'pro_feature_des' =>Request::input('pro_feature_des'),
 			 'seller_id' =>Request::input('seller_id'),
-			// 'pro_category_id' =>$newproids,
+			 'pro_category_id' => $newproids ? $newproids : '',
 			 'brand_id' =>Request::input('brand_id'),
 			 //'product_tags' =>Request::input('product_tags'),
-			 'price' =>Request::input('price'),
-			 'sale_price' =>Request::input('sale_price'),
-			 'no_stock' =>Request::input('no_stock'),
+			 'price' =>Request::input('price') ? Request::input('price') : 0,
+			 'sale_price' =>Request::input('sale_price') ? Request::input('sale_price') : 0,
+			 'no_stock' =>Request::input('no_stock') ? Request::input('no_stock') : 0,
 			 'pro_datatype_id'=>Request::input('pro_datatype_id'),
 			 //'pro_opt_name_id'=>Request::input('pro_opt_name_id'),
 			 //'pro_opt_values_id'=>$newovids,
-			 'sku'=>Request::input('sku'),
-			 'date_from'=>Request::input('date_from'),
-			 'date_to'=>Request::input('date_to'),
+			 'sku'=>Request::input('sku') ? Request::input('sku') : '',
+			 'date_from'=>Request::input('date_from')? Request::input('date_from') : date('Y-m-d'),
+			 'date_to'=>Request::input('date_to') ? Request::input('date_to') : 0000-00-00,
 			 'video'=>Request::input('video'),
 			 'weight'=>Request::input('weight'),
 			 'length'=>Request::input('length'),
 			 'width'=>Request::input('width'),
 			 'height'=>Request::input('height'),
+			 'warranty'=>Request::input('warranty'),
+			 'return_policy'=>Request::input('return_policy'),
 			 'meta_title' =>Request::input('meta_title'),
 			 'meta_description' =>Request::input('meta_description'),
 			 'meta_keywords' =>Request::input('meta_keywords'),
-			 'stock_status' =>Request::input('stock_status'),
+			 'stock_status' =>Request::input('stock_status') ? Request::input('stock_status') : 'In Stock',
 			 'status' =>Request::input('status')]);
 	 
 		$insertedId = $prod->id;
-		$ovids= Request::input('pro_opt_values_id');  
+		$ovids= Request::input('pro_opt_values_id');
+		$variation_status= Request::input('variation_status'); //echo $variation_status;
 			
 			if($ovids){
-				    foreach((array)$ovids as $kop => $vop){ 
-				    $newopvarr = implode(",",$vop);
-				     ProductAttribute::create(['option_name_id' => $kop,
-							       'option_value_ids'=> $newopvarr,
-							       'product_id' => $insertedId,
-							      ]);
-				    }	    
+			foreach((array)$ovids as $kop => $vop){ 
+			$newopvarr = implode(",",$vop);
+			 ProductAttribute::create(['option_name_id' => $kop,
+						   'option_value_ids'=> $newopvarr,
+						   'product_id' => $insertedId,
+						   'variation_status' => ($variation_status[$kop] == '1') ? $variation_status[$kop] : 0,
+						  ]);
+			}	    
 			}
 			
 		$tags= Request::input('tags'); 
@@ -191,6 +226,33 @@ class ProductController extends Controller
 			 'def' => $imgvvv['def']]);
 			} 
 		}
+	    $data_type_id = Request::input('pro_datatype_id');
+	    if($data_type_id == 2){
+		$vari_name = Request::input('vari_name');
+		$vari_sku = Request::input('vari_sku');
+		$vari_price = Request::input('vari_price');
+		$vari_sale_price = Request::input('vari_sale_price');
+		$vari_stock = Request::input('vari_stock');
+		
+		$newVariArr = array();
+		foreach($vari_name as $vnk => $vnv){
+			foreach($vnv as $kk => $vv){
+			$newVariArr[] = $vv;	    
+			}
+			$combination_set = implode(',',$newVariArr);
+			ProductVariation::create(['vari_comb_value_ids',
+						  'product_id',
+						  'vari_sku',
+						  'vari_price',
+						  'vari_sale_price',
+						  'vari_stock',
+						  'product_id' => $insertedId
+			                        ]);
+			$vari_sku[$vnk];
+			
+		}
+	    }
+		
          $list[]='success';
          $list[]='Record is added successfully.';	 
 	 return $list;
@@ -234,7 +296,8 @@ class ProductController extends Controller
 	 $all_category = self::getcataegorywithSub();
 	 $datatyps   = DB::table('product_data_type')->get();
 	 $options    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get();
-	 $product->pro_category_id = explode(',',$product->pro_category_id);	 
+	 $product->pro_category_id = explode(',',$product->pro_category_id);
+	 //$product->date_from = date('Y-m-d',strtotime($product->date_from));
          $return['sellers']    = $sellers;
          $return['categories'] = $categories;
 	 $return['brands']     = $brands;
@@ -306,25 +369,32 @@ class ProductController extends Controller
 	}
 	$newproids = implode(",", $newcatarr);
  
-         $pro = Product::find(Request::input('id')); 
-         $pro->pro_name = Request::input('pro_name');
-	 $pro->pro_des =Request::input('pro_des');
-	 $pro->pro_short_des=Request::input('pro_short_des');
-         $pro->pro_feature_des=Request::input('pro_feature_des');
-         $pro->seller_id=Request::input('seller_id');
-        // $pro->pro_category_id=Request::input('pro_category_id');
-         $pro->brand_id=Request::input('brand_id');
-	 //$pro->product_tags=Request::input('product_tags');
-	 $pro->price=Request::input('price');
-	 $pro->sale_price=Request::input('sale_price');
-	 $pro->date_from=Request::input('date_from');
-	 $pro->date_to=Request::input('date_to');
-	 $pro->no_stock=Request::input('no_stock');
-         $pro->meta_title=Request::input('meta_title');
-         $pro->meta_description=Request::input('meta_description');
-         $pro->meta_keywords=Request::input('meta_keywords');
-	 $pro->status=Request::input('status');
-         $pro->save(); 
+	    $pro = Product::find(Request::input('id')); 
+	    $pro->pro_name = Request::input('pro_name');
+	    $pro->pro_des =Request::input('pro_des');
+	    $pro->pro_short_des=Request::input('pro_short_des');
+	    $pro->pro_feature_des=Request::input('pro_feature_des');
+	    $pro->seller_id=Request::input('seller_id');
+	    // $pro->pro_category_id=Request::input('pro_category_id');
+	    $pro->brand_id=Request::input('brand_id');
+	    //$pro->product_tags=Request::input('product_tags');
+	    $pro->price=Request::input('price');
+	    $pro->sale_price=Request::input('sale_price');
+	    $pro->date_from=Request::input('date_from');
+	    $pro->date_to=Request::input('date_to');
+	    $pro->no_stock=Request::input('no_stock');
+	    $pro->video=Request::input('video');
+	    $pro->weight=Request::input('weight');
+	    $pro->length=Request::input('length');
+	    $pro->width=Request::input('width');
+	    $pro->height=Request::input('height');
+	    $pro->warranty=Request::input('warranty');
+	    $pro->return_policy=Request::input('return_policy');
+	    $pro->meta_title=Request::input('meta_title');
+	    $pro->meta_description=Request::input('meta_description');
+	    $pro->meta_keywords=Request::input('meta_keywords');
+	    $pro->status=Request::input('status');
+	    $pro->save(); 
 	 $product_img = DB::table('product_images')->where('product_id', '=',Request::input('id'))->get(); 
 	 $product_attr  = DB::table('product_attribute')->where('product_id', '=',Request::input('id'))->get();
 	 $product_tag  = DB::table('product_attribute')->where('product_id', '=',Request::input('id'))->get();
@@ -410,7 +480,81 @@ class ProductController extends Controller
 	return $list;
 	 }
 	 
+	 /**********get the variation data*********/
+	 public function getvariation(){
+	    $vari_status = Request::input('vari_status');
+	    $option_ids = Request::input('option_ids');
+	    $current_val = Request::input('current_val');
+	    if($current_val == 'all_vari'){
+		 $newArr = array();
+	    foreach($vari_status as $vsk => $vsv){
+			if($vsv == 1){
+			$newArr[] = $vsk;    
+			}
+			
+	    }
+	    $variations = array();
+	    //print_r($option_ids);
+	    foreach($option_ids as $ke => $va){
+		if($va){	
+			if(in_array($ke,$newArr)){
+				     
+			  $cat_data = DB::table('pro_option')->where('is_delete', '=','0')->where('id','=',$ke)->first();
+			  $subcat_data = DB::table('pro_option')->where('is_delete', '=','0')->whereIn('id',$va)->get();
+			  $main['main'] = array('name'=>$cat_data->option_name,'id'=>$ke);
+			  //print_r($subcat_data);
+			  $main['sub'] = $subcat_data;
+			  $variations[] = $main;
+			}
+		}
+	    } //print_r($variations);
+	    
+	    $return['variations'] = $variations;
+	    return $return;
+	    }
+	    else{
+		$variations = array();
+		$cat_data = DB::table('pro_option')->where('is_delete', '=','0')->where('id','=',$current_val)->first();
+			  $subcat_data = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id',$current_val)->get();
+			  $main['main'] = array('name'=>$cat_data->option_name,'id'=>$current_val);
+			  //print_r($subcat_data);
+			  $main['sub'] = $subcat_data;
+			  $variations[] = $main;
+			  
+	    $return['variations'] = $variations;
+	    return $return;
+	    }
+	    
+	 }
 	 
+	 public function getMainCat(){
+	    
+	    $vari_status = Request::input('vari_status');
+	    $option_ids = Request::input('option_ids');
+	    
+	    $newArr = array();
+	    foreach($vari_status as $vsk => $vsv){
+			if($vsv == 1){
+			$newArr[] = $vsk;    
+			}
+			
+	    }
+	    $main_option = array();
+	    foreach($option_ids as $ke => $va){
+		if($va){	
+			if(in_array($ke,$newArr)){
+				     
+			  $cat_data = DB::table('pro_option')->where('is_delete', '=','0')->where('id','=',$ke)->first();
+			  $main['main'] = array('name'=>$cat_data->option_name,'id'=>$ke);
+			  $main_option[] = $main;
+			}
+		}
+	    } //print_r($main_option);
+	    
+	    $return['main_option'] = $main_option;
+	    return $return;
+	    
+	 }
 	 public function image_delete(){
 	    $image = Request::input('image');
 	    File::delete('uploads/'.str_replace('product/','product/thumb_',$image));
@@ -423,12 +567,22 @@ class ProductController extends Controller
 	{
 		$categories = array();
 		$result = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$pid)->get();
+		
 		foreach((array)$result as $key=>$mainCategory)
 		{
+			$product=DB::table('product')->whereRaw('FIND_IN_SET("'.$mainCategory->id.'",pro_category_id)')->get();
+			//print_r($product);
 			$category = array();
+<<<<<<< HEAD
+			$condition = 'condition';
 			 $category['id'] = $mainCategory->id;
+=======
+			$category['id'] = $mainCategory->id;
+>>>>>>> 12ed3eb99f6aa96c40e2c0883beacb2d0f97a811
 			$category['name'] = $mainCategory->category_name;
 			$category['parent_id'] = $mainCategory->parent_id;
+			$mainCategory->pro_count = count($product);
+			$mainCategory->$condition = true;
 			$mainCategory->all_category = self::getcataegorywithSub($category['id']);
 			$categories[$mainCategory->id] = $category;
 			//$sub = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$val->id)->get();

@@ -276,15 +276,34 @@ app.controller('HomeController', function($scope, $http) {
 		$scope.sortKey = keyname;   //set the sortKey to the param passed
 		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	}
+	//$scope.screen_opt=[{"category_name":true},{"status":true}];
+	$scope.setScreenOpt=function(opt,screen,kk){
+		console.log(opt);
+		//console.log(screen);
+		//console.log(opt[1].category_name);
+		//oldmovies='';
+		angular.forEach(opt, function(value,key){ //For loop
+			//console.log(value);
+			//console.log(key);
+          if(value.category_name==false)
+	  {
+		opt.splice(key,1);
+	  }
+		});
+		console.log(opt);
+	}
      $scope.init = function() {	
                 $scope.page='index';
                 $scope.files='';
                 $scope.category={};
                 $scope.errors=false;               
 		$scope.loading = true;
+		//$scope.condition = true;
 		$http.get('category/all').
 		success(function(data, status, headers, config) {
-			$scope.categories = data;
+			$scope.categories = data['category'];
+			$scope.all_category = data['all_category'];
+			console.log($scope.all_category);
 		        $scope.loading = false;
  
 		});
@@ -295,7 +314,8 @@ app.controller('HomeController', function($scope, $http) {
                 $scope.success_flash=false;
                 $http.get('category/all').
 		success(function(data, status, headers, config) {
-			$scope.all_cat = data;
+			$scope.all_cat = data['category'];
+			$scope.all_category = data['all_category'];
 		        $scope.loading = false;
  
 		});
@@ -2708,6 +2728,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
      $scope.tags = [];
+     $scope.variations = [];
      $scope.product.pro_category_id={};
      
      //$scope.product.pro_opt_values_id=[];
@@ -2749,6 +2770,7 @@ app.controller('CountryController', function($scope, $http) {
     $scope.myFuncimg = function() {
         $scope.showMeimg = !$scope.showMeimg;
     }
+  
     $scope.changeState=function(param){
        
     }
@@ -2835,17 +2857,46 @@ app.controller('CountryController', function($scope, $http) {
 	   }
 	}
 	
-	$scope.addTags=function(ptag){ console.log(ptag);
+	$scope.addTags=function(ptag){ //console.log(ptag);
         if(ptag != ''){
 		$scope.tags.push({
 		tag : ptag
 		});
 	}		
 	}
-	
 	$scope.removeTags=function(index)
 	{
 	   $scope.tags.splice(index,1);
+	}
+	
+	$scope.addVariation=function(vari_status,opt_val_idss,current_val){ console.log(vari_status); console.log(opt_val_idss);
+		$http.post('product/getvariation',{
+			vari_status: vari_status,
+			option_ids: opt_val_idss,
+			current_val: current_val
+		}).success(function(data, status, headers, config) {
+				$scope.variations.push({
+					variations : data['variations']
+					});
+				$scope.loading = false;
+			});
+				
+	}
+	 
+	$scope.removeVariation=function(index)
+	{
+	   $scope.variations.splice(index,1);
+	}
+	
+	$scope.getMainCat=function(vari_status,opt_idss){  //console.log(vari_status); 
+		$http.post('product/getMainCat',{
+			vari_status: vari_status,
+			option_ids: opt_idss
+		}).success(function(data, status, headers, config) { //console.log(data); 
+				$scope.main_option = data['main_option']
+				$scope.loading = false;
+			});
+		
 	}
 	
     $scope.check_exist=function(optid){
@@ -2955,7 +3006,7 @@ app.controller('CountryController', function($scope, $http) {
 		
            $scope.errors=false;
            $scope.success_flash=false;
-           //console.log(product);
+           console.log(product);
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -2971,6 +3022,7 @@ app.controller('CountryController', function($scope, $http) {
 			pro_datatype_id: product.pro_datatype_id,
 			//pro_opt_name_id: product.pro_opt_name_id,
 			pro_opt_values_id: product.pro_opt_values_id,
+			variation_status: product.variation_status,
 			sku: product.sku,
 			date_from: product.date_from,
 			date_to: product.date_to,
@@ -2979,13 +3031,20 @@ app.controller('CountryController', function($scope, $http) {
 			length: product.length,
 			width: product.width,
 			height: product.height,
+			warranty: product.warranty,
+			return_policy: product.return_policy,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
                         stock_status: product.stock_status,
 			status: product.status,
 			images: images,
-			tags : tags
+			tags : tags,
+			vari_name: product.vari_name,
+			vari_sku: product.vari_sku,
+			vari_price: product.vari_price,
+			vari_sale_price: product.vari_sale_price,
+			vari_stock: product.vari_stock
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){
@@ -3066,6 +3125,8 @@ app.controller('CountryController', function($scope, $http) {
 			length: product.length,
 			width: product.width,
 			height: product.height,
+			warranty: product.warranty,
+			return_policy: product.return_policy,
 			meta_title: product.meta_title,
 			meta_description: product.meta_description,
 			meta_keywords: product.meta_keywords,
