@@ -2492,6 +2492,7 @@ app.controller('CountryController', function($scope, $http) {
                $scope.success_flash_pop=false;
                $scope.edit_values={};
                $scope.cat_select_error='';
+               $scope.cat_select=false;
                $scope.shw_sv_attr=1;
                $scope.shw_sv_value=1;
                $scope.show_save=1;
@@ -2500,6 +2501,7 @@ app.controller('CountryController', function($scope, $http) {
 	       success(function(data, status, headers, config) {
 			$scope.options = data['attr_gr'];
                         $scope.all_cats = data['category'];
+                        $scope.only_cat_id = data['only_cat_id'];
 		        $scope.loading = false;
  
 		});
@@ -2515,22 +2517,22 @@ app.controller('CountryController', function($scope, $http) {
 		});
         }
         $scope.checkAll = function () {	
-        if (!$scope.selectedAll) {
-            $scope.selectedAll = true;
-        } else {
-            $scope.selectedAll = false;
-        }	
-        angular.forEach($scope.options, function (item) {  
-            
-			if($scope.selectedAll)
-			{
-			$scope.selected_attr[item.id]=true;
-                        }else
-			{
-		         $scope.selected_attr[item.id]=false;
-			}
-                      
-        });
+            if (!$scope.selectedAll) {
+                $scope.selectedAll = true;
+            } else {
+                $scope.selectedAll = false;
+            }	
+            angular.forEach($scope.options, function (item) {  
+
+                            if($scope.selectedAll)
+                            {
+                            $scope.selected_attr[item.id]=true;
+                            }else
+                            {
+                             $scope.selected_attr[item.id]=false;
+                            }
+
+            });
 	
       };
         $scope.edit_modal=function(edit_field,edit_values){
@@ -2539,36 +2541,35 @@ app.controller('CountryController', function($scope, $http) {
             $scope.errors_pop=false;          
             $scope.success_flash_pop=false;
             $scope.edit_field=edit_field ;
-<<<<<<< HEAD
-            $scope.arr_cats=[];            
-            $scope.edit_values=edit_values;    
+            $scope.arr_cats=[];    
+            $scope.cat_select=false;console.log( $scope.cat_select);
+            $scope.edit_values=edit_values;   
             $scope.edit_values.cats_id=[];
             var arrs_ca=$scope.edit_values.categorys_id.split(',');
             for(var i=0;i < arrs_ca.length; i++)
             {
                 $scope.arr_cats.push(parseInt(arrs_ca[i]));
                 $scope.edit_values.cats_id[parseInt(arrs_ca[i])]=true;
-            }
-           
+            }           
            
         }
         $scope.sel_al=function(sel_un){
-             angular.forEach($scope.edit_values.cats_id, function (item,key) { 
+             angular.forEach($scope.only_cat_id, function (item,key) { 
                  if(sel_un=="select")
                  {
-                     item=true;
+                     $scope.edit_values.cats_id[item.id]=true;
                  }else{
                      
-                     item=false;
+                     $scope.edit_values.cats_id[item.id]=false;
                  }
              });
         }
         $scope.chec_array=function(){ 
            return $scope.edit_values.categorys_id.split(',');
-=======
+
             $scope.edit_values=edit_values;
             
->>>>>>> cc0272a36d86649de88996c589756820a758543b
+
         }
         $scope.add = function() {
                 $scope.loading = true; 

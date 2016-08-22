@@ -48,7 +48,9 @@ class OptionController extends Controller
                     }
                 }
              }
+             $check_cats=DB::table('categorys')->select('id')->where('is_delete', '=','0')->get();
              $return['category']  = self::getcataegorywithSub();
+             $return['only_cat_id']  = $check_cats; 
              $return['attr_gr']=$attr_gr;
              return $return ;
 	}

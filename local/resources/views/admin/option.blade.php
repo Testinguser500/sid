@@ -126,7 +126,7 @@
                   </td>
                   <td><% val.id %></td>
                   <td data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('attr_gr',val)"  ng-if="screen_opt.attr_group" ><% val.option_name %></td>                
-                  <td data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('cats',val)" ng-if="screen_opt.category"><% val.category_name %></td>
+                  <td data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('cats',val);" ng-if="screen_opt.category"><% val.category_name %></td>  
                   <td data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('attribute',val)" ng-if="screen_opt.attr">
                       <p ng-repeat="attr in val.attribute">
                           <span><% attr.option_name %> : </span> 
@@ -184,20 +184,20 @@
                                         <input type="text" class="form-control" id="" name="option_name" placeholder="Option Name" ng-model="edit_values.option_name">
                                         <div class="help-block"></div>
                                     </div> 
-                                    <div class="form-group attri" ng-if="edit_field=='cats'">
+                                    <div class="form-group attri"  ng-if="edit_field=='cats'">
                                         <div class="sel_cat">
-                                        <input type="radio"  ng-model="cat_select" ng-click="sel_al('select');" ng-value="true" value="true" name="selectcat"  > All     
-                                        <input type="radio"  ng-model="cat_select" ng-click="sel_al('unselect');" ng-value="false"  value="false" name="selectcat" > Selected
+                                        <input type="radio"  ng-model="cat_select" ng-click="sel_al('select');" ng-value="true" name="selectcat1"  > All     
+                                        <input type="radio"  ng-model="cat_select" ng-click="sel_al('unselect');"  ng-value="false" name="selectcat1" > Selected
 			                </div>
                                         <div>
                                            <input type="text" placeholder="Filter Categories" class="form-control" ng-model="test">
                                         </div>
                                         
                                         <div class="all_cats" >
-                                        <script type="text/ng-template" id="categoryTree1" ><% $parent.arr_cats.indexOf(category.id) %>                                    
+                                        <script type="text/ng-template" id="categoryTree1" >                                   
                                                  
-                                       <input  type="checkbox"  ng-model="edit_values.cats_id[category.id]"  ng-value="true" value="<%category.id%>" name="pro_category_id[]" ng-checked="cat_select==true|| $parent.arr_cats.indexOf(category.id)!=-1"  > 
-                                         <%  edit_values.cats_id[category.id] %> <% category.category_name %>
+                                       <input  type="checkbox"  ng-model="edit_values.cats_id[category.id]"  ng-value="true" value="<%category.id%>" name="pro_category_id[]"   > 
+                                         <% category.category_name %>
                                         <ul ng-if="category.all_category">
                                         <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree1'"  >           
                                         </li>
