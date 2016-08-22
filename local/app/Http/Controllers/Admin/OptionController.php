@@ -198,7 +198,13 @@ class OptionController extends Controller
                         if(array_key_exists('id',$val1)){
                         $validation['update_values.attribute.'.$key.'.options.'.$key1.'.option_name'] ='required|soft_composite_unique:pro_option,option_name,parent_id='.$val['id'].','.$val1['id'];
                         }else{
-                        $validation['update_values.attribute.'.$key.'.options.'.$key1.'.option_name'] ='required|soft_composite_unique:pro_option,option_name,parent_id='.$val['id'];    
+                        if(array_key_exists('id',$val)){
+                         $validation['update_values.attribute.'.$key.'.options.'.$key1.'.option_name'] ='required|soft_composite_unique:pro_option,option_name,parent_id='.$val['id'];     
+                        }else{
+                          $validation['update_values.attribute.'.$key.'.options.'.$key1.'.option_name'] ='required'; 
+                        }
+                            
+                          
                         }
                         $key1plus=$key1+1;
                         $name=$upd_val['option_name'].' attribute '.$keyplus.' option '.$key1plus;
