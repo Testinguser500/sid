@@ -164,6 +164,9 @@
 				  </div>
 				    <div class="form-group col-xs-4" ng-show="files">
 				     <img class="" src="{{URL::asset('uploads/category')}}/<% files %>" width="100" height="100"> 
+				    </div>
+				    <div class="form-group col-xs-4" ng-hide="files">
+				     <img class="" src="{{URL::asset('uploads/category')}}/<% edit_values.image %>" width="100" height="100"> 
 				    </div> 
 				    </div>
 			      </div>

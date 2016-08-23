@@ -75,7 +75,29 @@ class ProductController extends Controller
 	   $return['optionname']   = $optionname;
 	   return $return;
 	}
+	/****Move to trash ******/
+	public function deleteAll(){
 	
+	    $action = Request::input('action');
+	   $chk_id=Request::input('id');
+	   foreach((array)$chk_id as $key=>$id)
+	   {
+		   if($id)
+			   $product_id[]=$key;
+	   }
+		if($action=='delete')	   
+		{
+			DB::table('product')
+            ->whereIn('id', $product_id)
+            ->update(['is_delete' => '1']);
+		
+			$list[]='success';
+			$list[]='Record is deleted successfully.';	 
+			return $list;
+		}
+		
+	    
+	}
        /*******insert the data*****/
         public function store(){ //print_r(Request::all());
 	    $catids= array();
@@ -612,6 +634,34 @@ class ProductController extends Controller
                 );
                return Response::download($filename, 'products.csv', $headers); 
            }
+	   
+	   
+	   public function updateDes()
+	   {
+	    $validator = Validator::make(Request::all(),[
+            'description' => 'required',
+	    'short_description' => 'required',
+	    'feature_description' => 'required'
+	   
+	   ]);
+	    
+	    if ($validator->fails()) {
+				$list[]='error';
+				$msg=$validator->errors()->all();
+				$list[]=$msg;
+				return $list;
+        }
+	$product = Product::find(Request::input('id'));
+	$product->pro_des = Request::input('description');
+	$product->pro_short_des = Request::input('short_description');
+	$product->pro_feature_des = Request::input('feature_description');
+	$product->save();
+	
+	$list[]='success';
+		$msgs='Record updated successfully.';
+		$list[]=$msgs;
+		return $list;
+	   }
  }
  
 ?>

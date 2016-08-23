@@ -154,6 +154,8 @@ Route::post('admins/product/image_delete', 'Admin\ProductController@image_delete
 Route::get('admins/product/export', 'Admin\ProductController@export');
 Route::post('admins/product/getvariation', 'Admin\ProductController@getvariation');
 Route::post('admins/product/getMainCat', 'Admin\ProductController@getMainCat');
+Route::post('admins/product/deleteAll', 'Admin\ProductController@deleteAll');
+Route::post('admins/product/updateDes', 'Admin\ProductController@updateDes');
 
 Route::get('admins/plan', 'Admin\PlanController@index');
 Route::get('admins/plan/all', 'Admin\PlanController@all');
@@ -192,4 +194,20 @@ Route::post('seller/country/getState', 'Admin\CountryController@getState');
 Route::post('seller/country/getCity', 'Admin\CountryController@getCity');
 Route::post('seller/setting/update', 'Seller\SettingController@update');
 
+Route::get('admins/special-offer', 'Admin\SpecialOfferController@index');
+Route::get('admins/special-offer/all', 'Admin\SpecialOfferController@all');
+Route::post('admins/special-offer/getUser', 'Admin\SpecialOfferController@getUser');
+Route::post('admins/special-offer/getRole', 'Admin\SpecialOfferController@getRole');
+Route::post('admins/special-offer/store', 'Admin\SpecialOfferController@store');
+Route::get('admins/special-offer/edit/{id}', 'Admin\SpecialOfferController@edit');
+Route::post('admins/special-offer/update', 'Admin\SpecialOfferController@update');
+Route::post('admins/special-offer/changeStatus', 'Admin\SpecialOfferController@changeStatus');
+Route::post('admins/special-offer/delete', 'Admin\SpecialOfferController@delete');
 
+Route::get('admins/bulk-discount', 'Admin\BulkDiscountController@index');
+Route::get('admins/bulk-discount/all', 'Admin\BulkDiscountController@all');
+Route::post('admins/bulk-discount/store', 'Admin\BulkDiscountController@store');
+Route::get('admins/bulk-discount/edit/{id}', 'Admin\BulkDiscountController@edit');
+Route::post('admins/bulk-discount/update', 'Admin\BulkDiscountController@update');
+Route::post('admins/bulk-discount/changeStatus', 'Admin\BulkDiscountController@changeStatus');
+Route::post('admins/bulk-discount/delete', 'Admin\BulkDiscountController@delete');

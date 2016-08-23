@@ -161,6 +161,12 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/coupon', {
       templateUrl: 'coupon', controller: 'CouponController'
    }).
+   when('/special-offer', {
+      templateUrl: 'special-offer', controller: 'SpecialOfferController'
+   }).
+   when('/bulk-discount', {
+      templateUrl: 'bulk-discount', controller: 'BulkDiscountController'
+   }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -406,7 +412,8 @@ app.controller('HomeController', function($scope, $http) {
                         image: $scope.files,
                         meta_title: category.meta_title,
                         meta_description: category.meta_description,
-                        meta_keyword: category.meta_keyword
+                        meta_keyword: category.meta_keyword,
+			type:true
                    
 		}).success(function(data, status, headers, config) {
                  $scope.files='';
@@ -2836,8 +2843,89 @@ app.controller('CountryController', function($scope, $http) {
        {"status": 'Inactive', "items": ""},
        {"status": 'Pending', "items": ""}
   ];
+$scope.product_id = {};
+$scope.checkAll = function () {
+		
+		
+        if (!$scope.selectedAll) {
+            $scope.selectedAll = true;
+        } else {
+            $scope.selectedAll = false;
+        }
+		
+        angular.forEach($scope.products, function (item) {
+			//alert(item);			
+           
+			if($scope.selectedAll)
+			{
+			$scope.product_id[item.id]=true;
+				
+			}
+			else
+			{
 
+				$scope.product_id[item.id]=false;
+			}
+        });
+		
+		 
 
+    };
+       //bulk delete
+   $scope.bulkAction = function(userData){
+	   console.log(userData);
+	   $scope.page='index';
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.loading = true;
+		if(userData=='delete')
+		{
+		$http.post('product/deleteAll',{
+			action:userData,
+			id:$scope.product_id
+		}).
+		success(function(data, status, headers, config) {
+			$scope.success_flash= data[1];
+			console.log($scope.success_flash);
+		        $scope.loading = false;
+				$scope.init();
+		});
+		}
+   }
+   
+   $scope.edit_modal=function(edit_field,edit_values){
+            $scope.errors=false;
+            $scope.success_flash=false;
+            $scope.errors_pop=false;          
+            $scope.success_flash_pop=false;
+            $scope.edit_field=edit_field ;
+            $scope.edit_values=edit_values;
+            console.log($scope.edit_values);
+		}
+	$scope.editDes=function(product)
+	{
+	$scope.errors_pop=false;
+           $scope.success_flash_pop=false;
+           console.log(product);
+           $http.post('product/updateDes', {
+			
+			description: product.pro_des,
+			short_description: product.pro_short_des,
+			feature_description: product.pro_feature_des,
+			id:product.id
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors_pop=data[1];
+			}else{
+				$scope.errors_pop=false;
+				$scope.success_flash_pop=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });	
+	}
   $scope.select_group_pros='All';
 
         $scope.init = function() {
@@ -3899,6 +3987,1249 @@ app.controller('CountryController', function($scope, $http) {
 	{
 		//var product = $scope.selectedItems[index];
 		$scope.selectedUsers.splice(index, 1);
+		
+	}
+     $scope.init();
+  });
+  
+  //Special Offer
+  app.controller('SpecialOfferController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.files='';
+     $scope.loading = true;
+     $scope.page='index';
+     $scope.offer='';
+	$scope.success_flash=false;
+     $scope.tab = 1;
+     $scope.coupon_datas=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
+	$scope.setTab = function(newTab){
+	$scope.tab = newTab;
+	};
+
+	$scope.isSet = function(tabNum){
+	  return $scope.tab === tabNum;
+	};
+     $scope.init = function() {
+	$scope.image = '';
+		
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('special-offer/all').
+		success(function(data, status, headers, config) {
+			$scope.offers = data['offers'];
+			console.log($scope.offers);
+		        $scope.loading = false;
+		});
+	};
+	
+	$scope.add = function() {	
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $scope.offer=false;
+		$scope.selectedRoles=[];
+		$scope.selectedUsers=[];
+		$scope.exselectedCats=[];
+		$scope.selectedCats=[];
+		$scope.exselectedItems=[];
+		$scope.selectedItems=[];
+		$scope.spselectedCats=[];
+		$scope.spselectedItems=[];
+		$http.get('coupon/all').
+		success(function(data, status, headers, config) {
+			$scope.loading = false;
+ 
+		});
+	};
+	
+	$scope.store = function(offer) { 
+           $scope.errors=false;
+           $scope.success_flash=false;   
+           console.log(offer);
+	   $scope.method='special';
+           $http.post('special-offer/store', {
+		
+		adjustment_type:offer.adjustment_type,
+		adjustment_value:offer.adjustment_value,
+		amount_adjust:offer.amount_adjust,
+		amount_purchase:offer.amount_purchase,
+		apply_to:offer.apply_to,
+		category_list:$scope.selectedCats,
+		product_list:$scope.selectedItems,
+		role_list:$scope.selectedRoles,
+		customer_list:$scope.selectedUsers,
+		specific_category:$scope.spselectedCats,
+		specific_product:$scope.spselectedItems,
+		condition_match:offer.condition_match,
+		customers:offer.customers,
+		end_date:offer.end_date,
+		from_date:offer.from_date,
+		products_adujst:offer.products_adujst,
+		quantity_based_on:offer.quantity_based_on,
+		role_name:offer.role_name,
+		method:$scope.method
+	
+	
+			
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      
+      $scope.editoffer = function(offerData) {
+              
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('special-offer/edit/' + offerData.id, {			
+		}).success(function(data, status, headers, config) {
+		$scope.offer_datas = data['offer'];
+		$scope.selectedItems = $scope.offer_datas.product_data;
+		$scope.spselectedItems = $scope.offer_datas.spproduct_data;
+		$scope.selectedCats = $scope.offer_datas.category_data;
+		$scope.spselectedCats = $scope.offer_datas.spcategory_data;
+		$scope.selectedRoles = $scope.offer_datas.role_data;
+		
+		$scope.selectedUsers = $scope.offer_datas.user_data;
+		console.log($scope.offer_datas);
+		$scope.loading = false;
+		});
+	};
+	
+	$scope.update=function(offerData)
+	{
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.page='edit';
+		$http.post('special-offer/update',{
+			id:offerData.id,
+		adjustment_type:offerData.adjustment_type,
+		adjustment_value:offerData.adjustment_value,
+		amount_adjust:offerData.amount_adjust,
+		amount_purchase:offerData.amount_purchase,
+		apply_to:offerData.apply_to,
+		category_list:$scope.selectedCats,
+		product_list:$scope.selectedItems,
+		role_list:$scope.selectedRoles,
+		customer_list:$scope.selectedUsers,
+		specific_category:$scope.spselectedCats,
+		specific_product:$scope.spselectedItems,
+		condition_match:offerData.condition_match,
+		customers:offerData.customers,
+		end_date:offerData.end_date,
+		from_date:offerData.start_date,
+		products_adujst:offerData.products_adujst,
+		quantity_based_on:offerData.quantity_based_on,
+		role_name:offerData.role_name,
+		method:offerData.method
+		
+			}).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+		});
+	}
+	$scope.deleteoffer = function(index)
+	{
+		$scope.loading = true;
+
+		var offer = $scope.offers[index];
+              
+                $http.post('special-offer/delete',{            
+                    del_id:offer.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.offers.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+	}
+	
+	$scope.changeStatus=function(userData)
+	   {
+		
+		   $scope.loading = true;
+	   $http.post('special-offer/changeStatus',{
+		   id:userData.id,
+		   status:userData.offer_status
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		                             
+			$scope.loading = false
+			$scope.success_flash=data[1];
+			$scope.init();
+			});
+	   }
+	   
+	$scope.getProduct = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getProduct',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+			$scope.err=true;
+			$scope.msg = data[1];
+			$scope.products = '';
+			console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.products = data;
+			$scope.err=false;
+			$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedItems=[];
+	$scope.selectedItem = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.selectedItems, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedItems.push(item);
+		$scope.products='';
+		$scope.offer.product='';
+		console.log($scope.selectedItems);
+	  }
+	}
+	
+	$scope.removeItem=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedItems.splice(index, 1);
+		
+	}
+	//explode product
+	
+	$scope.getexProduct = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getProduct',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.exerr=true;
+				$scope.msg = data[1];
+				$scope.exproducts = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.exproducts = data;
+			console.log($scope.exproducts);
+			$scope.exerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.exselectedItems=[];
+	$scope.exselectedItem = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.exselectedItems, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.exselectedItems.push(item);
+		$scope.exproducts='';
+		$scope.offer.exproduct='';
+		console.log($scope.exselectedItems);
+	  }
+	}
+	
+	$scope.exremoveItem=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.exselectedItems.splice(index, 1);
+		
+	}
+	//category
+	$scope.getCategory = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getCategory',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.cerr=true;
+				$scope.msg = data[1];
+				$scope.categories = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.categories = data;
+			$scope.cerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedCats=[];
+	$scope.selectedCat = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.selectedCats, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedCats.push(item);
+		$scope.categories='';
+		$scope.offer.category='';
+		console.log($scope.selectedCats);
+	  }
+	}
+	$scope.removeCat=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedCats.splice(index, 1);
+		
+	}
+	//exclude category
+	$scope.getexCategory = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getCategory',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.excerr=true;
+				$scope.msg = data[1];
+				$scope.excategories = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.excategories = data;
+			$scope.excerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.exselectedCats=[];
+	$scope.exselectedCat = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.exselectedCats, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.exselectedCats.push(item);
+		$scope.excategories='';
+		$scope.offer.excategory='';
+		console.log($scope.exselectedCats);
+	  }
+	}
+	$scope.exremoveCat=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.exselectedCats.splice(index, 1);
+		
+	}
+	
+	$scope.getUser = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('special-offer/getUser',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.uerr=true;
+				$scope.msg = data[1];
+				$scope.users = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.users = data;
+			console.log($scope.users);
+			$scope.uerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedUsers=[];
+	$scope.selectedUser = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.selectedUsers, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedUsers.push(item);
+		$scope.users='';
+		$scope.offer.user='';
+		console.log($scope.selectedUsers);
+	  }
+	}
+	
+	$scope.removeUser=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedUsers.splice(index, 1);
+		
+	}
+	//get Role
+	$scope.getRole = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('special-offer/getRole',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.rerr=true;
+				$scope.msg = data[1];
+				$scope.role = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+				//$scope.ab=false;
+			//console.log($scope.ab);
+			$scope.loading = false
+			$scope.role = data;
+			console.log($scope.role);
+			$scope.rerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedRoles=[];
+	$scope.selectedRole = function(item)
+	{ 
+		oldmovies='';
+		angular.forEach($scope.selectedRoles, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedRoles.push(item);
+		$scope.role='';
+		$scope.offer.role='';
+		//$scope.ab=true;
+		//console.log($scope.ab);
+	  }
+	}
+	
+	$scope.removeRole=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedRoles.splice(index, 1);
+		
+	}
+	
+	//Specific product
+	
+	$scope.getSpecificProduct = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getProduct',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.sperr=true;
+				$scope.msg = data[1];
+				$scope.spproducts = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.spproducts = data;
+			///console.log($scope.spproducts);
+			$scope.sperr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.spselectedItems=[];
+	$scope.spselectedItem = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.spselectedItems, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.spselectedItems.push(item);
+		$scope.spproducts='';
+		$scope.offer.spproduct='';
+		console.log($scope.spselectedItems);
+	  }
+	}
+	
+	$scope.spremoveItem=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.spselectedItems.splice(index, 1);
+		
+	}
+	//specific category
+	$scope.getspecificCategory = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getCategory',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.spcerr=true;
+				$scope.msg = data[1];
+				$scope.spcategories = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.spcategories = data;
+			$scope.spcerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.spselectedCats=[];
+	$scope.spselectedCat = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.spselectedCats, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.spselectedCats.push(item);
+		$scope.spcategories='';
+		$scope.offer.spcategory='';
+		console.log($scope.spselectedCats);
+	  }
+	}
+	$scope.spremoveCat=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.spselectedCats.splice(index, 1);
+		
+	}
+     $scope.init();
+  });
+  //Bullk Discount
+  app.controller('BulkDiscountController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.files='';
+     $scope.loading = true;
+     $scope.page='index';
+     $scope.offer='';
+	$scope.success_flash=false;
+     $scope.tab = 1;
+     $scope.coupon_datas=false;
+     $scope.sort = function(keyname){
+		$scope.sortKey = keyname;   //set the sortKey to the param passed
+		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
+	$scope.setTab = function(newTab){
+	$scope.tab = newTab;
+	};
+
+	$scope.isSet = function(tabNum){
+	  return $scope.tab === tabNum;
+	};
+     $scope.init = function() {
+	$scope.image = '';
+		
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('bulk-discount/all').
+		success(function(data, status, headers, config) {
+			$scope.offers = data['offers'];
+			console.log($scope.offers);
+		        $scope.loading = false;
+		});
+	};
+	$scope.inputs = [{
+        value: null
+    }];
+
+	$scope.addInput = function () {
+	   
+	    $scope.inputs.push({
+		value: ''
+	    });
+	}
+
+	$scope.removeInput = function (index) {
+	    $scope.inputs.splice(index, 1);
+	}
+	$scope.add = function() {
+		$scope.inputs = [{
+        value: null
+    }];
+                $scope.page='add';		
+		$scope.errors=false;
+                $scope.success_flash=false;
+                $scope.offer=false;
+		$scope.selectedRoles=[];
+		$scope.selectedUsers=[];
+		$scope.exselectedCats=[];
+		$scope.selectedCats=[];
+		$scope.exselectedItems=[];
+		$scope.selectedItems=[];
+		$scope.spselectedCats=[];
+		$scope.spselectedItems=[];
+		$http.get('bulk-discount/all').
+		success(function(data, status, headers, config) {
+			$scope.loading = false;
+ 
+		});
+	};
+	
+	$scope.store = function(offer) { 
+           $scope.errors=false;
+           $scope.success_flash=false;   
+           console.log(offer);
+	   $scope.method='quantity';
+           $http.post('bulk-discount/store', {
+		
+		quantity:$scope.inputs,
+		apply_to:offer.apply_to,
+		category_list:$scope.selectedCats,
+		product_list:$scope.selectedItems,
+		role_list:$scope.selectedRoles,
+		customer_list:$scope.selectedUsers,
+		condition_match:offer.condition_match,
+		customers:offer.customers,
+		end_date:offer.end_date,
+		from_date:offer.from_date,
+		quantity_based_on:offer.quantity_based_on,
+		role_name:offer.role_name,
+		method:$scope.method
+	
+	
+			
+		} ).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+ 
+         });
+      };
+      
+      $scope.editoffer = function(offerData) {
+              $scope.inputs = [{
+        value: null
+    }];
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+                $scope.page='edit';
+		$http.get('bulk-discount/edit/' + offerData.id, {			
+		}).success(function(data, status, headers, config) {
+		$scope.offer_datas = data['offer'];
+		$scope.selectedItems = $scope.offer_datas.product_data;
+		$scope.spselectedItems = $scope.offer_datas.spproduct_data;
+		$scope.selectedCats = $scope.offer_datas.category_data;
+		$scope.spselectedCats = $scope.offer_datas.spcategory_data;
+		$scope.selectedRoles = $scope.offer_datas.role_data;
+		$scope.selectedUsers = $scope.offer_datas.user_data;
+		
+		if($scope.offer_datas.quantity)
+		$scope.inputs = $scope.offer_datas.quantity;
+		
+		$scope.loading = false;
+		});
+	};
+	
+	$scope.update=function(offerData)
+	{
+		$scope.loading = true;
+                $scope.errors=false;
+                $scope.success_flash=false;
+		$scope.page='edit';
+		$http.post('bulk-discount/update',{
+			id:offerData.id,
+		quantity:$scope.inputs,
+		apply_to:offerData.apply_to,
+		category_list:$scope.selectedCats,
+		product_list:$scope.selectedItems,
+		role_list:$scope.selectedRoles,
+		customer_list:$scope.selectedUsers,
+		
+		condition_match:offerData.condition_match,
+		customers:offerData.customers,
+		end_date:offerData.end_date,
+		from_date:offerData.start_date,
+		
+		quantity_based_on:offerData.quantity_based_on,
+		role_name:offerData.role_name,
+		method:offerData.method
+		
+			}).success(function(data, status, headers, config) {
+                  
+                    if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				$scope.errors=false;
+				$scope.success_flash=data[1];				
+				$scope.init();
+			}
+			$scope.loading = false;
+		});
+	}
+	$scope.deleteoffer = function(index)
+	{
+		$scope.loading = true;
+
+		var offer = $scope.offers[index];
+              
+                $http.post('bulk-discount/delete',{            
+                    del_id:offer.id
+                }).success(function(data, status, headers, config) {
+                                        $scope.offers.splice(index, 1);
+                                        $scope.loading = false
+                                        $scope.success_flash=data[1];
+                                        $scope.init();
+                                });
+	}
+	
+	$scope.changeStatus=function(userData)
+	   {
+		
+		   $scope.loading = true;
+	   $http.post('bulk-discount/changeStatus',{
+		   id:userData.id,
+		   status:userData.offer_status
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		                             
+			$scope.loading = false
+			$scope.success_flash=data[1];
+			$scope.init();
+			});
+	   }
+	   
+	$scope.getProduct = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getProduct',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+			$scope.err=true;
+			$scope.msg = data[1];
+			$scope.products = '';
+			console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.products = data;
+			$scope.err=false;
+			$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedItems=[];
+	$scope.selectedItem = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.selectedItems, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedItems.push(item);
+		$scope.products='';
+		$scope.offer.product='';
+		console.log($scope.selectedItems);
+	  }
+	}
+	
+	$scope.removeItem=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedItems.splice(index, 1);
+		
+	}
+	//explode product
+	
+	$scope.getexProduct = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getProduct',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.exerr=true;
+				$scope.msg = data[1];
+				$scope.exproducts = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.exproducts = data;
+			console.log($scope.exproducts);
+			$scope.exerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.exselectedItems=[];
+	$scope.exselectedItem = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.exselectedItems, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.exselectedItems.push(item);
+		$scope.exproducts='';
+		$scope.offer.exproduct='';
+		console.log($scope.exselectedItems);
+	  }
+	}
+	
+	$scope.exremoveItem=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.exselectedItems.splice(index, 1);
+		
+	}
+	//category
+	$scope.getCategory = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getCategory',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.cerr=true;
+				$scope.msg = data[1];
+				$scope.categories = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.categories = data;
+			$scope.cerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedCats=[];
+	$scope.selectedCat = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.selectedCats, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedCats.push(item);
+		$scope.categories='';
+		$scope.offer.category='';
+		console.log($scope.selectedCats);
+	  }
+	}
+	$scope.removeCat=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedCats.splice(index, 1);
+		
+	}
+	//exclude category
+	$scope.getexCategory = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getCategory',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.excerr=true;
+				$scope.msg = data[1];
+				$scope.excategories = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.excategories = data;
+			$scope.excerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.exselectedCats=[];
+	$scope.exselectedCat = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.exselectedCats, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.exselectedCats.push(item);
+		$scope.excategories='';
+		$scope.offer.excategory='';
+		console.log($scope.exselectedCats);
+	  }
+	}
+	$scope.exremoveCat=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.exselectedCats.splice(index, 1);
+		
+	}
+	
+	$scope.getUser = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('special-offer/getUser',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.uerr=true;
+				$scope.msg = data[1];
+				$scope.users = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.users = data;
+			console.log($scope.users);
+			$scope.uerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedUsers=[];
+	$scope.selectedUser = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.selectedUsers, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedUsers.push(item);
+		$scope.users='';
+		$scope.offer.user='';
+		console.log($scope.selectedUsers);
+	  }
+	}
+	
+	$scope.removeUser=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedUsers.splice(index, 1);
+		
+	}
+	//get Role
+	$scope.getRole = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('special-offer/getRole',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.rerr=true;
+				$scope.msg = data[1];
+				$scope.role = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+				//$scope.ab=false;
+			//console.log($scope.ab);
+			$scope.loading = false
+			$scope.role = data;
+			console.log($scope.role);
+			$scope.rerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.selectedRoles=[];
+	$scope.selectedRole = function(item)
+	{ 
+		oldmovies='';
+		angular.forEach($scope.selectedRoles, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.selectedRoles.push(item);
+		$scope.role='';
+		$scope.offer.role='';
+		//$scope.ab=true;
+		//console.log($scope.ab);
+	  }
+	}
+	
+	$scope.removeRole=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.selectedRoles.splice(index, 1);
+		
+	}
+	
+	//Specific product
+	
+	$scope.getSpecificProduct = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getProduct',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.sperr=true;
+				$scope.msg = data[1];
+				$scope.spproducts = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.spproducts = data;
+			///console.log($scope.spproducts);
+			$scope.sperr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.spselectedItems=[];
+	$scope.spselectedItem = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.spselectedItems, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.spselectedItems.push(item);
+		$scope.spproducts='';
+		$scope.offer.spproduct='';
+		console.log($scope.spselectedItems);
+	  }
+	}
+	
+	$scope.spremoveItem=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.spselectedItems.splice(index, 1);
+		
+	}
+	//specific category
+	$scope.getspecificCategory = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getCategory',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.spcerr=true;
+				$scope.msg = data[1];
+				$scope.spcategories = '';
+				console.log($scope.msg);
+			}
+			else
+			{
+			$scope.loading = false
+			$scope.spcategories = data;
+			$scope.spcerr=false;
+				$scope.msg = '';
+			//$scope.init();
+			}
+			});
+	}
+	$scope.spselectedCats=[];
+	$scope.spselectedCat = function(item)
+	{
+		oldmovies='';
+		angular.forEach($scope.spselectedCats, function(eachmovie){ //For loop
+          if(item.id == eachmovie.id){ // this line will check whether the data is existing or not
+          oldmovies = true;
+          }
+		});
+	  if(!oldmovies)
+	  {
+		item.selected=true;
+		$scope.spselectedCats.push(item);
+		$scope.spcategories='';
+		$scope.offer.spcategory='';
+		console.log($scope.spselectedCats);
+	  }
+	}
+	$scope.spremoveCat=function(index)
+	{
+		//var product = $scope.selectedItems[index];
+		$scope.spselectedCats.splice(index, 1);
 		
 	}
      $scope.init();

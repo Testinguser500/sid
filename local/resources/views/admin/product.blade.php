@@ -122,24 +122,96 @@
 				       </div>
 				     </div>
 				  </div>
+				  <div class="row col-xs-12">
+				   <div class="form-group  col-md-12">
+					<div class="col-md-5">
+				   Number of items per page: 
+					</div>
+					<div class="col-md-3">
+				   <select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
+				       <option value="5" ng-selected="tb_pag==5">5</option>
+				       <option value="10" ng-selected="tb_pag==10">10</option>
+				       <option value="100" ng-selected="tb_pag==100">100</option>
+				       <option value="1000" ng-selected="tb_pag==1000">1000</option>
+				   </select>
+					</div>
+				   </div>
+				   </div>
+			      </div>
+				   <div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>                         
+				   </div>
+			      </div>
+			      </div>
+			 </div>
+		    
+		    <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="init();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Edit</h4>                            
+			      </div>
+			     <div class="modal-body">
+                                    <div class="alert alert-success" ng-if="success_flash_pop">
+                                        <p>
+                                        <% success_flash_pop %>
+                                        </p>
+                                    </div>
+                                    <div class="alert alert-danger"  ng-if="errors_pop">
+                                        <ul>
+                                            <li ng-repeat ="er in errors_pop"><% er %></li>         
+                                        </ul>
+                                    </div>
+				    
+                                    <div class="row" ng-if="edit_field=='des'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">Description</label>
+                                        <div text-angular ng-model="edit_values.pro_des" name="pro_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
+				    <div class="row" ng-if="edit_field=='short_des'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">Short Description</label>
+                                        <div text-angular ng-model="edit_values.pro_short_des" name="pro_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
+				    <div class="row" ng-if="edit_field=='feat_des'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">Feature Description</label>
+                                        <div text-angular ng-model="edit_values.pro_feature_des" name="pro_des" ta-text-editor-class="border-around" ta-html-editor-class="border-around"></div>
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
+				   
 			      </div>
 			      <div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>                         
+				  <button type="button" class="btn btn-default pull-left" ng-click="init();" data-dismiss="modal">Close</button>			      
+				  <button class="btn btn-primary" ng-click="editDes(edit_values)" >Update</button>                         
 			      </div>
 			    </div>
 			  </div>
-		    </div>
+		  </div>
+		    
 		    </div>
 		    
 		    <div class="row">
-		    <div class="form-group col-md-2 pull-left">		  
-			<select ng-init="tb_pag=5" class="form-control" ng-model="tb_pag">
-			    <option value="5" ng-selected="tb_pag==5">5</option>
-			    <option value="10" ng-selected="tb_pag==10">10</option>
-			    <option value="100" ng-selected="tb_pag==100">100</option>
-			    <option value="1000" ng-selected="tb_pag==1000">1000</option>
-			</select>
-		    </div>
+			 
+			 <div class="col-md-2">
+			 <select class="form-control" name="" ng-model="bulk">
+			 <option value="">Bulk Action</option>
+			 <option value="edit">Edit</option>
+			 <option value="delete">Move To Trash</option>
+			 </select>
+			 
+			 </div>
+			 <div class="col-md-4">
+			 <button class="btn btn-default" ng-click="bulkAction(bulk);">Apply</button></div>
+			 
+		    
+		    
 		    <div class="form-group col-md-3 pull-right">		  
 		      <input type="text" placeholder="Search" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" ng-model="search">
 		    </div>
@@ -147,6 +219,7 @@
 		    <table id="example1" class="table table-bordered table-striped">
 		    <thead>
 		    <tr>
+			 <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
 		      <th ng-click="sort('id')" style="cursor:pointer">#
 		       <span class="glyphicon sort-icon"  ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
 		      </th>
@@ -196,14 +269,15 @@
 		    </tr>
 		    </thead>
 		    <tbody>                
-		    <tr dir-paginate="val in products|orderBy:sortKey:reverse|itemsPerPage:tb_pag|filter:search"> 
+		    <tr dir-paginate="val in products|orderBy:sortKey:reverse|itemsPerPage:tb_pag|filter:search">
+			 <td><input type="checkbox" ng-model="product_id[val.id]" ng-change="optionToggled(val.id)" value="<% val.id %>"/></td>
 		      <td><% val.id %></td>
-		      <td ng-if="screen_opt.pro_name"><% val.pro_name %></td>
+		      <td ng-if="screen_opt.pro_name"><a href="javascript:void(0);" ng-click="editproduct(val)"><% val.pro_name %></a></td>
 		      <td ng-if="screen_opt.category_name"><% val.category_name %></td>
 		      <td ng-if="screen_opt.status"><% val.status %></td>
-		      <td ng-if="screen_opt.pro_des" ng-bind-html="val.pro_des"></td>
-		      <td ng-if="screen_opt.pro_short_des" ng-bind-html="val.pro_short_des"></td>
-		      <td ng-if="screen_opt.pro_feature_des" ng-bind-html="val.pro_feature_des"></td>
+		      <td ng-if="screen_opt.pro_des"><button class="btn btn-default" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('des',val)">Edit Description</button></td>
+		      <td ng-if="screen_opt.pro_short_des"><button class="btn btn-default" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('short_des',val)">Edit Short Description</button></td>
+		      <td ng-if="screen_opt.pro_feature_des"><button class="btn btn-default" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('feat_des',val)">Edit Feature Description</button></td>
 		      <td ng-if="screen_opt.meta_title"><% val.meta_title %></td>
 		      <td ng-if="screen_opt.meta_description"><% val.meta_description %></td>
 		      <td ng-if="screen_opt.meta_keywords"><% val.meta_keywords %></td>
@@ -242,6 +316,7 @@
 		    </tbody>
 		    <tfoot>
 		     <tr>
+			 <th></th>
 		      <th>#</th>
 		      <th ng-if="screen_opt.pro_name">Product Name                    
 		      </th>                  
