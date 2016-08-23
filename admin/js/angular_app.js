@@ -2495,14 +2495,20 @@ app.controller('CountryController', function($scope, $http) {
      $scope.init = function() {	
                $scope.page='index';
                $scope.errors=false; 
-               $scope.errors_pop=false;
-               $scope.success_flash=false;
+               $scope.errors_pop=false;              
                $scope.success_flash_pop=false;
+               $scope.edit_values={};
+               $scope.cat_select_error='';
+               $scope.cat_select=false;
+               $scope.shw_sv_attr=1;
+               $scope.shw_sv_value=1;
+               $scope.show_save=1;
 	       $scope.loading = true;
 	       $http.get('option/all').
 	       success(function(data, status, headers, config) {
 			$scope.options = data['attr_gr'];
                         $scope.all_cats = data['category'];
+                        $scope.only_cat_id = data['only_cat_id'];
 		        $scope.loading = false;
  
 		});
@@ -2518,22 +2524,22 @@ app.controller('CountryController', function($scope, $http) {
 		});
         }
         $scope.checkAll = function () {	
-        if (!$scope.selectedAll) {
-            $scope.selectedAll = true;
-        } else {
-            $scope.selectedAll = false;
-        }	
-        angular.forEach($scope.options, function (item) {  
-            
-			if($scope.selectedAll)
-			{
-			$scope.selected_attr[item.id]=true;
-                        }else
-			{
-		         $scope.selected_attr[item.id]=false;
-			}
-                      
-        });
+            if (!$scope.selectedAll) {
+                $scope.selectedAll = true;
+            } else {
+                $scope.selectedAll = false;
+            }	
+            angular.forEach($scope.options, function (item) {  
+
+                            if($scope.selectedAll)
+                            {
+                            $scope.selected_attr[item.id]=true;
+                            }else
+                            {
+                             $scope.selected_attr[item.id]=false;
+                            }
+
+            });
 	
       };
         $scope.edit_modal=function(edit_field,edit_values){
@@ -2542,8 +2548,35 @@ app.controller('CountryController', function($scope, $http) {
             $scope.errors_pop=false;          
             $scope.success_flash_pop=false;
             $scope.edit_field=edit_field ;
+            $scope.arr_cats=[];    
+            $scope.cat_select=false;console.log( $scope.cat_select);
+            $scope.edit_values=edit_values;   
+            $scope.edit_values.cats_id=[];
+            var arrs_ca=$scope.edit_values.categorys_id.split(',');
+            for(var i=0;i < arrs_ca.length; i++)
+            {
+                $scope.arr_cats.push(parseInt(arrs_ca[i]));
+                $scope.edit_values.cats_id[parseInt(arrs_ca[i])]=true;
+            }           
+           
+        }
+        $scope.sel_al=function(sel_un){
+             angular.forEach($scope.only_cat_id, function (item,key) { 
+                 if(sel_un=="select")
+                 {
+                     $scope.edit_values.cats_id[item.id]=true;
+                 }else{
+                     
+                     $scope.edit_values.cats_id[item.id]=false;
+                 }
+             });
+        }
+        $scope.chec_array=function(){ 
+           return $scope.edit_values.categorys_id.split(',');
+
             $scope.edit_values=edit_values;
             
+
         }
         $scope.add = function() {
                 $scope.loading = true; 
@@ -2552,6 +2585,9 @@ app.controller('CountryController', function($scope, $http) {
                 $scope.errors_pop=false;
                 $scope.success_flash=false;
                 $scope.success_flash_pop=false;
+                $scope.shw_sv_attr=1;
+                $scope.shw_sv_value=1;
+                $scope.show_save=1;
                 $scope.option=false;
                 $http.get('option/add').
 		success(function(data, status, headers, config) {
@@ -2560,6 +2596,7 @@ app.controller('CountryController', function($scope, $http) {
  
 		});
 	} ;
+        //add
         $scope.duplicate_check_atr_name = function(ot_ky,ky)
         {                
              if($scope.opt_grp[ot_ky].attribute[ky].atr_name!=''){
@@ -2588,13 +2625,46 @@ app.controller('CountryController', function($scope, $http) {
                  if(($scope.shw_sv_value==1) && ($scope.shw_sv_attr==1)){
                      $scope.show_save=1;
                  }
-               }
-                 
+               }               
         }
+        //edit
+        $scope.duplicate_check_atr_name_edit = function(ky)
+        {                
+             if(($scope.edit_values.attribute[ky].option_name) && ($scope.edit_values.attribute[ky].option_name!='')){
+             $scope.shw_sv_attr=1;  
+             $scope.success_flash_pop=false;
+             $scope.errors_pop=false;
+              var value= $scope.edit_values.attribute[ky].option_name.toLowerCase();
+               $scope.edit_values.attribute[ky].error='';
+                 angular.forEach($scope.edit_values.attribute, function (item,key) {                     
+                    if((ky != key) && (item.option_name)){
+                        if( item.option_name.toLowerCase() == value)
+                        {                           
+                           $scope.edit_values.attribute[ky].error="Duplicate Value is not allowed.";
+                           $scope.show_save=0;
+                           $scope.shw_sv_attr=0;
+                        }
+                        else{
+                           $scope.shw_sv_attr=1;
+                        }
+                    }
+                    if((item.error) && (item.error != ''))
+                    {
+                        $scope.shw_sv_attr=0;
+                    }
+                    
+                 });
+             
+                 if(($scope.shw_sv_value==1) && ($scope.shw_sv_attr==1)){
+                     $scope.show_save=1;
+                 }
+               }               
+        }
+        //add
          $scope.duplicate_check_atr_value = function(ot_ky,ky,ke)
         {   
              if($scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name != ''){
-              $scope.shw_sv_value=1;
+             $scope.shw_sv_value=1;            
               var value= $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].val_name.toLowerCase();
               $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].error='';
                  angular.forEach($scope.opt_grp[ot_ky].attribute[ky].atr_val, function (item,key) {  
@@ -2602,6 +2672,39 @@ app.controller('CountryController', function($scope, $http) {
                         if( item.val_name.toLowerCase() == value)
                         {                           
                           $scope.opt_grp[ot_ky].attribute[ky].atr_val[ke].error="Duplicate Value is not allowed.";
+                          $scope.show_save=0;
+                          $scope.shw_sv_value=0;
+                        }
+                         else{
+                           $scope.shw_sv_value=1;
+                        }
+                    }
+                      if((item.error) && (item.error != ''))
+                    {
+                        $scope.shw_sv_value=0;
+                    }
+                 });
+             
+                 if(($scope.shw_sv_value==1) && ($scope.shw_sv_attr==1)){
+                     $scope.show_save=1;
+                 }
+               }
+                 
+        }
+        //edit
+         $scope.duplicate_check_atr_value_edit = function(ky,ke)
+        {   
+             if(($scope.edit_values.attribute[ky].options[ke].option_name) && ($scope.edit_values.attribute[ky].options[ke].option_name != '')){
+              $scope.shw_sv_value=1;
+             $scope.success_flash_pop=false;
+             $scope.errors_pop=false;
+              var value= $scope.edit_values.attribute[ky].options[ke].option_name.toLowerCase();
+              $scope.edit_values.attribute[ky].options[ke].error='';
+                 angular.forEach($scope.edit_values.attribute[ky].options, function (item,key) {  
+                    if((ke != key) && (item.option_name)){
+                        if( item.option_name.toLowerCase() == value)
+                        {                           
+                          $scope.edit_values.attribute[ky].options[ke].error="Duplicate Value is not allowed.";
                           $scope.show_save=0;
                           $scope.shw_sv_value=0;
                         }
@@ -2664,29 +2767,46 @@ app.controller('CountryController', function($scope, $http) {
 	};
         
 
-        $scope.update = function(update_values) {  
+        $scope.update = function(update_values, fd) {  
            $scope.loading = true;
            $scope.errors=false;
            $scope.errors_pop=false;
            $scope.success_flash=false;  
            $scope.success_flash_pop=false;
-           $http.post('option/update', {
-			update_values: update_values,       
-		}).success(function(data, status, headers, config) {
-                 
-                        if(data[0]=='error'){
-				$scope.errors_pop=data[1];
-			}else{
-				$scope.success_flash_pop=data[1];
-//				$scope.errors=false;
-//				$scope.option={};
-//                              $scope.values={};
-//			        $scope.success_flash=data[1];
-//                              $scope.init();
-			}
-			$scope.loading = false;
- 
-         });
+           var check_cats;
+           check_cats=0;
+           if((update_values.cats_id) && (update_values.cats_id.length>0)){
+              
+                update_values.categorys_id='';
+                angular.forEach(update_values.cats_id, function (item,key) { 
+               if(item)
+               {
+                   if(check_cats != 0){
+                      
+                      update_values.categorys_id += ","; 
+                   }
+                   check_cats=1;
+                   update_values.categorys_id += key;
+               }
+               });
+           }
+           if(fd=='status' || check_cats==1){
+                $scope.cat_select_error=false;
+                $http.post('option/update', {
+                             update_values: update_values,       
+                     }).success(function(data, status, headers, config) {
+
+                             if(data[0]=='error'){
+                                     $scope.errors_pop=data[1];
+                             }else{
+                                     $scope.success_flash_pop=data[1];
+                             }
+                             $scope.loading = false;
+
+              });
+          }else{
+               $scope.cat_select_error="Please select atleast one category";
+          }
       };
 
       $scope.store = function(option) { 
@@ -2727,26 +2847,46 @@ app.controller('CountryController', function($scope, $http) {
             $scope.cat_select_error="Please select atleast one category";
         }
       };
+      //add 
       $scope.push_attr = function(index)
       {
           if(!$scope.opt_grp[index].attribute){
           $scope.opt_grp[index].attribute=[{
                   atr_name:null,
-                  atr_type:"radio", 
+                  atr_type:"select", 
                   atr_val:[{val_name:null}],
           }];
          }else{
             $scope.opt_grp[index].attribute.push({
                                     atr_name:null,
-                                    atr_type:"radio", 
+                                    atr_type:"select", 
                                     atr_val:[{val_name:null}],
               });
          }
       }
+      //edit
+      $scope.push_attr_edit = function()
+      {
+         
+            $scope.edit_values.attribute.push({
+                                    option_name:null,
+                                    type:"select", 
+                                    options:[{option_name:null}],
+              });
+       
+      }
+      //add
        $scope.pop_attr = function(ot_ky,ky)
       {
           $scope.opt_grp[ot_ky].attribute.splice(ky,1);
           
+      }
+      //edit
+      $scope.pop_attr_edit = function(ky)
+      {
+         
+            $scope.edit_values.attribute.splice(ky,1);
+       
       }
       $scope.deleteoption = function(index) {
 		$scope.loading = true;
@@ -2762,19 +2902,30 @@ app.controller('CountryController', function($scope, $http) {
                                         $scope.init();
                                 });
         };	
-	
+	//add
 	$scope.addInput = function (ot_ky,ky) {	   
 
              $scope.opt_grp[ot_ky].attribute[ky].atr_val.push({                                   
                                   val_name:null
               });
 	}
-       
+       //add
 	$scope.removeInput = function (ot_ky,ky,index) {
-	    //$scope.values.splice(index, 1);
+	  
           $scope.opt_grp[ot_ky].attribute[ky].atr_val.splice(index, 1);
 	}
+        //edit
+	$scope.addInput_edit = function (ky) {	   
 
+              $scope.edit_values.attribute[ky].options.push({                                   
+                                  option_name:null
+              });
+	}
+       //edit
+	$scope.removeInput_edit = function (ky,index) {
+	  
+          $scope.edit_values.attribute[ky].options.splice(index, 1);
+	}
          $scope.init();
 });
  
