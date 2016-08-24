@@ -137,7 +137,7 @@
             </div>
             <div class="form-group">
                   <label for="exampleInputEmail1">Rule Name</label>
-                  <input type="text" class="form-control" id="" name="rule_name" placeholder="Role" ng-model="offer.role_name">
+                  <input type="text" class="form-control" id="" name="rule_name" placeholder="Rule" ng-model="offer.role_name">
 		  <div class="help-block"></div>
                 </div>
             <div class="form-group">
@@ -254,7 +254,7 @@
                   <input type="text" class="form-control" id=""  ng-model="offer.role" name="role" placeholder="Search" ng-click="getRole(offer.user);" ng-keyup="getRole(offer.user); ">
 			
 			<ul class="pro-ul" ng-show="rerr"><li><%msg%></li></ul>
-			<ul class="pro-ul" ng-if="role && ab==false">
+			<ul class="pro-ul" ng-if="role">
 			      <li ng-repeat="r in role" ng-click="selectedRole(r);ab=true"><%r.name%></li>
 			</ul>
 			

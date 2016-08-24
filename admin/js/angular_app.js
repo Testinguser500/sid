@@ -4222,7 +4222,7 @@ $scope.checkAll = function () {
 		from_date:offer.from_date,
 		products_adujst:offer.products_adujst,
 		quantity_based_on:offer.quantity_based_on,
-		role_name:offer.role_name,
+		rule_name:offer.role_name,
 		method:$scope.method
 	
 	
@@ -4287,7 +4287,7 @@ $scope.checkAll = function () {
 		from_date:offerData.start_date,
 		products_adujst:offerData.products_adujst,
 		quantity_based_on:offerData.quantity_based_on,
-		role_name:offerData.role_name,
+		rule_name:offerData.offer_name,
 		method:offerData.method
 		
 			}).success(function(data, status, headers, config) {

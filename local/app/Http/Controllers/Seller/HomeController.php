@@ -23,9 +23,20 @@ class HomeController extends Controller
                  return redirect('seller/home'); 
              }		  
 	}
-        public function dashboard(){            
+        public function dashboard(){
+		
              return view('seller/dashboard')->with('title','Dashboard')->with('subtitle','Control Panel');
 		
+	}
+	public function profile()
+	{
+		return view('seller/profile')->with('title','Seller Profile');
+	}
+	public function all()
+	{
+		$seller = DB::table('users')->where('id','=',Auth::user()->id)->first();
+		$return['seller']=$seller;
+		return $return;
 	}
 	public function home(){ 
            if ((Auth::check()) &&  (Auth::user()->role==5) && (Auth::user()->status=='Active')) { 
@@ -202,6 +213,42 @@ class HomeController extends Controller
 			$height = 200;
 		}
 	       $destinationPath = 'uploads'.@$folder; // upload path
+	}
+	
+	public function update()
+	{
+		$id = Request::input('id');
+		$validation = array(
+				    'first_name'=>'required',
+				    'last_name'=>'required',
+				    'email'=>'required|email|unique:users,email,'.$id);
+		if(Request::input('current_password')||Request::input('new_password')||Request::input('confirm_new_password'))
+		{
+			$validation['current_password']='required|min:6|check_password_match:current_password';
+			$validation['new_password']='required|min:6';
+			$validation['confirm_new_password']='required|same:new_password';
+		}
+		$validator = Validator::make(Request::all(),$validation);
+		if ($validator->fails()) {
+		$list[]='error';
+		$msg=$validator->errors()->all();
+		$list[]=$msg;
+		return $list;
+		}
+		 $cat = User::find(Request::input('id'));
+		 	$cat->fname = Request::input('first_name');
+			$cat->lname = Request::input('last_name');
+			$cat->email = Request::input('email');
+			if(Request::input('new_password'))
+			{
+				$cat->password = Request::input('new_password');
+			}
+			$cat->save();
+			
+			$list[]='success';
+		$msgs='Record updated successfully.';
+		$list[]=$msgs;
+		return $list;
 	}
  }
  

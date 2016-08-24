@@ -121,7 +121,50 @@ class SpecialOfferController extends Controller
         public function store(){
 			
 	    //print_r(Request::all());
+	    $validation = array(
+				'rule_name'=>'required',
+				'from_date'=>'required',
+				'end_date'=>'required',
+				'apply_to'=>'required',
+				'customers'=>'required',
+				'amount_purchase'=>'required|numeric',
+				'products_adujst'=>'required',
+				'amount_adjust'=>'required|numeric',
+				'adjustment_type'=>'required',
+				'adjustment_value'=>'required|numeric'
+				);
+	    if(Request::input('apply_to')=='categories_include'||Request::input('apply_to')=='categories_exclude')
+	    {
+			$validation['category_list']='required';
+	    }
+	    elseif(Request::input('apply_to')=='products_include'||Request::input('apply_to')=='products_exclude')
+	    {
+			$validation['product_list']='required';
+	    }
+	    if(Request::input('customers')=='roles_include'||Request::input('customers')=='roles_exclude')
+	    {
+			$validation['role_list']='required';
+	    }
+	    elseif(Request::input('customers')=='users_include'||Request::input('customers')=='users_exclude')
+	    {
+			$validation['customer_list']='required';
+	    }
+	    if(Request::input('products_adujst')=='other_categories')
+	    {
+			$validation['specific_category']='required';
+	    }
+	    elseif(Request::input('products_adujst')=='other_products')
+	    {
+			$validation['specific_product']='required';
+	    }
 	    
+	    $validator = Validator::make(Request::all(), $validation);
+	    if ($validator->fails()) {
+				$lists[]='error';
+				$msg=$validator->errors()->all();
+				$lists[]=$msg;
+				return $lists;
+			}
 	    //$products = Request::input('products');
 	    $category_list = Request::input('category_list');
 	    $product_list = Request::input('product_list');
@@ -164,7 +207,7 @@ class SpecialOfferController extends Controller
 			$specific_product_id[]=$val['id'];
 	    }
 	    
-	    $cat= SpecialOffer::create(['offer_name'=>Request::input('role_name'),
+	    $cat= SpecialOffer::create(['offer_name'=>Request::input('rule_name'),
 				    'method'=>Request::input('method'),
 				    'quantity_based_on'=>Request::input('quantity_based_on'),
 				    'condition_match'=>Request::input('condition_match'),
@@ -282,6 +325,7 @@ class SpecialOfferController extends Controller
 	 $cate->category_data = DB::table('categorys')->whereIn('id',$cat_id)->get();
 	 $cate->spcategory_data = DB::table('categorys')->whereIn('id',$specific_category)->get();
 	 $cate->role_data = DB::table('role')->whereIn('id',$role_list)->get();
+	 if($cate->customer_list)
 	 $cate->user_data = DB::select("select id,CONCAT(fname,' ',lname) as name from users where id IN (".$cate->customer_list.")");
 	 //$user_email =explode(',',$cate->user_email);
 	 //foreach((array)$user_email as $val)
@@ -296,7 +340,50 @@ class SpecialOfferController extends Controller
 	}
          public function update(){
 	//print_r(Request::all());
-	
+	$validation = array(
+				'rule_name'=>'required',
+				'from_date'=>'required',
+				'end_date'=>'required',
+				'apply_to'=>'required',
+				'customers'=>'required',
+				'amount_purchase'=>'required|numeric',
+				'products_adujst'=>'required',
+				'amount_adjust'=>'required|numeric',
+				'adjustment_type'=>'required',
+				'adjustment_value'=>'required|numeric'
+				);
+	    if(Request::input('apply_to')=='categories_include'||Request::input('apply_to')=='categories_exclude')
+	    {
+			$validation['category_list']='required';
+	    }
+	    elseif(Request::input('apply_to')=='products_include'||Request::input('apply_to')=='products_exclude')
+	    {
+			$validation['product_list']='required';
+	    }
+	    if(Request::input('customers')=='roles_include'||Request::input('customers')=='roles_exclude')
+	    {
+			$validation['role_list']='required';
+	    }
+	    elseif(Request::input('customers')=='users_include'||Request::input('customers')=='users_exclude')
+	    {
+			$validation['customer_list']='required';
+	    }
+	    if(Request::input('products_adujst')=='other_categories')
+	    {
+			$validation['specific_category']='required';
+	    }
+	    elseif(Request::input('products_adujst')=='other_products')
+	    {
+			$validation['specific_product']='required';
+	    }
+	    
+	    $validator = Validator::make(Request::all(), $validation);
+	    if ($validator->fails()) {
+				$lists[]='error';
+				$msg=$validator->errors()->all();
+				$lists[]=$msg;
+				return $lists;
+			}
 	 $category_list = Request::input('category_list');
 	    $product_list = Request::input('product_list');
 	    $role_list = Request::input('role_list');
@@ -339,6 +426,7 @@ class SpecialOfferController extends Controller
 	    }
 	    
 	    $pro = SpecialOffer::find(Request::input('id'));
+	    $pro->offer_name=Request::input('rule_name');
 	    $pro->method=Request::input('method');
 				    $pro->quantity_based_on=Request::input('quantity_based_on');
 				    $pro->condition_match=Request::input('condition_match');

@@ -181,6 +181,9 @@ Route::post('admins/coupon/getUser', 'Admin\CouponController@getUser');
 //Seller Panel
 Route::get('seller/login', 'Seller\HomeController@index');
 Route::post('seller/log_user', 'Seller\HomeController@log_user');
+Route::get('seller/profile/all', 'Seller\HomeController@all');
+Route::get('seller/profile', 'Seller\HomeController@profile');
+Route::post('seller/profile/update', 'Seller\HomeController@update');
 Route::get('seller/log_out', 'Seller\HomeController@log_out');
 Route::get('seller/dashboard', 'Seller\HomeController@dashboard');
 Route::get('seller/home', 'Seller\HomeController@home');

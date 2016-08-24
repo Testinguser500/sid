@@ -63,7 +63,40 @@ class BulkDiscountController extends Controller
         public function store(){
 			
 	    //print_r(Request::all());
+	    $validation = array(
+				'rule_name'=>'required',
+				'from_date'=>'required',
+				'end_date'=>'required',
+				'apply_to'=>'required',
+				'customers'=>'required',
+				'quantity'=>'required'
+				
+				);
+	    if(Request::input('apply_to')=='categories_include'||Request::input('apply_to')=='categories_exclude')
+	    {
+			$validation['category_list']='required';
+	    }
+	    elseif(Request::input('apply_to')=='products_include'||Request::input('apply_to')=='products_exclude')
+	    {
+			$validation['product_list']='required';
+	    }
+	    if(Request::input('customers')=='roles_include'||Request::input('customers')=='roles_exclude')
+	    {
+			$validation['role_list']='required';
+	    }
+	    elseif(Request::input('customers')=='users_include'||Request::input('customers')=='users_exclude')
+	    {
+			$validation['customer_list']='required';
+	    }
+	   
 	    
+	    $validator = Validator::make(Request::all(), $validation);
+	    if ($validator->fails()) {
+				$lists[]='error';
+				$msg=$validator->errors()->all();
+				$lists[]=$msg;
+				return $lists;
+			}
 	    //$products = Request::input('products');
 	    $category_list = Request::input('category_list');
 	    $product_list = Request::input('product_list');
@@ -240,7 +273,40 @@ class BulkDiscountController extends Controller
 	}
          public function update(){
 	//print_r(Request::all());
-	
+	$validation = array(
+				'rule_name'=>'required',
+				'from_date'=>'required',
+				'end_date'=>'required',
+				'apply_to'=>'required',
+				'customers'=>'required',
+				'quantity'=>'required'
+				
+				);
+	    if(Request::input('apply_to')=='categories_include'||Request::input('apply_to')=='categories_exclude')
+	    {
+			$validation['category_list']='required';
+	    }
+	    elseif(Request::input('apply_to')=='products_include'||Request::input('apply_to')=='products_exclude')
+	    {
+			$validation['product_list']='required';
+	    }
+	    if(Request::input('customers')=='roles_include'||Request::input('customers')=='roles_exclude')
+	    {
+			$validation['role_list']='required';
+	    }
+	    elseif(Request::input('customers')=='users_include'||Request::input('customers')=='users_exclude')
+	    {
+			$validation['customer_list']='required';
+	    }
+	   
+	    
+	    $validator = Validator::make(Request::all(), $validation);
+	    if ($validator->fails()) {
+				$lists[]='error';
+				$msg=$validator->errors()->all();
+				$lists[]=$msg;
+				return $lists;
+			}
 	 $category_list = Request::input('category_list');
 	    $product_list = Request::input('product_list');
 	    $role_list = Request::input('role_list');

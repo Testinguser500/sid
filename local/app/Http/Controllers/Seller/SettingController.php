@@ -53,6 +53,14 @@ class SettingController extends Controller
 				$list[]=$msg;
 				return $list;
 			}
+	if(Request::input('profile_pic')){	 
+         
+         $fileName = asset('uploads/seller/').'/'.Request::input('profile_pic'); // renameing image
+         $seller = User::find(Auth::user()->id);
+	 $seller->image = $fileName;
+	 $seller->save();
+         }
+	 
 	$store = Store::find(Request::input('store_id'));
 		$store->store_name = Request::input('store_name');
 		if(Request::input('banner'))

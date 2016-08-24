@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Validator;
+use DB;
+use Hash;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -190,6 +192,21 @@ class AppServiceProvider extends ServiceProvider
         }
           
      },'This variable product has no active variations. Add or enable variations to allow this product to be purchased.');
+     Validator::extend('check_password_match', function ($attribute, $value, $parameters, $validator) {
+        $data = $validator->getData();
+        
+        $password = DB::table('users')->where('id','=',$data['id'])->first();
+        
+        if(Hash::check($data['current_password'], $password->password))
+        {
+            return true;
+          
+        }
+        else
+        {
+            return false;
+        }
+     },'Current password does not match wth our record.');
     }
 
 

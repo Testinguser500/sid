@@ -137,7 +137,7 @@
             </div>
             <div class="form-group">
                   <label for="exampleInputEmail1">Rule Name</label>
-                  <input type="text" class="form-control" id="" name="rule_name" placeholder="Role" ng-model="offer.role_name">
+                  <input type="text" class="form-control" id="" name="rule_name" placeholder="Rule" ng-model="offer.role_name">
 		  <div class="help-block"></div>
                 </div>
             <div class="form-group">

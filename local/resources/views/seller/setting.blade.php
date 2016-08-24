@@ -31,7 +31,17 @@
 			  
 			  
 	    </div>
-            
+            <div class="row">
+				<div class="form-group col-xs-4">
+                  <label for="exampleInputEmail1"> Profile Picture</label>
+		  <img ng-mouseleave="pic_cross=0" ng-mouseover="pic_cross=1" ng-show="store_data.profile_picture" src="{{URL::asset('uploads/seller')}}/thumb_<% store_data.profile_picture %>" height="80" width="80" style="border-radius:50%">
+                  <span ng-hide="store_data.profile_picture" class="btn btn-primary btn-file">
+					Upload<input type="file"  name="profile_picture" ng-model="store_data.profile_picture" onchange="angular.element(this).scope().uploadProfilePic(this)">
+					</span>
+		  <a href="javascript:void(0);" ng-click="delPic(store_data.profile_picture);pic_cross=0" title="Delete" class="pic-del" ng-mouseleave="pic_cross=0" ng-mouseover="pic_cross=1" ng-show="pic_cross==1" ><img src="{{URL::asset('admin/img/del.png')}}"></a>
+		  <div class="help-block"></div>
+                </div>
+	    </div>
             <div class="row">
 			<div class="form-group col-xs-4">
                   <label for="exampleInputMobile">Store Name</label>
