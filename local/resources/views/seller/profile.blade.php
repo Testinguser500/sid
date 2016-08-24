@@ -12,7 +12,7 @@
         </div>
         <div class="box" ng-if="page=='index'">
             <div class="box-header">
-              <h3 class="box-title"><i class="fa fa-list"></i> Store Setting</h3>
+              <h3 class="box-title"><i class="fa fa-list"></i> Edit Profile</h3>
               
             </div>
             <div class="box-body">
