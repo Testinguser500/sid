@@ -154,7 +154,12 @@ Route::post('admins/product/image_delete', 'Admin\ProductController@image_delete
 Route::get('admins/product/export', 'Admin\ProductController@export');
 Route::post('admins/product/getvariation', 'Admin\ProductController@getvariation');
 Route::post('admins/product/getMainCat', 'Admin\ProductController@getMainCat');
+<<<<<<< HEAD
 Route::post('admins/product/get_attr_gr', 'Admin\ProductController@get_attr_gr');
+=======
+Route::post('admins/product/deleteAll', 'Admin\ProductController@deleteAll');
+Route::post('admins/product/updateDes', 'Admin\ProductController@updateDes');
+>>>>>>> 085b4909ae9dfe9815f93527a95d660ff83c52d7
 
 Route::get('admins/plan', 'Admin\PlanController@index');
 Route::get('admins/plan/all', 'Admin\PlanController@all');
@@ -180,6 +185,9 @@ Route::post('admins/coupon/getUser', 'Admin\CouponController@getUser');
 //Seller Panel
 Route::get('seller/login', 'Seller\HomeController@index');
 Route::post('seller/log_user', 'Seller\HomeController@log_user');
+Route::get('seller/profile/all', 'Seller\HomeController@all');
+Route::get('seller/profile', 'Seller\HomeController@profile');
+Route::post('seller/profile/update', 'Seller\HomeController@update');
 Route::get('seller/log_out', 'Seller\HomeController@log_out');
 Route::get('seller/dashboard', 'Seller\HomeController@dashboard');
 Route::get('seller/home', 'Seller\HomeController@home');
@@ -193,4 +201,20 @@ Route::post('seller/country/getState', 'Admin\CountryController@getState');
 Route::post('seller/country/getCity', 'Admin\CountryController@getCity');
 Route::post('seller/setting/update', 'Seller\SettingController@update');
 
+Route::get('admins/special-offer', 'Admin\SpecialOfferController@index');
+Route::get('admins/special-offer/all', 'Admin\SpecialOfferController@all');
+Route::post('admins/special-offer/getUser', 'Admin\SpecialOfferController@getUser');
+Route::post('admins/special-offer/getRole', 'Admin\SpecialOfferController@getRole');
+Route::post('admins/special-offer/store', 'Admin\SpecialOfferController@store');
+Route::get('admins/special-offer/edit/{id}', 'Admin\SpecialOfferController@edit');
+Route::post('admins/special-offer/update', 'Admin\SpecialOfferController@update');
+Route::post('admins/special-offer/changeStatus', 'Admin\SpecialOfferController@changeStatus');
+Route::post('admins/special-offer/delete', 'Admin\SpecialOfferController@delete');
 
+Route::get('admins/bulk-discount', 'Admin\BulkDiscountController@index');
+Route::get('admins/bulk-discount/all', 'Admin\BulkDiscountController@all');
+Route::post('admins/bulk-discount/store', 'Admin\BulkDiscountController@store');
+Route::get('admins/bulk-discount/edit/{id}', 'Admin\BulkDiscountController@edit');
+Route::post('admins/bulk-discount/update', 'Admin\BulkDiscountController@update');
+Route::post('admins/bulk-discount/changeStatus', 'Admin\BulkDiscountController@changeStatus');
+Route::post('admins/bulk-discount/delete', 'Admin\BulkDiscountController@delete');

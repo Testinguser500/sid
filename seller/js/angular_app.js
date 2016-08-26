@@ -98,7 +98,11 @@ app.config(['$routeProvider', function($routeProvider) {
    }).
    when('/product', {
       templateUrl: 'product', controller: 'ProductController'
-   }). 
+   }).
+   when('/profile', {
+      templateUrl: 'profile', controller: 'ProfileController'
+   }).
+   
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
    });
@@ -524,12 +528,17 @@ app.controller('HomeController', function($scope, $http) {
 	{
 		$scope.store_data.banner=false;
 	}
+	$scope.delPic = function()
+	{
+		$scope.store_data.profile_picture=false;
+	}
         $scope.update = function(storeData) { 
             $scope.errors=false;
             $scope.success_flash=false;
          console.log(storeData);
            $http.post('setting/update', {
 		store_id:storeData.id,
+		profile_pic:storeData.profile_picture,
 		store_name: storeData.store_name,
 		store_link: storeData.store_link,
 		store_address: storeData.store_address,
@@ -606,6 +615,34 @@ app.controller('HomeController', function($scope, $http) {
 			$scope.bannerfiles=data;
 			$scope.store_data.banner=$scope.bannerfiles;
 			//console.log($scope.user.banner);
+			$scope.loading = false;
+			}
+			});
+
+    });
+   }
+   $scope.uploadProfilePic = function(element) {
+           $scope.$apply(function($scope) {
+            $scope.loading = true;
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+			fd.append("folder",'seller');
+			fd.append("width",'150');
+			fd.append("height",'150');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ 
+			if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
+			$scope.profilePic=data;
+			$scope.store_data.profile_picture=$scope.profilePic;
+			console.log($scope.profilePic);
 			$scope.loading = false;
 			}
 			});
@@ -2575,6 +2612,7 @@ app.controller('CountryController', function($scope, $http) {
                  
                 if(data[0]=='error'){
 				$scope.errors=data[1];
+				$scope.success_flash=false;
 			}else{
 				
 				$scope.errors=false;
@@ -2586,5 +2624,54 @@ app.controller('CountryController', function($scope, $http) {
  
          });
       };
+	$scope.init();
+});
+   app.controller('ProfileController', function($scope, $http) {
+	
+	$scope.errors=false;
+     $scope.files='';
+     $scope.loading = true;
+     $scope.page='index';
+     $scope.success_flash=false;
+     $scope.init = function() {	
+                $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.get('profile/all').
+		success(function(data, status, headers, config) {
+			$scope.seller = data['seller'];
+		        $scope.loading = false;
+ 
+		});
+	}
+	$scope.update = function(sellerData) {
+	$scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+		$http.post('profile/update',{
+			id:sellerData.id,
+			first_name:sellerData.fname,
+			last_name:sellerData.lname,
+			email:sellerData.email,
+			current_password:sellerData.current_password,
+			new_password:sellerData.new_password,
+			confirm_new_password:sellerData.confirm_new_password
+			}).
+		success(function(data, status, headers, config) {
+			//$scope.seller = data['seller'];
+		        $scope.loading = false;
+			if(data[0]=='error'){
+				$scope.errors=data[1];
+			}else{
+				
+				$scope.errors=false;
+				$scope.product={};
+			        $scope.success_flash=data[1];
+                                $scope.init();
+			}
+			$scope.loading = false;
+		});
+	
+	}
 	$scope.init();
 });

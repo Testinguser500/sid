@@ -57,6 +57,24 @@
     right: 0;
 	z-index:9999
 }
+.pic-del {
+    background-color: rgba(14, 14, 29, 0.94);
+    border-radius: 50%;
+    float: none;
+    height: 80px;
+    left: 0;
+    margin: 0 119px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    vertical-align: middle;
+    width: 80px;
+    z-index: 9999;
+}
+.pic-del img {
+    margin: 35% 0;
+}
 .subsubsub {
     list-style: outside none none;
     margin-left: 0;

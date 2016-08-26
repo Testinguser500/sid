@@ -103,7 +103,8 @@ class CategoryController extends Controller
 	     
 	}
          public function update(){
-	
+	if(!Request::input('type'))
+	{
 	  $validator = Validator::make(Request::all(), [
             'category_name' => 'required|soft_unique_single:categorys,category_name,'.Request::input('id'),	    
             'description'=>'required',        
@@ -118,6 +119,7 @@ class CategoryController extends Controller
 			      $list[]=$msg;
 			      return $list;
         }
+	}
 //	 if(Input::file('image')!=''){	 
 //         $destinationPath = 'uploads'; // upload path
 //         $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension

@@ -274,7 +274,7 @@
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-<!--                <img src="{{URL::asset('seller/img')}}/user2-160x160.jpg" class="img-circle" alt="User Image">-->
+                <img src="{{getUser('image')}}" class="img-circle" alt="User Image">
 
                 <p>
                   {{Auth::user()->display_name }}
@@ -299,7 +299,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#profile" class="btn btn-default btn-flat">Edit Profile</a>
                 </div>
                 <div class="pull-right">
                   <a href="{{ URL('seller/log_out') }}" class="btn btn-default btn-flat">Sign out</a>
@@ -322,10 +322,10 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="{{URL::asset('seller/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
+          <img src="{{getUser('image')}}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>{{ Auth::user()->name }}</p>
+          <p>{{getUser('fname')}}</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>

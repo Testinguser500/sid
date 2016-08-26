@@ -74,7 +74,11 @@ function configs_value($key)
   $configs= DB::table('configs')->where('key', '=',$key)->first(); 
   return $configs->value;
 }
-
+function getUser($colmn)
+{
+    $seller = DB::table('users')->where('id','=',Auth::user()->id)->first();
+    return $seller->$colmn;
+}
 function email_section($id)
 {
   $email_msgs= DB::table('email_msgs')->where('id', '=',$id)->first(); 
