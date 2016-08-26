@@ -154,6 +154,7 @@ Route::post('admins/product/image_delete', 'Admin\ProductController@image_delete
 Route::get('admins/product/export', 'Admin\ProductController@export');
 Route::post('admins/product/getvariation', 'Admin\ProductController@getvariation');
 Route::post('admins/product/getMainCat', 'Admin\ProductController@getMainCat');
+Route::post('admins/product/get_attr_gr', 'Admin\ProductController@get_attr_gr');
 
 Route::get('admins/plan', 'Admin\PlanController@index');
 Route::get('admins/plan/all', 'Admin\PlanController@all');

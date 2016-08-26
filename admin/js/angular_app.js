@@ -166,12 +166,23 @@ app.config(['$routeProvider', function($routeProvider) {
    });
 	
 }]);
+app.controller('parentCtrl',function($scope, $http){
+    $scope.ptitle="";
+   
+    $scope.change_title=function(title){
+        $scope.ptitle=title;  
+     
+     
+    };
+});
+
 app.controller('HomeController', function($scope, $http) {
     
 //alert($location.path());
 	$scope.errors=false;
 	$scope.loading = true;
         $scope.includes_function=false;
+        $scope.$parent.ptitle='Dashboard';
 	$scope.init = function() {
             
 		
@@ -265,7 +276,7 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('CategoryController', function($scope, $http) {
     
      $scope.errors=false;
-
+    $scope.$parent.ptitle='Category Management';
      $scope.files='';     
      $scope.loading = true;
      $scope.categories=false;
@@ -503,7 +514,8 @@ app.controller('HomeController', function($scope, $http) {
  app.controller('EnquiryController', function($scope, $http) {
     
      $scope.errors=false;
-     $scope.files=false;
+     $scope.files=false;     
+     $scope.$parent.ptitle='Enquiry';
      $scope.loading = true;
      $scope.enquirys=false;
      $scope.enquiry=false;
@@ -588,6 +600,7 @@ app.controller('HomeController', function($scope, $http) {
      $scope.errors=false;
      $scope.files='';
      $scope.loading = true;
+     $scope.$parent.ptitle='FAQ';
      $scope.faqs=false;
      $scope.page='index';
      $scope.faq=false;
@@ -697,6 +710,7 @@ app.controller('HomeController', function($scope, $http) {
 app.controller('TemplateController', function($scope, $http) {
      $scope.errors=false;
      $scope.loading = true;
+     $scope.$parent.ptitle='Template';
      $scope.templates=false;
      $scope.template=false;
      $scope.temp=false;
@@ -825,6 +839,7 @@ app.controller('NewsletterController', function($scope, $http) {
      $scope.errors_modal=false;
      $scope.success_flash_modal=false;
      $scope.errors=false;
+     $scope.$parent.ptitle='Newsletter';
      $scope.files='';
      $scope.loading = true;
      $scope.newsletters=false;
@@ -942,6 +957,7 @@ app.controller('ConfigController', function($scope, $http) {
    
      $scope.errors=false;
      $scope.files='';
+     $scope.$parent.ptitle='Configuration';
      $scope.loading = true;
      $scope.configs=false;
      $scope.page='index';    
@@ -1002,6 +1018,7 @@ app.controller('UserController', function($scope, $http) {
 	$scope.files='';
 	$scope.bannerfiles='';
 	$scope.promotion='';
+        $scope.$parent.ptitle='User Management';
 	$scope.logo='';
 	$scope.profileImage='';
      $scope.loading = true;
@@ -1707,7 +1724,8 @@ app.controller('UserController', function($scope, $http) {
 });
 //Static Content
 app.controller('StaticContentController', function($scope, $http) {
-
+    
+    $scope.$parent.ptitle='Static Content Management';
     $scope.errors=false;
 	$scope.files='';
      $scope.loading = true;
@@ -1852,7 +1870,8 @@ app.controller('StaticContentController', function($scope, $http) {
 
 //Brands
 app.controller('BrandsController', function($scope, $http) {
-
+    
+     $scope.$parent.ptitle='Brand Management';
      $scope.errors=false;
      $scope.files = '';
      $scope.loading = true;
@@ -2008,7 +2027,8 @@ app.controller('BrandsController', function($scope, $http) {
 
 //Banners
 app.controller('BannerController', function($scope, $http) {
-
+    
+    $scope.$parent.ptitle='Banner Management';
     $scope.errors=false;
 	$scope.files='';
      $scope.loading = true;
@@ -2168,6 +2188,7 @@ $scope.banner=false;
 app.controller('SellerController', function($scope, $http) {
 
     $scope.errors=false;
+    $scope.$parent.ptitle='Seller Management';
 	$scope.files='';
      $scope.loading = true;
      $scope.sellers=false;
@@ -2322,6 +2343,7 @@ app.controller('SellerController', function($scope, $http) {
 //Country
 app.controller('CountryController', function($scope, $http) {
 
+    $scope.$parent.ptitle='Country';
     $scope.errors=false;
 	$scope.files='';
      $scope.loading = true;
@@ -2461,6 +2483,7 @@ app.controller('CountryController', function($scope, $http) {
         option_name: null
      }];     
      $scope.show_save=1;
+     $scope.$parent.ptitle='Attribute Management';
      $scope.all_cats={};
      $scope.errors=false;
      $scope.errors_pop=false;
@@ -2825,13 +2848,12 @@ app.controller('CountryController', function($scope, $http) {
 			}else{
 				$scope.errors=false; 
                                 $scope.option={};
-                                option.option_name='';
-				//$scope.success_flash=data[1];	
+                                option.option_name='';				
                                 $scope.opt_grp.push({
                                     opt_id : data[1].id,
                                     opt_name:data[1].option_name
                                 });
-				//$scope.init();
+				$scope.push_attr($scope.opt_grp.length-1);
 			}
 			$scope.loading = false;
  
@@ -2924,6 +2946,8 @@ app.controller('CountryController', function($scope, $http) {
  
  /*****Products*****/
   app.controller('ProductController', function($scope, $http, filterFilter) {
+      
+     $scope.$parent.ptitle='Product Management'; 
      $scope.errors=false;
      $scope.files='';
      $scope.loading = true;
@@ -2933,8 +2957,9 @@ app.controller('CountryController', function($scope, $http) {
      $scope.pr_imgs = [];
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
+     $scope.optval_radio = [];
      $scope.tags = [];
-     $scope.variations = [];
+     $scope.variations = [];    
      $scope.product.pro_category_id={};
      
      //$scope.product.pro_opt_values_id=[];
@@ -3052,17 +3077,36 @@ app.controller('CountryController', function($scope, $http) {
 	    $http.post('product/getoptionvalue',{
 			parent_id: optionid
 		}).
-		success(function(data, status, headers, config) {
+		success(function(data, status, headers, config) { 
+                   if(data['optionname']['type']=="select"){
 			$scope.optval.push({
 		         optid:optionid,
 	                 all :data['optionvalues'],
 			 parent_name: data['optionname']
 		        });
-		        $scope.loading = false;
+		        
+                    }else{
+                        $scope.optval_radio.push({
+		         optid:optionid,
+	                 all :data['optionvalues'],
+			 parent_name: data['optionname']
+		        });
+                    }
+                    $scope.loading = false;
 		});
 	   }
 	}
-	
+       
+	$scope.attribute_gr_add=function(pro_category_id)
+        {
+            
+            $http.post('product/get_attr_gr',{
+			pro_category_id: pro_category_id
+		}).
+		success(function(data, status, headers, config) {
+			$scope.options=data['attrr'];console.log($scope.options);
+		});
+        }
 	$scope.addTags=function(ptag){ //console.log(ptag);
         if(ptag != ''){
 		$scope.tags.push({
@@ -3140,7 +3184,7 @@ app.controller('CountryController', function($scope, $http) {
 			$scope.brands = data['brands'];
 			$scope.datatyps = data['datatyps'];
 
-			$scope.options = data['options'];
+			//$scope.options = data['options'];
 			$scope.product={};
 			$scope.optval = [];
 			$scope.pr_imgs = [];
@@ -3501,6 +3545,8 @@ app.controller('CountryController', function($scope, $http) {
   });
 //Role Permission
   app.controller('PermissionController', function($scope, $http) {
+      
+     $scope.$parent.ptitle='Permission Management'; 
      $scope.errors=false;
      $scope.files='';
      $scope.loading = true;
