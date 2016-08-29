@@ -154,8 +154,12 @@ Route::post('admins/product/image_delete', 'Admin\ProductController@image_delete
 Route::get('admins/product/export', 'Admin\ProductController@export');
 Route::post('admins/product/getvariation', 'Admin\ProductController@getvariation');
 Route::post('admins/product/getMainCat', 'Admin\ProductController@getMainCat');
+<<<<<<< HEAD
+Route::post('admins/product/get_attr_gr', 'Admin\ProductController@get_attr_gr');
+=======
 Route::post('admins/product/deleteAll', 'Admin\ProductController@deleteAll');
 Route::post('admins/product/updateDes', 'Admin\ProductController@updateDes');
+>>>>>>> 085b4909ae9dfe9815f93527a95d660ff83c52d7
 
 Route::get('admins/plan', 'Admin\PlanController@index');
 Route::get('admins/plan/all', 'Admin\PlanController@all');

@@ -150,4 +150,5 @@ a.ms_ov{text-decoration: none}
 .tabb {
     border: 1px solid #eee;
 }
+.sidebar-menu li a.current{color:#fff;}
 

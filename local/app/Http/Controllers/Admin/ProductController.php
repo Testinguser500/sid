@@ -70,9 +70,9 @@ class ProductController extends Controller
 	public function getoptionvalue(){
 	   $pid= Request::input('parent_id');
 	   $optionvalues    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$pid)->where('status', '=','Active')->get();
-	   $optionname   = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',0)->where('id', '=',$pid)->where('status', '=','Active')->get();
+	   $optionname   = DB::table('pro_option')->where('is_delete', '=','0')->where('id', '=',$pid)->where('status', '=','Active')->first();
 	   $return['optionvalues']   = $optionvalues; 
-	   $return['optionname']   = $optionname;
+	   $return['optionname']   = $optionname;          
 	   return $return;
 	}
 	/****Move to trash ******/
@@ -155,24 +155,22 @@ class ProductController extends Controller
 			'meta_keywords' => 'Meta Keywords' 
 		    );
 	$validator->setAttributeNames($friendly_names);
+        $msg=array();
         if ($validator->fails()) {
               $list[]='error';
               $msg=$validator->errors()->all();
-	      //$list[]=$msg;
-	   //   return $list;
+	     
         }
-	//$msg1 = array();
-	if ($validator1->fails()) {
-              //$list[]='error';
-              $msg1=$validator1->errors()->all();
-	    array_push($msg,$msg1[0]);
 	
-	     // $list[]=$msg;
-	     //return $list;
+	if ($validator1->fails()) {
+            
+            $msg1=$validator1->errors()->all();
+	    array_push($msg,$msg1[0]);	
+	     
         }
 	if ($validator->fails() || $validator1->fails()){
 	    $list[]=$msg;
-	  return $list;  
+	   return $list;  
 	}
 	
 	$catids= Request::input('pro_category_id');
@@ -615,7 +613,38 @@ class ProductController extends Controller
 		
 		return $result;
 	}
-	
+	public function get_attr_gr(){
+              $cats_ids=Request::input('pro_category_id');
+              $all_sel_ids=array();
+              foreach($cats_ids as $id=>$v){
+                  if($v){
+                      $all_sel_ids[]=$id;
+                  }
+              }
+              $attr_gr    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get(); 
+              $attr=array();
+              foreach($attr_gr as $ky=>$ve){
+                //print_r($ve);  
+                 $cat_exp = explode(',',$ve->categorys_id);
+                 $ct=0;
+                 foreach($cat_exp as $i=>$v){
+                     if(in_array($v, $all_sel_ids))
+                     {
+                         $ct=$ct+1;
+                         $attribute=DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$ve->id)->where('status', '=','Active')->get(); 
+                         $attr=array_merge($attr,$attribute);
+                     }
+                 }
+                 if($ct==0)
+                 {
+                    unset($attr_gr[$ky]);
+                 }
+                
+              }
+            $return['attr_gr'] = $attr_gr;
+            $return['attrr'] = $attr;
+	    return $return;   
+        }
 	
 	 public function export(){
                 $table = DB::table('product')->get();   

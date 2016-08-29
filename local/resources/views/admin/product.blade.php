@@ -674,10 +674,16 @@
 					     </div>
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Dimensions (cm)</label>
+                                         </div>
+                                         <div class="form-group">
 					     <input type="text" placeholder="Length" name="length" class="form-control" ng-model="product.length">
-					     <input type="text" placeholder="Width" name="width" class="form-control" ng-model="product.width">
-					     <input type="text" placeholder="Height" name="height" class="form-control" ng-model="product.height">
-					     </div>
+					 </div>
+                                         <div class="form-group">
+                                             <input type="text" placeholder="Width" name="width" class="form-control" ng-model="product.width">
+                                         </div>
+                                          <div class="form-group">  
+                                             <input type="text" placeholder="Height" name="height" class="form-control" ng-model="product.height">
+					  </div>   
 					 <!--<div class="form-group">
 					     <label for="exampleInputEmail1">Shipping class</label>
 					     <select class="form-control">
@@ -695,13 +701,23 @@
 					     <!--<select class="form-control" name="pro_opt_name_id" ng-model="product.pro_opt_name_id"  ng-change="GetSelectedOptions(product.pro_opt_name_id)">
 						<option ng-repeat="opnam in options" ng-value="opnam.id" ng-selected="opnam.id==product.pro_opt_name_id" value="<%opnam.id%>"><% opnam.option_name %></option>
 					     </select>-->
+                                            
+                                            
+<!--                                             <select class="form-control" name="pro_opt_name_id" ng-model="sel_attr_gr"  ng-change="">
+						<option ng-repeat="atr in attr_gr" ng-value="atr.id" value="<%atr.id%>"><% atr.option_name %></option>
+					     </select>-->
+                                         </div>
+                                         <div class="form-group">
+                                             <span ng-if="options.length==0" style="color:#a94442">Please select category</span>
 					     <select class="form-control" name="pro_opt_name_id" ng-model="product.pro_opt_name_id"  ng-change="">
 						<option ng-repeat="opnam in options" ng-if="check_exist(opnam.id)" ng-value="opnam.id" ng-selected="opnam.id==product.pro_opt_name_id" value="<%opnam.id%>"><% opnam.option_name %></option>
 					     </select>
+                                         </div>
+                                          <div class="form-group">   
 					     <button ng-click="addData(product.pro_opt_name_id);product.pro_opt_name_id=''" type="submit" class="btn btn-primary">Add</button>
 					  </div>
 					 <div class="form-group" ng-repeat="newvalue in optval">
-					    <% newvalue.parent_name[0].option_name %>
+					    <% newvalue.parent_name.option_name %>
 					     <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id[newvalue.optid]" multiple>
 						<option ng-repeat="opv in newvalue.all" ng-value="opv.id"  value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
@@ -925,15 +941,15 @@
 			      <input type="text" placeholder="Filter Categories" class="form-control" ng-model="test">
 			      </div>
 			      <div class="frm-cat">
-			      <script type="text/ng-template" id="categoryTree">
-			      <input type="checkbox" ng-model="product.pro_category_id[category.id]" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
+			      <script type="text/ng-template" id="categoryTree1">
+			      <input type="checkbox" ng-click="attribute_gr_add(product.pro_category_id);" ng-model="product.pro_category_id[category.id]" value="<%category.id%>" name="pro_category_id[]" ><% category.category_name %>
 			      <ul ng-if="category.all_category">
-			      <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree'">           
+			      <li class="cat-tree" ng-repeat="category in category.all_category | filter:test" ng-include="'categoryTree1'">           
 			      </li>
 			      </ul>
 			      </script>
 			      <ul class="ul-cat">
-			      <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree'"></li>
+			      <li class="cat-tree" ng-repeat="category in all_category | filter:test" ng-include="'categoryTree1'"></li>
 			      </ul> 
 			      </div>
 			 </div>

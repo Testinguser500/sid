@@ -53,7 +53,7 @@
 	});
 </script>
 </head>
-<body class="skin-blue sidebar-mini wysihtml5-supported" ng-app="admins" >
+<body class="skin-blue sidebar-mini wysihtml5-supported" ng-app="admins" ng-controller="parentCtrl">
 <div class="wrapper">
 
   <header class="main-header">
@@ -355,7 +355,7 @@
         {
             $subMenu = getMenu($val->menu_id);?>
         <li class="treeview">
-          <a href="<?php if(!$subMenu) echo '#'.$val->filename; else echo 'javascript:void(0)';?>">
+            <a href="<?php if(!$subMenu) echo '#'.$val->filename; else echo 'javascript:void(0)';?>" ng-click="change_title('{{$val->name}}')" >
             
               <i class="fa <?php echo $val->icon; ?>"></i> <span><?php echo $val->name;?></span>
               <?php if(!empty($subMenu)) {?>
@@ -365,7 +365,7 @@
           <ul class="treeview-menu">
               <?php      foreach ((array)$subMenu as $sm)
               {?>
-            <li><a href="#<?php echo $sm->filename;?>"><i class="fa fa-circle-o"></i><?php echo $sm->name;?></a></li>
+              <li><a href="#<?php echo $sm->filename;?>" ng-click="change_title('{{$sm->name}}')"><i class="fa fa-circle-o"></i><?php echo $sm->name;?></a></li>
               <?php } ?>
           </ul>
             <?php } else {?>
@@ -382,10 +382,10 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        {{ $title }}
-        <small>{{ $subtitle }}</small>
+        <h1 ng-show="ptitle==''"> Admin
+   
       </h1>
+        <h1 ng-if="ptitle!=''" ng-bind="ptitle"></h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Dashboard</li>
@@ -643,6 +643,14 @@
 <script src="{{URL::asset('admin/js/ngDatepicker.js')}}" type="text/javascript"></script>
 <script src="{{URL::asset('admin/js/angular_app.js')}}"></script>
 
+<script>
+     $(document).ready(function(){
+         $("ul.sidebar-menu li a").click(function(e) {
+          $(".current").removeClass("current");
+          $(this).addClass("current");
+       });
+     });
+</script>
 
 </body>
 </html>
