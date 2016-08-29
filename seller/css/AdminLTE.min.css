@@ -83,3 +83,21 @@
 .subsubsub li {
     display: inline;
 }
+.cat-li select {
+    width: 206px;
+}
+.cat-li li {
+    list-style: outside none none;
+    float:left;
+}
+.pt-lst .img > img {
+    height: 102px;
+    width: 102px;
+}
+.cat-tree-sel {
+    display: inline-flex;
+    list-style: outside none none;
+}
+.pc-tt {
+    display: inline-flex;
+}

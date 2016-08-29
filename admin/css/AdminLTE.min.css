@@ -100,7 +100,7 @@
     margin: 11% 0;
 }
 .pro-ul li:hover {
-    background: #428bcab3;
+    background: rgba(66, 139, 202, 0.9);
     color: #fff;
 }
 .pro-ul li {
@@ -162,4 +162,8 @@ width: 11%;
 }
 .open:hover {
     text-decoration: none;
+}
+.pt-lst .img > img {
+    height: 102px;
+    width: 102px;
 }

@@ -241,7 +241,7 @@ class HomeController extends Controller
 			$cat->email = Request::input('email');
 			if(Request::input('new_password'))
 			{
-				$cat->password = Request::input('new_password');
+				$cat->password = bcrypt(Request::input('new_password'));
 			}
 			$cat->save();
 			
