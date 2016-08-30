@@ -199,6 +199,11 @@ Route::get('seller/setting/all', 'Seller\SettingController@all');
 Route::post('seller/country/getState', 'Admin\CountryController@getState');
 Route::post('seller/country/getCity', 'Admin\CountryController@getCity');
 Route::post('seller/setting/update', 'Seller\SettingController@update');
+Route::get('seller/product-list', 'Seller\ProductController@category_list');
+Route::get('seller/getCategory', 'Seller\ProductController@getCategory');
+Route::post('seller/getSubCategory', 'Seller\ProductController@getSubCategory');
+Route::post('seller/product_list','Seller\ProductController@getProduct');
+Route::post('seller/product/all','Seller\ProductController@all');
 
 Route::get('admins/special-offer', 'Admin\SpecialOfferController@index');
 Route::get('admins/special-offer/all', 'Admin\SpecialOfferController@all');
@@ -217,3 +222,4 @@ Route::get('admins/bulk-discount/edit/{id}', 'Admin\BulkDiscountController@edit'
 Route::post('admins/bulk-discount/update', 'Admin\BulkDiscountController@update');
 Route::post('admins/bulk-discount/changeStatus', 'Admin\BulkDiscountController@changeStatus');
 Route::post('admins/bulk-discount/delete', 'Admin\BulkDiscountController@delete');
+

@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php namespace App\Http\Controllers\Seller;
 use App\User; 
 use App\Product;
 use App\ProductImage;
@@ -32,22 +32,8 @@ class ProductController extends Controller
 		
 	}
         public function all(){ 
-	     $products   = DB::table('product')->select('*')->where('product.is_delete','=','0')->get();
-             foreach($products as $key=>$value){
-                $category_ids=explode(',',$value->pro_category_id);
-                $category_name='';
-                $all_cats = DB::table('categorys')->select('*')->whereIn('id',$category_ids)->where('is_delete','=','0')->get();
-                foreach($all_cats as $k=>$v){
-                 $category_name.=$v->category_name;
-                 if($k < (count($all_cats)-1)){
-                    $category_name.=','; 
-                 }
-                }
-               $products[$key]->category_name=$category_name;
-             }
-            
-             $sellers    = DB::table('users')->where('status','=','Active')->where('is_delete','=',0)->where('role','=',5)->get();
-	     $categories = DB::table('categorys')->where('status','=','Active')->where('is_delete','=',0)->get();
+	    $cat_id= Request::input('cat_id');
+	     $categories = self::getSubcataegoryByID($cat_id);
 	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get(); 
 	     $all_category = self::getcataegorywithSub();
 	     $datatyps   = DB::table('product_data_type')->get();
@@ -57,8 +43,7 @@ class ProductController extends Controller
 	//     }
 	     //$return['images']     = $images;
 
-	     $return['products']   = $products;
-	     $return['sellers']    = $sellers;
+	     
 	     $return['categories'] = $categories;
 	     $return['brands']     = $brands;
 	     $return['datatyps']   = $datatyps;
@@ -66,13 +51,38 @@ class ProductController extends Controller
 	     $return['all_category'] = $all_category;
 	     return $return ;
 	}
-	
+	public function category_list()
+	{
+	    return view('seller/product_list');
+	}
+	public function getCategory()
+	{
+	    
+	    $category = DB::table('categorys')->where('parent_id','=',0)->where('status','=','Active')->get();
+	    $return['category'] = $category;
+	    return $return;
+	}
+	public function getSubCategory()
+	{
+	    $return='';
+	    $pid = Request::input('pid');
+	    $category = DB::table('categorys')->where('parent_id','=',$pid)->where('status','=','Active')->get();
+	    if($category)
+	    $return['category'] = $category;
+	    return $return;
+	}
+	public function getProduct()
+	{
+	     $pro_id= Request::input('pro_id');
+	    $product=DB::table('product')->select('product.*','product_images.image','product_images.def')->join('product_images','product.id','=','product_images.product_id')->whereRaw('FIND_IN_SET("'.$pro_id.'",product.pro_category_id)')->where('product_images.def','=',1)->get();
+	    return $product;
+	}
 	public function getoptionvalue(){
 	   $pid= Request::input('parent_id');
 	   $optionvalues    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$pid)->where('status', '=','Active')->get();
-	   $optionname   = DB::table('pro_option')->where('is_delete', '=','0')->where('id', '=',$pid)->where('status', '=','Active')->first();
+	   $optionname   = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',0)->where('id', '=',$pid)->where('status', '=','Active')->get();
 	   $return['optionvalues']   = $optionvalues; 
-	   $return['optionname']   = $optionname;          
+	   $return['optionname']   = $optionname;
 	   return $return;
 	}
 	/****Move to trash ******/
@@ -127,13 +137,15 @@ class ProductController extends Controller
 	  $pro_datatype_id= Request::input('pro_datatype_id');
 	   if($pro_datatype_id =='1'){ 
 	    $validator1 = Validator::make(Request::all(), [
-	    'pro_datatype_id'=> 'check_product_data_type:price,sale_price,date_from,date_to',							 ]);
+	    'pro_datatype_id'=> 'check_product_data_type:price,sale_price,date_from,date_to',
+							 ]);
 	   }
 	   elseif($pro_datatype_id == '2'){
 	    $validator1 = Validator::make(Request::all(), [
 	    'pro_datatype_id'=> 'check_variable_product_data_type:variation_status',
 							 ]);
-	   }	   
+	   }
+	   
 	   $friendly_names = array(
 			'pro_name' => 'Product Name',
 			'pro_des' => 'Product Description',
@@ -153,22 +165,24 @@ class ProductController extends Controller
 			'meta_keywords' => 'Meta Keywords' 
 		    );
 	$validator->setAttributeNames($friendly_names);
-        $msg=array();
         if ($validator->fails()) {
               $list[]='error';
               $msg=$validator->errors()->all();
-	     
+	      //$list[]=$msg;
+	   //   return $list;
         }
-	
+	//$msg1 = array();
 	if ($validator1->fails()) {
-            
-            $msg1=$validator1->errors()->all();
-	    array_push($msg,$msg1[0]);	
-	     
+              //$list[]='error';
+              $msg1=$validator1->errors()->all();
+	    array_push($msg,$msg1[0]);
+	
+	     // $list[]=$msg;
+	     //return $list;
         }
 	if ($validator->fails() || $validator1->fails()){
 	    $list[]=$msg;
-	   return $list;  
+	  return $list;  
 	}
 	
 	$catids= Request::input('pro_category_id');
@@ -611,43 +625,37 @@ class ProductController extends Controller
 		
 		return $result;
 	}
-	public function get_attr_gr(){
-              $cats_ids=Request::input('pro_category_id');
-              $all_sel_ids=array();
-              foreach($cats_ids as $id=>$v){
-                  if($v){
-                      $all_sel_ids[]=$id;
-                  }
-              }
-              $arr_id_attr=array();
-              $attr_gr    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get(); 
-              $attr=array();
-              foreach($attr_gr as $ky=>$ve){
-                //print_r($ve);  
-                 $cat_exp = explode(',',$ve->categorys_id);
-                 $ct=0;
-                 foreach($cat_exp as $i=>$v){
-                     if(in_array($v, $all_sel_ids))
-                     {
-                         $ct=$ct+1;
-                         $attribute=DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$ve->id)->where('status', '=','Active')->get(); 
-                         $attr=array_merge($attr,$attribute);
-                     }
-                 }
-                 if($ct==0)
-                 {
-                    unset($attr_gr[$ky]);
-                 }
-                
-              }
-              foreach($attr as $val){
-                  $arr_id_attr[]=$val->id;
-              }
-            $return['attr_gr'] = $attr_gr;
-            $return['attrr'] = $attr;
-            $return['arr_id_attr'] = $arr_id_attr;
-	    return $return;   
-        }
+	public function getSubcataegoryByID($pid=0)
+	{
+		$categories = array();
+		$result = DB::table('categorys')->where('is_delete', '=','0')->where('id','=',$pid)->get();
+		
+		foreach((array)$result as $key=>$mainCategory)
+		{
+			//$product=DB::table('product')->whereRaw('FIND_IN_SET("'.$mainCategory->id.'",pro_category_id)')->get();
+			//print_r($product);
+			$category = array();
+
+			$condition = 'condition';
+			 $category['id'] = $mainCategory->id;
+
+			$category['name'] = $mainCategory->category_name;
+			$category['parent_id'] = $mainCategory->parent_id;
+			//$mainCategory->pro_count = count($product);
+			$mainCategory->$condition = true;
+			$mainCategory->all_category = self::getSubcataegoryByID($category['parent_id']);
+			$categories[$mainCategory->id] = $category;
+			//$sub = DB::table('categorys')->where('is_delete', '=','0')->where('parent_id','=',$val->id)->get();
+			//$val->sub = $sub;
+			//$result[$key]=$val;
+			
+			//$result[$key]->sub = self::getcataegorywithSub($val->id);
+			
+		}
+		
+		return $result;
+	}
+	
 	
 	 public function export(){
                 $table = DB::table('product')->get();   
@@ -670,14 +678,10 @@ class ProductController extends Controller
 	   
 	   public function updateDes()
 	   {
-	    //print_r(Request::all());
 	    $validator = Validator::make(Request::all(),[
             'description' => 'required',
 	    'short_description' => 'required',
-	    'feature_description' => 'required',
-	    'sku'=>'required',
-	    'price'=>'required',
-	    'expiry_date'=>'required'
+	    'feature_description' => 'required'
 	   
 	   ]);
 	    
@@ -691,18 +695,12 @@ class ProductController extends Controller
 	$product->pro_des = Request::input('description');
 	$product->pro_short_des = Request::input('short_description');
 	$product->pro_feature_des = Request::input('feature_description');
-	$product->sku = Request::input('sku');
-	$product->price = Request::input('price');
-	$product->date_to = Request::input('expiry_date');
-	$product->meta_title = Request::input('meta_title');
-	$product->meta_description = Request::input('meta_description');
-	$product->meta_keywords = Request::input('meta_keywords');
 	$product->save();
 	
-	    $list[]='success';
-	    $msgs='Record updated successfully.';
-	    $list[]=$msgs;
-	    return $list;
+	$list[]='success';
+		$msgs='Record updated successfully.';
+		$list[]=$msgs;
+		return $list;
 	   }
  }
  

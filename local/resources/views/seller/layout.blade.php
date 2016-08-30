@@ -349,7 +349,18 @@
           </a>
           
         </li>
-
+<li class="treeview">
+          <a href="javascript:void(0)">
+            
+              <i class="fa fa-book"></i> <span>Catalog</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+              
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+                          <li><a href="#product"><i class="fa fa-circle-o"></i>Product Management</a></li>
+			  <li class="<%classs%>"><a href="#product-list"><i class="fa fa-circle-o"></i>Product Listing</a></li>
+                        </ul>
+                    </li>
         <li class="treeview">
           <a href="#setting">
             

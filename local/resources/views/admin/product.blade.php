@@ -121,6 +121,21 @@
 					    <input type="checkbox"  ng-model="screen_opt.no_stock"> Number of Stock
 				       </div>
 				     </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt.sku"> SKU
+				       </div>
+				     </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt.price"> Price
+				       </div>
+				     </div>
+				     <div class="col-md-4">
+				       <div class="form-group">
+					    <input type="checkbox"  ng-model="screen_opt.date_to"> Expiry Date
+				       </div>
+				     </div>
 				  </div>
 				  <div class="row col-xs-12">
 				   <div class="form-group  col-md-12">
@@ -163,7 +178,52 @@
                                             <li ng-repeat ="er in errors_pop"><% er %></li>         
                                         </ul>
                                     </div>
-				    
+				    <div class="row" ng-if="edit_field=='sku'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">SKU</label>
+                                        <input type="text" class="form-control" ng-model="edit_values.sku">
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
+				    <div class="row" ng-if="edit_field=='price'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">Price</label>
+                                        <input type="text" class="form-control" ng-model="edit_values.price">
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
+				    <div class="row" ng-if="edit_field=='exp-date'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">Expiry Date</label>
+                                        <ng-datepicker  class="hasDatepicker" view-format="Do MMMM YYYY" ng-model="edit_values.date_to" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
+				    <div class="row" ng-if="edit_field=='meta_title'">
+					<div class="form-group">
+				       <label for="exampleInputEmail1">Meta Title</label>
+				       <input type="text" class="form-control" id="" name="meta_title" maxlength="100" placeholder="Meta Title" ng-model="edit_values.meta_title">
+				       <div class="help-block"></div>
+				      <span>Characters left: <% 100 - edit_values.meta_title.length %></span>
+				     </div>
+				    </div>
+				    <div class="row" ng-if="edit_field=='meta_des'">
+				   <div class="form-group">
+				     <label for="exampleInputEmail1">Meta Description</label>
+				     <input type="text" class="form-control" id="" name="meta_description" maxlength="200" placeholder="Meta Description" ng-model="edit_values.meta_description">
+				     <div class="help-block"></div>
+				     <span>Characters left: <% 200 - edit_values.meta_description.length %></span>
+				   </div>
+				    </div>
+				    <div class="row" ng-if="edit_field=='meta_key'">
+					<div class="form-group">
+					  <label for="exampleInputEmail1">Meta Keywords</label>
+					  <input type="text" class="form-control" id="" name="meta_keywords" maxlength="30" placeholder="Meta Keywords" ng-model="edit_values.meta_keywords">
+					  <div class="help-block"></div>
+					  <span>Characters left: <% 30 - edit_values.meta_keywords.length %></span>
+					</div>
+				    </div>
                                     <div class="row" ng-if="edit_field=='des'">
 					<div class="form-group" >
                                         <label for="exampleInputEmail1">Description</label>
@@ -265,6 +325,15 @@
 		       <th ng-if="screen_opt.no_stock" ng-click="sort('no_stock')" style="cursor:pointer"> Number of Stock  
 		       <span class="glyphicon sort-icon"  ng-show="sortKey=='no_stock'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
 		      </th>
+		       <th ng-if="screen_opt.sku" ng-click="sort('sku')" style="cursor:pointer"> SKU  
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='sku'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		       <th ng-if="screen_opt.price" ng-click="sort('price')" style="cursor:pointer"> Price  
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='price'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
+		       <th ng-if="screen_opt.date_to" ng-click="sort('date_to')" style="cursor:pointer"> Expiry Date 
+		       <span class="glyphicon sort-icon"  ng-show="sortKey=='date_to'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+		      </th>
 		      <th> </th>                 
 		    </tr>
 		    </thead>
@@ -278,14 +347,17 @@
 		      <td ng-if="screen_opt.pro_des"><button class="btn btn-default" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('des',val)">Edit Description</button></td>
 		      <td ng-if="screen_opt.pro_short_des"><button class="btn btn-default" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('short_des',val)">Edit Short Description</button></td>
 		      <td ng-if="screen_opt.pro_feature_des"><button class="btn btn-default" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('feat_des',val)">Edit Feature Description</button></td>
-		      <td ng-if="screen_opt.meta_title"><% val.meta_title %></td>
-		      <td ng-if="screen_opt.meta_description"><% val.meta_description %></td>
-		      <td ng-if="screen_opt.meta_keywords"><% val.meta_keywords %></td>
+		      <td ng-if="screen_opt.meta_title" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('meta_title',val)"><% val.meta_title %></td>
+		      <td ng-if="screen_opt.meta_description" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('meta_des',val)"><% val.meta_description %></td>
+		      <td ng-if="screen_opt.meta_keywords" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('meta_key',val)"><% val.meta_keywords %></td>
 		      <td ng-if="screen_opt.length"><% val.length %></td>
 		      <td ng-if="screen_opt.width"><% val.width %></td>
 		      <td ng-if="screen_opt.height"><% val.height %></td>
 		      <td ng-if="screen_opt.stock_status"><% val.stock_status %></td>
 		      <td ng-if="screen_opt.no_stock"><% val.no_stock %></td>
+		      <td ng-if="screen_opt.sku" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('sku',val)"><% val.sku %></td>
+		      <td ng-if="screen_opt.price" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('price',val)"><% val.price %></td>
+		      <td ng-if="screen_opt.date_to" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('exp-date',val)"><% val.date_to %></td>
 		      <td><a href="javascript:void(0);" ng-click="editproduct(val)"><i class="fa fa-edit" title="Edit"></i></a>
 		      <i class="fa fa-trash" title ="Delete" style="cursor:pointer" data-toggle="modal" data-target="#del_modal<% val.id %>"></i>
 		     
@@ -345,6 +417,12 @@
 		      <th ng-if="screen_opt.stock_status" > Stock Status  
 		      </th>
 		       <th ng-if="screen_opt.no_stock" > Number of Stock  
+		      </th>
+		       <th ng-if="screen_opt.sku" > SKU  
+		      </th>
+		       <th ng-if="screen_opt.price" > Price  
+		      </th>
+		       <th ng-if="screen_opt.date_to" > Expiry Date 
 		      </th>
 		      <th> </th>                 
 		    </tr>

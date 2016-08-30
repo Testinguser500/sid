@@ -3088,6 +3088,12 @@ $scope.checkAll = function () {
 			description: product.pro_des,
 			short_description: product.pro_short_des,
 			feature_description: product.pro_feature_des,
+			sku:product.sku,
+			price:product.price,
+			expiry_date:product.date_to,
+			meta_title:product.meta_title,
+			meta_description:product.meta_description,
+			meta_keywords:product.meta_keywords,
 			id:product.id
 		} ).success(function(data, status, headers, config) {
                   
