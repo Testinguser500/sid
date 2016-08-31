@@ -159,7 +159,10 @@ Route::post('admins/product/get_attr_gr', 'Admin\ProductController@get_attr_gr')
 
 Route::post('admins/product/deleteAll', 'Admin\ProductController@deleteAll');
 Route::post('admins/product/updateDes', 'Admin\ProductController@updateDes');
+<<<<<<< HEAD
 
+=======
+>>>>>>> fe948ee8700dec340bd9bb8fb289d633ee14d721
 
 Route::get('admins/plan', 'Admin\PlanController@index');
 Route::get('admins/plan/all', 'Admin\PlanController@all');

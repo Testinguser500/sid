@@ -716,7 +716,8 @@
                                           <div class="form-group">   
 					     <button ng-click="addData(product.pro_opt_name_id);product.pro_opt_name_id=''" type="submit" class="btn btn-primary">Add</button>
 					  </div>
-					 <div class="form-group" ng-repeat="newvalue in optval">
+                                          
+                                             <div class="form-group" ng-repeat="newvalue in optval" ng-if="idarr.indexOf(newvalue.parent_name.id)!=-1">
 					    <% newvalue.parent_name.option_name %>
 					     <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id[newvalue.optid]" multiple>
 						<option ng-repeat="opv in newvalue.all" ng-value="opv.id"  value="<%opv.id%>"><% opv.option_name %></option>
@@ -724,7 +725,14 @@
 					     <div ng-if="product.pro_datatype_id == '2'"><input type="checkbox" name="variation_status" ng-model="product.variation_status[newvalue.optid]" ng-true-value="'1'" ng-false-value="'0'"  ng-click="getMainCat(product.variation_status,product.pro_opt_values_id)"> Used for variations</div>
 					     <a href="" ng-click="removeData($index);">Remove</a>
 					 </div>
-					 
+					 <div class="form-group" ng-repeat="opt_rad in optval_radio" ng-if="idarr.indexOf(opt_rad.parent_name.id)!=-1">
+				    
+					        <% opt_rad.parent_name.option_name %>
+                                             <div ng-repeat="oprad in opt_rad.all" ng-if="check_exist(oprad.id)">
+                                                 <input type="radio"  name="attr_option<%opt_rad.parent_name.id%>" ng-value="oprad.id"> <%oprad.option_name%>
+                                             </div>
+					     <a href="" ng-click="removeRadio($index);">Remove</a>
+					 </div>
 					 <!--<div class="form-group">
 					 <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
 						<option ng-repeat="opv in optionvalues" ng-value="opv.id" ng-selected="opv.id==product.pro_opt_values_id" value="<%opv.id%>"><% opv.option_name %></option>
@@ -1326,14 +1334,14 @@
 					     <button ng-click="addData(product.pro_opt_name_id);product.pro_opt_name_id=''" type="submit" class="btn btn-primary">Add</button>
 					  </div>
 					 <div class="form-group" ng-repeat="newvalue in optval" ng-init="product.pro_opt_values_id[newvalue.optid]=newvalue.opt_ids">
-					    <% newvalue.parent_name[0].option_name %>
+					  <% optval %>
 					     <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id[newvalue.optid]" multiple="multiple">
 						<option ng-repeat="opv in newvalue.all" ng-value="opv.id" value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
 					     <a href="" ng-click="removeData($index);">Remove</a>
 					 </div>
 					 
-					 <% product.pro_opt_values_id %><!--<div class="form-group">
+<!--					<div class="form-group">
 					 <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
 						<option ng-repeat="opv in optionvalues" ng-value="opv.id" ng-selected="opv.id==product.pro_opt_values_id" value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>

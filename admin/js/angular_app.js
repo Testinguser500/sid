@@ -3179,7 +3179,7 @@ $scope.checkAll = function () {
 			 parent_name: data['optionname']
 		        });
 		        
-                    }else{
+                    }else if(data['optionname']['type']=='radio'){
                         $scope.optval_radio.push({
 		         optid:optionid,
 	                 all :data['optionvalues'],
@@ -3193,13 +3193,19 @@ $scope.checkAll = function () {
        
 	$scope.attribute_gr_add=function(pro_category_id)
         {
-            
+             
             $http.post('product/get_attr_gr',{
 			pro_category_id: pro_category_id
 		}).
 		success(function(data, status, headers, config) {
-			$scope.options=data['attrr'];console.log($scope.options);
+                    console.log(data);
+                       $scope.idarr=data['arr_id_attr'];
+                      
+			$scope.options=data['attrr'];
+                        
+                    
 		});
+                
         }
 	$scope.addTags=function(ptag){ //console.log(ptag);
         if(ptag != ''){
@@ -3232,7 +3238,9 @@ $scope.checkAll = function () {
 	   $scope.variations.splice(index,1);
 	}
 	
-	$scope.getMainCat=function(vari_status,opt_idss){  //console.log(vari_status); 
+	$scope.getMainCat=function(vari_status,opt_idss){ 
+            console.log(vari_status); 
+            console.log(opt_idss);
 		$http.post('product/getMainCat',{
 			vari_status: vari_status,
 			option_ids: opt_idss
@@ -3251,6 +3259,13 @@ $scope.checkAll = function () {
 			}
 			
         });
+        angular.forEach($scope.optval_radio, function (item,key) {
+                      
+			if(item.optid==optid)  {
+				exist_val=1;
+			}
+			
+        });
 	if(exist_val==1){
 		return false;
 	}else{
@@ -3263,7 +3278,9 @@ $scope.checkAll = function () {
 	   $scope.optval.splice(index,1);console.log($scope.product);
 	  // $scope.product.pro_opt_values_id.splice(pr_op,1);
 	}
-	
+    $scope.removeRadio=function(index){
+        $scope.optval_radio.splice(index,1);
+    }	
 	
 	$scope.add = function() {	
                 $scope.page='add';		

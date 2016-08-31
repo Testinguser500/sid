@@ -127,15 +127,13 @@ class ProductController extends Controller
 	  $pro_datatype_id= Request::input('pro_datatype_id');
 	   if($pro_datatype_id =='1'){ 
 	    $validator1 = Validator::make(Request::all(), [
-	    'pro_datatype_id'=> 'check_product_data_type:price,sale_price,date_from,date_to',
-							 ]);
+	    'pro_datatype_id'=> 'check_product_data_type:price,sale_price,date_from,date_to',							 ]);
 	   }
 	   elseif($pro_datatype_id == '2'){
 	    $validator1 = Validator::make(Request::all(), [
 	    'pro_datatype_id'=> 'check_variable_product_data_type:variation_status',
 							 ]);
-	   }
-	   
+	   }	   
 	   $friendly_names = array(
 			'pro_name' => 'Product Name',
 			'pro_des' => 'Product Description',
@@ -621,6 +619,7 @@ class ProductController extends Controller
                       $all_sel_ids[]=$id;
                   }
               }
+              $arr_id_attr=array();
               $attr_gr    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get(); 
               $attr=array();
               foreach($attr_gr as $ky=>$ve){
@@ -641,8 +640,12 @@ class ProductController extends Controller
                  }
                 
               }
+              foreach($attr as $val){
+                  $arr_id_attr[]=$val->id;
+              }
             $return['attr_gr'] = $attr_gr;
             $return['attrr'] = $attr;
+            $return['arr_id_attr'] = $arr_id_attr;
 	    return $return;   
         }
 	
