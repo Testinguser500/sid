@@ -118,3 +118,19 @@
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
     border: 1px solid #66afe9;
 }
+.img-guid {
+    border: 2px solid #000;
+}
+.btn.btn-primary.btn-file.sell-file {
+    
+    margin: 37% auto 20px;
+}
+.sell-file input {
+    height: 34px;
+    width: 70px;
+}
+.img-sell {
+    display: inline-flex;
+    padding: 1px 4px 0 0;
+    position: relative;
+}

@@ -669,7 +669,7 @@ app.controller('ConfigController', function($scope, $http) {
                 $scope.errors=false;
 		var ab='';
 		$scope.loading = true;
-		$http.get('getCategory').
+		$http.get('product/getAllCategory').
 		success(function(data, status, headers, config) {
 			$scope.category = data['category'];
 			var result = $scope.category;
@@ -793,6 +793,7 @@ app.controller('ConfigController', function($scope, $http) {
 		$scope.errors=false;
                 $scope.success_flash=false;
                 $scope.product=false;
+		$scope.selectedoptValues=[];
 		$http.post('product/all',{cat_id:proData,product_id:pro_id}).
 		success(function(data, status, headers, config) {
 			$scope.sellers = data['sellers'];
@@ -810,6 +811,7 @@ app.controller('ConfigController', function($scope, $http) {
 		$scope.errors=false;
                 $scope.success_flash=false;
                 $scope.product=false;
+		$scope.selectedoptValues=[];
 		$http.get('product/all').
 		success(function(data, status, headers, config) {
 			$scope.sellers = data['sellers'];
@@ -821,7 +823,56 @@ app.controller('ConfigController', function($scope, $http) {
  
 		});
 	}
-	
+	$scope.inputs = [];
+
+    $scope.addInput = function () {
+       
+        $scope.inputs.push({
+            value: ''
+        });
+    }
+
+    $scope.removeInput = function (index) {
+        $scope.inputs.splice(index, 1);
+    }
+	$scope.uploadedFile = function(element,index) {
+           $scope.$apply(function($scope) {
+            
+           var fd = new FormData();
+            //Take the first selected file
+            fd.append("image",element.files[0]);
+            fd.append("folder",'product');
+	    fd.append("width",'500');
+	    fd.append("height",'500');
+            $http.post('imageupload', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){ 
+                        if(data[0]=='error'){
+				$scope.errors=data[1];
+			}
+			else
+			{
+                                $scope.errors=false;
+				$scope.inputs.push({value:data});
+                                $scope.files[index]=data;                    
+                                $scope.loading = false;
+			}
+        });
+
+	});
+       }
+       $scope.removeimgs=function(img_nam,index)  //console.log(img_nam);
+	{  $scope.errors=false;
+           $scope.success_flash=false; 
+	$http.post('product/image_delete',{
+		image: img_nam
+		}).success( function(data, status, headers, config){
+	          $scope.inputs.splice(index,1);
+	});   
+	   
+	}
 	$scope.getOption = function(optData){
 		//var vv = 'optValues_'+optData;
 		$scope.optValues=[];
@@ -830,14 +881,15 @@ app.controller('ConfigController', function($scope, $http) {
 			   }).success(function(data,status,headers,config){
 			$scope.optValues[optData] = data['optionvalues'];
 			//console.log(vv);
-			console.log($scope.optValues[optData]);
+			//console.log($scope.optValues[optData]);
 		})
 	}
 	$scope.selectedoptValues=[];
 	$scope.array=[];
 	$scope.selectedoptValue = function(item,optid)
 	{
-		
+		console.log(optid);
+		console.log(item);
 	if(!$scope.selectedoptValues[optid] ){
 		$scope.selectedoptValues[optid]=[];
 	}
@@ -854,7 +906,7 @@ app.controller('ConfigController', function($scope, $http) {
 		//$scope.selectedoptValues[optid] = $scope.array;
 		$scope.optValues[optid]='';
 		//$scope.offer.spcategory='';
-		console.log($scope.selectedoptValues[optid]);
+		//console.log($scope.selectedoptValues[optid]);
 	  }
 	}
 	$scope.removeItem=function(index,array)

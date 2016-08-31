@@ -68,6 +68,7 @@
                     </script>
                      
                 </div>
+                
                 <div>
                     <div class="form-group" ng-repeat="opt in options">
                         <label><%opt.option_name%></label>
@@ -109,7 +110,45 @@
 			</div>
             </div>
             <div class="col-md-6">
+                <div class="form-group">
+                    <h3>Product Images</h3>
+                </div>
+                <div class="form-group">
+                    <div class="img-guid">
+                    <h3>Image Guidelines:</h3>
+                    <ul>
+                        <li>Put your product in front of a plain backdrop</li>
+                        <li>Be sure that the entire product is visible in the picture</li>
+                        <li>Product image size should be square and 800x800 pixels</li>
+                    </ul>
+                    </div>
+                </div>
+               
+                <div class="form-group sel-up-img" >
+                    
+                    <div ng-if="inputs">
+                        <div ng-repeat="input in inputs" class="img-sell">
+                        <img ng-mouseleave="display_cross_$index=0" ng-mouseover="display_cross_$index=1" ng-show="input.value" src="{{URL::asset('uploads/product')}}/thumb_<% input.value %>" style="height:80px;width:80px">
+                        
+                        <a href="javascript:void(0);" ng-click="removeimgs(input.value,$index);display_cross_$index=0" title="Delete" class="bnr-del" ng-mouseleave="display_cross_$index=0" ng-mouseover="display_cross_$index=1" ng-show="display_cross_$index==1"><img src="{{URL::asset('admin/img/del.png')}}"></a>
+                        </div>
+                    </div>
+                    <div id="droply-filedrag-mas" ng-show="inputs.length <8" class="droply-filedrag " style="color: white; border: 5px dashed #efefef; background-image: url(&quot;img/icon-droply.png&quot;); background-size: 51% 61%; background-position: 120px 24%; background-repeat: no-repeat; display: block;"><br>
+                    
+                    <span ng-hide="input.value" class="btn btn-primary btn-file sell-file">
+					Upload a Product Image <input type="file" ng-model="input.image" onchange="angular.element(this).scope().uploadedFile(this)">
+				</span>
+                    
+                    <!--<button class="btn btn-success button button-small button-balanced" ng-if="$index == inputs.length - 1" ng-click="addInput()">
+            <i class="icon ion-plus"></i>
+        </button>
+            <button class="btn btn-danger button button-small button-assertive" ng-if="$index != inputs.length - 1" ng-click="removeInput($index)">
+            <i class="icon ion-minus"></i>
+        </button>-->
+                    </div>
+                    
                 
+                </div>
             </div>
            
             <div ng-repeat="val in selectedoptValues"><%val%></div>
@@ -130,7 +169,7 @@
                     <tbody>
                         <tr>
                             <td><i class="fa fa-trash"></i></td>
-                            <td>Red/L</td>
+                            <td><div ng-repeat="opt in selectedoptValues"><%opt%></div></td>
                             <td><input type="text" class="form-control"></td>
                             <td><input type="text" class="form-control"></td>
                             <td><input type="text" class="form-control"></td>

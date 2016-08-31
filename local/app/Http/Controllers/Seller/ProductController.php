@@ -76,6 +76,13 @@ class ProductController extends Controller
 	    $return['category'] = $category;
 	    return $return;
 	}
+	public function getAllCategory()
+	{
+	    
+	    $category = DB::table('categorys')->where('parent_id','=',0)->where('is_delete', '=','0')->where('status','=','Active')->get();
+	    $return['category'] = $category;
+	    return $return;
+	}
 	public function getSubCategory()
 	{
 	    $return='';
@@ -406,7 +413,7 @@ class ProductController extends Controller
 			      return $list;
         }
 	
-	$catids= Request::input('pro_category_id'); print_r($catids);
+	$catids= Request::input('pro_category_id'); 
 	$newcatarr= array();
 	foreach($catids as $ck => $cv){ 
 	    if($cv == '1'){ 
@@ -606,7 +613,7 @@ class ProductController extends Controller
 	    File::delete('uploads/'.str_replace('product/','product/thumb_',$image));
 	    File::delete('uploads/'.str_replace('product/','product/mid_',$image));
 	    File::delete('uploads/'.$image);
-	    DB::table('product_images')->where('image', '=', $image)->delete(); 
+	    //DB::table('product_images')->where('image', '=', $image)->delete(); 
 	 }
     
 	public function getcataegorywithSub($pid=0)
