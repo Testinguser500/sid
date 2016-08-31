@@ -13,7 +13,8 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'pro_name','pro_des','pro_short_des','pro_feature_des','seller_id','pro_category_id','brand_id','price','no_stock','pro_datatype_id','sku','date_from','date_to','video','weight','length','width','height','warranty','return_policy','meta_title','meta_description','meta_keywords','is_delete','stock_status','status','stock_status'
+        'pro_name','pro_des','pro_short_des','pro_feature_des','seller_id','pro_category_id','brand_id','price','no_stock','pro_datatype_id','sku','date_from','date_to','video','weight','length','width','height','warranty','return_policy','meta_title','meta_description','meta_keywords','is_delete','stock_status','status','feature',
+        'review','bulk_view','col_bulk','row_bulk','stock_status'
     ];
 
    

@@ -99,7 +99,7 @@ class ProductController extends Controller
 	    
 	}
        /*******insert the data*****/
-        public function store(){ //print_r(Request::all());
+        public function store(){  print_r(Request::all());
 	    $catids= array();
 	    $regex = "/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/";
 	   $validator = Validator::make(Request::all(), [
@@ -211,7 +211,13 @@ class ProductController extends Controller
 			 'meta_description' =>Request::input('meta_description'),
 			 'meta_keywords' =>Request::input('meta_keywords'),
 			 'stock_status' =>Request::input('stock_status') ? Request::input('stock_status') : 'In Stock',
-			 'status' =>Request::input('status')]);
+			 'status' =>Request::input('status'),
+                         'feature' => Request::input('feature'),
+                         'review' => Request::input('review'),
+                         'bulk_view' =>Request::input('bulk_view'),
+                         'col_bulk' => Request::input('col_bulk'),
+                         'row_bulk' => Request::input('row_bulk'),
+             ]);
 	 
 		$insertedId = $prod->id;
 		$ovids= Request::input('pro_opt_values_id');
@@ -254,19 +260,20 @@ class ProductController extends Controller
 		
 		$newVariArr = array();
 		foreach($vari_name as $vnk => $vnv){
+                        $newVariArr = array();
 			foreach($vnv as $kk => $vv){
 			$newVariArr[] = $vv;	    
 			}
 			$combination_set = implode(',',$newVariArr);
-			ProductVariation::create(['vari_comb_value_ids',
-						  'product_id',
-						  'vari_sku',
-						  'vari_price',
-						  'vari_sale_price',
-						  'vari_stock',
-						  'product_id' => $insertedId
+			ProductVariation::create(['vari_comb_value_ids'=>$combination_set,
+						  'product_id'=>$insertedId,
+						  'vari_sku'=>$vari_sku[$vnk],
+						  'vari_price'=>$vari_price[$vnk],
+						  'vari_sale_price'=>$vari_sale_price[$vnk],
+						  'vari_stock'=>$vari_stock[$vnk],
+						 
 			                        ]);
-			$vari_sku[$vnk];
+			
 			
 		}
 	    }
@@ -501,9 +508,9 @@ class ProductController extends Controller
 	 /**********get the variation data*********/
 	 public function getvariation(){
 	    $vari_status = Request::input('vari_status');
-	    $option_ids = Request::input('option_ids');
+	    $option_ids = Request::input('option_ids');//print_r($option_ids);
 	    $current_val = Request::input('current_val');
-	    if($current_val == 'all_vari'){
+	 
 		 $newArr = array();
 	    foreach($vari_status as $vsk => $vsv){
 			if($vsv == 1){
@@ -529,20 +536,7 @@ class ProductController extends Controller
 	    
 	    $return['variations'] = $variations;
 	    return $return;
-	    }
-	    else{
-		$variations = array();
-		$cat_data = DB::table('pro_option')->where('is_delete', '=','0')->where('id','=',$current_val)->first();
-			  $subcat_data = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id',$current_val)->get();
-			  $main['main'] = array('name'=>$cat_data->option_name,'id'=>$current_val);
-			  //print_r($subcat_data);
-			  $main['sub'] = $subcat_data;
-			  $variations[] = $main;
-			  
-	    $return['variations'] = $variations;
-	    return $return;
-	    }
-	    
+
 	 }
 	 
 	 public function getMainCat(){
@@ -622,6 +616,7 @@ class ProductController extends Controller
               $arr_id_attr=array();
               $attr_gr    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get(); 
               $attr=array();
+             
               foreach($attr_gr as $ky=>$ve){
                 //print_r($ve);  
                  $cat_exp = explode(',',$ve->categorys_id);
@@ -629,14 +624,16 @@ class ProductController extends Controller
                  foreach($cat_exp as $i=>$v){
                      if(in_array($v, $all_sel_ids))
                      {
-                         $ct=$ct+1;
-                         $attribute=DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$ve->id)->where('status', '=','Active')->get(); 
-                         $attr=array_merge($attr,$attribute);
+                         $ct=$ct+1;                        
                      }
                  }
                  if($ct==0)
                  {
                     unset($attr_gr[$ky]);
+                 }else{
+                      $attribute=DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$ve->id)->where('status', '=','Active')->get(); 
+                      $attr=array_merge($attr,$attribute);
+                          
                  }
                 
               }
