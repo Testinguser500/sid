@@ -641,6 +641,7 @@
 <script src="{{URL::asset('admin/js/dirPagination.js')}}"></script>
 <link rel="stylesheet" href="{{URL::asset('admin/css/ngDatepicker.css')}}" type="text/css">
 <script src="{{URL::asset('admin/js/ngDatepicker.js')}}" type="text/javascript"></script>
+<script src="{{URL::asset('admin/js/bootstrap-tagsinput-angular.js')}}" type="text/javascript"></script>
 <script src="{{URL::asset('admin/js/angular_app.js')}}"></script>
 
 <script>

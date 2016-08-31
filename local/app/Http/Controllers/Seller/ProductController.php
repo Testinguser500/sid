@@ -33,11 +33,24 @@ class ProductController extends Controller
 	}
         public function all(){ 
 	    $cat_id= Request::input('cat_id');
+	    $product_id = Request::input('product_id');
+	    
 	     $categories = self::getSubcataegoryByID($cat_id);
 	     $brands     = DB::table('brands')->where('status','=','Active')->where('is_delete','=','0')->get(); 
-	     $all_category = self::getcataegorywithSub();
+	     //$all_category = self::getcataegorywithSub();
 	     $datatyps   = DB::table('product_data_type')->get();
-	     $options    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=','0')->where('status', '=','Active')->get(); 
+	     $options    = DB::table('pro_option')->where('is_delete', '=','0')->whereRaw('FIND_IN_SET("'.$cat_id.'",categorys_id)')->where('status', '=','Active')->get();
+	     $opt_data = array();
+	     foreach($options as $opt)
+	     {
+		$options_value    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id','=',$opt->id)->where('status', '=','Active')->get();
+		foreach($options_value as $op)
+		{
+			$op->op_data = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id','=',$op->id)->where('status', '=','Active')->get();
+			$opt_data[] = $op;
+			
+		}
+	     }
 	//     foreach($products as $kk => $vv){
 	//	$images    = DB::table('product_images')->where('product_id','=',$vv->id)->get();	
 	//     }
@@ -47,8 +60,9 @@ class ProductController extends Controller
 	     $return['categories'] = $categories;
 	     $return['brands']     = $brands;
 	     $return['datatyps']   = $datatyps;
-	     $return['options']   = $options;
-	     $return['all_category'] = $all_category;
+	     $return['options']   = $opt_data;
+	     //$return['all_category'] = $all_category;
+	     
 	     return $return ;
 	}
 	public function category_list()
@@ -78,7 +92,7 @@ class ProductController extends Controller
 	    return $product;
 	}
 	public function getoptionvalue(){
-	   $pid= Request::input('parent_id');
+	   $pid= Request::input('opt_id');
 	   $optionvalues    = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',$pid)->where('status', '=','Active')->get();
 	   $optionname   = DB::table('pro_option')->where('is_delete', '=','0')->where('parent_id', '=',0)->where('id', '=',$pid)->where('status', '=','Active')->get();
 	   $return['optionvalues']   = $optionvalues; 
