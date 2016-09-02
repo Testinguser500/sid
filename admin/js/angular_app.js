@@ -164,8 +164,14 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/special-offer', {
       templateUrl: 'special-offer', controller: 'SpecialOfferController'
    }).
-   when('/bulk-discount', {
-      templateUrl: 'bulk-discount', controller: 'BulkDiscountController'
+   when('/create_promotion', {
+      templateUrl: 'create_promotion', controller: 'PromotionController'
+   }).
+   when('/create_promotion', {
+      templateUrl: 'create_promotion', controller: 'PromotionController'
+   }).       
+   when('/promotion_setting', {
+      templateUrl: 'promotion_setting', controller: 'PromotionSettingController'
    }).
    otherwise({
       redirectTo: 'dashboard', controller: 'DashboardController'
@@ -5508,3 +5514,87 @@ $scope.checkAll = function () {
 	}
      $scope.init();
   });
+  
+  /****************Promotion******************/
+   app.controller('PromotionController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.files=false;     
+     $scope.$parent.ptitle='Create Promotion';
+     $scope.loading = true;
+     $scope.enquirys=false;
+     $scope.enquiry=false;
+     $scope.page='index';
+     $scope.faq=false;
+     $scope.success_flash=false;
+      $scope.init = function() {
+	$scope.image = '';
+		
+               // $scope.page='index';
+                $scope.errors=false;               
+		$scope.loading = true;
+//		$http.get('bulk-discount/all').
+//		success(function(data, status, headers, config) {
+//			$scope.offers = data['offers'];
+//			console.log($scope.offers);
+//		        $scope.loading = false;
+//		});
+	};
+    $scope.init();    
+ });
+ 
+ /*********************Promotion Setting********************/
+   app.controller('PromotionSettingController', function($scope, $http) {
+     $scope.errors=false;
+     $scope.files=false;     
+     $scope.$parent.ptitle='Promotion Setting';
+     $scope.loading = true;
+     $scope.enquirys=false;
+     $scope.enquiry=false;
+      $scope.elements = [];
+     $scope.setting_data ={};
+     $scope.set_data=false;
+     $scope.faq=false;
+     $scope.success_flash=false;
+   $scope.tab = 1;
+   $scope.setTab = function(newTab){
+      $scope.tab = newTab;
+    };
+    $scope.isSet = function(tabNum){
+      return $scope.tab === tabNum;
+    };
+    $scope.init = function() {
+	$scope.image = '';
+		
+               
+                $scope.errors=false;               
+		$scope.loading = true;
+		
+	};
+   $scope.save_setting=function(setting_data) {
+     $http.post('promotion/update_setting',{
+		   setting_data:setting_data		   
+	   }).
+		success(function(data, status, headers, config) {                   
+		        $scope.loading = false;
+                        if(data[0]=="success"){
+                           $scope.success_flash=data[1];
+                        }
+		});
+   } ; 
+   $scope.change_Ad=function(setting_addtype){      
+       $http.get('promotion/get_setting/'+setting_addtype).
+		success(function(data, status, headers, config) {
+			$scope.setting_data = data;
+                        $scope.set_data=true;
+			console.log($scope.setting_data);
+		        $scope.loading = false;
+		});
+   };
+   $scope.apnd_field=function(){     
+        $scope.setting_data.create_package.push({'ad_type':'','field_name':'','field_value':'','nview':'','price':''});        
+   };
+   $scope.splice_field=function(index){
+      $scope.setting_data.create_package.splice(index,1);     
+   };
+    $scope.init();    
+ });
