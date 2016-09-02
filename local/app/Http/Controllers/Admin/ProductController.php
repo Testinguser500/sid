@@ -99,7 +99,7 @@ class ProductController extends Controller
 	    
 	}
        /*******insert the data*****/
-        public function store(){  print_r(Request::all());
+        public function store(){  //print_r(Request::all());
 	    $catids= array();
 	    $regex = "/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/";
 	   $validator = Validator::make(Request::all(), [
@@ -200,13 +200,13 @@ class ProductController extends Controller
 			 'sku'=>Request::input('sku') ? Request::input('sku') : '',
 			 'date_from'=>Request::input('date_from')? Request::input('date_from') : date('Y-m-d'),
 			 'date_to'=>Request::input('date_to') ? Request::input('date_to') : 0000-00-00,
-			 'video'=>Request::input('video'),
+			 'video'=>Request::input('video')? Request::input('video') : '',
 			 'weight'=>Request::input('weight'),
 			 'length'=>Request::input('length'),
 			 'width'=>Request::input('width'),
 			 'height'=>Request::input('height'),
-			 'warranty'=>Request::input('warranty'),
-			 'return_policy'=>Request::input('return_policy'),
+			 'warranty'=>Request::input('warranty')? Request::input('warranty') : '',
+			 'return_policy'=>Request::input('return_policy')? Request::input('return_policy') : '',
 			 'meta_title' =>Request::input('meta_title'),
 			 'meta_description' =>Request::input('meta_description'),
 			 'meta_keywords' =>Request::input('meta_keywords'),
@@ -214,9 +214,9 @@ class ProductController extends Controller
 			 'status' =>Request::input('status'),
                          'feature' => Request::input('feature'),
                          'review' => Request::input('review'),
-                         'bulk_view' =>Request::input('bulk_view'),
-                         'col_bulk' => Request::input('col_bulk'),
-                         'row_bulk' => Request::input('row_bulk'),
+                         'bulk_view' =>Request::input('bulk_view')? Request::input('bulk_view') : 0,
+                         'col_bulk' => Request::input('col_bulk')? Request::input('col_bulk') : 0,
+                         'row_bulk' => Request::input('row_bulk')? Request::input('row_bulk') : 0,
              ]);
 	 
 		$insertedId = $prod->id;

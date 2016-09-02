@@ -692,9 +692,27 @@
 					     </div>-->
 					 </div>
 					 <div ng-show="isSet(4)">
-					 <h1>Messages4</h1>
-					 <p> Some messages4 </p>
-					 </div>
+					 <div class="form-group">
+					     <label for="exampleInputEmail1">Up-sells</label>
+					    
+					     <input id="" class="form-control" ng-model="product.upsellls_hint" placeholder="Search Product" 
+                                              ng-focus="getProduct(product.upsellls_hint);" ng-keyup="getProduct(product.upsellls_hint);" type="text">
+					     <ul class="pro-ul" ng-show="err"><li><%msg%></li></ul>
+                                                <ul class="pro-ul" ng-show="upsell_pro">
+                                                      <li ng-repeat="pro in upsell_pro" ng-click="upselItem(pro);"><%pro.pro_name%></li>
+                                                </ul>
+                                             <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;">
+                                                 <span class="selection">
+                                                     <span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+                                                        <ul class="select2-selection__rendered">
+                                                              <li class="select2-selection__choice" ng-repeat="item in up_sell"><%item.pro_name%> <span ng-click="spremoveItem($index)" style="cursor:pointer">x</span></li>
+                                                        </ul>
+                                                </span>
+                                              </span>
+                                              
+                                             </span>
+                                         </div>
+                                         </div>
 					 <div ng-show="isSet(5)">
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Custom Product option</label>
@@ -755,7 +773,7 @@
 					 </div>
 					
 				         <div ng-show="isSet(7)">
-					     <div class="form-group" ng-show="product.variation_status"><% main_option %>
+					     <div class="form-group" ng-show="product.variation_status">
 						  <select class="form-control" name="add_variation" ng-model="product.add_variation">
 						       <option ng-repeat="mop in main_option" value="<% mop.main.id %>" ng-value="<% mop.main.id %>" ng-selected="mop.main.id==product.add_variation"><% mop.main.name %></option>
 						       <option value="all_vari" ng-if="main_option.length > 0" ng-selected="'all_vari'==product.add_variation">Create Variations all Attributes</option>

@@ -2968,7 +2968,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.tags = [];
      $scope.variations = [];    
      $scope.product.pro_category_id={};
-     
+     $scope.up_sell=[];
      //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
      $scope.tab = 1;
@@ -3161,7 +3161,7 @@ $scope.checkAll = function () {
                            
                         });
         }
-	$scope.GetSelectedOptions = function(optionid) { console.log($scope.optionvalues);
+	$scope.GetSelectedOptions = function(optionid) { 
 	
 	$http.post('product/getoptionvalue',{
 			parent_id: optionid
@@ -3171,6 +3171,39 @@ $scope.checkAll = function () {
 		        $scope.loading = false;
 		});
 	}
+        $scope.getProduct = function(pData)
+	{
+		$scope.loading = true;
+	   $http.post('coupon/getProduct',{
+		   keyWord:pData
+		   
+		   
+	   }).success(function(data, status, headers, config) {
+		   	
+		        if(data[0]=='error')
+			{
+				$scope.err=true;
+				$scope.msg = data[1];
+				$scope.upsell_pro = '';
+				
+			}
+			else
+			{
+                                $scope.loading = false
+                                $scope.upsell_pro = data;
+                                $scope.err=false;
+				$scope.msg = '';
+			     
+			}
+			});
+	}
+        
+        $scope.upselItem = function(pro){
+           
+           $scope.up_sell.push(pro);
+            
+            
+        }
 	$scope.addData = function (optionid) { 
            if(optionid!=''){
 	    $http.post('product/getoptionvalue',{
