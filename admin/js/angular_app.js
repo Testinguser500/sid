@@ -2966,7 +2966,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.loading = true;
      $scope.products=false;
      $scope.page='index';
-     $scope.product={};
+     $scope.product={};  
      $scope.pr_imgs = [];
      $scope.pro_opt_values_id = [];
      $scope.optval = [];
@@ -2978,6 +2978,7 @@ app.controller('CountryController', function($scope, $http) {
      //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
      $scope.tab = 1;
+     $scope.options=[];
      $scope.showMeimg=true;     
       $scope.sort = function(keyname){
 		$scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -2986,7 +2987,7 @@ app.controller('CountryController', function($scope, $http) {
     $scope.setTab = function(newTab){
       $scope.tab = newTab;
     };
-
+   $scope.main_option=[];
     $scope.isSet = function(tabNum){
       return $scope.tab === tabNum;
     };
@@ -3117,7 +3118,11 @@ $scope.checkAll = function () {
   $scope.select_group_pros='All';
 
         $scope.init = function() {
-
+                $scope.main_option=[];
+                $scope.optval = [];
+                $scope.optval_radio = [];
+                $scope.options=[];
+                $scope.tags = [];
                 $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
@@ -3185,7 +3190,7 @@ $scope.checkAll = function () {
 			 parent_name: data['optionname']
 		        });
 		        
-                    }else{
+                    }else if(data['optionname']['type']=='radio'){
                         $scope.optval_radio.push({
 		         optid:optionid,
 	                 all :data['optionvalues'],
@@ -3199,13 +3204,19 @@ $scope.checkAll = function () {
        
 	$scope.attribute_gr_add=function(pro_category_id)
         {
-            
+             
             $http.post('product/get_attr_gr',{
 			pro_category_id: pro_category_id
 		}).
 		success(function(data, status, headers, config) {
-			$scope.options=data['attrr'];console.log($scope.options);
+                
+                       $scope.idarr=data['arr_id_attr'];
+                      
+			$scope.options=data['attrr'];
+                        
+                    
 		});
+                
         }
 	$scope.addTags=function(ptag){ //console.log(ptag);
         if(ptag != ''){
@@ -3219,7 +3230,7 @@ $scope.checkAll = function () {
 	   $scope.tags.splice(index,1);
 	}
 	
-	$scope.addVariation=function(vari_status,opt_val_idss,current_val){ console.log(vari_status); console.log(opt_val_idss);
+	$scope.addVariation=function(vari_status,opt_val_idss,current_val){
 		$http.post('product/getvariation',{
 			vari_status: vari_status,
 			option_ids: opt_val_idss,
@@ -3233,18 +3244,31 @@ $scope.checkAll = function () {
 				
 	}
 	 
-	$scope.removeVariation=function(index)
+	$scope.removeVariation=function(index,vari_sku,vari_price,vari_sale_price,vari_stock)
 	{
+        
 	   $scope.variations.splice(index,1);
+           delete vari_sku[index];
+           delete vari_price[index];
+           delete vari_sale_price[index];
+           delete vari_stock[index];
+
 	}
 	
-	$scope.getMainCat=function(vari_status,opt_idss){  //console.log(vari_status); 
+	$scope.getMainCat=function(vari_status,opt_idss){ 
+                var mai_opt=  $scope.main_option;
+            
 		$http.post('product/getMainCat',{
 			vari_status: vari_status,
 			option_ids: opt_idss
 		}).success(function(data, status, headers, config) { //console.log(data); 
-				$scope.main_option = data['main_option']
-				$scope.loading = false;
+				$scope.main_option = data['main_option'];
+                               
+                                if((mai_opt.length == 2) && ($scope.main_option.length != 2))
+                                {
+                                    alert("Please select only 2 variation for bulk variation.");
+                                }
+                                
 			});
 		
 	}
@@ -3252,6 +3276,13 @@ $scope.checkAll = function () {
     $scope.check_exist=function(optid){
 	var exist_val=0;
 	angular.forEach($scope.optval, function (item,key) {
+			if(item.optid==optid)  {
+				exist_val=1;
+			}
+			
+        });
+        angular.forEach($scope.optval_radio, function (item,key) {
+                      
 			if(item.optid==optid)  {
 				exist_val=1;
 			}
@@ -3269,7 +3300,9 @@ $scope.checkAll = function () {
 	   $scope.optval.splice(index,1);console.log($scope.product);
 	  // $scope.product.pro_opt_values_id.splice(pr_op,1);
 	}
-	
+    $scope.removeRadio=function(index){
+        $scope.optval_radio.splice(index,1);
+    }	
 	
 	$scope.add = function() {	
                 $scope.page='add';		
@@ -3388,6 +3421,11 @@ $scope.checkAll = function () {
 			meta_keywords: product.meta_keywords,
                         stock_status: product.stock_status,
 			status: product.status,
+                        review: product.review,
+                        bulk_view: product.bulk_view,
+                        col_bulk: product.col_bulk,
+                        row_bulk: product.row_bulk,
+                        feature: product.feature,
 			images: images,
 			tags : tags,
 			vari_name: product.vari_name,

@@ -716,15 +716,23 @@
                                           <div class="form-group">   
 					     <button ng-click="addData(product.pro_opt_name_id);product.pro_opt_name_id=''" type="submit" class="btn btn-primary">Add</button>
 					  </div>
-					 <div class="form-group" ng-repeat="newvalue in optval">
+                                          
+                                             <div class="form-group" ng-repeat="newvalue in optval" ng-if="idarr.indexOf(newvalue.parent_name.id)!=-1">
 					    <% newvalue.parent_name.option_name %>
 					     <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id[newvalue.optid]" multiple>
 						<option ng-repeat="opv in newvalue.all" ng-value="opv.id"  value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
-					     <div ng-if="product.pro_datatype_id == '2'"><input type="checkbox" name="variation_status" ng-model="product.variation_status[newvalue.optid]" ng-true-value="'1'" ng-false-value="'0'"  ng-click="getMainCat(product.variation_status,product.pro_opt_values_id)"> Used for variations</div>
-					     <a href="" ng-click="removeData($index);">Remove</a>
+					     <div ng-if="product.pro_datatype_id == '2' && product.pro_opt_values_id[newvalue.optid].length > 0"><input type="checkbox" name="variation_status" ng-model="product.variation_status[newvalue.optid]" ng-true-value="'1'" ng-false-value="'0'"  ng-click="getMainCat(product.variation_status,product.pro_opt_values_id)"> Used for variations</div>
+					     <a href="javascript:void(0);" ng-click="removeData($index);">Remove</a>
 					 </div>
-					 
+					 <div class="form-group" ng-repeat="opt_rad in optval_radio" ng-if="idarr.indexOf(opt_rad.parent_name.id)!=-1">
+				    
+					        <% opt_rad.parent_name.option_name %>
+                                             <div ng-repeat="oprad in opt_rad.all" ng-if="check_exist(oprad.id)">
+                                                 <input type="radio"  name="attr_option<%opt_rad.parent_name.id%>" ng-model="product.pro_opt_values_id[opt_rad.optid][0]" ng-value="oprad.id"> <%oprad.option_name%>
+                                             </div>
+					     <a href="javascript:void(0);" ng-click="removeRadio($index);">Remove</a>
+					 </div>
 					 <!--<div class="form-group">
 					 <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
 						<option ng-repeat="opv in optionvalues" ng-value="opv.id" ng-selected="opv.id==product.pro_opt_values_id" value="<%opv.id%>"><% opv.option_name %></option>
@@ -742,19 +750,21 @@
 					 </div>-->
 					 <div class="form-group">
 					     <label for="exampleInputEmail1">Enable reviews</label>
-					     <input type="checkbox" name="">
+					     <input type="checkbox" name="" ng-false-value='0' ng-true-value='0'  ng-init='product.review=0' ng-model="product.review">
 					 </div>
 					 </div>
 					
 				         <div ng-show="isSet(7)">
-					     <div class="form-group" ng-show="product.variation_status;product.pro_opt_values_id">
+					     <div class="form-group" ng-show="product.variation_status"><% main_option %>
 						  <select class="form-control" name="add_variation" ng-model="product.add_variation">
 						       <option ng-repeat="mop in main_option" value="<% mop.main.id %>" ng-value="<% mop.main.id %>" ng-selected="mop.main.id==product.add_variation"><% mop.main.name %></option>
-						       <option value="all_vari" ng-selected="'all_vari'==product.add_variation">Create Variations all Attributes</option>
+						       <option value="all_vari" ng-if="main_option.length > 0" ng-selected="'all_vari'==product.add_variation">Create Variations all Attributes</option>
 						  </select>
+                                             </div>
+                                             <div class="form-group" >
 						  <button class="btn btn-default" ng-click="addVariation(product.variation_status,product.pro_opt_values_id,product.add_variation)">Go</button>
 					     </div>
-						<div ng-repeat="vari in variations" ng-init="idd=$index"> <% product.vari_name %> 
+						<div ng-repeat="vari in variations" ng-init="idd=$index"> 
 						       <select name="vari_name[]" ng-repeat="varr in vari.variations" ng-model="product.vari_name[idd][varr.main.id]">
 							    
 							   <!-- <option value="<% varr.main.id %>"><% varr.main.name %></option>-->
@@ -775,25 +785,25 @@
 						 </div>
 					       </div>
 					       <div class="box-body">
-						 <div class="variation-field"><% product.vari_sku %> <% product.vari_price %>
+						 <div class="variation-field">
 							   <div class="form-group">
 								 <label for="exampleInputEmail1">Sku</label>
-								 <input type="text" class="form-control" id="" name="vari_sku" placeholder="SKU" ng-model="product.vari_sku[idd]">
+								 <input type="text" class="form-control" id="" name="vari_sku" placeholder="SKU" ng-init="product.vari_sku[idd]=''" ng-model="product.vari_sku[idd]">
 								 <div class="help-block"></div>
 							   </div>
 							   <div class="form-group">
 								 <label for="exampleInputEmail1">Price</label>
-								 <input type="text" class="form-control" id="" name="vari_price" placeholder="Price" ng-model="product.vari_price[idd]">
+								 <input type="text" class="form-control" id="" name="vari_price" placeholder="Price" ng-init="product.vari_price[idd]=''" ng-model="product.vari_price[idd]">
 								 <div class="help-block"></div>
 							   </div>
 							   <div class="form-group">
 								 <label for="exampleInputEmail1">Sale Price</label>
-								 <input type="text" class="form-control" id="" name="vari_sale_price" placeholder="Sale Price" ng-model="product.vari_sale_price[idd]">
+								 <input type="text" class="form-control" id="" name="vari_sale_price" placeholder="Sale Price" ng-init="product.vari_sale_price[idd]=''" ng-model="product.vari_sale_price[idd]">
 								 <div class="help-block"></div>
 							   </div>
 							   <div class="form-group">
 								 <label for="exampleInputEmail1">No Of Stock</label>
-								 <input type="text" class="form-control" id="" name="vari_stock" placeholder="Stock" ng-model="product.vari_stock[idd]">
+								 <input type="text" class="form-control" id="" name="vari_stock" placeholder="Stock" ng-init="product.vari_stock[idd]=''" ng-model="product.vari_stock[idd]">
 								 <div class="help-block"></div>
 							   </div> 
 						       </div>
@@ -801,7 +811,7 @@
 					     </div>
 					     <!-- /.box -->
 						  
-						       <a ng-click="removeVariation($index);">Remove</a>
+						       <a href="javascript:void(0)" ng-click="removeVariation($index,product.vari_sku,product.vari_price,product.vari_sale_price,product.vari_stock);">Remove</a>
 						  </div>
 						
 					 </div>
@@ -849,18 +859,7 @@
 		    </div>
 		      </div>
 		    </div>
-                   <!-- /.box -->
-		    <!--<div class="form-group">
-		      <label for="exampleInputEmail1">No. of Stocks</label>
-		      <input type="text" class="form-control" id="" name="no_stock" placeholder="No. of Stocks" ng-model="product.no_stock">
-		      <div class="help-block"></div>
-		    </div>-->
-		    
-		    <div class="form-group">
-		      <label for="exampleInputEmail1" ng-init="product.status='Active'" >Status </label>
-		      <input type="radio" ng-model="product.status" ng-checked="product.status" id="" name="status"  value="Active">Active <input ng-model="product.status" type="radio" id="" name="status" value="Inactive" checked>Inactive 
-		      <div class="help-block"></div>
-		    </div> 
+                  
 	       </div>
 	       <div class="col-xs-3">
 		    <div class="row">
@@ -877,27 +876,26 @@
 		      <div class="box-body">
 			<p class="text-muted">
 			 <div class="misc-pub-section misc-pub-post-status"><label>Status:</label>
-			 <span id="status-display"><label for="exampleInputEmail1">Active</label></span>
+			 <span id="status-display"><label for="exampleInputEmail1"><% product.status  %></label></span>
 			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc4()"><span aria-hidden="true">Edit</span></a>
 			 
 			 <div id="status-select" class="" ng-show="showMe4">
-			 <input name="hidden_status" id="hidden_status" value="Inactive" type="hidden">
-			 <select name="status" id="status">
-			 <option value="pending">Pending Review</option>
-			 <option selected="selected" value="draft">Inactive</option>
+			
+			<select name="status" ng-init="product.status='Active'" ng-model="product.status" id="status">
+                            <option value="Pending">Pending Review</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Active">Active</option>
 			 </select>
-			  <a href="#post_status" class="btn btn-default new-btn">OK</a>
-			  <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
+			  <a href="javascript:void(0);"  ng-click="myFunc4()" class="btn btn-default new-btn">OK</a>
+			  
 			 </div>
 			 
 			 <div class="checkbox">
-			 <input type="checkbox"><b> Featured this Product</b>
+			 <input type="checkbox"  ng-init="product.feature=0"  ng-true-value='1' ng-false-value='0' ng-model="product.feature"><b> Featured this Product</b>
 			 </div>
 			</p>
 		      </div>
-		      <div class="box-footer">
-		        <div class="pull-right"><button class="btn btn-primary">Save</button></div>
-		       </div>
+		     
 		    </div>
 		    </div>
                    <!-- /.box -->
@@ -917,7 +915,7 @@
 			 <input type="text" class="form-control" id="" name="pro_tags" placeholder="Product Tags" ng-model="product.pro_tags">
 			 <div class="help-block"></div>
 			 </div>
-			 <input class="button tagadd" ng-init="product.pro_tags=''" value="Add" type="button" ng-click="addTags(product.pro_tags); product.pro_tags=''">
+			 <input class="button tagadd btn btn-primary" ng-init="product.pro_tags=''" value="Add" type="button" ng-click="addTags(product.pro_tags); product.pro_tags=''">
 			 <div class="tagchecklist" ng-repeat="tg in tags"> 
 			      <span><a id="product_tag-check-num-0" class="ntdelbutton" tabindex="0" ng-click="removeTags($index);"><i class="fa fa-times-circle"></i></a><% tg.tag %></span>
 			 </div>
@@ -1009,7 +1007,7 @@
 			 <!-- /.box --> 
 		      </div>
 		      
-		      <div class="col-xs-12" ng-if="product.pro_datatype_id == '2'">
+		      <div class="col-xs-12" ng-if="product.pro_datatype_id == '2' && main_option.length==2">
 			 <!-- Default box -->
 			 <div class="box">
 			 <div class="box-header with-border">
@@ -1023,23 +1021,23 @@
 			 <div class="box-body">
 			      <div class="form-group">
 				  <label for="exampleInputEmail1">View:</label>
-				  <select>
-				   <option>Disabled</option>
-				   <option>Enabled</option>
+                                  <select ng-init="product.bulk_view='0'" ng-model="product.bulk_view">
+				   <option value="0">Disabled</option>
+				   <option value="1">Enabled</option>
 				  </select>
 			      </div>
 			      <div class="form-group">
 				  <label for="exampleInputEmail1">Columns:</label>
-				  <select>
-				   <option>Select Variations Attribute</option>
-				   <option>fgf</option>
+				  <select ng-init="product.col_bulk=''"  ng-model="product.col_bulk">
+				   <option value="">Select Variations Attribute</option>
+				   <option ng-repeat="mn_opt in main_option" value="<% mn_opt.main.id %>"><% mn_opt.main.name %></option>
 				  </select>
 			      </div>
 			      <div class="form-group">
 				  <label for="exampleInputEmail1">Rows:</label>
-				  <select>
-				   <option>Select Variations Attribute</option>
-				   <option>fgt</option>
+				  <select  ng-init="product.row_bulk=''"  ng-model="product.row_bulk">
+				   <option value="">Select Variations Attribute</option>
+				   <option ng-repeat="mn_opt in main_option" value="<% mn_opt.main.id %>"><% mn_opt.main.name %></option>
 				  </select>
 			      </div>
 				  
@@ -1326,14 +1324,14 @@
 					     <button ng-click="addData(product.pro_opt_name_id);product.pro_opt_name_id=''" type="submit" class="btn btn-primary">Add</button>
 					  </div>
 					 <div class="form-group" ng-repeat="newvalue in optval" ng-init="product.pro_opt_values_id[newvalue.optid]=newvalue.opt_ids">
-					    <% newvalue.parent_name[0].option_name %>
+					  <% optval %>
 					     <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id[newvalue.optid]" multiple="multiple">
 						<option ng-repeat="opv in newvalue.all" ng-value="opv.id" value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
 					     <a href="" ng-click="removeData($index);">Remove</a>
 					 </div>
 					 
-					 <% product.pro_opt_values_id %><!--<div class="form-group">
+<!--					<div class="form-group">
 					 <select class="form-control" name="pro_opt_values_id" ng-model="product.pro_opt_values_id" multiple>
 						<option ng-repeat="opv in optionvalues" ng-value="opv.id" ng-selected="opv.id==product.pro_opt_values_id" value="<%opv.id%>"><% opv.option_name %></option>
 					     </select>
@@ -1434,10 +1432,11 @@
 			 <a href="javascript:void(0);" class="edit-status" ng-click="myFunc4()"><span aria-hidden="true">Edit</span></a>
 			 
 			 <div id="status-select" class="" ng-show="showMe4">
-			 <input name="hidden_status" id="hidden_status" value="draft" type="hidden">
-			 <select name="status" id="status">
-			 <option value="pending">Pending Review</option>
-			 <option selected="selected" value="draft">Inactive</option>
+			
+                         <select name="status" ng-init="product.status='Active'" ng-model="product.status" id="status">
+                            <option value="Pending">Pending Review</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Active">Active</option>
 			 </select>
 			  <a href="#post_status" class="btn btn-default new-btn">OK</a>
 			  <a href="#post_status" class="cancel-status hide-if-no-js button-cancel">Cancel</a>
@@ -1448,9 +1447,7 @@
 			 </div>
 			</p>
 		      </div>
-		      <div class="box-footer">
-		        <div class="pull-right"><button class="btn btn-primary">Save</button></div>
-		       </div>
+		     
 		    </div>
 		    </div>
                    <!-- /.box -->

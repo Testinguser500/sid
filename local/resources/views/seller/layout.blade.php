@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="{{URL::asset('seller/iCheck/all.css')}}">
   <!-- Morris chart -->
   <link rel="stylesheet" href="{{URL::asset('seller/morris/morris.css')}}">
+  <link rel="stylesheet" href="{{URL::asset('admin/css/select2.min.css')}}">
   <!-- jvectormap -->
   <link rel="stylesheet" href="{{URL::asset('seller/jvectormap/jquery-jvectormap-1.2.2.css')}}">
   <!-- Date Picker -->
