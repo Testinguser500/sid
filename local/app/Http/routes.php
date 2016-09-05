@@ -159,10 +159,6 @@ Route::post('admins/product/get_attr_gr', 'Admin\ProductController@get_attr_gr')
 
 Route::post('admins/product/deleteAll', 'Admin\ProductController@deleteAll');
 Route::post('admins/product/updateDes', 'Admin\ProductController@updateDes');
-<<<<<<< HEAD
-
-=======
->>>>>>> 9ddcdec7ef86b12aa612ae9ac1bd19fd06579219
 
 Route::get('admins/plan', 'Admin\PlanController@index');
 Route::get('admins/plan/all', 'Admin\PlanController@all');
@@ -235,5 +231,6 @@ Route::post('admins/bulk-discount/delete', 'Admin\BulkDiscountController@delete'
 Route::get('admins/create_promotion', 'Admin\PromotionController@index');
 Route::get('admins/promotion_setting', 'Admin\PromotionSettingController@index');
 Route::get('admins/promotion/get_setting/{setting}', 'Admin\PromotionSettingController@get_setting');
-Route::post('admins/promotion/update_setting', 'Admin\PromotionSettingController@update_setting');
+Route::post('admins/promotion/update_adtext', 'Admin\PromotionSettingController@update_adtext');
+Route::post('admins/promotion/update_adbanr', 'Admin\PromotionSettingController@update_adbanr');
 

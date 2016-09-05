@@ -5570,8 +5570,9 @@ $scope.checkAll = function () {
 		$scope.loading = true;
 		
 	};
+        /************Update Ad Text************/
    $scope.save_setting=function(setting_data) {
-     $http.post('promotion/update_setting',{
+     $http.post('promotion/update_adtext',{
 		   setting_data:setting_data		   
 	   }).
 		success(function(data, status, headers, config) {                   
@@ -5581,7 +5582,32 @@ $scope.checkAll = function () {
                         }
 		});
    } ; 
-   $scope.change_Ad=function(setting_addtype){      
+   
+       /************Update Ad Banner**************/
+   $scope.save_adbanner=function(setting_data){
+      $http.post('promotion/update_adbanr',{
+               setting_data:setting_data
+           }). 
+                success(function (data,status,headers,config){
+                  $scope.loading=false;
+                  if(data[0]=="success"){
+                      $scope.success_flash=data[1];
+                  }
+           });   
+   };    
+       
+   
+   $scope.change_Ad=function(setting_addtype){  
+       $scope.adtxtfunc=false;
+       $scope.adbanrfunc=false;
+       if(setting_addtype=='text_ad'){
+         $scope.adtxtfunc=true;
+         $scope.adbanrfunc=false;
+       }
+        if(setting_addtype=='banner_ad'){
+         $scope.adtxtfunc=false;
+         $scope.adbanrfunc=true;
+       }
        $http.get('promotion/get_setting/'+setting_addtype).
 		success(function(data, status, headers, config) {
 			$scope.setting_data = data;
@@ -5595,6 +5621,35 @@ $scope.checkAll = function () {
    };
    $scope.splice_field=function(index){
       $scope.setting_data.create_package.splice(index,1);     
+   };
+   $scope.add_topbanr=function(){
+       $scope.setting_data.prom_all.push({'ad_type':'banner_ad','field_name':'home_top_bot_banner','field_value':'','nom_view':'','view_price':''});
+   };
+   $scope.remove_topbanr=function(index){
+       $scope.setting_data.prom_all.splice(index,1); 
+   };
+   $scope.add_rightbanr1=function(){
+     
+    $scope.setting_data.prom_all.push({'ad_type':'banner_ad','field_name':'home_right_banner','field_value':'','nom_view':'','view_price':''});  
+    console.log($scope.setting_data.prom_all);
+   };
+   $scope.remove_rightbanr1=function(index){
+      $scope.setting_data.prom_all.splice(index,1);  
+   };
+   
+   $scope.add_catban=function(){
+     $scope.setting_data.prom_all.push({'ad_type':'banner_ad','field_name':'categ_left_bot_banner','field_value':'','nom_view':'','view_price':''});   
+   };
+   
+   $scope.remove_catban=function(index){     
+      $scope.setting_data.prom_all.splice(index,1);  
+   };
+   
+   $scope.add_prodban=function(){
+       $scope.setting_data.prom_all.push({'ad_type':'banner_ad','field_name':'prod_left_bot_banner','field_value':'','nom_view':'','view_price':''});
+   };
+   $scope.remove_prodban=function(index){
+       $scope.setting_data.prom_all.splice(index,1); 
    };
     $scope.init();    
  });
