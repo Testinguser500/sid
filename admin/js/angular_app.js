@@ -163,12 +163,9 @@ app.config(['$routeProvider', function($routeProvider) {
    }).
    when('/special-offer', {
       templateUrl: 'special-offer', controller: 'SpecialOfferController'
-   }).
-   when('/create_promotion', {
-      templateUrl: 'create_promotion', controller: 'PromotionController'
-   }).
-   when('/create_promotion', {
-      templateUrl: 'create_promotion', controller: 'PromotionController'
+   }).  
+    when('/create_promotion', {
+      templateUrl: 'create_promotion', controller: 'PromotionCreateController'
    }).       
    when('/promotion_setting', {
       templateUrl: 'promotion_setting', controller: 'PromotionSettingController'
@@ -5516,7 +5513,7 @@ $scope.checkAll = function () {
   });
   
   /****************Promotion******************/
-   app.controller('PromotionController', function($scope, $http) {
+   app.controller('PromotionCreateController', function($scope, $http) {
      $scope.errors=false;
      $scope.files=false;     
      $scope.$parent.ptitle='Create Promotion';
@@ -5524,21 +5521,30 @@ $scope.checkAll = function () {
      $scope.enquirys=false;
      $scope.enquiry=false;
      $scope.page='index';
-     $scope.faq=false;
+     $scope.faq=false;     
      $scope.success_flash=false;
       $scope.init = function() {
 	$scope.image = '';
-		
+              
                // $scope.page='index';
                 $scope.errors=false;               
 		$scope.loading = true;
-//		$http.get('bulk-discount/all').
-//		success(function(data, status, headers, config) {
-//			$scope.offers = data['offers'];
-//			console.log($scope.offers);
-//		        $scope.loading = false;
-//		});
+		$http.get('create_promotion/all_adtext_rec').
+		success(function(data, status, headers, config) {
+			$scope.adtext_rec = data;
+			console.log(adtext_rec);
+		        $scope.loading = false;
+		});
 	};
+        
+        $scope.selcrt_camp=function(camp){
+            $scope.campinputshow=false;
+            console.log(camp);
+            if(camp=='create_new'){
+               $scope.campinputshow=true;  
+            }
+        };
+        
     $scope.init();    
  });
  

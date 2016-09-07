@@ -35,10 +35,10 @@
               <label class="control-label col-sm-2" for="pwd">Enable/Disable</label>
                <div class="col-sm-10">
                   <label class="form-check-inline">
-                      <input class="form-check-input" ng-checked="setting_data.prom_all[0].field_name=='ad_type' && setting_data.prom_all[0].status=='1'" ng-model="setting_data.prom_all[0].status" type="radio" id="inlineCheckbox1"> Enable
+                      <input class="form-check-input" name="enabdisble" ng-value="1" ng-checked="setting_data.prom_all[0].field_name=='ad_type' && setting_data.prom_all[0].status=='1'" ng-model="setting_data.prom_all[0].status" type="radio" id="inlineCheckbox1"> Enable
                   </label>
                   <label class="form-check-inline">
-                      <input class="form-check-input" ng-model="setting_data.prom_all[0].status" ng-checked="setting_data.prom_all[0].field_name=='ad_type' && setting_data.prom_all[0].status=='0'" type="radio" id="inlineCheckbox2" > Disable
+                      <input class="form-check-input"  name="enabdisble" ng-value="0" ng-model="setting_data.prom_all[0].status" ng-checked="setting_data.prom_all[0].field_name=='ad_type' && setting_data.prom_all[0].status=='0'" type="radio" id="inlineCheckbox2" > Disable
                   </label>
                  
             </div>              
