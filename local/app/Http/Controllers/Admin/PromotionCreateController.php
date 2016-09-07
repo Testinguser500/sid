@@ -1,14 +1,6 @@
 <?php namespace App\Http\Controllers\Admin;
 use App\User; 
-use App\Product;
-use App\ProductImage;
-use App\Category;
-use App\Brand;
-use App\ProductDataType;
-use App\Option;
-use App\ProductAttribute;
-use App\ProductTags;
-use App\ProductVariation;
+use App\Promotion;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -18,7 +10,7 @@ use Session;
 use Request;
 use File;
 use Response;
-class PromotionController extends Controller
+class PromotionCreateController extends Controller
 {      
             public function __construct()
         {
