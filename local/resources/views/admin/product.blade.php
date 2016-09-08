@@ -696,8 +696,8 @@
 					     <label for="exampleInputEmail1">Up-sells</label>
 					    
 					     <input id="" class="form-control" ng-model="product.upsellls_hint" placeholder="Search Product" 
-                                              ng-focus="getProduct(product.upsellls_hint);" ng-keyup="getProduct(product.upsellls_hint);" type="text">
-					     <ul class="pro-ul" ng-show="err"><li><%msg%></li></ul>
+                                              ng-focus="getProduct(product.upsellls_hint,'upsell');" ng-keyup="getProduct(product.upsellls_hint,'upsell');" type="text">
+					     <ul class="pro-ul" ng-show="msg_upsell"><li><%msg_upsell%></li></ul>
                                                 <ul class="pro-ul" ng-show="upsell_pro">
                                                       <li ng-repeat="pro in upsell_pro" ng-click="upselItem(pro);"><%pro.pro_name%></li>
                                                 </ul>
@@ -705,7 +705,27 @@
                                                  <span class="selection">
                                                      <span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
                                                         <ul class="select2-selection__rendered">
-                                                              <li class="select2-selection__choice" ng-repeat="item in up_sell"><%item.pro_name%> <span ng-click="spremoveItem($index)" style="cursor:pointer">x</span></li>
+                                                              <li class="select2-selection__choice" ng-repeat="item in up_sell"><%item.pro_name%> <span ng-click="remove_up_sell($index)" style="cursor:pointer">x</span></li>
+                                                        </ul>
+                                                </span>
+                                              </span>
+                                              
+                                             </span>
+                                         </div>
+                                              <div class="form-group">
+					     <label for="exampleInputEmail1">Cross-sells</label>
+					    
+					     <input id="" class="form-control" ng-model="product.crosssells_hint" placeholder="Search Product" 
+                                              ng-focus="getProduct(product.crosssells_hint,'cross');" ng-keyup="getProduct(product.crosssells_hint,'cross');" type="text">
+					     <ul class="pro-ul" ng-show="msg_cross"><li><%msg_cross%></li></ul>
+                                                <ul class="pro-ul" ng-show="crosssell_pro">
+                                                      <li ng-repeat="pro in crosssell_pro" ng-click="crossItem(pro);"><%pro.pro_name%></li>
+                                                </ul>
+                                             <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" style="width: 100%;">
+                                                 <span class="selection">
+                                                     <span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+                                                        <ul class="select2-selection__rendered">
+                                                              <li class="select2-selection__choice" ng-repeat="item in cross_sell"><%item.pro_name%> <span ng-click="remove_cross_sell($index)" style="cursor:pointer">x</span></li>
                                                         </ul>
                                                 </span>
                                               </span>
@@ -726,8 +746,9 @@
 					     </select>-->
                                          </div>
                                          <div class="form-group">
-                                             <span ng-if="options.length==0" style="color:#a94442">Please select category</span>
+                                             <span ng-if="options.length==0" style="color:#a94442">Please select category first</span>
 					     <select class="form-control" name="pro_opt_name_id" ng-model="product.pro_opt_name_id"  ng-change="">
+                                                 <option ng-value="" value="">Please select attributes</option>
 						<option ng-repeat="opnam in options" ng-if="check_exist(opnam.id)" ng-value="opnam.id" ng-selected="opnam.id==product.pro_opt_name_id" value="<%opnam.id%>"><% opnam.option_name %></option>
 					     </select>
                                          </div>
@@ -839,27 +860,7 @@
 		      </div>
 		    </div>
                    <!-- /.box -->
-		   <!-- Default box -->
-		    <div class="box">
-		      <div class="box-header with-border">
-			<h3 class="box-title">Sellers</h3>
-			<div class="box-tools pull-right">
-			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-			    <i class="fa fa-minus"></i></button>
-			</div>
-		      </div>
-		      <div class="box-body">
-			<div class="form-group">
-		      <label for="exampleInputEmail1">Sellers</label>
-		       <select class="form-control" id="" name="seller_id" placeholder="Sellers" ng-model="product.seller_id">
-			<option value="">Select Seller</option>
-			<option ng-repeat="ss in sellers" ng-value="ss.id" ng-selected="ss.id==product.seller_id"><%ss.fname%></option> 
-		       </select>
-		      <div class="help-block"></div>
-		    </div>
-		      </div>
-		    </div>
-                   <!-- /.box -->
+		  
 		   <!-- Default box -->
 		    <div class="box">
 		      <div class="box-header with-border">
@@ -1024,7 +1025,30 @@
 			 </div>
 			 <!-- /.box --> 
 		      </div>
-		      
+                  <div class="col-xs-12">
+		       <!-- Default box -->
+		    <div class="box">
+		      <div class="box-header with-border">
+			<h3 class="box-title">Sellers</h3>
+			<div class="box-tools pull-right">
+			  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+			    <i class="fa fa-minus"></i></button>
+			</div>
+		      </div>
+		      <div class="box-body">
+			<div class="form-group">
+		      <label for="exampleInputEmail1">Sellers</label>
+		       <select class="form-control" id="" name="seller_id" placeholder="Sellers" ng-model="product.seller_id">
+			<option value="">Select Seller</option>
+			<option ng-repeat="ss in sellers" ng-value="ss.id" ng-selected="ss.id==product.seller_id"><%ss.fname%></option> 
+		       </select>
+		      <div class="help-block"></div>
+		    </div>
+		      </div>
+		    </div>
+                  
+                   <!-- /.box -->
+                   </div>
 		      <div class="col-xs-12" ng-if="product.pro_datatype_id == '2' && main_option.length==2">
 			 <!-- Default box -->
 			 <div class="box">
@@ -1070,7 +1094,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button ng-click="store(product,pr_imgs,tags)" type="submit" class="btn btn-primary">Submit</button>
+                <button ng-click="store(product,pr_imgs,tags,up_sell,cross_sell)" type="submit" class="btn btn-primary">Submit</button>
               </div>
             
           </div>

@@ -99,7 +99,7 @@ class ProductController extends Controller
 	    
 	}
        /*******insert the data*****/
-        public function store(){  //print_r(Request::all());
+        public function store(){  
 	    $catids= array();
 	    $regex = "/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/";
 	   $validator = Validator::make(Request::all(), [
@@ -181,8 +181,26 @@ class ProductController extends Controller
 	}
 	$newproids = implode(",", $newcatarr);
 	}
-	
-        
+	 $cross_sell_data="";
+         $cross_sell= Request::input('cross_sell');
+         if(count($cross_sell)>0){
+             foreach($cross_sell as $cr_ky => $cr_vy){
+                 if( $cross_sell_data != ''){
+                     $cross_sell_data .= ',';
+                 }
+                 $cross_sell_data .=$cr_vy['id'];
+             }
+         }
+         $up_sell_data="";
+         $up_sell= Request::input('up_sell');
+         if(count($up_sell)>0){
+             foreach($up_sell as $cr_ky => $cr_vy){
+                 if( $up_sell_data != ''){
+                     $up_sell_data .= ',';
+                 }
+                 $up_sell_data .=$cr_vy['id'];
+             }
+         }
 	 $prod = Product::create(['pro_name' =>Request::input('pro_name'),
 			 'pro_des' =>Request::input('pro_des'),
 			 'pro_short_des' =>Request::input('pro_short_des'),
@@ -217,6 +235,8 @@ class ProductController extends Controller
                          'bulk_view' =>Request::input('bulk_view')? Request::input('bulk_view') : 0,
                          'col_bulk' => Request::input('col_bulk')? Request::input('col_bulk') : 0,
                          'row_bulk' => Request::input('row_bulk')? Request::input('row_bulk') : 0,
+                         'cross_sell'=>$cross_sell_data,
+                         'up_sell'=>$up_sell_data
              ]);
 	 
 		$insertedId = $prod->id;
