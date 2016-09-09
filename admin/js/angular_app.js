@@ -164,6 +164,9 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/special-offer', {
       templateUrl: 'special-offer', controller: 'SpecialOfferController'
    }).  
+   when('/bulk-discount', {
+      templateUrl: 'bulk-discount', controller: 'BulkDiscountController'
+   }).  
     when('/create_promotion', {
       templateUrl: 'create_promotion', controller: 'PromotionCreateController'
    }).       
@@ -2972,6 +2975,7 @@ app.controller('CountryController', function($scope, $http) {
      $scope.variations = [];    
      $scope.product.pro_category_id={};
      $scope.up_sell=[];
+     $scope.cross_sell=[];
      //$scope.product.pro_opt_values_id=[];
      $scope.success_flash=false;
      $scope.tab = 1;
@@ -3174,7 +3178,7 @@ $scope.checkAll = function () {
 		        $scope.loading = false;
 		});
 	}
-        $scope.getProduct = function(pData)
+        $scope.getProduct = function(pData,type)
 	{
 		$scope.loading = true;
 	   $http.post('coupon/getProduct',{
@@ -3185,27 +3189,66 @@ $scope.checkAll = function () {
 		   	
 		        if(data[0]=='error')
 			{
-				$scope.err=true;
-				$scope.msg = data[1];
-				$scope.upsell_pro = '';
+				if(type == 'upsell'){
+				  $scope.msg_upsell = data[1];
+				  $scope.upsell_pro = '';
+                               }else{
+                                   $scope.msg_cross = data[1];
+				   $scope.crosssell_pro = '';
+                               }
 				
 			}
 			else
 			{
-                                $scope.loading = false
-                                $scope.upsell_pro = data;
-                                $scope.err=false;
-				$scope.msg = '';
+                                
+                                if(type == 'upsell'){
+				  $scope.msg_upsell = '';
+				  $scope.upsell_pro = data;
+                               }else{
+                                   $scope.msg_cross ='';
+				   $scope.crosssell_pro = data;
+                               }
+				
 			     
 			}
 			});
 	}
         
-        $scope.upselItem = function(pro){
+        $scope.upselItem = function(pro){           
            
-           $scope.up_sell.push(pro);
+                oldpro='';
+		angular.forEach($scope.up_sell, function(eachpro){ //For loop
+                    if(pro.id == eachpro.id){ // this line will check whether the data is existing or not
+                    oldpro = true;
+                    }
+                 });
+                if(!oldpro)
+                {                     
+                      $scope.up_sell.push(pro);                     
+                      $scope.upsell_pro = '';
+                }
             
+        }
+        $scope.remove_up_sell = function(index){
+             $scope.up_sell.splice(index);  
+        }
+          $scope.crossItem = function(pro){           
+           
+                oldpro='';
+		angular.forEach($scope.cross_sell, function(eachpro){ //For loop
+                    if(pro.id == eachpro.id){ // this line will check whether the data is existing or not
+                    oldpro = true;
+                    }
+                 });
+                if(!oldpro)
+                {                     
+                      $scope.cross_sell.push(pro);                     
+                      $scope.crosssell_pro = '';
+                }
             
+        }
+        $scope.remove_cross_sell = function(index){
+             $scope.cross_sell.splice(index);  
         }
 	$scope.addData = function (optionid) { 
            if(optionid!=''){
@@ -3415,11 +3458,11 @@ $scope.checkAll = function () {
      
 	   
 	 
-	 $scope.store = function(product,images,tags) {
+	 $scope.store = function(product,images,tags,up_sell,cross_sell) {
 		
            $scope.errors=false;
            $scope.success_flash=false;
-           console.log(product);
+          
            $http.post('product/store', {
 			pro_name: product.pro_name,
 			pro_des: product.pro_des,
@@ -3462,7 +3505,9 @@ $scope.checkAll = function () {
 			vari_sku: product.vari_sku,
 			vari_price: product.vari_price,
 			vari_sale_price: product.vari_sale_price,
-			vari_stock: product.vari_stock
+			vari_stock: product.vari_stock,
+                        up_sell:up_sell,
+                        cross_sell:cross_sell
 		} ).success(function(data, status, headers, config) {
                   
                     if(data[0]=='error'){

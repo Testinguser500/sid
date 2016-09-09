@@ -85,7 +85,7 @@
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                             
-                                  {{ csrf_field() }}
+                                
                                <input type="hidden" name="del_id" value="<% val.id %>" />
                                <button data-dismiss="modal" ng-click="deleteoffer($index)" class="btn btn-primary" >Delete</button>
                             
@@ -126,61 +126,80 @@
           </div>
           
           <div class="box box-primary" ng-if="page=='add'">
-
+            
             <div class="box-header with-border">
                 <h3 class="box-title"><i class="fa fa-edit"></i> Add Offer</h3>
                  <div class="pull-right"> <a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
             </div>
 	    <div class="box-body">
-            <div class="form-group">
-                <h3>General Settings</h3>
-            </div>
-            <div class="form-group">
+                
+                  <div class="form-group">
                   <label for="exampleInputEmail1">Rule Name</label>
                   <input type="text" class="form-control" id="" name="rule_name" placeholder="Rule" ng-model="offer.role_name">
 		  <div class="help-block"></div>
                 </div>
-            <div class="form-group">
-                  <label for="exampleInputEmail1">Quantities based on</label>
-                  <select class="form-control" id="" name="quantity_based_on" ng-model="offer.quantity_based_on">
-                <optgroup label="Exclusive">
-                    <option value="exclusive_product" selected="selected">Quantities of each product individually</option>
-                    <option value="exclusive_variation">Quantities of each variation individually</option>
-                    <option value="exclusive_configuration">Quantities of each cart line item individually</option>
-                </optgroup>
-                <optgroup label="Cumulative">
-                    <option value="cumulative_categories">Quantities of all selected products split by category</option>
-                    <option value="cumulative_all">Quantities of all selected products summed up</option>
-                </optgroup>
-                  </select>
-		  <div class="help-block"></div>
-                </div>
-            <div class="form-group">
-                  <label for="exampleInputEmail1">If conditions are matched</label>
-                  <select class="form-control" id="" name="condition_match" ng-model="offer.condition_match">
+                 <div class="col-xs-12 main--tab">
+			     <div class="col-md-4">
+				   <div class="first-box" >
+					<ul class="nav nav-pills nav-stacked tabb">
+					<li ng-class="{ active: isSet(1) }">
+					<a href ng-click="setTab(1)">General Setting</a>
+					</li>
+					<li ng-class="{ active: isSet(2) }">
+					<a href ng-click="setTab(2)">Conditions</a>
+					</li>
+					<li ng-class="{ active: isSet(3) }">
+					<a href ng-click="setTab(3)">Special Offer</a>
+					</li>
+					
+					</ul>
+				   </div>
+                             </div>
                 
-                                                
-                                                <option value="all" selected="selected">Apply with other matched rules</option>
-                                                <option value="this">Apply only this rule (disregard other rules)</option>
-                                                <option value="other">Apply only if no other rules are matched</option>
-                  </select>
-		  <div class="help-block"></div>
-                </div>
-            <div class="form-group">
-                  <label for="exampleInputEmail1">Valid From</label>
-                  <ng-datepicker view-format="Do MMMM YYYY"  class="hasDatepicker"  ng-model="offer.from_date" first-week-day-sunday="true" placeholder="Pick a date">
-                    </ng-datepicker>
-		  <div class="help-block"></div>
-                </div>
-            <div class="form-group">
-                  <label for="exampleInputEmail1">Valid End</label>
-                  <ng-datepicker view-format="Do MMMM YYYY"  class="hasDatepicker"  ng-model="offer.end_date" first-week-day-sunday="true" placeholder="Pick a date">
-                    </ng-datepicker>
-		  <div class="help-block"></div>
-                </div>
-            <div class="form-group">
-                <h3>Conditions</h3>
-            </div>
+                       <div class="col-md-8">
+				   <div class="jumbotron">
+					 <div ng-show="isSet(1)">
+          
+                                                <div class="form-group">
+                                                      <label for="exampleInputEmail1">Quantities based on</label>
+                                                      <select class="form-control" id="" name="quantity_based_on" ng-model="offer.quantity_based_on">
+                                                    <optgroup label="Exclusive">
+                                                        <option value="exclusive_product" selected="selected">Quantities of each product individually</option>
+                                                        <option value="exclusive_variation">Quantities of each variation individually</option>
+                                                        <option value="exclusive_configuration">Quantities of each cart line item individually</option>
+                                                    </optgroup>
+                                                    <optgroup label="Cumulative">
+                                                        <option value="cumulative_categories">Quantities of all selected products split by category</option>
+                                                        <option value="cumulative_all">Quantities of all selected products summed up</option>
+                                                    </optgroup>
+                                                      </select>
+                                                      <div class="help-block"></div>
+                                                    </div>
+                                                <div class="form-group">
+                                                      <label for="exampleInputEmail1">If conditions are matched</label>
+                                                      <select class="form-control" id="" name="condition_match" ng-model="offer.condition_match">
+
+
+                                                                                    <option value="all" selected="selected">Apply with other matched rules</option>
+                                                                                    <option value="this">Apply only this rule (disregard other rules)</option>
+                                                                                    <option value="other">Apply only if no other rules are matched</option>
+                                                      </select>
+                                                      <div class="help-block"></div>
+                                                    </div>
+                                                <div class="form-group">
+                                                      <label for="exampleInputEmail1">Valid From</label>
+                                                      <ng-datepicker view-format="Do MMMM YYYY"  class="hasDatepicker"  ng-model="offer.from_date" first-week-day-sunday="true" placeholder="Pick a date">
+                                                        </ng-datepicker>
+                                                      <div class="help-block"></div>
+                                                    </div>
+                                                <div class="form-group">
+                                                      <label for="exampleInputEmail1">Valid End</label>
+                                                      <ng-datepicker view-format="Do MMMM YYYY"  class="hasDatepicker"  ng-model="offer.end_date" first-week-day-sunday="true" placeholder="Pick a date">
+                                                        </ng-datepicker>
+                                                      <div class="help-block"></div>
+                                                    </div>
+                                         </div>
+          <div ng-show="isSet(2)">
             <div class="form-group">
                   <label for="exampleInputEmail1">Apply to</label>
                   <select class="form-control" id="" name="apply_to" ng-model="offer.apply_to">
@@ -289,9 +308,8 @@
 		  </span>
 			
 		  </div>
-	    <div class="form-group">
-                <h3>Special Offer</h3>
-            </div>
+          </div>
+	   <div ng-show="isSet(3)">
 	    <div class="form-group">
                   <label for="exampleInputEmail1">Amount to purchase</label>
                   <input type="text" class="form-control" id="" name="amount_purchase" placeholder="e.g. 2" ng-model="offer.amount_purchase">
@@ -363,10 +381,15 @@
                   <input type="text" class="form-control" id="" name="adjustment_value" placeholder="e.g. 15.00" ng-model="offer.adjustment_value">
 		  <div class="help-block"></div>
                 </div>
-	    <div class="box-footer">
+	    
+            </div>
+            </div>
+                </div>
+            </div>
+             <div class="box-footer">
                 <button  ng-click="store(offer);" class="btn btn-primary">Submit</button>
 				
-              </div>
+              </div>                   
 	    </div>
 	    </div>
 	  
@@ -377,15 +400,34 @@
                  <div class="pull-right"> <a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
             </div>
 	    <div class="box-body">
-            <div class="form-group">
-                <h3>General Settings</h3>
-            </div>
-	    <input type="hidden" name="" ng-model="offer_datas.id">
-            <div class="form-group">
+                 <div class="form-group">
                   <label for="exampleInputEmail1">Rule Name</label>
                   <input type="text" class="form-control" id="" name="rule_name" placeholder="Role" ng-model="offer_datas.offer_name">
 		  <div class="help-block"></div>
                 </div>
+           <div class="col-xs-12 main--tab">
+			     <div class="col-md-4">
+				   <div class="first-box" >
+					<ul class="nav nav-pills nav-stacked tabb">
+					<li ng-class="{ active: isSet(1) }">
+					<a href ng-click="setTab(1)">General Setting</a>
+					</li>
+					<li ng-class="{ active: isSet(2) }">
+					<a href ng-click="setTab(2)">Conditions</a>
+					</li>
+					<li ng-class="{ active: isSet(3) }">
+					<a href ng-click="setTab(3)">Special Offer</a>
+					</li>
+					
+					</ul>
+				   </div>
+                             </div>
+                
+                       <div class="col-md-8">
+				   <div class="jumbotron">
+					 <div ng-show="isSet(1)">
+	    <input type="hidden" name="" ng-model="offer_datas.id">
+           
             <div class="form-group">
                   <label for="exampleInputEmail1">Quantities based on</label>
                   <select class="form-control" id="" name="quantity_based_on" ng-model="offer_datas.quantity_based_on">
@@ -424,9 +466,8 @@
                     </ng-datepicker>
 		  <div class="help-block"></div>
                 </div>
-            <div class="form-group">
-                <h3>Conditions</h3>
             </div>
+            <div ng-show="isSet(2)">
             <div class="form-group">
 		
                   <label for="exampleInputEmail1">Apply to</label>
@@ -537,9 +578,8 @@
 		  </span>
 			
 		  </div>
-	    <div class="form-group">
-                <h3>Special Offer</h3>
             </div>
+	    <div ng-show="isSet(3)">
 	    <div class="form-group">
                   <label for="exampleInputEmail1">Amount to purchase</label>
                   <input type="text" class="form-control" id="" name="amount_purchase" placeholder="e.g. 2" ng-model="offer_datas.amount_purchase">
@@ -612,6 +652,10 @@
                   <input type="text" class="form-control" id="" name="adjustment_value" placeholder="e.g. 15.00" ng-model="offer_datas.adjustment_value">
 		  <div class="help-block"></div>
                 </div>
+              </div>
+             </div>
+            </div>
+           </div>
 	    <div class="box-footer">
                 <button  ng-click="update(offer_datas);" class="btn btn-primary">Submit</button>
 				
