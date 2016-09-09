@@ -229,7 +229,13 @@ Route::post('admins/bulk-discount/delete', 'Admin\BulkDiscountController@delete'
 
 /*********************promotion************************/
 Route::get('admins/create_promotion', 'Admin\PromotionCreateController@index');
-Route::get('admins/create_promotion/all_adtext_rec', 'Admin\PromotionCreateController@index');
+Route::get('admins/create_promotion/get_campaign', 'Admin\PromotionCreateController@getcampaign');
+Route::get('admins/create_promotion/get_promotn', 'Admin\PromotionCreateController@get_promotn');
+Route::post('admins/create_promotion/get_camp_previw', 'Admin\PromotionCreateController@get_camp_preview');
+Route::get('admins/create_promotion/get_promotion/{adtype}', 'Admin\PromotionCreateController@getpromotion');
+Route::post('admins/create_promotion/save_promotion_adtext', 'Admin\PromotionCreateController@save_promotion_adtext');
+Route::post('admins/create_promotion/update_promotion_adtext', 'Admin\PromotionCreateController@update_promotion_adtext');
+
 Route::get('admins/promotion_setting', 'Admin\PromotionSettingController@index');
 Route::get('admins/promotion/get_setting/{setting}', 'Admin\PromotionSettingController@get_setting');
 Route::post('admins/promotion/update_adtext', 'Admin\PromotionSettingController@update_adtext');
