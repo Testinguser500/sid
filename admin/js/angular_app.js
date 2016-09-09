@@ -164,6 +164,9 @@ app.config(['$routeProvider', function($routeProvider) {
    when('/special-offer', {
       templateUrl: 'special-offer', controller: 'SpecialOfferController'
    }).  
+   when('/bulk-discount', {
+      templateUrl: 'bulk-discount', controller: 'BulkDiscountController'
+   }).  
     when('/create_promotion', {
       templateUrl: 'create_promotion', controller: 'PromotionCreateController'
    }).       
