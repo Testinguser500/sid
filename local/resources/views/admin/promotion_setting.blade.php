@@ -117,13 +117,13 @@
                                                <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select or Create Compaign">
                                            </div>
                                             <div class="col-sm-12" ng-repeat="toltip in setting_data.tooltip |filter:{tool_fd:'Ad_Type'}: true ">
-                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select or Create Compaign">
+                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Ad Type">
                                            </div>
                                          <div class="col-sm-12" ng-repeat="toltip in setting_data.tooltip |filter:{tool_fd:'Select_views_per_product'}: true ">
-                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select or Create Compaign">
+                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select view per product">
                                            </div>
                                           <div class="col-sm-12" ng-repeat="toltip in setting_data.tooltip |filter:{tool_fd:'Schedule'}: true ">
-                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select or Create Compaign">
+                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Schedule">
                                            </div>
 
                                   </div>              
@@ -167,13 +167,13 @@
                                     <label class="control-label col-sm-4">Tooltip</label>
                                      <div class="col-sm-8 tltip">
                                              <div class="col-sm-12" ng-repeat="toltip in setting_data.tooltip |filter:{tool_fd:'Select_Your_Product'} : true ">
-                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select or Create Compaign">
+                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select your product">
                                            </div>
                                        <div class="col-sm-12" ng-repeat="toltip in setting_data.tooltip |filter:{tool_fd:'Select_Category'} : true ">
-                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select or Create Compaign">
+                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select category">
                                            </div>
                                           <div class="col-sm-12" ng-repeat="toltip in setting_data.tooltip |filter:{tool_fd:'Ad_Content'} : true ">
-                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Select or Create Compaign">
+                                               <input class="form-control" type="text"  value="" ng-model="setting_data.tooltip[setting_data.tooltip.indexOf(toltip)].tool_val" placeholder="Ad content">
                                            </div>
 
                                   </div>              
