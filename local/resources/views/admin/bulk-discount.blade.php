@@ -132,14 +132,34 @@
                  <div class="pull-right"> <a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
             </div>
 	    <div class="box-body">
-            <div class="form-group">
-                <h3>General Settings</h3>
-            </div>
+          
             <div class="form-group">
                   <label for="exampleInputEmail1">Rule Name</label>
                   <input type="text" class="form-control" id="" name="rule_name" placeholder="Rule" ng-model="offer.role_name">
 		  <div class="help-block"></div>
                 </div>
+                  <div class="col-xs-12 main--tab">
+			     <div class="col-md-4">
+				   <div class="first-box" >
+					<ul class="nav nav-pills nav-stacked tabb">
+					<li ng-class="{ active: isSet(1) }">
+					<a href ng-click="setTab(1)">General Setting</a>
+					</li>
+					<li ng-class="{ active: isSet(2) }">
+					<a href ng-click="setTab(2)">Conditions</a>
+					</li>
+					<li ng-class="{ active: isSet(3) }">
+					<a href ng-click="setTab(3)">Special Offer</a>
+					</li>
+					
+					</ul>
+				   </div>
+                             </div>
+                
+                       <div class="col-md-8">
+				   <div class="jumbotron">
+					 <div ng-show="isSet(1)">
+          
             <div class="form-group">
                   <label for="exampleInputEmail1">Quantities based on</label>
                   <select class="form-control" id="" name="quantity_based_on" ng-model="offer.quantity_based_on">
@@ -178,9 +198,8 @@
                     </ng-datepicker>
 		  <div class="help-block"></div>
                 </div>
-            <div class="form-group">
-                <h3>Conditions</h3>
             </div>
+             <div ng-show="isSet(2)">
             <div class="form-group">
                   <label for="exampleInputEmail1">Apply to</label>
                   <select class="form-control" id="" name="apply_to" ng-model="offer.apply_to">
@@ -289,10 +308,12 @@
 		  </span>
 			
 		  </div>
+             </div>
+            <div ng-show="isSet(3)">
 	    <div class="form-group">
                 <h3>Quantity Discount</h3>
             </div>
-		 <div class="form-group col-xs-12 list list-inset">
+		 <div class="form-group  list list-inset">
 			<div class="row item-input">
 		<label class="item-input-wrapper col-xs-2">Min quantity</label>
 		<label class="item-input-wrapper col-xs-2">Max quantity</label>
@@ -326,6 +347,10 @@
 		</button>
 		</div>
 		</div>
+            </div>
+             </div>
+             </div>
+            </div>          
 	    <div class="box-footer">
                 <button  ng-click="store(offer);" class="btn btn-primary">Submit</button>
 				
@@ -340,15 +365,34 @@
                  <div class="pull-right"> <a href="javascript:void(0);" ng-click="init()" class="btn btn-default">Back</a></div>
             </div>
 	    <div class="box-body">
-            <div class="form-group">
-                <h3>General Settings</h3>
-            </div>
-	    <input type="hidden" name="" ng-model="offer_datas.id">
-            <div class="form-group">
+                  <div class="form-group">
                   <label for="exampleInputEmail1">Rule Name</label>
                   <input type="text" class="form-control" id="" name="rule_name" placeholder="Role" ng-model="offer_datas.offer_name">
 		  <div class="help-block"></div>
                 </div>
+             <div class="col-xs-12 main--tab">
+			     <div class="col-md-4">
+				   <div class="first-box" >
+					<ul class="nav nav-pills nav-stacked tabb">
+					<li ng-class="{ active: isSet(1) }">
+					<a href ng-click="setTab(1)">General Setting</a>
+					</li>
+					<li ng-class="{ active: isSet(2) }">
+					<a href ng-click="setTab(2)">Conditions</a>
+					</li>
+					<li ng-class="{ active: isSet(3) }">
+					<a href ng-click="setTab(3)">Special Offer</a>
+					</li>
+					
+					</ul>
+				   </div>
+                             </div>
+                
+                       <div class="col-md-8">
+				   <div class="jumbotron">
+					 <div ng-show="isSet(1)">
+	    <input type="hidden" name="" ng-model="offer_datas.id">
+          
             <div class="form-group">
                   <label for="exampleInputEmail1">Quantities based on</label>
                   <select class="form-control" id="" name="quantity_based_on" ng-model="offer_datas.quantity_based_on">
@@ -387,9 +431,8 @@
                     </ng-datepicker>
 		  <div class="help-block"></div>
                 </div>
-            <div class="form-group">
-                <h3>Conditions</h3>
             </div>
+            <div ng-show="isSet(2)">
             <div class="form-group">
 		
                   <label for="exampleInputEmail1">Apply to</label>
@@ -500,10 +543,9 @@
 		  </span>
 			
 		  </div>
-	    <div class="form-group">
-                <h3>Quantity Discount</h3>
             </div>
-		 <div class="form-group col-xs-12 list list-inset">
+	    <div ng-show="isSet(3)">
+		 <div class="form-group  list list-inset">
 			<div class="row item-input">
 		<label class="item-input-wrapper col-xs-2">Min quantity</label>
 		<label class="item-input-wrapper col-xs-2">Max quantity</label>
@@ -537,14 +579,10 @@
 		</button>
 		</div>
 		</div>
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-            
+            </div>
+             </div>
+            </div>
+            </div>
 	    <div class="box-footer">
                 <button  ng-click="update(offer_datas);" class="btn btn-primary">Submit</button>
 				
