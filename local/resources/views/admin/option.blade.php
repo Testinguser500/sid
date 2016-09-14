@@ -78,6 +78,7 @@
 					    <input ng-model="screen_opt.status"  type="checkbox"> Status
 				       </div>
 				    </div>
+                                    
 				  </div>
 			      </div>
 			      <div class="modal-footer">
@@ -116,7 +117,7 @@
                   </th>
                   <th ng-if="screen_opt.status" ng-click="sort('status')" style="cursor:pointer">Status
                   <span class="glyphicon sort-icon"  ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                  </th>           
+                  </th>                
                 </tr>
                 </thead>
                 <tbody>                
@@ -140,6 +141,8 @@
                       <span class="label label-success" ng-if="val.status=='Active'" ng-click="val.status='Inactive';update(val,'status');" style="cursor:pointer"> <% val.status %></span>
                       <span class="label label-danger" ng-if="val.status!='Active'" ng-click="val.status='Active';update(val,'status');" style="cursor:pointer"> <% val.status %></span>
                   </td>  
+                 
+                 
                 </tr>
               
                 </tbody>
@@ -152,7 +155,8 @@
                   </th>
                   <th ng-if="screen_opt.attr">Attributes : Options                        
                   </th>
-                  <th ng-if="screen_opt.status">Status</th>                              
+                  <th ng-if="screen_opt.status">Status</th>     
+                 
                 </tr>
                 </tfoot>                
               </table>
@@ -215,6 +219,9 @@
                                           <td>
 
                                            </td>
+                                            <td>
+
+                                           </td>
                                            <td>
                                              Attribute                 
                                            </td>
@@ -226,6 +233,14 @@
                                            </td>
                                       </tr>
                                        <tr ng-repeat="(ky,atr) in edit_values.attribute"  ng-if="edit_values.attribute">
+                                           <td>
+                                              <button class="btn btn-success button button-small sm_att ng-scope" ng-if="edit_values.attribute[ky].allow==0" ng-click="edit_values.attribute[ky].allow=1" >
+                                                Click to Allow
+                                                </button>
+                                                <button class="btn btn-danger button button-small sm_att ng-scope" ng-if="edit_values.attribute[ky].allow==1" ng-click="edit_values.attribute[ky].allow=0" >
+                                                Click to Disallow
+                                                </button>
+                                           </td>
                                            <td>
                                                  <button class="btn btn-danger sm_att"  ng-click="pop_attr_edit(ky);" > <i class="icon ion-minus"></i> </button>                 
                                            </td>
@@ -259,7 +274,7 @@
                                            </td>
                                       </tr>
                                       <tr >
-                                          <td colspan="4">                            
+                                          <td colspan="5">                            
                                              <button class="btn btn-primary pull-right"  ng-click="push_attr_edit();" >Add Attribute Rows </button>                    
                                           </td>
                                      </tr>
@@ -269,8 +284,8 @@
 			      </div>
 			      <div class="modal-footer">
 				  <button type="button" class="btn btn-default pull-left" ng-click="init();" data-dismiss="modal">Close</button>			      
-				  <button class="btn btn-primary" ng-if="show_save" ng-click="update(edit_values,'')" >Update</button> 
-                                   <button class="btn btn-primary" ng-if="!show_save" >Update</button> 
+				  <button class="btn btn-primary" ng-disabled="!show_save" ng-click="update(edit_values,'')" >Update</button> 
+                                   
 			      </div>
 			    </div>
 			  </div>
@@ -284,8 +299,8 @@
                 <h3 class="box-title"><i class="fa fa-plus"></i> Create Attribute</h3>                             
                 <div class="pull-right"> <a href="javascript:void(0);" ng-click="init();" class="btn btn-default">Back</a></div>
                  <div class="pull-right save_all_attr" ng-show="opt_grp.length > 1">
-                         <button class="btn btn-primary pull-right" ng-if="show_save" ng-click="save_attr(opt_grp);" >Save Attributes</button>
-                         <button class="btn btn-primary pull-right" ng-if="!show_save" >Save Attributes</button>
+                     <button class="btn btn-primary pull-right" ng-disabled="!show_save" ng-click="save_attr(opt_grp);" >Save Attributes</button>
+<!--                         <button class="btn btn-primary pull-right" ng-if="!show_save" >Save Attributes</button>-->
                  </div> 
             </div>
             <!-- /.box-header -->
@@ -356,8 +371,12 @@
                       </td>            
                  </tr>
                  <tr><td>
-                   <table class="table table-bordered all_att_rw" >
+                   <table class="table table-bordered all_att_rw" ng-init="opt_grp[ot_ky].allow=0">
+                 
                     <tr ng-if="ot.attribute">
+                        <td>
+                                            
+                         </td>
                         <td>
                                             
                          </td>
@@ -372,6 +391,14 @@
                          </td>
                     </tr>
                      <tr ng-repeat="(ky,atr) in ot.attribute"  ng-if="ot.attribute">
+                        <td ng-init="opt_grp[ot_ky].attribute[ky].allow=0"> 
+                          <button class="btn btn-success button button-small sm_att ng-scope" ng-if="opt_grp[ot_ky].attribute[ky].allow==0" ng-click="opt_grp[ot_ky].attribute[ky].allow=1" >
+                          Click to Allow
+                          </button>
+                          <button class="btn btn-danger button button-small sm_att ng-scope" ng-if="opt_grp[ot_ky].attribute[ky].allow==1" ng-click="opt_grp[ot_ky].attribute[ky].allow=0" >
+                          Click to Disallow
+                          </button>
+                        </td>
                          <td>
                                <button class="btn btn-danger sm_att"  ng-click="pop_attr(ot_ky,ky);" > <i class="icon ion-minus"></i> </button>                 
                          </td>
@@ -405,7 +432,7 @@
                          </td>
                     </tr>
                     <tr >
-                        <td colspan="4">                            
+                        <td colspan="5">                            
                            <button class="btn btn-primary pull-right"  ng-click="push_attr(ot_ky);" >Add Attribute Rows </button>                    
                         </td>
                    </tr>

@@ -2819,7 +2819,7 @@ app.controller('CountryController', function($scope, $http) {
                }
                });
            }
-           if(fd=='status' || check_cats==1){
+           if(fd=='status' || fd=='allow' || check_cats==1){
                 $scope.cat_select_error=false;
                 $http.post('option/update', {
                              update_values: update_values,       
@@ -2897,6 +2897,7 @@ app.controller('CountryController', function($scope, $http) {
       {
          
             $scope.edit_values.attribute.push({
+                                    allow:0,
                                     option_name:null,
                                     type:"select", 
                                     options:[{option_name:null}],
