@@ -91,7 +91,7 @@ class OptionController extends Controller
             foreach($val as $k1 => $v1){
                 if($v1['opt_id'] != ''){
                    foreach($v1['attribute'] as $k2 => $v2){
-                       $opts = Option::create(['option_name' =>$v2['atr_name'],'user_id'=>Auth::user()->id,'type'=>$v2['atr_type'],'status' =>'Active','parent_id' => $v1['opt_id'] ]);  
+                       $opts = Option::create(['option_name' =>$v2['atr_name'],'user_id'=>Auth::user()->id,'type'=>$v2['atr_type'],'status' =>'Active','parent_id' => $v1['opt_id'] ,'allow' => $v2['allow'] ]);  
                       
                           foreach($v2['atr_val'] as $k3 => $v3){
                            $option_val = Option::create(['option_name' =>$v3['val_name'],'user_id'=>Auth::user()->id,'status' =>'Active','parent_id' => $opts->id ]);  
@@ -226,7 +226,7 @@ class OptionController extends Controller
             $attr_grp = Option::find($upd_val['id']);	    
             $attr_grp->option_name=$upd_val['option_name'];  
             $attr_grp->categorys_id=$upd_val['categorys_id']; 
-            $attr_grp->status=$upd_val['status']; 
+            $attr_grp->status=$upd_val['status'];             
             $attr_grp->save(); 
             $all_attri=DB::table('pro_option')->where('parent_id', '=',$upd_val['id'])->where('is_delete', '=','0')->get();
             foreach($all_attri as $atr_val)
@@ -250,10 +250,11 @@ class OptionController extends Controller
                         $attr = Option::find($val['id']);	    
                         $attr->option_name=$val['option_name'];  
                         $attr->type=$val['type']; 
+                        $attr->allow=$val['allow']; 
                         $attr->is_delete=0; 
                         $attr->save(); 
                    }else{
-                        $attr = Option::create(['option_name' =>$val['option_name'],'user_id'=>Auth::user()->id,'type'=>$val['type'],'status' =>'Active','parent_id' => $upd_val['id'] ]); 
+                        $attr = Option::create(['option_name' =>$val['option_name'],'user_id'=>Auth::user()->id,'type'=>$val['type'],'status' =>'Active','parent_id' => $upd_val['id'],'allow' => $val['allow'] ]); 
                         
                    }                  
                    if(count($val['options'])>0){
