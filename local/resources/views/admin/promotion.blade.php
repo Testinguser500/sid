@@ -36,13 +36,20 @@
                 <div class="col-md-8 col-sm-8">
                     <select class="form-control "  ng-change="selcrt_camp(create_promo.campain)" ng-model="create_promo.campain">
                        <option value="">Please select</option>
-                       <option value="create_new">Create New</option>
-                       <option value="update_campn">Update Campaign</option>                       
+                       <option value="create_new">Create Campaign</option>
+                       <option value="update_campn">Update Campaign</option> 
+                       <option value="copy_campn">Copy Campaign</option>
                     </select> 
-                    
-                    <select ng-show="updcampshow==true" class="form-control camp"  ng-change="" ng-model="create_promo.upd_camp">
+                   
+                    <select ng-show="updcampshow==true" class="form-control camp"  ng-change="update_camp(create_promo.upd_camp,create_promo.actn)" ng-model="create_promo.upd_camp">
                        <option value="">Please select</option>
-                       <option ng-repeat="campd in campdata" value="<% campd.compaign_name %>"><% campd.compaign_name %></option>
+                       <option ng-repeat="campd in campdata" value="<% campd.id %>"><% campd.compaign_name %></option>
+                    </select>
+                    
+                    
+                    <select ng-show="copycampshow==true" class="form-control camp"  ng-change="update_camp(create_promo.cpy_camp,create_promo.actn)" ng-model="create_promo.cpy_camp">
+                       <option value="">Please select</option>
+                       <option ng-repeat="cpy_campd in copy_campdata" value="<% cpy_campd.id %>"><% cpy_campd.compaign_name %></option>
                     </select>
                     
                     
@@ -54,19 +61,24 @@
             <div class="form-group">
                   <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Ad Type </label>
                   <div class="col-md-8 col-sm-8">
-                      <select class="form-control" ng-model="create_promo.ad_type" ng-change="change_Ad(create_promo.ad_type)">
+                      <select ng-if="disablesel==false" class="form-control" ng-model="create_promo.ad_type" ng-change="change_Ad(create_promo.ad_type)">
                         <option value="">Select Ad Type</option>
                         <option value="text_ad">Ad Text</option>
                         <option value="banner_ad">Ad Banner</option>
-                    </select>   
+                    </select>  
+                      
+                      <input ng-if="disablesel==true" class="form-control" type="text" ng-model="create_promo.ad_type" disabled/>
+                      
                   </div>     
             </div>
+          
              <div class="form-group">
                   <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Select views per product  </label>
-                <div class="col-md-8 col-sm-8">  
+                <div class="col-md-8 col-sm-8"> 
+                   
                     <select class="form-control" ng-model="create_promo.select_view">
                         <option value=""> Select view</option>
-                        <option ng-repeat="select_view in promot_rec.create_package" value="<% select_view.id %>"><% select_view.nview %> views - Rs <% select_view.price %></option>
+                        <option  ng-repeat="select_view in promot_rec.create_package" value="<% select_view.id %>" ><% select_view.nview %> views - Rs <% select_view.price %></option>
                     </select>    
                 </div>    
             </div>
@@ -76,11 +88,11 @@
                 <div class="col-md-8 col-sm-8" >  
                     <div class="form-check" ng-repeat="shedules in promot_rec.schedule_status">
                         <label class="form-check-label" >
-                            <input class="form-check-input" name="shedul" ng-value="shedules.id"   ng-model="create_promo.schedule" type="radio" id="inlineCheckbox1" ng-click="customdate(create_promo.schedule);" > <% shedules.field_value %>
+                            <input class="form-check-input" name="shedul" ng-value="shedules.id"   ng-model="create_promo.schedule" type="radio" id="inlineCheckbox1"  ng-disabled="!create_promo.newcamp" > <% shedules.field_value %>
                        </label>
                     </div>
                     
-                    <div class="form-group" ng-show="custdate==true">
+                    <div class="form-group" ng-show="create_promo.schedule==9">
                         <div class="col-sm-4">
                             <label  class="col-md-12 col-sm-12" ng-init="create_promo.start_date=CurrentDate">Starting Date </label>
                              <ng-datepicker  class="hasDatepicker" view-format="Do MMMM YYYY" ng-model="create_promo.start_date" first-week-day-sunday="true" placeholder="Pick a date">
@@ -117,18 +129,23 @@
                         <option value="">Please select</option>
                        <option value="create_new">Create New</option> 
                        <option value="update_promn">Update Promotion</option>
+                       <option value="copy_promo">Copy Promotion</option>
                     </select> 
-                    
-                    <select ng-show="updpromshow==true" class="form-control camp"  ng-change="" ng-model="create_promo.upd_promot">
+                   
+                    <select ng-show="updpromshow==true" class="form-control camp"  ng-change="select_promo_data(create_promo.upd_promot,create_promo.promact)" ng-model="create_promo.upd_promot">
                        <option value="">Please select</option>
-                       <option ng-repeat="promotnd in promotndata" value="<% promotnd.promotion_name %>"><% promotnd.promotion_name %></option>
+                       <option ng-repeat="promotnd in promotndata" value="<% promotnd.id %>"><% promotnd.promotion_name %></option>
                     </select> 
-                    
+                     <select ng-show="copypromshow==true" class="form-control camp"  ng-change="select_promo_data(create_promo.cpy_promot,create_promo.promact)" ng-model="create_promo.cpy_promot">
+                       <option value="">Please select</option>
+                       <option ng-repeat="promotnd in cpy_promotn_data" value="<% promotnd.id %>"><% promotnd.promotion_name %></option>
+                    </select>
                    <div class="camp" ng-show="prom_input_show==true">
-                       <input  class="form-control" type="text" ng-model="create_promo.newpromot" placeholder="Please enter campaign name"/>
+                       <input  class="form-control" type="text" ng-model="create_promo.newpromot" placeholder="Please enter promotion name"/>
                    </div>
                 </div>
             </div>
+             <%product_name%>
             <div class="form-group">
                 <label for="exampleInputEmail1" class="col-md-12 col-sm-12">Product to Promote </label>
                   <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Select your Product 
@@ -138,9 +155,8 @@
                       
                       <select class="form-control" ng-model="create_promo.product">
                           <option  value=""> Select Product </option>
-                          <option ng-repeat=" product in promot_rec.product_name" value="<% product.id %>"> <% product.pro_name %> </option>
-                        
-                    </select>   
+                          <option ng-repeat=" product in promot_rec.product_name" ng-selected="product.id==create_promo.product" ng-value="product.id"> <% product.pro_name %> </option>
+                      </select>   
                   </div>     
             </div>
             <div class="form-group">
@@ -149,6 +165,7 @@
                       <label  class="col-md-12 col-sm-12">Text Ad also displays in home page by default </label> 
                 </div>    
             </div>
+             <%category_name%>
              <div class="form-group">
                   <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Select Category
                        <a href="#" data-toggle="tooltip" data-placement="right" title="SID">?</a> 
@@ -185,8 +202,8 @@
             
               <div class="form-group butn">
                   <button type="button" class="btn btn-default" ng-click="step_wizard(1)">Back</button> 
-                  <button type="button" class="btn btn-primary" ng-click="update_adtext(create_promo)" >Save Draft</button>                  
-                  <button type="button" class="btn btn-success" ng-disabled="btnenble==false" ng-click="step_wizard(3);preview(create_promo)">Next</button>
+                  <button type="button" class="btn btn-primary" ng-click="save_promotion(create_promo)" >Save Draft</button>                  
+                  <button type="button" class="btn btn-success" ng-disabled="btnenble==false" ng-click="step_wizard(3);preview(create_promo.id)">Next</button>
                     
                </div>  
             

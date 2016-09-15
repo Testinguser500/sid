@@ -5568,50 +5568,127 @@ $scope.checkAll = function () {
      $scope.btnenble=false;
      $scope.page='index';
      $scope.faq=false; 
+     
+      $scope.disablesel=false;
      $scope.wizard=1;
      $scope.create_promo={};
+     $scope.promot_rec={};
      $scope.CurrentDate = new Date();
      $scope.success_flash=false;
      $scope.init = function() {
-                $scope.errors=false;               
+                $scope.errors=false;  
+                
 		$scope.loading = true;
 		$http.get('create_promotion/get_campaign').
 		success(function(data, status, headers, config) {
+                        console.log(data);
 			$scope.campdata = data;
-			console.log($scope.campdata);
+                       
+			//console.log($scope.campdata);
 		        $scope.loading = false;
 		});
                 
-                $http.get('create_promotion/get_promotn').
+                $http.get('create_promotion/get_copy_campaign').
 		success(function(data, status, headers, config) {
-			$scope.promotndata = data;
-			console.log($scope.promotndata);
+                        console.log(data);
+			$scope.copy_campdata = data;
+                       
+			//console.log($scope.campdata);
 		        $scope.loading = false;
 		});
+                
+               
 	};
         
         $scope.selcrt_camp=function(camp){
             $scope.campinputshow=false;
             $scope.updcampshow=false;
+            $scope.copycampshow=false;
             console.log(camp);
+            $scope.create_promo.start_date=$scope.CurrentDate;
+            $scope.create_promo.end_date=$scope.CurrentDate;
+            $scope.create_promo.add_content ='';   
+            $scope.create_promo.add_discrip = ''; 
+            $scope.create_promo.product='';                      
+            $scope.create_promo.category='';            
+            $scope.create_promo.select_view='';
+            $scope.create_promo.schedule='';
+            $scope.create_promo.ad_type='';
             if(camp=='create_new'){
+               $scope.create_promo.newcamp='';
                $scope.campinputshow=true;  
+               $scope.create_promo.id='';
+               $scope.disablesel=false;
+               delete $scope.create_promo["upd_camp"];
             }
             if(camp=='update_campn'){
+               $scope.create_promo.upd_camp='';  
+               $scope.create_promo.actn='upd';
                $scope.updcampshow=true; 
+               $scope.disablesel=true;
+             //  delete $scope.create_promo["upd_camp"];
+            }
+            
+            if(camp=='copy_campn'){
+                $scope.create_promo.cpy_camp='';
+                $scope.create_promo.actn='cpy';
+                $scope.updcampshow=false; 
+                $scope.disablesel=false;
+                $scope.copycampshow=true;
+                delete $scope.create_promo["upd_camp"];
             }
         };
         
         $scope.selcrt_prom=function(prom){
             $scope.prom_input_show=false;
             $scope.updpromshow=false;
+            $scope.copypromshow=false;
             if(prom=='create_new'){
+                  delete $scope.create_promo["upd_promot"];
                $scope.prom_input_show=true;
+              //  $scope.create_promo.id='';
+                $scope.create_promo.newpromot='';
+	        $scope.create_promo.add_content ='';   
+                $scope.create_promo.add_discrip = ''; 
+                $scope.create_promo.product='';                      
+                $scope.create_promo.category='';
+                $scope.btnenble=false;
             }
             if(prom=='update_promn'){
-              $scope.updpromshow=true;   
+                $scope.updpromshow=true; 
+                $scope.create_promo.promact='upd';
+                var cam_id=$scope.create_promo.upd_camp;
+                
+                $http.get('create_promotion/get_promotn/'+cam_id).
+		success(function(data, status, headers, config) {
+			$scope.promotndata = data;
+			console.log($scope.promotndata);
+		        $scope.loading = false;
+		});
+            
+             
+                
+               delete $scope.create_promo["newpromot"];
+               $scope.create_promo.upd_promot='';
+	        $scope.create_promo.add_content ='';   
+                $scope.create_promo.add_discrip = ''; 
+                $scope.create_promo.product='';                      
+                $scope.create_promo.category='';
+                   
+                $scope.btnenble=false;
             }
-           
+           if(prom=='copy_promo') {
+                delete $scope.create_promo["upd_promot"];
+                $scope.copypromshow=true;
+                $scope.create_promo.promact='cpy';
+                $http.get('create_promotion/get_copy_promotn').
+		success(function(data, status, headers, config) {
+			$scope.cpy_promotn_data = data;
+			console.log($scope.cpy_promotn_data);
+		        $scope.loading = false;
+		});
+                
+             }  
         };
         
         $scope.discard=function(){
@@ -5631,14 +5708,7 @@ $scope.checkAll = function () {
 		});
         };
        
-       $scope.customdate=function(cust_id){
-           $scope.custdate=false;
-           if(cust_id==9){
-               $scope.custdate=true; 
-           }
-         console.log(cust_id);  
-           
-       };
+      
        
        $scope.step_wizard=function(val){
           // console.log(val);
@@ -5648,16 +5718,54 @@ $scope.checkAll = function () {
          
        };
        
-       $scope.preview=function(previw){
-            
-                 $http.post('create_promotion/get_camp_previw',{
-                        prev_rec: previw
-                   }).                         
+       $scope.update_camp=function(upd_val_id,act){
+           console.log(upd_val_id);
+           console.log(act);
+           $scope.disablesel=false;
+           $scope.promot_rec={};
+           $scope.create_promo.id=upd_val_id;
+           $http.get('create_promotion/get_upd_campdata/'+upd_val_id).                         
+                 success(function(data, status, headers, config) {                        
+                         console.log(data);
+                        $scope.disablesel=true;
+                        if((data.updrec['ad_type'])=='text_ad'){
+                            $scope.create_promo.ad_type='Text Ad';
+                        }
+                       if(act=='cpy'){
+                         $scope.create_promo.newcamp=data.updrec['compaign_name'] ; 
+                       }
+                       
+                       if(act=='upd'){
+                         $scope.create_promo.newcamp='' ; 
+                       }
+                        $scope.promot_rec.create_package=data.create_pakg; 
+                        $scope.promot_rec.schedule_status=data.schedule;
+                        $scope.camp_selct_data=data.updrec;
+                        $scope.create_promo.select_view=data.updrec['view_price'];
+                        $scope.create_promo.schedule=data.updrec['schedule'];
+                        $scope.create_promo.start_date=data.updrec['start_date'];
+                        $scope.create_promo.end_date=data.updrec['end_date'];
+                       $scope.promot_rec.product_name=data.product;
+                       $scope.promot_rec.category_name=data.all_cat;
+//                         $scope.create_promo.schedule=data[0].schedule; 
+//                         $scope.create_promo.product=data[0].product_promote; 
+//                         $scope.create_promo.category=data[0].destination_cat; 
+//                         $scope.create_promo.add_content=data[0].adcontent_title; 
+//                          $scope.create_promo.add_discrip=data[0].adcontent_discrip; 
+		        $scope.loading = false;
+		});
+       };
+       
+       
+       $scope.preview=function(prev_id){
+                console.log(prev_id);
+                 $http.get('create_promotion/get_camp_previw/'+prev_id).                         
                  success(function(data, status, headers, config) {
-                         console.log('nana');
+                       
                          console.log(data);
 			$scope.previw_data = data;			
 		        $scope.loading = false;
+                       
 		});
           
        };
@@ -5687,15 +5795,14 @@ $scope.checkAll = function () {
          
     };
      
-   $scope.update_adtext=function(text_data){
-       console.log(text_data);
+   $scope.save_promotion=function(text_data){
+       //console.log(text_data);
        $scope.errors=false; 
        $scope.btnenble=false;
        $scope.loading = true;
-      $http.post('create_promotion/update_promotion_adtext',{
+      $http.post('create_promotion/insert_promotion_adtext',{
 		   adtext_data:text_data		   
-	   }).               
-            success(function(data, status, headers, config) {
+	   }).success(function(data, status, headers, config) {
 //			$scope.promot_rec = data;
                         if(data[0]=='error'){
                             $scope.errors=data[1];
@@ -5705,11 +5812,43 @@ $scope.checkAll = function () {
                         $scope.errors=false;
 			console.log($scope.create_promo);
 		        $scope.loading = false;
-                         $scope.btnenble=true;
+                        $scope.btnenble=true;
                         $scope.create_promo.id=data[2];
                      } 
 		});
    };    
+        
+        $scope.select_promo_data=function(value,act){
+            console.log(value);
+              $scope.errors=false;               
+              $scope.loading = true;
+              
+                $http.get('create_promotion/get_promo_rec/'+value).
+		success(function(data, status, headers, config) {
+                        console.log(data);
+                        $scope.create_promo.id=data.promo_rec['id'];
+			$scope.create_promo.add_content = data.promo_rec['adcontent_title'];   
+                        $scope.create_promo.add_discrip = data.promo_rec['adcontent_discrip']; 
+                        $scope.create_promo.product=data.product['id'];
+                       // $scope.create_promo.product='12';
+                       if(act=='cpy'){
+                         $scope.create_promo.newpromot=data.promo_rec['promotion_name'] ; 
+                       }
+                       
+                       if(act=='upd'){
+                         $scope.create_promo.newpromot='' ; 
+                       }
+                       $scope.create_promo.category=[];
+                        angular.forEach(data.selected_cat, function(val){
+                            $scope.create_promo.category.push( val.id.toString() );
+                        });
+                       
+                        console.log( $scope.create_promo.category);
+		        $scope.loading = false;
+                        $scope.btnenble=true;
+		});
+        };
+        
         
     $scope.init();    
  });
