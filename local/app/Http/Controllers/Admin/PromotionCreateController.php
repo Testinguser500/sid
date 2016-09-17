@@ -37,18 +37,92 @@ class PromotionCreateController extends Controller
             $cpy_campaign = DB::table('promotion_adtext')->select('id','compaign_name')->where('end_date','<',$current)->get();
             return $cpy_campaign;
         }
+  
+        public function get_banner_view($id){
+            
+            $ban_name=DB::table('promotion_settings')
+                               ->where('id',$id)                             
+                               ->first();
+            $fld_name=$ban_name->field_value;
+                     
+            
+            $ban_view=DB::table('promotion_settings')
+                               ->where('ad_type','banner_ad')
+                               ->where('field_name',$fld_name)
+                               ->where('status','1')
+                               ->get();
+                    foreach($ban_view as $ky=>$vy)
+                    {
+                       
+                        $fild_val=$vy->field_value;               
+                        $new_array = explode('-',$fild_val);              
+                        $ban_view[$ky]->nview=$new_array[0];
+                        $ban_view[$ky]->price=$new_array[1];
+            
+                    }
+                    //$banr_view=$ban_view;
+                    
+                    return $ban_view;
+        }
 
         
-        
+
         public function get_updcamp_rec($id){
             $list=array();
             $cat_arr=array();
+            //$banr_view=array();
+            $baner_name='';
+            $banr_view='';
             $camp_upd_rec = DB::table('promotion_adtext')
-                             
                              ->where('promotion_adtext.id',$id)
                             ->first(); 
-           
+           /****************Banner*******************/
             $adtype=$camp_upd_rec->ad_type;
+            if($adtype=='banner_ad'){
+                $baner_name=DB::table('promotion_settings')
+                            ->where('ad_type',$adtype)
+                            ->where('field_name','placement_pkg')
+                            ->get();
+                  $fld_name='';
+                  foreach($baner_name as $key=>$val){
+                    
+                    if($val->id == $camp_upd_rec->ad_placement){
+                        $fld_name=$val->field_value;
+                    }
+                    if($baner_name[$key]->field_value=='home_top_bot_banner'){
+                        $fd_nm='Home Page- Top/Bottom Banner';
+                        $baner_name[$key]->field_value=$fd_nm;
+                    }
+                    if($baner_name[$key]->field_value=='home_right_banner'){
+                        $fd_nm='Home Page- Right Box Banner';
+                        $baner_name[$key]->field_value=$fd_nm;
+                    }
+                    if($baner_name[$key]->field_value=='categ_left_bot_banner'){
+                        $fd_nm='Category Page- Left/Bottom Banner';
+                        $baner_name[$key]->field_value=$fd_nm;
+                    }
+                    if($baner_name[$key]->field_value=='prod_left_bot_banner'){
+                        $fd_nm='Product Page- Left/Bottom Banner';
+                        $baner_name[$key]->field_value=$fd_nm;
+                    }
+                 
+               }
+                $banr_view=DB::table('promotion_settings')
+                            ->where('ad_type',$adtype)
+                            ->where('field_name',$fld_name)
+                             ->where('status','1')
+                            ->get(); 
+                 foreach($banr_view as $ky=>$vy)
+                    {
+                       
+                        $fild_val=$vy->field_value;               
+                        $new_array = explode('-',$fild_val);              
+                        $banr_view[$ky]->nview=$new_array[0];
+                        $banr_view[$ky]->price=$new_array[1];
+            
+                    }
+            }
+          
          //   $cat_id=$camp_upd_rec->destination_cat;
         //    $cat_val_arr=explode(",", $cat_id);
             $create_package = DB::table('promotion_settings')->where('field_name','create_package')->where('status',1)->where('ad_type',$adtype)->get();
@@ -71,9 +145,11 @@ class PromotionCreateController extends Controller
             $list['create_pakg']=$create_package;
             $list['schedule']=$schedule_status;
           //  $list['destination']=$destination_cat;
-          $list['all_cat']= $categ_name;
+            $list['banner_name']= $baner_name;
+            $list['baner_view']=$banr_view;
+            $list['all_cat']= $categ_name;
          //   $list['carbn']= $current ;
-          $list['product']=$prod_name;
+            $list['product']=$prod_name;
             return   $list;
         }
 
@@ -154,14 +230,33 @@ class PromotionCreateController extends Controller
                $create_package[$key]->nview=$new_array[0];
                $create_package[$key]->price=$new_array[1];
             }
-            
+              foreach($placemnt_pakg as $key=>$val){
+                    $fld_name=$val->field_value;
+                    if($placemnt_pakg[$key]->field_value=='home_top_bot_banner'){
+                        $fd_nm='Home Page- Top/Bottom Banner';
+                        $placemnt_pakg[$key]->field_value=$fd_nm;
+                    }
+                    if($placemnt_pakg[$key]->field_value=='home_right_banner'){
+                        $fd_nm='Home Page- Right Box Banner';
+                        $placemnt_pakg[$key]->field_value=$fd_nm;
+                    }
+                    if($placemnt_pakg[$key]->field_value=='categ_left_bot_banner'){
+                        $fd_nm='Category Page- Left/Bottom Banner';
+                        $placemnt_pakg[$key]->field_value=$fd_nm;
+                    }
+                    if($placemnt_pakg[$key]->field_value=='prod_left_bot_banner'){
+                        $fd_nm='Product Page- Left/Bottom Banner';
+                        $placemnt_pakg[$key]->field_value=$fd_nm;
+                    }
+                 
+               }
              $promo_seting_rec=array(
                 'prom_all'=>$promot_all,
                 'create_package'=> $create_package,
                 'schedule_status'=>$schedule_status,
                 'destination_cat'=>$destination_cat,                
                 'seler_select'=>$selr_selection,
-                'placemnt_pkg'=>$placemnt_pakg,
+                'baner_name'=>$placemnt_pakg,
                 'tooltip'=>$tooltip,
                 'category_name'=>$categ_name,
                 'product_name'=>$prod_name
@@ -174,11 +269,20 @@ class PromotionCreateController extends Controller
           
             $prom_adtext=Request::input('adtext_data'); 
             
+          // print_r($prom_adtext);
+            
             if($prom_adtext['ad_type']=='Text Ad'){
                $prom_adtext['ad_type']='text_ad'; 
             }
-          //  print_r($prom_adtext);exit;
             
+             if($prom_adtext['ad_type']=='Banner Ad'){
+               $prom_adtext['ad_type']='banner_ad'; 
+               
+            }
+          //  print_r($prom_adtext);exit;
+           
+            if($prom_adtext['ad_type']=='text_ad'){
+              /******************************* Text Add **********************/
               /**********************Insert Adtext**************************/
            
             if(!array_key_exists('upd_camp', $prom_adtext)){
@@ -332,8 +436,179 @@ class PromotionCreateController extends Controller
               }
 
                 $adtext = PromotionAdtext::find($prom_adtext['id']);  
-                               
                 
+                 
+                  $adtext->view_price = $prom_adtext['select_view'];
+                  
+                  $adtext->save(); 
+                  $list[] =  'success';
+                  $list[] =  'Record is updated successfully.';
+                  $list[] =  $adtext->id;
+                
+
+          }
+         }else{
+              /******************************* Banner Add **********************/
+               /**********************Insert Adbanner**************************/
+           
+            if(!array_key_exists('upd_camp', $prom_adtext)){
+               $validator = Validator::make(Request::all(), [
+               'adtext_data.newcamp' => 'required',                  
+               'adtext_data.select_view'=>'required', 
+               'adtext_data.baner_name'=>'required',  
+               'adtext_data.schedule'=>'required',
+               'adtext_data.ad_type'=>'required'
+              
+            ]);
+               	   $friendly_names = array(
+			'adtext_data.newcamp' => 'Campaign Name',
+			'adtext_data.select_view' => 'Views per product',
+			'adtext_data.schedule' => 'Schedule',
+                        'adtext_data.baner_name'=>'Ad Placement', 
+			'adtext_data.ad_type' => 'Ad Type',
+			
+			
+		    );
+	$validator->setAttributeNames($friendly_names);
+             if ($validator->fails()) {
+                              $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			      return $list;
+              }
+            
+            if ((!array_key_exists('id', $prom_adtext)) || ($prom_adtext['id']=='') || ($prom_adtext['campain']=='copy_campn')) {
+                if($prom_adtext['schedule']==41){
+                    $start_date=$prom_adtext['start_date'];
+                    $end_date=$prom_adtext['end_date'];
+                }
+                if($prom_adtext['schedule']==36)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(7);   
+                }
+                 if($prom_adtext['schedule']==37)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(15);   
+                }
+                 if($prom_adtext['schedule']==38)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(30);   
+                }
+                  if($prom_adtext['schedule']==39)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(60);   
+                }
+                 if($prom_adtext['schedule']==40)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(90);   
+                }
+                  $adtext = new PromotionAdtext;
+                  $adtext->compaign_name = $prom_adtext['newcamp'];
+                  $adtext->ad_type=$prom_adtext['ad_type'];
+                  $adtext->ad_placement=$prom_adtext['baner_name'];
+                  $adtext->view_price = $prom_adtext['select_view'];
+                  $adtext->schedule = $prom_adtext['schedule'];
+                  $adtext->start_date = $start_date;
+                  $adtext->end_date = $end_date;
+                  $adtext->save();  
+                  $list[] =  'success';
+                  $list[] =  'Record is added successfully.';
+                  $list[] =  $adtext->id;
+                
+            } else{
+                
+                 if($prom_adtext['schedule']==41){
+                    $start_date=$prom_adtext['start_date'];
+                    $end_date=$prom_adtext['end_date'];
+                }
+                if($prom_adtext['schedule']==36)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(7);   
+                }
+                 if($prom_adtext['schedule']==37)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(15);   
+                }
+                 if($prom_adtext['schedule']==38)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(30);   
+                }
+                  if($prom_adtext['schedule']==39)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(60);   
+                }
+                 if($prom_adtext['schedule']==40)
+                {
+                    $current=Carbon::now();
+                    $start_date=Carbon::now();
+                    $end_date=$current->addDays(90);   
+                }
+                
+                $adtext = PromotionAdtext::find($prom_adtext['id']); 
+                
+                  $adtext->compaign_name = $prom_adtext['newcamp'];
+                  $adtext->ad_type = $prom_adtext['ad_type'];                  
+                  $adtext->view_price = $prom_adtext['select_view'];
+                  $adtext->schedule = $prom_adtext['schedule'];
+                  $adtext->start_date = $start_date;
+                  $adtext->end_date = $end_date;
+                  $adtext->save(); 
+                  $list[] =  'success';
+                  $list[] =  'Record is updated successfully.';
+                  $list[] =  $adtext->id;
+                 
+                
+                
+            }
+          }  
+            /************************Update Ad banner********************************/
+             if(array_key_exists('upd_camp', $prom_adtext)){
+               $validator = Validator::make(Request::all(), [
+               'adtext_data.upd_camp' => 'required',                  
+               'adtext_data.select_view'=>'required', 
+               'adtext_data.baner_name'=>'required',  
+               'adtext_data.schedule'=>'required',
+               'adtext_data.ad_type'=>'required'
+              
+            ]);
+               	   $friendly_names = array(
+			'adtext_data.upd_camp' => 'Campaign Name',
+			'adtext_data.select_view' => 'Views per product',
+			'adtext_data.schedule' => 'Schedule',
+                        'adtext_data.baner_name'=>'Ad Placement', 
+			'adtext_data.ad_type' => 'Ad Type',
+			
+			
+		    );
+	$validator->setAttributeNames($friendly_names);
+             if ($validator->fails()) {
+                              $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			      return $list;
+              }
+
+                $adtext = PromotionAdtext::find($prom_adtext['id']);  
+                               
+                  $adtext->ad_placement=$prom_adtext['baner_name'];
                   $adtext->view_price = $prom_adtext['select_view'];
                  
                   $adtext->save(); 
@@ -343,6 +618,7 @@ class PromotionCreateController extends Controller
                 
 
           }
+         }
             
             return $list;
         }
@@ -390,7 +666,10 @@ class PromotionCreateController extends Controller
             }
             
             $promotion =new PromotionAdd;         
-            $promotion->promotion_name = $val['newpromot']; 
+            $promotion->promotion_name = $val['newpromot'];
+            if(!array_key_exists("upd_camp",$val)){
+                $val['upd_camp']=$val['id'];
+            }
             $promotion->campaign_id = $val['upd_camp'];    
             $promotion->product_promote = $val['product'];     
             $promotion->destination_cat = $cat_val; 

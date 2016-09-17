@@ -72,7 +72,34 @@
                   </div>     
             </div>
           
-             <div class="form-group">
+            <!---------------------Banner------------------------------>
+            
+             <div class="form-group" ng-if="create_promo.ad_type=='Banner Ad' || create_promo.ad_type=='banner_ad'">
+                  <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Select Ad Placement  </label>
+                <div class="col-md-8 col-sm-8"> 
+                  
+                    <select ng-disabled="disablesel==true" class="form-control" ng-model="create_promo.baner_name" ng-change="sel_banr_view(create_promo.baner_name)">
+                        <option value=""> Select Ad Placement</option>
+                        <option  ng-repeat="banner in promot_rec.baner_name" value="<% banner.id %>" ><% banner.field_value %></option>
+                    </select>    
+                </div>    
+            </div>
+            
+             <div class="form-group" ng-if="create_promo.ad_type=='Banner Ad' || create_promo.ad_type=='banner_ad'">
+                  <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Select views  </label>
+                <div class="col-md-8 col-sm-8"> 
+                  
+                    <select class="form-control" ng-model="create_promo.select_view">
+                        <option value=""> Select view</option>
+                        <option  ng-repeat="select_view in promot_rec.baner_view" value="<% select_view.id %>" ><% select_view.nview %> views - Rs <% select_view.price %></option> 
+                     
+                    </select>    
+                </div>    
+            </div>
+            
+            <!--------------------------End Banner--------------------------->
+            
+            <div class="form-group" ng-show="hide_sel_viewprod==false" >
                   <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Select views per product  </label>
                 <div class="col-md-8 col-sm-8"> 
                    
@@ -82,6 +109,9 @@
                     </select>    
                 </div>    
             </div>
+            
+            
+            
               <div class="form-group">
                   
                   <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Schedule </label>
@@ -104,6 +134,21 @@
                                            </ng-datepicker>
                         </div>    
                     </div>
+                    
+                    <!-----------------------Banner Date Picker-------------------------->
+                    <div class="form-group" ng-show="create_promo.schedule==41">
+                        <div class="col-sm-4">
+                            <label  class="col-md-12 col-sm-12" ng-init="create_promo.start_date=CurrentDate">Starting Date </label>
+                             <ng-datepicker  class="hasDatepicker" view-format="Do MMMM YYYY" ng-model="create_promo.start_date" first-week-day-sunday="true" placeholder="Pick a date">
+                                           </ng-datepicker>
+                        </div>
+                        <div class="col-sm-4">
+                            <label  class="col-md-12 col-sm-12" ng-init="create_promo.end_date=CurrentDate">End Date </label>
+                            <ng-datepicker  class="hasDatepicker" view-format="Do MMMM YYYY" ng-model="create_promo.end_date" first-week-day-sunday="true"  placeholder="Pick a date">
+                                           </ng-datepicker>
+                        </div>    
+                    </div>
+                    
                     
                 </div>    
             </div>
@@ -145,8 +190,11 @@
                    </div>
                 </div>
             </div>
-             <%product_name%>
-            <div class="form-group">
+             
+             <!-------------------Text Ad-------------------------->
+             
+             <div ng-if="create_promo.ad_type=='Text Ad' || create_promo.ad_type=='text_ad'"> 
+            <div class="form-group"> 
                 <label for="exampleInputEmail1" class="col-md-12 col-sm-12">Product to Promote </label>
                   <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Select your Product 
                       <a href="#" data-toggle="tooltip" data-placement="right" title="SID">?</a> 
@@ -165,7 +213,7 @@
                       <label  class="col-md-12 col-sm-12">Text Ad also displays in home page by default </label> 
                 </div>    
             </div>
-             <%category_name%>
+            
              <div class="form-group">
                   <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Select Category
                        <a href="#" data-toggle="tooltip" data-placement="right" title="SID">?</a> 
@@ -199,7 +247,57 @@
                     </div> 
                 </div>    
             </div>
-            
+             </div>
+             
+             <!----------------------------Banner Ad----------------------------->
+             <div ng-if="create_promo.ad_type=='Banner Ad' || create_promo.ad_type=='banner_ad'">
+               <div class="form-group"> 
+                <label for="exampleInputEmail1" class="col-md-12 col-sm-12">Your Store / Product / Category To Promote </label>
+                  <label for="exampleInputEmail1" class="col-md-4 col-sm-4">Select Store, Product or Category
+                      <a href="#" data-toggle="tooltip" data-placement="right" title="SID">?</a> 
+                  </label>
+                  <div class="col-md-8 col-sm-8">
+                      <div class="col-sm-4">
+                        <select class="form-control" ng-model="create_promo.ban_category">
+                            <option  value=""> Select Option </option>
+                            <option value="store"> Store </option>
+                            <option value="category"> Category </option>
+                            <option value="product"> Product </option>
+                        </select>  
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                          <select>
+                              <option></option>
+                          </select>
+                      </div>
+                      
+                  </div>     
+                 </div>
+                 
+                  <div class="form-group"> 
+                
+                  <label for="exampleInputEmail1" class="col-md-4 col-sm-4"> Upload Banner
+                      <a href="#" data-toggle="tooltip" data-placement="right" title="SID">?</a> 
+                  </label>
+                  <div class="col-md-8 col-sm-8">
+                      <label class="col-md-12 col-sm-12">
+                          Home: Top/Right/Bottom Banner 
+                      </label>
+                      <div class="col-sm-8">
+                          <input class="form-control"  type="text" ng-model="create_promo.ban_img"/>
+                      </div> 
+                      <div class="col-sm-4">
+                        <div class="fileUpload btn btn-primary">
+                            <span>Browse</span>
+                            <input id="inpfile" type="file" class="upload"  />
+                            
+                        </div>
+                      </div>
+                  </div>     
+                 </div>
+                 
+             </div>
+             
               <div class="form-group butn">
                   <button type="button" class="btn btn-default" ng-click="step_wizard(1)">Back</button> 
                   <button type="button" class="btn btn-primary" ng-click="save_promotion(create_promo)" >Save Draft</button>                  
@@ -329,5 +427,20 @@
 	border-radius: 0;
 }
 
-
+    .fileUpload {
+        position: relative;
+        overflow: hidden;
+        
+    }
+    .fileUpload input.upload {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
 </style>
