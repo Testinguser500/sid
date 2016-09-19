@@ -710,6 +710,7 @@ class ProductController extends Controller
 	$product->pro_feature_des = Request::input('feature_description');
 	$product->sku = Request::input('sku');
 	$product->price = Request::input('price');
+        $product->status = Request::input('status');
 	$product->date_to = Request::input('expiry_date');
 	$product->meta_title = Request::input('meta_title');
 	$product->meta_description = Request::input('meta_description');

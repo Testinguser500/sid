@@ -3093,7 +3093,7 @@ $scope.checkAll = function () {
            $scope.success_flash_pop=false;
            console.log(product);
            $http.post('product/updateDes', {
-			
+			status: product.status,
 			description: product.pro_des,
 			short_description: product.pro_short_des,
 			feature_description: product.pro_feature_des,

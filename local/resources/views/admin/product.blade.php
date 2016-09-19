@@ -178,12 +178,23 @@
                                             <li ng-repeat ="er in errors_pop"><% er %></li>         
                                         </ul>
                                     </div>
+                                    <div class="row" ng-if="edit_field=='status'">
+					<div class="form-group" >
+                                        <label for="exampleInputEmail1">Status</label>
+                                        <select ng-model="edit_values.status">
+                                            <option value="Pending">Pending Review</option>
+                                            <option value="Inactive">Inactive</option>
+                                            <option value="Active">Active</option>
+                                        </select>
+                                        <div class="help-block"></div>
+                                    </div>  
+				    </div>
 				    <div class="row" ng-if="edit_field=='sku'">
 					<div class="form-group" >
                                         <label for="exampleInputEmail1">SKU</label>
                                         <input type="text" class="form-control" ng-model="edit_values.sku">
                                         <div class="help-block"></div>
-                                    </div>  
+                                        </div>  
 				    </div>
 				    <div class="row" ng-if="edit_field=='price'">
 					<div class="form-group" >
@@ -343,7 +354,7 @@
 		      <td><% val.id %></td>
 		      <td ng-if="screen_opt.pro_name"><a href="javascript:void(0);" ng-click="editproduct(val)"><% val.pro_name %></a></td>
 		      <td ng-if="screen_opt.category_name"><% val.category_name %></td>
-		      <td ng-if="screen_opt.status"><% val.status %></td>
+		      <td ng-if="screen_opt.status"  data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('status',val)"><% val.status %></td>
 		      <td ng-if="screen_opt.pro_des"><button class="btn btn-default" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('des',val)">Edit Description</button></td>
 		      <td ng-if="screen_opt.pro_short_des"><button class="btn btn-default" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('short_des',val)">Edit Short Description</button></td>
 		      <td ng-if="screen_opt.pro_feature_des"><button class="btn btn-default" data-toggle="modal" data-target="#edit_modal" style="cursor:pointer"  ng-click="edit_modal('feat_des',val)">Edit Feature Description</button></td>
