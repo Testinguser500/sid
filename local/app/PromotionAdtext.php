@@ -12,8 +12,7 @@ class PromotionAdtext extends Model
      *
      * @var array
      */
-    protected $fillable = ['compaign_name','view_price','schedule','start_date','end_date',
-                           'promotion_name','product_promote','destination_cat','adcontent_title','adcontent_discrip'];
+    protected $fillable = ['compaign_name','ad_type','ad_placement','view_price','schedule','start_date','end_date'];
 
    
 }

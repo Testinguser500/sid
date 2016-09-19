@@ -422,12 +422,8 @@
                                   </div>              
                              </div> 
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" for="pwd">Ad Content Character Limit</label>
+                                    <label class="control-label col-sm-4" for="pwd">Banner Setting</label>
                                      <div class="col-sm-8">
-                                         
-                                         
-                                         
-                                         
                                          <div class="col-sm-12" ng-repeat="hmptop_setng in setting_data.prom_all |filter:{field_name:'home_topbot_banr_setting'} : true ">
                                               <label class="control-label col-sm-12">Home Page Top/Bottom Banner</label>
                                            <div class="col-sm-6" > 
