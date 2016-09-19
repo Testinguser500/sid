@@ -258,7 +258,7 @@
                   </label>
                   <div class="col-md-8 col-sm-8">
                       <div class="col-sm-4">
-                        <select class="form-control" ng-model="create_promo.ban_category">
+                        <select class="form-control" ng-model="create_promo.ban_category" ng-change="store_cat_prod(create_promo.ban_category)">
                             <option  value=""> Select Option </option>
                             <option value="store"> Store </option>
                             <option value="category"> Category </option>
@@ -266,8 +266,17 @@
                         </select>  
                       </div>
                       <div class="col-sm-6 col-md-6">
-                          <select>
-                              <option></option>
+                           <select class="form-control"  ng-show="deflt_show==true"> 
+                              <option value="">__Select__</option>
+                              
+                          </select>
+                          <select class="form-control" ng-model="create_promo.banr_select_data" ng-show="cat_show==true"> 
+                              <option value="">__Select__</option>
+                              <option ng-repeat=" ban_data in banr_data" value="<% ban_data.id %>"><% ban_data.category_name %></option>
+                          </select>
+                          <select class="form-control" ng-model="create_promo.banr_select_data" ng-show="prod_show==true"> 
+                              <option value="">__Select__</option>
+                              <option ng-repeat=" ban_data in banr_data" value="<% ban_data.id %>"><% ban_data.pro_name %></option>
                           </select>
                       </div>
                       
@@ -289,7 +298,8 @@
                       <div class="col-sm-4">
                         <div class="fileUpload btn btn-primary">
                             <span>Browse</span>
-                            <input id="inpfile" type="file" class="upload"  />
+                            
+                            <input id="inpfile" type="file" class="upload" onchange="angular.element(this).scope().uploadedFile(this)"   />
                             
                         </div>
                       </div>

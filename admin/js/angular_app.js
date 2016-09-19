@@ -5577,9 +5577,7 @@ $scope.checkAll = function () {
      $scope.promot_rec={};
      $scope.CurrentDate = new Date();
      $scope.success_flash=false;
-     
-    
-    
+     $scope.deflt_show=true;
      
      $scope.init = function() {
                 $scope.errors=false;  
@@ -5606,10 +5604,69 @@ $scope.checkAll = function () {
                
 	};
         
+      
+      $scope.store_cat_prod=function(value){
+          $scope.cat_show=false;
+          $scope.deflt_show=true;
+          $scope.prod_show=false;
+          console.log(value);
+          if(value=='category'){
+             $http.get('create_promotion/baner_categry').
+		success(function(data, status, headers, config) {
+                        console.log(data);
+			$scope.banr_data= data;                       
+			//console.log($scope.campdata);
+		        $scope.loading = false;
+                        $scope.cat_show=true;
+                        $scope.deflt_show=false;
+                         
+		});    
+          }
+          
+          if(value=='product'){
+             $http.get('create_promotion/baner_prodct').
+		success(function(data, status, headers, config) {
+                        console.log(data);
+			$scope.banr_data= data;                       
+			//console.log($scope.campdata);
+		        $scope.loading = false;
+                        $scope.prod_show=true;
+                        $scope.deflt_show=false;
+		});    
+          }
+          
+      };
         
        
-        
-        
+        $scope.uploadedFile = function(element) {
+            $scope.$apply(function($scope) {
+            $scope.loading = true;
+            $scope.create_promo.ban_img=element.files[0].name;       
+           
+            var fd = new FormData();
+           
+            fd.append("image",element.files[0]);	    
+	    fd.append("banner_type",$scope.create_promo.baner_name);	 
+            $http.post('create_promotion/banner_image', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).success( function(data, status, headers, config){   
+                  if(data[0]=='error'){
+				$scope.errors=data[1];
+		  }else{
+                                $scope.errors=false; 
+                                if(data[0]=='success'){
+                                $scope.success_flash='image uploaded successfully';
+                                 }
+                                $scope.imagepath=data[1]; 
+                                $scope.loading = false;
+                  }
+             });
+
+            });
+         };
+    
         $scope.selcrt_camp=function(camp){
             $scope.campinputshow=false;
             $scope.updcampshow=false;

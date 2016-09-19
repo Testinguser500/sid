@@ -15,6 +15,7 @@ use Session;
 use Request;
 use File;
 use Response;
+use Image;
 class PromotionCreateController extends Controller
 {      
             public function __construct()
@@ -37,7 +38,91 @@ class PromotionCreateController extends Controller
             $cpy_campaign = DB::table('promotion_adtext')->select('id','compaign_name')->where('end_date','<',$current)->get();
             return $cpy_campaign;
         }
-  
+        
+        
+        public function baner_categry(){
+            $cat_name=DB::table('categorys')
+                               ->where('status','Active') 
+                               ->where('is_delete',0)
+                               ->get();
+            return $cat_name;
+        }
+
+        public function baner_prodct(){
+            $ban_prod=DB::table('product')
+                               ->where('status','Active') 
+                               ->where('is_delete',0)
+                               ->get();
+             
+            return $ban_prod;
+        }
+
+     /*********************** Image Upload **********************/
+        public function banner_image(){
+                if(Request::input('banner_type')){
+                    $folder = '/'.Request::input('folder');
+                    $baner_type= Input::file('banner_type');
+                    $ban_name=DB::table('promotion_settings')
+                                   ->where('id',Request::input('banner_type'))                             
+                                   ->first();
+                    $fld_name=$ban_name->field_value;
+                    if($fld_name == 'home_top_bot_banner'){
+                        $fd_nme = 'home_topbot_banr_setting'; 
+                    }
+                    if($fld_name == 'home_right_banner'){
+                        $fd_nme = 'home_right_banr_setting'; 
+                    }
+                    if($fld_name == 'categ_left_bot_banner'){
+                        $fd_nme = 'categ_lftbotm_banr_setting'; 
+                    }
+                    if($fld_name == 'prod_left_bot_banner'){
+                        $fd_nme = 'prod_leftbot_banr_setting';   
+                    }
+                  
+                 $bn_ad=DB::table('promotion_settings')
+                               ->where('ad_type','banner_ad')
+                               ->where('field_name',$fd_nme)                           
+                               ->first();
+                 $size_img=$bn_ad->field_value;
+                 $size_img_exp = explode('-',$size_img);
+		
+                 $size_mb = $size_img_exp[1]*1000;
+                 $size_img_dim = explode('x',$size_img_exp[0]);
+                 $image_info = getimagesize(Input::file('image'));
+                 // print_r($image_info);
+                         $validator = Validator::make(Request::all(), [
+               'image' => 'between:0,'.$size_mb,
+              
+            ]);
+                     if ($validator->fails()) {
+                              $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			       return $list;
+                      }else{
+                        $image_width = $image_info[0];
+                        $image_height = $image_info[1];
+                         if($image_width != $size_img_dim[0] || $image_height != $size_img_dim[1] )
+                         {
+                                 $list[]='error';
+                                 $msgs[]='Fix your image dimension '.$size_img_exp[0] ;
+                                 $list[]=$msgs;
+                                 return $list;
+                         }
+                      }
+                     $destinationPath = 'uploads/promotion_banner'; // upload path
+                     $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+                     if(($extension=='jpg') || ($extension=='jpeg') || ($extension=='png') ){
+                     $fileName = time().'.'.$extension; // renameing image
+                     Input::file('image')->move($destinationPath, $fileName); 
+                      $list[] = 'success';
+                      $list[] = 'promotion_banner/'.$fileName;
+                      return $list;
+                     }
+
+            }
+        }
+        
         public function get_banner_view($id){
             
             $ban_name=DB::table('promotion_settings')
@@ -626,8 +711,11 @@ class PromotionCreateController extends Controller
         public function insert_promotion_adtext(){
             $val=Request::input('adtext_data');   
             
+            print_r($val);
             
-            
+            if($val['ad_type']=='Text Ad'){
+                
+           
             /******************Insert record**********************/
             if(!array_key_exists('upd_promot',$val)){
                $validator = Validator::make(Request::all(), [
@@ -736,9 +824,111 @@ class PromotionCreateController extends Controller
             
            } 
             
+        
+        
+        }   
+       /********************Banner Ad***********************/ 
+        if($val['ad_type']=='Banner Ad'){
+             
+             /******************Insert record**********************/
+            if(!array_key_exists('upd_promot',$val)){
+               $validator = Validator::make(Request::all(), [
+               'adtext_data.newpromot' => 'required',	       
+               'adtext_data.banr_select_data'=>'required',            
+               'adtext_data.ban_category'=>'required',
+               
+              
+            ]);
+               	   $friendly_names = array(
+			'adtext_data.newpromot' => 'Promotion Name',	       
+                        'adtext_data.banr_select_data'=>'Store/Product/Category',            
+                        'adtext_data.ban_category'=>'Store/Product/Category',
+                        
+			
+		    );
+	$validator->setAttributeNames($friendly_names);
+             if ($validator->fails()) {
+                              $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			      return $list;
+              }
+            
+            $promotion =new PromotionAdd;         
+            $promotion->promotion_name = $val['newpromot'];
+            if(!array_key_exists("upd_camp",$val)){
+                $val['upd_camp']=$val['id'];
+            }
+            $promotion->campaign_id = $val['upd_camp'];    
+            $promotion->promotion_type = $val['product'];     
+            $promotion->promot_type_id = $cat_val; 
+            $promotion->baner_name= $val['add_content'];
+                    
+            $promotion->save();
+            $list[] =  'success';
+            $list[] =  'Record is updated successfully.';
+            $list[] =  $promotion->id;
+            return $list;
+            
+             }
+            /******************Update record**********************/
+           
+             if(array_key_exists('upd_promot', $val)){
+                 
+               $validator = Validator::make(Request::all(), [
+               'adtext_data.upd_promot' => 'required',	       
+               'adtext_data.product'=>'required',            
+               'adtext_data.category'=>'required',
+               'adtext_data.add_content'=>'required',
+                'adtext_data.add_discrip'=>'required'   
+              
+            ]);
+               	   $friendly_names = array(
+			'adtext_data.upd_promot' => 'Promotion Name',	       
+                        'adtext_data.product'=>'Product Name',            
+                        'adtext_data.category'=>'Category Name',
+                        'adtext_data.add_content'=>'Content',
+                        'adtext_data.add_discrip'=>'Description'  
+			
+		    );
+	$validator->setAttributeNames($friendly_names);
+             if ($validator->fails()) {
+                              $list[]='error';
+                              $msg=$validator->errors()->all();
+			      $list[]=$msg;
+			      return $list;
+              }
+            
+            if(count($val['category'])>0){
+                $cat_val="";
+                foreach ($val['category'] as $cat){
+                    if($cat_val!=''){
+                    $cat_val=$cat_val.','.$cat;
+                    }else{
+                       $cat_val=$cat; 
+                    }
+                }
+            }
+            
+            $promotion =PromotionAdd::find($val['upd_promot']);      
+             
+            $promotion->campaign_id = $val['upd_camp'];    
+            $promotion->product_promote = $val['product'];     
+            $promotion->destination_cat = $cat_val; 
+            $promotion->adcontent_title= $val['add_content'];
+            $promotion->adcontent_discrip = $val['add_discrip'];             
+            $promotion->save();
+            $list[] =  'success';
+            $list[] =  'Record is updated successfully.';
+            $list[] =  $promotion->id;
+            return $list;
+            
+           } 
+            
+            
+         
         }
         
-        
-        
+     }    
         
 }       

@@ -241,6 +241,10 @@ Route::get('admins/create_promotion/get_promotion/{adtype}', 'Admin\PromotionCre
 Route::get('admins/create_promotion/get_upd_campdata/{id}', 'Admin\PromotionCreateController@get_updcamp_rec');
 
 Route::get('admins/create_promotion/get_baner_view/{id}', 'Admin\PromotionCreateController@get_banner_view');
+Route::get('admins/create_promotion/baner_categry','Admin\PromotionCreateController@baner_categry');
+Route::get('admins/create_promotion/baner_prodct','Admin\PromotionCreateController@baner_prodct');
+
+Route::post('admins/create_promotion/banner_image','Admin\PromotionCreateController@banner_image');
 Route::post('admins/create_promotion/save_promotion_adtext', 'Admin\PromotionCreateController@save_promotion_adtext');
 Route::post('admins/create_promotion/insert_promotion_adtext', 'Admin\PromotionCreateController@insert_promotion_adtext');
 
